@@ -30,11 +30,11 @@
 <script setup>
 import { useRoute } from 'vue-router';
 
-const route = useRoute();
+const route = useRoute(); // 路由
 
 /**
  * 根據目前的路由名稱, 決定目前的導航列項目樣式
- * @param {string} a 項目名稱
+ * @param {string} itemName 項目名稱
  * @returns {string} 項目樣式
  */
 function getClass(itemName) {
@@ -53,11 +53,11 @@ function getClass(itemName) {
 	margin: 0 4px;
 	white-space: nowrap; user-select: none;
 }
-.navbar > a:hover {
+.navbar > a:hover { /* 如果滑鼠懸停在項目按鈕上, 稍微變白 */
 	background-color: #fff1;
 	border-radius: 4px;
 }
-.navbar > a.is-active {
+.navbar > a.is-active { /* 如果項目按鈕被選中, 變更白 */
 	background-color: #fff2;
 	border-radius: 4px;
 }
