@@ -1,0 +1,64 @@
+<template>
+  <div class="ts-app-navbar navbar">
+		<router-link :class="getClass('Home')" :to="{ name: 'Home' }">
+      <div class="ts-icon is-house-icon"></div>
+      <div class="label">首頁</div>
+    </router-link>
+		<router-link :class="getClass('Notes')" :to="{ name: 'Notes' }">
+      <div class="ts-icon is-book-icon"></div>
+      <div class="label">筆記</div>
+    </router-link>
+		<router-link :class="getClass('Exam')" :to="{ name: 'Exam' }">
+      <div class="ts-icon is-file-icon"></div>
+      <div class="label">歷屆試題</div>
+    </router-link>
+		<router-link :class="getClass('Search')" :to="{ name: 'Search' }">
+      <div class="ts-icon is-magnifying-glass-icon"></div>
+      <div class="label">搜尋題目</div>
+    </router-link>
+		<router-link :class="getClass('Practice')" :to="{ name: 'Practice' }">
+      <div class="ts-icon is-pen-icon"></div>
+      <div class="label">模擬室</div>
+    </router-link>
+		<router-link :class="getClass('Credit')" :to="{ name: 'Credit' }">
+      <div class="ts-icon is-heart-icon"></div>
+      <div class="label">感謝</div>
+    </router-link>
+	</div>
+</template>
+
+<script setup>
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+/**
+ * 根據目前的路由名稱, 決定目前的導航列項目樣式
+ * @param {string} a 項目名稱
+ * @returns {string} 項目樣式
+ */
+function getClass(itemName) {
+	return route.name == itemName ? "item is-active" : "item"; // 讓當前路由名稱的項目看起來被選中
+}
+</script>
+
+<style scoped>
+.navbar {
+	padding: 4px 0;
+	background-color: #444;
+	display: flex; justify-content: center;
+}
+.navbar > a {
+	width: 80px; min-width: 80px; height: 60px;
+	margin: 0 4px;
+	white-space: nowrap; user-select: none;
+}
+.navbar > a:hover {
+	background-color: #fff1;
+	border-radius: 4px;
+}
+.navbar > a.is-active {
+	background-color: #fff2;
+	border-radius: 4px;
+}
+</style>
