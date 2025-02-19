@@ -24,7 +24,7 @@
 				<div class="column is-fluid">
 					<div class="ts-box">
 						<div class="ts-content">
-							problem 1
+							problem 1 - test
 							<div class="ts-divider is-section"></div>
 							problem 2
 						</div>
