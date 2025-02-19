@@ -1,7 +1,11 @@
 <template>
 	<div class="ts-app-layout is-fullscreen is-vertical">
 		<navbar></navbar>
-		<router-view></router-view>
+		<div class="cell is-secondary is-fluid is-scrollable">
+			<div class="ts-container has-vertically-spaced is-narrow">
+				<router-view></router-view>
+			</div>
+		</div>
 	</div>
 </template>
 

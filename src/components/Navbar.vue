@@ -20,9 +20,9 @@
       <div class="ts-icon is-pen-icon"></div>
       <div class="label">模擬室</div>
     </router-link>
-		<router-link :class="getClass('Credit')" :to="{ name: 'Credit' }">
-      <div class="ts-icon is-heart-icon"></div>
-      <div class="label">感謝</div>
+		<router-link :class="getClass('Other')" :to="{ name: 'Other' }">
+      <div class="ts-icon is-ellipsis-icon"></div>
+      <div class="label">更多</div>
     </router-link>
 	</div>
 </template>
