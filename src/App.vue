@@ -1,6 +1,8 @@
 <template>
-	<navbar></navbar>
-  <router-view></router-view>
+	<div class="ts-app-layout is-fullscreen is-vertical">
+		<navbar></navbar>
+		<router-view></router-view>
+	</div>
 </template>
 
 <script setup>

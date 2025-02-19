@@ -1,5 +1,5 @@
 <template>
-  <div>notes-view</div>
+	<div>notes</div>
 </template>
 
 <script setup>

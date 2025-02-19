@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute(); // 路由
@@ -37,21 +38,21 @@ const route = useRoute(); // 路由
  * @param {string} itemName 項目名稱
  * @returns {string} 項目樣式
  */
-function getClass(itemName) {
-	return route.name == itemName ? "item is-active" : "item"; // 讓當前路由名稱的項目看起來被選中
-}
+const getClass = computed(() => (itemName) => {
+	return (route.name === itemName) ? "item is-active" : "item"; // 讓當前路由名稱的項目看起來被選中
+});
 </script>
 
 <style scoped>
 .navbar {
 	padding: 4px 0;
-	background-color: #444;
+	background-color: #333;
 	display: flex; justify-content: center;
 }
 .navbar > a {
 	width: 80px; min-width: 80px; height: 60px;
-	margin: 0 4px;
-	white-space: nowrap; user-select: none;
+	margin: 0 3px;
+	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
 }
 .navbar > a:hover { /* 如果滑鼠懸停在項目按鈕上, 稍微變白 */
 	background-color: #fff1;
