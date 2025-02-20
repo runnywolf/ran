@@ -47,19 +47,19 @@ const getClass = computed(() => (itemName) => {
 .navbar {
 	padding: 4px 0;
 	background-color: #333;
-	display: flex; justify-content: center;
+	display: flex; justify-content: center; /* 置中項目 */
 }
 .navbar > a {
 	width: 80px; min-width: 80px; height: 60px;
 	margin: 0 3px;
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
 }
-.navbar > a:hover { /* 如果滑鼠懸停在項目按鈕上, 稍微變白 */
-	background-color: #fff1;
+.navbar > a:hover {
+	background-color: #fff1; /* 如果滑鼠懸停在項目按鈕上, 稍微變白 */
 	border-radius: 4px;
 }
-.navbar > a.is-active { /* 如果項目按鈕被選中, 變更白 */
-	background-color: #fff2;
+.navbar > a.is-active {
+	background-color: #fff2; /* 如果項目按鈕被選中, 變更白 */
 	border-radius: 4px;
 }
 </style>
