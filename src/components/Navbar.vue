@@ -28,7 +28,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute(); // 路由
@@ -38,9 +37,9 @@ const route = useRoute(); // 路由
  * @param {string} itemName 項目名稱
  * @returns {string} 項目樣式
  */
-const getClass = computed(() => (itemName) => {
+function getClass(itemName) {
 	return (route.name === itemName) ? "item is-active" : "item"; // 讓當前路由名稱的項目看起來被選中
-});
+};
 </script>
 
 <style scoped>

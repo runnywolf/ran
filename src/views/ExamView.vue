@@ -6,7 +6,7 @@
 					<label class="ts-switch">
 						<input type="checkbox" checked />
 						<span>測驗模式&nbsp;</span>
-						<span class="ts-icon is-circle-question-icon" data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且強制隱藏答案。" data-html=true></span>
+						<span class="ts-icon is-circle-question-icon" data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且不顯示解答。" data-html=true></span>
 					</label>
 				</div>
 				<div class="ts-divider"></div>
@@ -19,11 +19,10 @@
 								</td>
 								<td>
 									<div class="column ts-select is-solid is-fluid">
-										<select>
-											<option>台大</option>
-											<option>清大</option>
-											<option>交大</option>
-											<option>台科大</option>
+										<select v-model="uni" @change="examData = config[uni].exam[0]">
+											<option v-for="(value, name) in config" :key="name" :value="name">
+												{{ value.shortName }}
+											</option>
 										</select>
 									</div>
 								</td>
@@ -34,23 +33,10 @@
 								</td>
 								<td>
 									<div class="column ts-select is-solid is-fluid">
-										<select>
-											<option>101年</option>
-											<option>100年</option>
-											<option>99年</option>
-											<option>98年</option>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-hashtag-icon"></span>
-								</td>
-								<td>
-									<div class="column ts-select is-solid is-fluid">
-										<select>
-											<option>1012</option>
+										<select v-model="examData">
+											<option v-for="(item, index) in config[uni].exam" :key="item.year" :value="item">
+												{{ item.year }}&nbsp;年
+											</option>
 										</select>
 									</div>
 								</td>
@@ -59,6 +45,30 @@
 					</table>
 				</div>
 				<div class="ts-divider "></div>
+				<div class="ts-content is-dense">
+					<table class="sidebar-table">
+						<tbody>
+							<tr>
+								<td>
+									<span class="ts-icon is-hashtag-icon"></span>
+								</td>
+								<td>
+									{{ examData.id ? examData.id : "-" }}&nbsp;
+									<span class="ts-icon is-circle-question-icon" data-tooltip="題本編號"></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="ts-icon is-file-icon"></span>
+								</td>
+								<td>
+									{{ examData.subject ? examData.subject : "-" }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="ts-divider"></div>
 				<div class="ts-content is-dense sidebar-timer">
 					<span class="ts-icon is-play-icon is-rounded"></span>
 					<span class="ts-icon is-rotate-left-icon is-rounded is-spaced"></span>
@@ -71,17 +81,15 @@
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
-					<details class="ts-accordion" open>
-						<summary>
-							採計科系&nbsp;
-							<span class="ts-icon is-circle-question-icon" data-tooltip="有哪些科系需要考這份題本。"></span>
-						</summary>
-						資工?
-					</details>
-				</div>
-				<div class="ts-divider"></div>
-				<div class="ts-content is-dense">
-					<span class="ts-icon is-link-icon is-end-spaced"></span>來源
+					<span class="ts-icon is-link-icon is-end-spaced"></span>
+					<a
+						v-if="examData.link"
+						class="sidebar-link-text"
+						:href="examData.link"
+						:data-tooltip="examData.linkTip ? examData.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
+						target="_blank"
+					>題本來源</a>
+					<span v-else>來源未知</span>
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
@@ -91,9 +99,25 @@
 		</div>
 		<div class="column is-fluid">
 			<div class="ts-box">
-				<div class="ts-content">
-					1. (10%) Which one of the following graphs has no Hamiltonian cycles?
+				<div class="ts-content -font-test">
+					
+					<component :is="ExamComponent"></component>
+					
+					
 					<div class="ts-divider is-section"></div>
+					2. (10%) Whichknow N is an infinite set. Let S = {k/2" | n = 0,1,2,...; k ∈ N}. Note that
+
+/ in this question is the division of real numbers. For example, 5/2 = 2.5.
+
+Prove that S is an infinite set strictly according to your definition of an infi-
+					solves<br>
+					<vue-latex expression="a_n = -a_{n-1} + 6a_{n-2}"></vue-latex>
+					know N is an infinite set. Let S = {k/2" | n = 0,1,2,...; k ∈ N}. Note that
+
+/ in this question is the division of real numbers. For example, 5/2 = 2.5.
+
+Prove that S is an infinite set strictly according to your definition of an infi-
+					<vue-latex expression="\frac{a_i}{1+x}" displayMode></vue-latex>
 				</div>
 			</div>
 		</div>
@@ -101,9 +125,35 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import config from "@/components/exam/config.json";
+
+const uni = ref("ntu"); // 選取的學校
+const examData = ref(config[uni.value].exam[0]); // 選取的題本資料
+
+
+
+
+
+
+
+
+import { VueLatex } from "vatex";
+
+import { defineAsyncComponent } from 'vue';
+const ExamComponent = defineAsyncComponent(() => import("@/components/exam/ntu/112/1.vue"));
 
 </script>
 
+<style scoped>
+.-font-test {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 18px; /* 字體大小 */
+	letter-spacing: 0.02em; /* 字母之間的距離 */
+	word-spacing: 0.06em; /* 單詞之間空白的距離 */
+	line-height: 1.2em; /* 行距 (倍) */
+}
+</style>
 <style scoped>
 .sidebar {
 	position: sticky; top: 16px; /* 即使題目區往下移動, 這個 box 也會在原地 */
@@ -126,5 +176,12 @@
 }
 .sidebar-timer-progress {
 	margin-top: 7px; /* 計時器進度條與按鈕的垂直間距 */
+}
+.sidebar-link-text {
+	text-decoration: none; /* 隱藏超連結的底線 */
+	color: #88f;
+}
+.sidebar-link-text:hover {
+	color: #f7f;
 }
 </style>

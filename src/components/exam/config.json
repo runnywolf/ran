@@ -1,0 +1,28 @@
+{
+	"ntu": {
+		"shortName": "台大",
+		"exam": [
+			{
+				"year": "112",
+				"id": "348",
+				"subject": "數學(A)",
+				"link": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/112/2023-348.pdf",
+				"linkTip": "國立臺灣大學圖書館 考古題",
+				"problemCompName": []
+			},
+			{
+				"year": "111"
+			}
+		]
+	},
+	"nctu": {
+		"shortName": "交大",
+		"exam": [
+			{
+				"year": "110",
+				"id": "1102",
+				"subject": "線代與離散"
+			}
+		]
+	}
+}
