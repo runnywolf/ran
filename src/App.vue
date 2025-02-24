@@ -2,7 +2,7 @@
 	<div class="ts-app-layout is-fullscreen is-vertical">
 		<navbar></navbar>
 		<div class="cell is-secondary is-fluid is-scrollable">
-			<div class="ts-container has-vertically-spaced is-narrow">
+			<div class="ts-container has-vertically-spaced is-narrow body2">
 				<router-view></router-view>
 			</div>
 		</div>

@@ -73,10 +73,8 @@
 					<span class="ts-icon is-play-icon is-rounded"></span>
 					<span class="ts-icon is-rotate-left-icon is-rounded is-spaced"></span>
 					<span>100:00</span><br>
-					<div class="ts-progress is-tiny sidebar-timer-progress">
-						<div class="bar" style="--value: 60">
-							<div class="text"></div>
-						</div>
+					<div class="ts-progress is-tiny is-processing sidebar-timer-progress">
+						<div class="bar" style="--value: 50"></div>
 					</div>
 				</div>
 				<div class="ts-divider"></div>
@@ -159,6 +157,9 @@ const ExamComponent = defineAsyncComponent(() => import("@/components/exam/ntu/1
 	position: sticky; top: 16px; /* 即使題目區往下移動, 這個 box 也會在原地 */
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
 }
+.sidebar .ts-icon:not(.is-rounded) {
+	color: #59f; /* 除了計時器按鈕以外的 icon 的顏色 */
+}
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
 }
@@ -176,12 +177,16 @@ const ExamComponent = defineAsyncComponent(() => import("@/components/exam/ntu/1
 }
 .sidebar-timer-progress {
 	margin-top: 7px; /* 計時器進度條與按鈕的垂直間距 */
+	background-color: #999; /* 進度條底色 */
+}
+.sidebar-timer-progress > .bar {
+	background-color: #9bf; /* 進度條顏色 */
 }
 .sidebar-link-text {
 	text-decoration: none; /* 隱藏超連結的底線 */
-	color: #88f;
+	color: #44f;
 }
 .sidebar-link-text:hover {
-	color: #f7f;
+	color: #f3f;
 }
 </style>
