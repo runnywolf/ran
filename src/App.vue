@@ -14,5 +14,8 @@ import Navbar from './components/Navbar.vue';
 </script>
 
 <style scoped>
-
+.ts-container {
+	min-width: 1000px;
+	--width: 1000px; /* body 內的寬度 */
+}
 </style>

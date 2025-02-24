@@ -20,8 +20,8 @@
 								<td>
 									<div class="column ts-select is-solid is-fluid">
 										<select v-model="uni" @change="examData = config[uni].exam[0]">
-											<option v-for="(value, name) in config" :key="name" :value="name">
-												{{ value.shortName }}
+											<option v-for="(uniData, uniName) in config" :key="uniName" :value="uniName">
+												{{ uniData.shortName }}
 											</option>
 										</select>
 									</div>
@@ -34,8 +34,8 @@
 								<td>
 									<div class="column ts-select is-solid is-fluid">
 										<select v-model="examData">
-											<option v-for="(item, index) in config[uni].exam" :key="item.year" :value="item">
-												{{ item.year }}&nbsp;年
+											<option v-for="examData in config[uni].exam" :key="examData.year" :value="examData">
+												{{ examData.year }}&nbsp;年
 											</option>
 										</select>
 									</div>
@@ -53,8 +53,8 @@
 									<span class="ts-icon is-hashtag-icon"></span>
 								</td>
 								<td>
-									{{ examData.id ? examData.id : "-" }}&nbsp;
-									<span class="ts-icon is-circle-question-icon" data-tooltip="題本編號"></span>
+									<span>{{ examData.id ? examData.id : "-" }}</span>
+									<span class="ts-icon is-circle-question-icon is-start-spaced" data-tooltip="題本編號"></span>
 								</td>
 							</tr>
 							<tr>
@@ -91,31 +91,23 @@
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
-					<span class="ts-icon is-print-icon is-end-spaced"></span>列印題本
+					<span class="ts-icon is-print-icon is-end-spaced"></span>
+					<span>列印題本</span>
 				</div>
 			</div>
 		</div>
 		<div class="column is-fluid">
 			<div class="ts-box">
-				<div class="ts-content -font-test">
-					
-					<component :is="ExamComponent"></component>
-					
-					
-					<div class="ts-divider is-section"></div>
-					2. (10%) Whichknow N is an infinite set. Let S = {k/2" | n = 0,1,2,...; k ∈ N}. Note that
-
-/ in this question is the division of real numbers. For example, 5/2 = 2.5.
-
-Prove that S is an infinite set strictly according to your definition of an infi-
-					solves<br>
-					<vue-latex expression="a_n = -a_{n-1} + 6a_{n-2}"></vue-latex>
-					know N is an infinite set. Let S = {k/2" | n = 0,1,2,...; k ∈ N}. Note that
-
-/ in this question is the division of real numbers. For example, 5/2 = 2.5.
-
-Prove that S is an infinite set strictly according to your definition of an infi-
-					<vue-latex expression="\frac{a_i}{1+x}" displayMode></vue-latex>
+				<div class="ts-content problem-font">
+					<template v-for="i in examData.problemNumber">
+						<div class="ts-grid">
+							<span>{{ i }}.</span>
+							<div>
+								<component :is="asyncComp(i)"></component>
+							</div>
+						</div>
+						<div class="ts-divider is-section" v-if="i != examData.problemNumber"></div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -123,42 +115,21 @@ Prove that S is an infinite set strictly according to your definition of an infi
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineAsyncComponent } from "vue";
 import config from "@/components/exam/config.json";
 
 const uni = ref("ntu"); // 選取的學校
 const examData = ref(config[uni.value].exam[0]); // 選取的題本資料
 
-
-
-
-
-
-
-
-import { VueLatex } from "vatex";
-
-import { defineAsyncComponent } from 'vue';
-const ExamComponent = defineAsyncComponent(() => import("@/components/exam/ntu/112/1.vue"));
-
+const asyncComp = (i) => defineAsyncComponent(
+	() => import(`../components/exam/${uni.value}/${examData.value.year}/${i}.vue`) // 動態載入
+);
 </script>
 
 <style scoped>
-.-font-test {
-	font-family: "Times New Roman", Times, serif;
-	font-size: 18px; /* 字體大小 */
-	letter-spacing: 0.02em; /* 字母之間的距離 */
-	word-spacing: 0.06em; /* 單詞之間空白的距離 */
-	line-height: 1.2em; /* 行距 (倍) */
-}
-</style>
-<style scoped>
 .sidebar {
-	position: sticky; top: 16px; /* 即使題目區往下移動, 這個 box 也會在原地 */
+	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
-}
-.sidebar .ts-icon:not(.is-rounded) {
-	color: #59f; /* 除了計時器按鈕以外的 icon 的顏色 */
 }
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
@@ -188,5 +159,8 @@ const ExamComponent = defineAsyncComponent(() => import("@/components/exam/ntu/1
 }
 .sidebar-link-text:hover {
 	color: #f3f;
+}
+.problem-font > .ts-grid {
+	flex-wrap: nowrap; /* 使題號與題目為水平排列 */
 }
 </style>
