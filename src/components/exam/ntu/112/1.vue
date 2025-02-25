@@ -3,7 +3,7 @@
 		<div class="column">
 			(10%) Which one of the following graphs has no Hamiltonian cycles?
 		</div>
-		<div class="column ts-grid is-compact is-top-aligned opt">
+		<div class="column ts-wrap is-compact is-top-aligned opt">
 			<span>(A)</span>
 			<img src="./img/1-a.webp">
 			<span>(B)</span>

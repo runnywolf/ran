@@ -99,14 +99,14 @@
 		<div class="column is-fluid">
 			<div class="ts-box">
 				<div class="ts-content problem-font">
-					<template v-for="i in examData.problemNumber">
+					<template v-for="(problemId, i) in examData.problemCompId">
 						<div class="ts-grid">
-							<span>{{ i }}.</span>
+							<span v-if="problemId[0] != '-'">{{ problemId }}.</span><!-- 題號開頭若為 '-', 會隱藏題號 -->
 							<div>
-								<component :is="asyncComp(i)"></component>
+								<component :is="asyncComp(problemId)"></component>
 							</div>
 						</div>
-						<div class="ts-divider is-section" v-if="i != examData.problemNumber"></div>
+						<div class="ts-divider is-section" v-if="i != examData.problemCompId.length - 1"></div>
 					</template>
 				</div>
 			</div>

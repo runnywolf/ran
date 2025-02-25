@@ -11,7 +11,7 @@
 			<vue-latex expression="a_1 = B"></vue-latex>
 			:
 		</div>
-		<div class="column ts-grid is-compact">
+		<div class="column ts-wrap is-compact">
 			<span>
 				(A)
 				<vue-latex expression="\frac{1}{5} [ (-3)^n(2A-B) + 2^n(3A+B) ]"></vue-latex>
