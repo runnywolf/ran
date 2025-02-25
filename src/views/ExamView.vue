@@ -100,8 +100,8 @@
 			<div class="ts-box">
 				<div class="ts-content problem-font exam">
 					<template v-for="(problemId, i) in examData.problemCompId">
-						<ol v-if="problemId[0] !== '-'" :start="problemId">
-							<li>
+						<ol v-if="problemId[0] !== '-'" :style="{ 'padding-left': (11+9*problemId.length)+'px' }" :start="problemId">
+							<li><!-- 根據題目編號的長度修正 ol 的 padding-left -->
 								<component :is="asyncComp(problemId)"></component>
 							</li>
 						</ol>
