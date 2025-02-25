@@ -116,13 +116,15 @@
 
 <script setup>
 import { ref, defineAsyncComponent } from "vue";
-import config from "@/components/exam/config.json";
+import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
 
 const uni = ref("ntu"); // 選取的學校
 const examData = ref(config[uni.value].exam[0]); // 選取的題本資料
 
 const asyncComp = (i) => defineAsyncComponent(
-	() => import(`../components/exam/${uni.value}/${examData.value.year}/${i}.vue`) // 動態載入
+	() => import(`../components/exam/${uni.value}/${examData.value.year}/${i}.vue`).catch( // 動態載入題目的 vue 檔
+		() => import("../components/exam/NotFound.vue") // 若載入失敗, 則回傳一個帶有錯誤訊息的 vue 檔
+	)
 );
 </script>
 

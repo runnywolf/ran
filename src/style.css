@@ -8,3 +8,8 @@
 .katex {
 	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
+.warning-box { /* 錯誤方塊樣式 */
+	border-color: #f33;
+	background-color: #fdd;
+	font-family: "noto sans tc"; font-size: 16px;
+}
