@@ -98,15 +98,17 @@
 		</div>
 		<div class="column is-fluid">
 			<div class="ts-box">
-				<div class="ts-content problem-font">
+				<div class="ts-content problem-font exam">
 					<template v-for="(problemId, i) in examData.problemCompId">
-						<div class="ts-grid">
-							<span v-if="problemId[0] != '-'">{{ problemId }}.</span><!-- 題號開頭若為 '-', 會隱藏題號 -->
-							<div>
+						<ol v-if="problemId[0] !== '-'" :start="problemId">
+							<li>
 								<component :is="asyncComp(problemId)"></component>
-							</div>
+							</li>
+						</ol>
+						<div v-else><!-- 題號開頭若為 '-', 會隱藏題號 -->
+							<component :is="asyncComp(problemId)"></component>
 						</div>
-						<div class="ts-divider is-section" v-if="i != examData.problemCompId.length - 1"></div>
+						<div v-if="i != examData.problemCompId.length - 1" class="ts-divider is-section"></div>
 					</template>
 				</div>
 			</div>
@@ -162,7 +164,10 @@ const asyncComp = (i) => defineAsyncComponent(
 .sidebar-link-text:hover {
 	color: #f3f;
 }
-.problem-font > .ts-grid {
-	flex-wrap: nowrap; /* 使題號與題目為水平排列 */
+.exam > ol {
+	padding-left: 20px; /* 題目編號與 box 左側邊緣的距離 */
+}
+.exam > ol > li {
+	padding-left: 4px; /* 題目編號與題目的距離 */
 }
 </style>

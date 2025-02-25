@@ -14,7 +14,3 @@
 		</div>
 	</div>
 </template>
-
-<script setup>
-import { VueLatex } from "vatex";
-</script>
