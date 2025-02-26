@@ -4,7 +4,7 @@
 			<div class="ts-box is-vertical is-compact sidebar">
 				<div class="ts-content is-dense sidebar-setting">
 					<label class="ts-switch">
-						<input type="checkbox" checked />
+						<input type="checkbox" v-model="examMode" checked />
 						<span>測驗模式&nbsp;</span>
 						<span class="ts-icon is-circle-question-icon" data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且不顯示解答。" data-html=true></span>
 					</label>
@@ -101,14 +101,14 @@
 				<div class="ts-content problem-font exam">
 					<template v-for="(problemId, i) in examData.problemCompId">
 						<ol v-if="problemId[0] !== '-'" :style="{ 'padding-left': (11+9*problemId.length)+'px' }" :start="problemId">
-							<li><!-- 根據題目編號的長度修正 ol 的 padding-left -->
-								<component :is="asyncComp(problemId)"></component>
+							<li><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
+								<component :is="problemAsyncComp[i]"></component>
 							</li>
 						</ol>
 						<div v-else><!-- 題號開頭若為 '-', 會隱藏題號 -->
-							<component :is="asyncComp(problemId)"></component>
+							<component :is="problemAsyncComp[i]"></component>
 						</div>
-						<div v-if="i != examData.problemCompId.length - 1" class="ts-divider is-section"></div>
+						<div v-if="i != examData.problemCompId.length - 1" class="ts-divider is-section"></div><!-- 題目間的分隔線 -->
 					</template>
 				</div>
 			</div>
@@ -117,17 +117,24 @@
 </template>
 
 <script setup>
-import { ref, defineAsyncComponent } from "vue";
+import { ref, shallowRef, watch, defineAsyncComponent } from "vue";
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
+import NotFoundComp from "@/components/exam/NotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 
+const examMode = ref(true); // 是否開啟測驗模式
 const uni = ref("ntu"); // 選取的學校
-const examData = ref(config[uni.value].exam[0]); // 選取的題本資料
+const examData = ref(config[uni.value].exam[0]); // 選取的題本年份的資料
+const problemAsyncComp = shallowRef([]); // 目前顯示的題目組件. shallowRef 只有 .value 改變時更新元素
 
-const asyncComp = (i) => defineAsyncComponent(
-	() => import(`../components/exam/${uni.value}/${examData.value.year}/${i}.vue`).catch( // 動態載入題目的 vue 檔
-		() => import("../components/exam/NotFound.vue") // 若載入失敗, 則回傳一個帶有錯誤訊息的 vue 檔
-	)
+const loadProblemComp = (id) => defineAsyncComponent( // 異步載入編號為 id 的題目組件
+	() => import(`../components/exam/${uni.value}/${examData.value.year}/${id}.vue`) // 載入題目組件
+		.catch(() => NotFoundComp) // 題目組件載入失敗時, 顯示錯誤訊息組件
 );
+watch(examData, async (newExamData) => { // 如果選取的題本年份改變了, 要做的事
+	problemAsyncComp.value = await Promise.all( // 並行載入所有題目組件
+		newExamData.problemCompId.map(loadProblemComp) // 異步載入所有題目
+	);
+}, { immediate: true }); // 頁面載入時, 載入一次題目
 </script>
 
 <style scoped>
