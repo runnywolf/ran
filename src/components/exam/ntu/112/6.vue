@@ -4,9 +4,9 @@
 			(10%) Given
 			<vue-latex expression="\def\arraystretch{1.35} A = \begin{bmatrix} \frac{3}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{3}{5} \end{bmatrix}"></vue-latex>
 			and
-			<vue-latex expression="x = \begin{bmatrix} 2 \\ 0 \end{bmatrix}"></vue-latex>.
+			<vue-latex expression="\def\arraystretch{1.1} x = \begin{bmatrix} 2 \\ 0 \end{bmatrix}"></vue-latex>.
 			If
-			<vue-latex expression="\lim\limits_{n \to \infty} A^n x = \begin{bmatrix} a \\ b \end{bmatrix}"></vue-latex>,
+			<vue-latex expression="\def\arraystretch{1.1} \lim\limits_{n \to \infty} A^n x = \begin{bmatrix} a \\ b \end{bmatrix}"></vue-latex>,
 			what is
 			<vue-latex expression="2a + b"></vue-latex>?
 		</div>

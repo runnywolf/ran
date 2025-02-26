@@ -11,7 +11,7 @@
 			<vue-latex expression="a_1 = B"></vue-latex>
 			is:
 		</div>
-		<div class="column ts-wrap is-compact">
+		<div class="column ts-grid is-compact">
 			<span>
 				(A)
 				<vue-latex expression="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A-B}{1+2x} ]"></vue-latex>
@@ -20,11 +20,10 @@
 				(B)
 				<vue-latex expression="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A+B}{1+2x} ]"></vue-latex>
 			</span>
-			<span>
+			<span class="column is-5-wide"><!-- 使選項 D 強制換行 -->
 				(C)
 				<vue-latex expression="\frac{1}{5} [ \frac{2A-B}{1-3x} + \frac{3A-B}{1+2x} ]"></vue-latex>
 			</span>
-			<br>
 			<span>
 				(D)
 				<vue-latex expression="\frac{1}{5} [ \frac{3A-B}{1-2x} + \frac{2A-B}{1+3x} ]"></vue-latex>
