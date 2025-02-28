@@ -86,7 +86,7 @@
 					<div class="ts-wrap is-compact is-middle-aligned">
 						<button
 							class="ts-button is-small is-icon is-outlined"
-							@click="toggleTimer"
+							@click="clickToggleButton"
 							:disabled="!isExamModeEnabled"
 						><!-- 計時器的 開始/暫停 按鈕 -->
 							<span v-if="isTimerActive" class="ts-icon is-pause-icon"></span>
@@ -94,7 +94,7 @@
 						</button>
 						<button
 							class="ts-button is-small is-icon is-outlined"
-							@click="resetTimer"
+							@click="clickResetButton"
 							:disabled="!isExamModeEnabled"
 						><!-- 計時器的重設按鈕 -->
 							<span class="ts-icon is-rotate-left-icon"></span>
@@ -106,8 +106,8 @@
 					</div>
 					<div
 						class="ts-progress is-tiny sidebar-timer-progress"
-						:class="isExamModeEnabled && isProblemVisible ? 'is-processing' : ''"
-					><!-- 剩餘時間的進度條. 如果正在進行測驗(題目顯示中), 進度條背景會有動畫 -->
+						:class="isTimerActive ? 'is-processing' : ''"
+					><!-- 剩餘時間的進度條. 如果計時器正在計時, 進度條背景會有動畫 -->
 						<div
 							class="bar"
 							:style="{
@@ -188,6 +188,7 @@ import NotFoundComp from "@/components/exam/NotFound.vue"; // 題目載入失敗
 const uni = ref("ntu"); // 選取的學校
 const examData = ref(config[uni.value].exam[0]); // 選取的題本的資料
 const problemAsyncComp = shallowRef([]); // 目前顯示的題目組件. shallowRef 只有 .value 改變時更新元素
+
 const loadProblemComp = (id) => defineAsyncComponent( // 異步載入編號為 id 的題目組件
 	() => import(`../components/exam/${uni.value}/${examData.value.year}/${id}.vue`) // 載入題目組件
 		.catch(() => NotFoundComp) // 題目組件載入失敗時, 顯示錯誤訊息組件
@@ -199,24 +200,46 @@ watch(examData, async (newExamData) => { // 如果選取的題本年份改變了
 }, { immediate: true }); // 頁面載入時, 載入一次題目
 
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
+const isProblemVisible = ref(false); // 是否要顯示題本內容. 注意此變數與 "正在作答" 等價
 const isTimerActive = ref(false); // 計時器是否正在計時
 const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
 const remainingSec = ref(examTimeSec.value); // 計時器剩餘的秒數
-const isProblemVisible = ref(false); // 是否要顯示題本內容. 注意此變數與 "正在作答" 等價
+
 watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時
 	resetTimer(); // 重置計時器
 	isProblemVisible.value = !newMode; // 如果測驗模式被開啟, 隱藏題本內容, 反之顯示題本內容
 });
-const toggleTimer = () => { // 按下計時器的 開始/暫停 按鈕
-	console.log("timer toggle");
+const clickToggleButton = () => { // 按下計時器的 開始/暫停 按鈕
+	toggleTimer(); // 切換計時器的狀態
+	if (!isProblemVisible.value) isProblemVisible.value = true; // 如果題目被隱藏(還沒開始考試), 則顯示題目
 };
-const resetTimer = () => { // 按下計時器的重設按鈕
-	console.log("timer reset");
+const clickResetButton = () => { // 按下重設計時器的按鈕
+	resetTimer(); // 重設計時器
+	isProblemVisible.value = false; // 隱藏題目
 };
 const startExam = () => { // 按下開始作答的按鈕
 	resetTimer(); // 重設計時器
+	startTimer(); // 開始計時
 	isProblemVisible.value = true; // 顯示題目
-}
+};
+
+let timer = null; // 計時器
+const startTimer = () => { // 開始計時
+	isTimerActive.value = true;
+	timer = setInterval(() => {remainingSec.value--}, 1000); // 每 1000ms 將剩餘秒數 -1
+};
+const pauseTimer = () => { // 停止計時
+	isTimerActive.value = false;
+	clearInterval(timer); // 停止計時器
+	timer = null; // 初始化
+};
+const resetTimer = () => { // 重置計時器
+	pauseTimer(); // 停止計時
+	remainingSec.value = examTimeSec.value // 重設計時器的時間
+};
+const toggleTimer = () => { // 切換計時器的狀態
+	isTimerActive.value ? pauseTimer() : startTimer();
+};
 </script>
 
 <style scoped>
