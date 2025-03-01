@@ -18,7 +18,7 @@
 			<div v-if="i != examData.problemCompId.length - 1" class="ts-divider is-section"></div><!-- 題目間的分隔線 -->
 		</template>
 	</div>
-	<div v-if="!isProblemVisible" class="ts-wrap is-vertical is-middle-aligned exam-ready"><!-- 開始作答的 ui, 覆蓋於模糊的題目之上 -->
+	<div v-if="!isProblemVisible && remainingSec > 0" class="ts-wrap is-vertical is-middle-aligned exam-cover"><!-- 開始作答的 ui, 覆蓋於模糊的題目之上 -->
 		<div class="ts-text is-huge is-bold"><!-- 題本年份 -->
 			{{ config[uni].shortName }}&nbsp;&nbsp;{{ examData.year }}
 		</div>
@@ -30,12 +30,17 @@
 			<div class="item">簡單題目請先做完，若時間夠，驗算一遍後再做剩餘題目。</div>
 		</div>
 		<button class="ts-button is-start-icon" @click="emit('clickStartExam');">
-			<span class="ts-icon is-pen-icon"></span>
-			開始作答
+			<span class="ts-icon is-pen-icon"></span>開始作答
 		</button>
 		<div class="ts-text is-small is-secondary is-italic">
 			如果你只想翻閱一下歷屆試題，可以關閉左側選單中的「測驗模式」
 		</div>
+	</div>
+	<div v-if="!isProblemVisible && remainingSec <= 0" class="ts-wrap is-vertical is-middle-aligned exam-cover"><!-- 考試結束的 ui -->
+		<div class="ts-text is-huge is-bold">考試結束</div>
+		<button class="ts-button is-start-icon" @click="emit('resetTimer');">
+			<span class="ts-icon is-arrow-rotate-left-icon"></span>重新計時
+		</button>
 	</div>
 </template>
 
@@ -48,10 +53,14 @@ const props = defineProps({
   uni: String, // 學校英文縮寫
   examData: Object, // 題本資料
 	isProblemVisible: Boolean, // 是否顯示題目
-	examTimeSec: Number // 考試時間 (秒)
+	examTimeSec: Number, // 考試時間 (秒)
+	remainingSec: Number, // 剩餘時間 (秒)
 });
 
-const emit = defineEmits(["clickStartExam"]); // 按下開始作答的按鈕
+const emit = defineEmits([
+	"clickStartExam", // 按下開始作答的按鈕
+	"resetTimer" // 按下重新計時的按鈕
+]);
 
 const problemAsyncComp = shallowRef([]); // 目前顯示的題目組件. shallowRef 只有 .value 改變時更新元素
 
@@ -78,7 +87,7 @@ watch(() => props.examData, async (newExamData) => { // 如果選取的題本年
 .exam > ol > li {
 	padding-left: 4px; /* 題目編號與題目的距離 */
 }
-.exam-ready { /* 開始作答的 ui, 覆蓋於模糊的題目之上 */
+.exam-cover { /* 覆蓋於模糊的題目之上的 ui */
 	position: absolute; /* 絕對定位 */
 	top: 100px; /* 與考卷頂部的距離 */
 	left: 50%; /* 水平置中 */

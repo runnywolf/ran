@@ -147,7 +147,9 @@
 					:examData="examData"
 					:isProblemVisible="isProblemVisible"
 					:examTimeSec="examTimeSec"
+					:remainingSec="remainingSec"
 					@clickStartExam="clickStartExam"
+					@resetTimer="resetTimer"
 				></exam-paper>
 			</div>
 		</div>
@@ -162,7 +164,7 @@ import ExamPaper from "../components/exam-view/ExamPaper.vue"; // 考卷的組�
 const uni = ref("ntu"); // 選取的學校
 const examData = ref(config[uni.value].exam[0]); // 選取的題本的資料
 
-const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
+const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容. 注意此變數與 "正在作答" 等價
 const isTimerActive = ref(false); // 計時器是否正在計時
 const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
@@ -173,6 +175,7 @@ watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時
 	isProblemVisible.value = !newMode; // 如果測驗模式被開啟, 隱藏題本內容, 反之顯示題本內容
 });
 const clickToggleButton = () => { // 按下計時器的 開始/暫停 按鈕
+	if (remainingSec.value <= 0) return;
 	toggleTimer(); // 切換計時器的狀態
 	if (!isProblemVisible.value) isProblemVisible.value = true; // 如果題目被隱藏(還沒開始考試), 則顯示題目
 };
@@ -203,6 +206,9 @@ const resetTimer = () => { // 重置計時器
 const toggleTimer = () => { // 切換計時器的狀態
 	isTimerActive.value ? pauseTimer() : startTimer();
 };
+watch(remainingSec, (newSec) => {
+	if (newSec <= 0) isProblemVisible.value = false; // 如果剩餘時間歸零, 將題目隱藏
+});
 
 const clickDownload = () => { // 下載題本
 	
