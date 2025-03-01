@@ -174,6 +174,9 @@ watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時
 	resetTimer(); // 重置計時器
 	isProblemVisible.value = !newMode; // 如果測驗模式被開啟, 隱藏題本內容, 反之顯示題本內容
 });
+watch(examData, () => { // 當題本被切換
+	clickResetButton(); // 等同於按下重設計時器
+});
 const clickToggleButton = () => { // 按下計時器的 開始/暫停 按鈕
 	if (remainingSec.value <= 0) return;
 	toggleTimer(); // 切換計時器的狀態
