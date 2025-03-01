@@ -130,8 +130,13 @@
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
-					<span class="ts-icon is-print-icon is-end-spaced"></span>
-					<span>列印題本</span>
+					<button
+						class="ts-button is-outlined is-start-icon"
+						@click="clickDownload"
+						data-tooltip="暫時想不到要怎麼做 ^=⦁𖥦⦁=^ ੭"
+					>
+						<span class="ts-icon is-download-icon"></span>下載題本
+					</button>
 				</div>
 			</div>
 		</div>
@@ -167,7 +172,7 @@
 						<div class="item">如果有給手寫答案紙，且題本沒有附註「只寫答案即可」，建議附上運算過程。</div>
 						<div class="item">簡單題目請先做完，若時間夠，驗算一遍後再做剩餘題目。</div>
 					</div>
-					<button class="ts-button is-start-icon" @click="startExam">
+					<button class="ts-button is-start-icon" @click="clickStartExam">
 						<span class="ts-icon is-pen-icon"></span>
 						開始作答
 					</button>
@@ -217,7 +222,7 @@ const clickResetButton = () => { // 按下重設計時器的按鈕
 	resetTimer(); // 重設計時器
 	isProblemVisible.value = false; // 隱藏題目
 };
-const startExam = () => { // 按下開始作答的按鈕
+const clickStartExam = () => { // 按下開始作答的按鈕
 	resetTimer(); // 重設計時器
 	startTimer(); // 開始計時
 	isProblemVisible.value = true; // 顯示題目
@@ -239,6 +244,10 @@ const resetTimer = () => { // 重置計時器
 };
 const toggleTimer = () => { // 切換計時器的狀態
 	isTimerActive.value ? pauseTimer() : startTimer();
+};
+
+const clickDownload = () => { // 下載題本
+	
 };
 </script>
 
