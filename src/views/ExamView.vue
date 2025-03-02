@@ -23,9 +23,9 @@
 								</td>
 								<td>
 									<div class="column ts-select is-solid is-fluid">
-										<select v-model="uni" @change="examData = config[uni].exam[0]">
-											<option v-for="(uniData, uniName) in config" :key="uniName" :value="uniName">
-												{{ uniData.shortName ? uniData.shortName : '-' }}
+										<select v-model="uni" @change="year = config.uni[uni].yearList[0]">
+											<option v-for="_uni in config.uniList" :key="_uni" :value="_uni">
+												{{ config.uni[_uni].shortName ? config.uni[_uni].shortName : '-' }}
 											</option>
 										</select>
 									</div>
@@ -37,12 +37,9 @@
 								</td>
 								<td>
 									<div class="column ts-select is-solid is-fluid">
-										<select v-model="examData">
-											<option v-for="examData in config[uni].exam"
-												:key="examData.year"
-												:value="examData"
-											>
-												{{ examData.year ? examData.year : '-' }}&nbsp;年
+										<select v-model="year">
+											<option v-for="_year in config.uni[uni].yearList" :key="_year" :value="_year">
+												{{ _year ? _year : '-' }}&nbsp;年
 											</option>
 										</select>
 									</div>
@@ -60,7 +57,7 @@
 									<span class="ts-icon is-hashtag-icon"></span>
 								</td>
 								<td>
-									<span>{{ examData.id ? examData.id : "-" }}</span>
+									<span>{{ examConfig.id ? examConfig.id : "-" }}</span>
 									<span
 										class="ts-icon is-circle-question-icon is-start-spaced"
 										data-tooltip="題本編號"
@@ -72,7 +69,7 @@
 									<span class="ts-icon is-file-icon"></span>
 								</td>
 								<td>
-									{{ examData.subject ? examData.subject : "-" }}
+									{{ examConfig.subject ? examConfig.subject : "-" }}
 								</td>
 							</tr>
 						</tbody>
@@ -120,10 +117,10 @@
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
 					<span class="ts-icon is-link-icon is-end-spaced"></span>
-					<a v-if="examData.link"
+					<a v-if="examConfig.link"
 						class="sidebar-link-text"
-						:href="examData.link"
-						:data-tooltip="examData.linkTip ? examData.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
+						:href="examConfig.link"
+						:data-tooltip="examConfig.linkTip ? examConfig.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
 						target="_blank"
 					>題本來源</a>
 					<span v-else>來源未知</span>
@@ -142,15 +139,16 @@
 		</div>
 		<div class="column is-fluid">
 			<div class="ts-box">
-				<exam-paper
+				<ExamPaper
 					:uni="uni"
-					:examData="examData"
+					:year="year"
+					:examConfig="examConfig"
 					:isProblemVisible="isProblemVisible"
+					:isExamOver="remainingSec <= 0"
 					:examTimeSec="examTimeSec"
-					:remainingSec="remainingSec"
 					@clickStartExam="clickStartExam"
 					@resetTimer="resetTimer"
-				></exam-paper>
+				></ExamPaper>
 			</div>
 		</div>
 	</div>
@@ -158,24 +156,36 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
-import ExamPaper from "../components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
 
 const uni = ref("ntu"); // 選取的學校
-const examData = ref(config[uni.value].exam[0]); // 選取的題本的資料
+const year = ref(config.uni[uni.value].yearList[0]); // 選取的年份
+const examConfig = ref({}); // 選取的題本設定檔
 
-const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
+watch(year, async (newYear) => { // 當選取的年份 (題本) 改變時
+	try {
+		const module = await import(`../components/exam/${uni.value}/${newYear}/config.json`);
+    examConfig.value = module.default;
+	} catch (error) {
+		examConfig.value = {};
+		console.error(error);
+		// 顯示 config 錯誤的 div
+	}
+}, { immediate: true }); // 頁面載入時, 讀一次 config.json
+
+const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容. 注意此變數與 "正在作答" 等價
 const isTimerActive = ref(false); // 計時器是否正在計時
-const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
+const examTimeSec = ref(2); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
 const remainingSec = ref(examTimeSec.value); // 計時器剩餘的秒數
 
 watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時
 	resetTimer(); // 重置計時器
 	isProblemVisible.value = !newMode; // 如果測驗模式被開啟, 隱藏題本內容, 反之顯示題本內容
 });
-watch(examData, () => { // 當題本被切換
-	clickResetButton(); // 等同於按下重設計時器
+watch(examConfig, () => { // 當題本被切換
+	if (isExamModeEnabled.value) clickResetButton(); // 若在測驗模式下, 等同於按下重設計時器
 });
 const clickToggleButton = () => { // 按下計時器的 開始/暫停 按鈕
 	if (remainingSec.value <= 0) return;

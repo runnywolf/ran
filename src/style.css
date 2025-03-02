@@ -8,11 +8,6 @@
 .katex {
 	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
-.warning-box { /* 錯誤方塊樣式 */
-	border-color: #f33;
-	background-color: #fdd;
-	font-family: "noto sans tc"; font-size: 16px;
-}
 
 .upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
 	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */

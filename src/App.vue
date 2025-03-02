@@ -1,6 +1,6 @@
 <template>
 	<div class="ts-app-layout is-fullscreen is-vertical">
-		<navbar></navbar>
+		<Navbar></Navbar>
 		<div class="cell is-secondary is-fluid is-scrollable">
 			<div class="ts-container has-vertically-spaced is-narrow body2">
 				<router-view></router-view>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import Navbar from './components/Navbar.vue';
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <style scoped>
