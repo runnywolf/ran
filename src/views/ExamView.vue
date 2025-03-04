@@ -166,11 +166,13 @@ const examConfig = ref({}); // 選取的題本設定檔
 watch(year, async (newYear) => { // 當選取的年份 (題本) 改變時
 	try {
 		const module = await import(`../components/exam/${uni.value}/${newYear}/config.json`);
-    examConfig.value = module.default;
+		examConfig.value = module.default;
 	} catch (error) {
+		console.error(
+			`Exam config is not exist. (${uni.value}, ${newYear})\n`+
+			`-> Check if @/components/exam/${uni.value}/${newYear}/config.json exist?\n`
+		);
 		examConfig.value = {};
-		console.error(error);
-		// 顯示 config 錯誤的 div
 	}
 }, { immediate: true }); // 頁面載入時, 讀一次 config.json
 
