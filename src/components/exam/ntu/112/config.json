@@ -7,11 +7,19 @@
 	"problem": {
 		"1": {
 			"content": [
-				{ "type": "answer", "id": "1", "suffix": "1" }
+				{ "type": "answer", "id": "1-ans" }
 			]
 		},
 		"2": {
-			"content": []
+			"content": [
+				{ "type": "answer", "id": "2-ans1", "suffix": "1" },
+				{ "type": "answer", "id": "2-ans2", "suffix": "2" }
+			]
+		},
+		"4": {
+			"content": [
+				{ "type": "answer" , "id": "4-ans" }
+			]
 		}
 	}
 }

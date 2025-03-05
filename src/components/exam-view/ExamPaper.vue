@@ -11,7 +11,7 @@
 				<li><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
 					<Problem
 						:uni="uni" :year="year" :no="sectionId"
-						:problemData="examConfig.problem[sectionId]"
+						:problemConfig="examConfig.problem[sectionId]"
 					></Problem>
 				</li>
 			</ol>
