@@ -2,21 +2,21 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(10%) Given a linear transformation
-			<vue-latex expression="T: P_2(R) \rightarrow P_2(R)"></vue-latex>
+			<vl exp="T: P_2(R) \rightarrow P_2(R)" />
 			defined by
-			<vue-latex expression="T(f(x)) = f''(x) + 2f'(x) - f(x)" displayMode></vue-latex>
+			<vl c exp="T(f(x)) = f''(x) + 2f'(x) - f(x)"/>
 			where
-			<vue-latex expression="P_2(R)"></vue-latex>
+			<vl exp="P_2(R)" />
 			represents the real-valued 2nd-order polynomials. Assume
-			<vue-latex expression="M"></vue-latex>
+			<vl exp="M" />
 			is the matrix representation of
-			<vue-latex expression="T"></vue-latex>
+			<vl exp="T" />
 			with respect to the ordered basis. Please find the determinant of<br>
-			<vue-latex expression="(M^{-1} + 2I)"></vue-latex>,
+			<vl exp="(M^{-1} + 2I)" />,
 			where
-			<vue-latex expression="I"></vue-latex>
+			<vl exp="I" />
 			is the identity matrix with the same dimension as
-			<vue-latex expression="M"></vue-latex>.
+			<vl exp="M" />.
 		</div>
 		<div class="column ts-wrap">
 			<span>(A) 0</span>

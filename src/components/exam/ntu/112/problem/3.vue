@@ -2,35 +2,35 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(10%) The generating function in partial fraction decomposition for the recurrence equation
-			<vue-latex expression="a_n = a_{n-1} + 6a_{n-2}"></vue-latex>
+			<vl exp="a_n = a_{n-1} + 6a_{n-2}" />
 			for
-			<vue-latex expression="a_n"></vue-latex>
+			<vl exp="a_n" />
 			in terms of
-			<vue-latex expression="a_0 = A"></vue-latex>
+			<vl exp="a_0 = A" />
 			and
-			<vue-latex expression="a_1 = B"></vue-latex>
+			<vl exp="a_1 = B" />
 			is:
 		</div>
 		<div class="column ts-grid is-compact">
 			<span>
 				(A)
-				<vue-latex expression="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A-B}{1+2x} ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A-B}{1+2x} ]" />
 			</span>
 			<span>
 				(B)
-				<vue-latex expression="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A+B}{1+2x} ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A+B}{1+2x} ]" />
 			</span>
 			<span class="column is-5-wide"><!-- 使選項 D 強制換行 -->
 				(C)
-				<vue-latex expression="\frac{1}{5} [ \frac{2A-B}{1-3x} + \frac{3A-B}{1+2x} ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ \frac{2A-B}{1-3x} + \frac{3A-B}{1+2x} ]" />
 			</span>
 			<span>
 				(D)
-				<vue-latex expression="\frac{1}{5} [ \frac{3A-B}{1-2x} + \frac{2A-B}{1+3x} ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ \frac{3A-B}{1-2x} + \frac{2A-B}{1+3x} ]" />
 			</span>
 			<span>
 				(E)
-				<vue-latex expression="\frac{1}{5} [ \frac{3A+B}{1-2x} + \frac{2A-B}{1+3x} ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ \frac{3A+B}{1-2x} + \frac{2A-B}{1+3x} ]" />
 			</span>
 		</div>
 	</div>

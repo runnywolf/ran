@@ -1,38 +1,26 @@
 <template>
 	<div class="ts-wrap is-vertical">
 		<div>
-			將
-			<vue-latex expression="n = 0"></vue-latex>
-			代入到每個選項，求各選項的
-			<vue-latex expression="a_0"></vue-latex>：<br>
-			(A) <vue-latex expression="A"></vue-latex>
-			(B) <vue-latex expression="A - \frac{2}{5}B"></vue-latex>
-			(C) <vue-latex expression="A"></vue-latex>
-			(D) <vue-latex expression="A + \frac{2}{5}B"></vue-latex>
-			(E) <vue-latex expression="A - \frac{2}{5}B"></vue-latex><br>
-			<vue-latex expression="\Rightarrow"></vue-latex>
-			(A) 或 (C) 正確
+			將 <vl exp="n = 0" /> 代入到每個選項，求各選項的 <vl exp="a_0" />：<br>
+			(A) <vl exp="A" />
+			(B) <vl exp="A - \frac{2}{5}B" />
+			(C) <vl exp="A" />
+			(D) <vl exp="A + \frac{2}{5}B" />
+			(E) <vl exp="A - \frac{2}{5}B" /><br>
+			<vl exp="\Rightarrow" /> (A) 或 (C) 正確
 		</div>
 		<div>
-			代入
-			<vue-latex expression="n = 1"></vue-latex>
-			到選項 (A) (C)，求
-			<vue-latex expression="a_1"></vue-latex>：<br>
-			(A) <vue-latex expression="B"></vue-latex>
-			(C) <vue-latex expression="B"></vue-latex><br>
-			<vue-latex expression="\Rightarrow"></vue-latex>
-			(A) 或 (C) 正確
+			代入 <vl exp="n = 1" /> 到選項 (A) (C)，求 <vl exp="a_1" />：<br>
+			(A) <vl exp="B" />
+			(C) <vl exp="B" /><br>
+			<vl exp="\Rightarrow" /> (A) 或 (C) 正確
 		</div>
 		<div>
-			<vue-latex expression="a_2 = -a_1 + 6a_0 = -B + 6A"></vue-latex>；<br>
-			代入
-			<vue-latex expression="n = 2"></vue-latex>
-			到選項 (A) (C)，求
-			<vue-latex expression="a_2"></vue-latex>：<br>
-			(A) <vue-latex expression="6A-B"></vue-latex>
-			(C) <vue-latex expression="6A+B"></vue-latex><br>
-			<vue-latex expression="\Rightarrow"></vue-latex>
-			(A) 正確
+			<vl exp="a_2 = -a_1 + 6a_0 = -B + 6A" />；<br>
+			代入 <vl exp="n = 2" /> 到選項 (A) (C)，求 <vl exp="a_2" />：<br>
+			(A) <vl exp="6A-B" />
+			(C) <vl exp="6A+B" /><br>
+			<vl exp="\Rightarrow" /> (A) 正確
 		</div>
 		<div>
 			Ans: (A)

@@ -2,35 +2,36 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(10%) Which solves
-			<vue-latex expression="a_n = -a_{n-1} + 6a_{n-2}"></vue-latex>
+			<vl exp="a_n = -a_{n-1} + 6a_{n-2}" />
+			<vl exp="a_n = -a_{n-1} + 6a_{n-2}" />
 			for
-			<vue-latex expression="a_n"></vue-latex>
+			<vl exp="a_n" />
 			in terms of
-			<vue-latex expression="a_0 = A"></vue-latex>
+			<vl exp="a_0 = A" />
 			and
-			<vue-latex expression="a_1 = B"></vue-latex>
+			<vl exp="a_1 = B" />
 			:
 		</div>
 		<div class="column ts-wrap is-compact">
 			<span>
 				(A)
-				<vue-latex expression="\frac{1}{5} [ (-3)^n(2A-B) + 2^n(3A+B) ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ (-3)^n(2A-B) + 2^n(3A+B) ]" />
 			</span>
 			<span>
 				(B)
-				<vue-latex expression="\frac{1}{5} [ (-3)^n(2A-B) + 2^n(3A-B) ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ (-3)^n(2A-B) + 2^n(3A-B) ]" />
 			</span>
 			<span>
 				(C)
-				<vue-latex expression="\frac{1}{5} [ (-2)^n(3A-B) + 3^n(2A+B) ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ (-2)^n(3A-B) + 3^n(2A+B) ]" />
 			</span>
 			<span>
 				(D)
-				<vue-latex expression="\frac{1}{5} [ (-2)^n(3A+B) + 3^n(2A+B) ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ (-2)^n(3A+B) + 3^n(2A+B) ]" />
 			</span>
 			<span>
 				(E)
-				<vue-latex expression="\frac{1}{5} [ (-2)^n(3A-B) + 3^n(2A-B) ]"></vue-latex>
+				<vl exp="\frac{1}{5} [ (-2)^n(3A-B) + 3^n(2A-B) ]" />
 			</span>
 		</div>
 	</div>

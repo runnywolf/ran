@@ -2,9 +2,11 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
 import "./style.css";
-import { VueLatex } from "vatex";
+import Content from "./components/Content.vue"; // 內容區塊組件
+import Vl from "./components/exam/Vl.vue"; // 縮短 vatex 標籤長度的組件
 
 const app = createApp(App);
 app.use(router);
-app.component("vue-latex", VueLatex); // latex 語法模組
+app.component("Content", Content); // 內容區塊組件
+app.component("vl", Vl);
 app.mount("#app");

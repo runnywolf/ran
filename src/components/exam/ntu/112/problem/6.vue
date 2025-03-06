@@ -2,13 +2,13 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(10%) Given
-			<vue-latex expression="\def\arraystretch{1.35} A = \begin{bmatrix} \frac{3}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{3}{5} \end{bmatrix}"></vue-latex>
+			<vl exp="\def\arraystretch{1.35} A = \begin{bmatrix} \frac{3}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{3}{5} \end{bmatrix}" />
 			and
-			<vue-latex expression="\def\arraystretch{1.1} x = \begin{bmatrix} 2 \\ 0 \end{bmatrix}"></vue-latex>.
+			<vl exp="\def\arraystretch{1.1} x = \begin{bmatrix} 2 \\ 0 \end{bmatrix}" />.
 			If
-			<vue-latex expression="\def\arraystretch{1.1} \lim\limits_{n \to \infty} A^n x = \begin{bmatrix} a \\ b \end{bmatrix}"></vue-latex>,
+			<vl exp="\def\arraystretch{1.1} \lim\limits_{n \to \infty} A^n x = \begin{bmatrix} a \\ b \end{bmatrix}" />,
 			what is
-			<vue-latex expression="2a + b"></vue-latex>?
+			<vl exp="2a + b" />?
 		</div>
 		<div class="column ts-wrap">
 			<span>(A) 0</span>

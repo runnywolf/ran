@@ -2,42 +2,42 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(5%) Let
-			<vue-latex expression="A \in M_{n \times n}"></vue-latex>,
+			<vl exp="A \in M_{n \times n}" />,
 			which of the following statements are true?
 		</div>
 		<ul class="upper-alpha-list">
 			<li>
 				The nullspace of
-				<vue-latex expression="A"></vue-latex>
+				<vl exp="A" />
 				is the same as the nullspace of
-				<vue-latex expression="A^T A"></vue-latex>.
+				<vl exp="A^T A" />.
 			</li>
 			<li>
 				If
-				<vue-latex expression="A"></vue-latex>
+				<vl exp="A" />
 				is orthogonal,
-				<vue-latex expression="A + \frac{1}{2} I"></vue-latex>
+				<vl exp="A + \frac{1}{2} I" />
 				is invertible.
 			</li>
 			<li>
 				If
-				<vue-latex expression="A"></vue-latex>
+				<vl exp="A" />
 				has fewer than n distinct eigenvalues, then
-				<vue-latex expression="A"></vue-latex>
+				<vl exp="A" />
 				is not diagonalizable.
 			</li>
 			<li>
 				If
-				<vue-latex expression="A = A^T"></vue-latex>,
+				<vl exp="A = A^T" />,
 				then its eigenvalues are real and eigenvectors are orthogonal.
 			</li>
 			<li>
 				If
-				<vue-latex expression="A"></vue-latex>
+				<vl exp="A" />
 				is positive definite, we can always find a nonsingular
-				<vue-latex expression="U"></vue-latex>
+				<vl exp="U" />
 				such that
-				<vue-latex expression="A = U^2"></vue-latex>.
+				<vl exp="A = U^2" />.
 			</li>
 		</ul>
 	</div>

@@ -2,35 +2,30 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			(10%) If
-			<vue-latex expression="|A| = 2^4"></vue-latex>
+			<vl exp="|A| = 2^4" />
 			and
-			<vue-latex expression="|B| = 2^3"></vue-latex>
+			<vl exp="|B| = 2^3" />
 			, how many functions from
-			<vue-latex expression="A"></vue-latex>
+			<vl exp="A" />
 			to
-			<vue-latex expression="B"></vue-latex>
+			<vl exp="B" />
 			are there?
 		</div>
 		<div class="column ts-wrap is-compact">
 			<span>
-				(A)
-				<vue-latex expression="2^{7}"></vue-latex>
+				(A)&nbsp;<vl exp="2^{7}" />
 			</span>
 			<span>
-				(B)
-				<vue-latex expression="2^{12}"></vue-latex>
+				(B)&nbsp;<vl exp="2^{12}" />
 			</span>
 			<span>
-				(C)
-				<vue-latex expression="2^{32}"></vue-latex>
+				(C)&nbsp;<vl exp="2^{32}" />
 			</span>
 			<span>
-				(D)
-				<vue-latex expression="2^{48}"></vue-latex>
+				(D)&nbsp;<vl exp="2^{48}" />
 			</span>
 			<span>
-				(E)
-				<vue-latex expression="2^{3^{16}}"></vue-latex>
+				(E)&nbsp;<vl exp="2^{3^{16}}" />
 			</span>
 		</div>
 	</div>

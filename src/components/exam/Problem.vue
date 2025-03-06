@@ -18,7 +18,6 @@
 import { defineEmits, shallowRef, onMounted, defineAsyncComponent } from "vue";
 import ProblemNotFoundComp from "@/components/exam/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "@/components/exam/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
-import Content from "@/components/Content.vue"
 
 const props = defineProps({
   uni: String, // 學校英文縮寫
@@ -91,7 +90,11 @@ const handleProblemContentEmpty = () => { // 題目設定檔定義的內容區�
 
 const handleContentMissing = (contentId) => {
 	console.error(
-		`Content comp is not exist. (problem ${props.no}, content ${contentId})\n`
+		`Content comp is not exist. (problem ${props.no}, content ${contentId})\n`+
+		`-> Check if @/components/exam/${props.uni}/${props.year}/content/${contentId}.vue exist?\n`+
+		`-> If ${contentId}.vue exist, check the elements in `+
+		`@/components/exam/${props.uni}/${props.year}/config.json > problem.${props.no}.content: [...], `+
+		`and one of element.id must be "${contentId}".`
 	);
 	return ContentNotFoundComp; // 內容區塊組件載入失敗時, 顯示錯誤訊息組件
 };
