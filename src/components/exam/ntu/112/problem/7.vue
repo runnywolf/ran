@@ -11,7 +11,7 @@
 			<vl exp="M" />
 			is the matrix representation of
 			<vl exp="T" />
-			with respect to the ordered basis. Please find the determinant of<br>
+			with respect to the ordered basis. Please find the determinant of
 			<vl exp="(M^{-1} + 2I)" />,
 			where
 			<vl exp="I" />

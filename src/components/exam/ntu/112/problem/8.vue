@@ -20,14 +20,14 @@
 				<vl exp="2 \times 2" />
 				matrix,
 				<vl exp="\left[ \begin{array}{cc} a & b+c \\ b-c & -a \end{array} \right]" />
-				with trace zero has real eigenvalues<br> if
+				with trace zero has real eigenvalues if
 				<vl exp="a^2 + b^2 \ge c^2" />.
 			</li>
 			<li>
 				Suppose a
 				<vl exp="2 \times 2" />
 				matrix other than the identity matrix satisfies
-				<vl exp="A^3 = I" />.<br>
+				<vl exp="A^3 = I" />.
 				Then we have
 				<vl exp="\text{trace}(A) = 1" />.
 			</li>

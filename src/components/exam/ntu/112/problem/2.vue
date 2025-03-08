@@ -3,7 +3,6 @@
 		<div class="column">
 			(10%) Which solves
 			<vl exp="a_n = -a_{n-1} + 6a_{n-2}" />
-			<vl exp="a_n = -a_{n-1} + 6a_{n-2}" />
 			for
 			<vl exp="a_n" />
 			in terms of

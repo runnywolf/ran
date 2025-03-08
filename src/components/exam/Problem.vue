@@ -5,7 +5,7 @@
 			<template v-for="(contentData, i) in problemConfig.content">
 				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
 					<details class="ts-accordion">
-						<summary>內容區塊 {{ contentData.suffix }}</summary>
+						<summary>解答 {{ contentData.suffix }}</summary>
 						<component :is="contentAsyncComps[i]"></component><!-- 題目 -->
 					</details>
 				</Content>

@@ -12,13 +12,30 @@
 		},
 		"2": {
 			"content": [
-				{ "type": "answer", "id": "2-ans1", "suffix": "1" },
-				{ "type": "answer", "id": "2-ans2", "suffix": "2" }
+				{ "type": "answer", "id": "2-ans1", "suffix": "(特徵方程求一般式)" },
+				{ "type": "answer", "id": "2-ans2", "suffix": "(特徵根+選項逆推)" },
+				{ "type": "answer", "id": "2-ans3", "suffix": "(選項逆推)" }
+			]
+		},
+		"3": {
+			"content": [
+				{ "type": "answer", "id": "3-ans1", "suffix": "(特徵方程求生成函數+選項逆推)" }
 			]
 		},
 		"4": {
 			"content": [
-				{ "type": "answer" , "id": "4-ans" }
+				{ "type": "answer", "id": "4-ans" }
+			]
+		},
+		"5": {
+			"content": [
+				{ "type": "answer", "id": "5-ans" }
+			]
+		},
+		"6": {
+			"content": [
+				{ "type": "answer", "id": "6-ans1", "suffix": "(矩陣對角化)" },
+				{ "type": "answer", "id": "6-ans2", "suffix": "(特徵向量基底)" }
 			]
 		}
 	}

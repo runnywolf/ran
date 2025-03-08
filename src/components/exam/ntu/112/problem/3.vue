@@ -20,7 +20,7 @@
 				(B)
 				<vl exp="\frac{1}{5} [ \frac{2A+B}{1-3x} + \frac{3A+B}{1+2x} ]" />
 			</span>
-			<span class="column is-5-wide"><!-- 使選項 D 強制換行 -->
+			<span>
 				(C)
 				<vl exp="\frac{1}{5} [ \frac{2A-B}{1-3x} + \frac{3A-B}{1+2x} ]" />
 			</span>
