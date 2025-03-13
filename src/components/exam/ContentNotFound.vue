@@ -1,8 +1,5 @@
 <template>
-	<Content :borderColor="'#f33'" :bgColor="'#fdd'">
+	<Content error>
 		找不到這一個內容區塊的設定檔 ٩(ŏ﹏ŏ、)۶ ，請檢查 console。
 	</Content>
 </template>
-
-<script setup> // 若題目 vue 檔的路徑不存在, 會將題目替換成這個組件
-</script>

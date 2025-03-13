@@ -9,6 +9,9 @@
 						<component :is="contentAsyncComps[i]"></component><!-- 解答 -->
 					</details>
 				</Content>
+				<Content v-else error>
+					錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶ 
+				</Content>
 			</template>
 		</div>
 	</div>
