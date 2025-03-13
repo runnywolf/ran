@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Let
+			<span class="problem-score">(10%)</span>
+			Let
 			<vl exp="T" />
 			be a self-adjoint operator on a finite-dimensional inner product space
 			<vl exp="V" />

@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) The generating function in partial fraction decomposition for the recurrence equation
+			<span class="problem-score">(10%)</span>
+			The generating function in partial fraction decomposition for the recurrence equation
 			<vl exp="a_n = a_{n-1} + 6a_{n-2}" />
 			for
 			<vl exp="a_n" />

@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) If
+			<span class="problem-score">(10%)</span>
+			If
 			<vl exp="|A| = 2^4" />
 			and
 			<vl exp="|B| = 2^3" />

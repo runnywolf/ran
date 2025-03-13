@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Given a linear transformation
+			<span class="problem-score">(10%)</span>
+			Given a linear transformation
 			<vl exp="T: P_2(R) \rightarrow P_2(R)" />
 			defined by
 			<vl c exp="T(f(x)) = f''(x) + 2f'(x) - f(x)"/>

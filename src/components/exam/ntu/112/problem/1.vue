@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Which one of the following graphs has no Hamiltonian cycles?
+			<span class="problem-score">(10%)</span>
+			Which one of the following graphs has no Hamiltonian cycles?
 		</div>
 		<div class="column ts-wrap is-compact is-top-aligned opt">
 			<span>(A)</span>

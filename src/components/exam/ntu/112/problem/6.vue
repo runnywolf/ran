@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Given
+			<span class="problem-score">(10%)</span>
+			Given
 			<vl exp="\def\arraystretch{1.35} A = \!\begin{bmatrix} \frac{3}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{3}{5} \end{bmatrix}\!" />
 			and
 			<vl exp="\def\arraystretch{1.1} x = \!\begin{bmatrix} 2 \\ 0 \end{bmatrix}\!" />.

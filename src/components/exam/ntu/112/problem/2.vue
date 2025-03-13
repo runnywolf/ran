@@ -1,7 +1,7 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Which solves
+			<span class="problem-score">(10%)</span> Which solves
 			<vl exp="a_n = -a_{n-1} + 6a_{n-2}" />
 			for
 			<vl exp="a_n" />

@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(5%) Let
+			<span class="problem-score">(5%)</span>
+			Let
 			<vl exp="A \in M_{n \times n}" />,
 			which of the following statements are true?
 		</div>

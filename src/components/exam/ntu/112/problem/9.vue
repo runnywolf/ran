@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(5%) Let
+			<span class="problem-score">(5%)</span>
+			Let
 			<vl exp="S, D," />
 			and
 			<vl exp="Q \in M_n(R)" />

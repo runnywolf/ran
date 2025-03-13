@@ -1,7 +1,8 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
-			(10%) Assume that A, B, and C are
+			<span class="problem-score">(10%)</span>
+			Assume that A, B, and C are
 			<vl exp="n \times n" />
 			matrices.
 		</div>

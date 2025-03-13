@@ -130,7 +130,7 @@
 					<button
 						class="ts-button is-outlined is-start-icon"
 						@click="clickDownload"
-						data-tooltip="暫時想不到要怎麼做 ^=⦁𖥦⦁=^ ੭"
+						data-tooltip="暫時想不到要怎麼做 ฅ^⦁⩊⦁^ฅ ੭"
 					>
 						<span class="ts-icon is-download-icon"></span>下載題本
 					</button>
