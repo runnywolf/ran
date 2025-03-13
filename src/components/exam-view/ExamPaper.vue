@@ -12,6 +12,7 @@
 					<Problem
 						:uni="uni" :year="year" :no="sectionId"
 						:problemConfig="examConfig.problem[sectionId]"
+						:isContentVisible="isContentVisible"
 					></Problem>
 				</li>
 			</ol>
@@ -57,9 +58,10 @@ const props = defineProps({
   uni: String, // 學校英文縮寫
 	year: String, // 題本年份
   examConfig: Object, // 題本資料
+	isContentVisible: Boolean, // 是否顯示題目之下的內容區塊 (例如答案)
 	isProblemVisible: Boolean, // 是否顯示題目
 	isExamOver: Boolean, // 考試是否結束
-	examTimeSec: Number // 考試時間 (秒)
+	examTimeSec: Number, // 考試時間 (秒)
 });
 
 const emit = defineEmits([

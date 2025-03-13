@@ -140,9 +140,8 @@
 		<div class="column is-fluid">
 			<div class="ts-box">
 				<ExamPaper
-					:uni="uni"
-					:year="year"
-					:examConfig="examConfig"
+					:uni="uni" :year="year" :examConfig="examConfig"
+					:isContentVisible="!isExamModeEnabled"
 					:isProblemVisible="isProblemVisible"
 					:isExamOver="remainingSec <= 0"
 					:examTimeSec="examTimeSec"
@@ -177,9 +176,9 @@ watch(year, async (newYear) => { // 當選取的年份 (題本) 改變時
 }, { immediate: true }); // 頁面載入時, 讀一次 config.json
 
 const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
-const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容. 注意此變數與 "正在作答" 等價
+const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
 const isTimerActive = ref(false); // 計時器是否正在計時
-const examTimeSec = ref(2); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
+const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
 const remainingSec = ref(examTimeSec.value); // 計時器剩餘的秒數
 
 watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時

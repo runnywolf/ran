@@ -1,7 +1,9 @@
 <template>
 	<div class="ts-wrap is-vertical">
 		<component :is="problemAsyncComp"></component><!-- 題目 -->
-		<div v-if="problemConfig && no[0] != '-'" class="ts-wrap is-compact is-vertical content"><!-- 題號開頭若為 '-', 會被視為是說明區塊, 沒有內容區塊 -->
+		<div v-if="problemConfig && no[0] != '-'" v-show="isContentVisible"
+			class="ts-wrap is-compact is-vertical content"
+		><!-- 題號開頭若為 '-', 會被視為是說明區塊, 沒有內容區塊 -->
 			<template v-for="(contentData, i) in problemConfig.content">
 				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
 					<details class="ts-accordion">
@@ -27,6 +29,7 @@ const props = defineProps({
 	year: String, // 題本年份
 	no: String, // 題號
   problemConfig: Object, // 題本資料
+	isContentVisible: Boolean, // 是否顯示題目之下的內容區塊 (例如答案)
 });
 
 const emit = defineEmits([
