@@ -1,9 +1,11 @@
 <template>
-	遞迴關係式為 <vl exp="a_n - a_{n-1} - 6a_{n-2} = 0" />，可知特徵方程式為
-	<vl exp="\lambda^2 - \lambda - 6 = 0" />，<br>
-	求得特徵根 <vl exp="\lambda = -2, 3" />，一般式為
-	<vl c exp="a_n = h_1(-2)^n + h_2 3^n" />
-	求生成函數 <vl exp="G(x)" /> 的部分分式分解：
+	遞迴關係式為 <vl exp="a_n - a_{n-1} - 6a_{n-2} = 0" /><br>
+	<vl exp="\Rightarrow" /> 特徵方程式為 <vl exp="\lambda^2 - \lambda - 6 = 0" /><br>
+	<vl exp="\Rightarrow" /> 特徵值 <vl exp="\lambda = -2, 3" /><br>
+	<vl exp="\Rightarrow" /> 設一般式為 <vl exp="a_n = h_1(-2)^n + h_2 3^n" /><br>
+	<br>
+	求生成函數 <vl exp="G(x)" /> 的部分分式分解，注意
+	<vl exp="\sum\limits_{n=0}^{\infty} (kx)^n = \frac{1}{1-kx}" />：
 	<vl c exp="
 		\begin{split}
 		  G(x) &= \sum_{n=0}^{\infty} a_n x^n \\
@@ -14,7 +16,7 @@
 		       &= \frac{h_1}{1+2x} + \frac{h_2}{1-3x}
 		\end{split}
 	" />
-	觀察每個選項的特徵根 (分母) <vl exp="\Rightarrow" /> (A) (B) (C) 可能正確<br>
+	觀察每個選項的特徵值 (分母) <vl exp="\Rightarrow" /> (A) (B) (C) 可能正確<br>
 	<br>
 	由於
 	<vl c exp="G(0) = a_0 + a_1 0^1 + a_2 0^2 + \cdots = a_0 = A" />

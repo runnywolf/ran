@@ -6,7 +6,7 @@
 				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
 					<details class="ts-accordion">
 						<summary>解答 {{ contentData.suffix }}</summary>
-						<component :is="contentAsyncComps[i]"></component><!-- 題目 -->
+						<component :is="contentAsyncComps[i]"></component><!-- 解答 -->
 					</details>
 				</Content>
 			</template>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { defineEmits, shallowRef, onMounted, defineAsyncComponent } from "vue";
+import { shallowRef, onMounted, defineAsyncComponent } from "vue";
 import ProblemNotFoundComp from "@/components/exam/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "@/components/exam/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
 

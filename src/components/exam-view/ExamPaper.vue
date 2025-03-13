@@ -50,7 +50,6 @@
 </template>
 
 <script setup>
-import { defineEmits } from "vue";
 import Problem from "@/components/exam/Problem.vue"; // 用於顯示題目與解答的組件
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
 

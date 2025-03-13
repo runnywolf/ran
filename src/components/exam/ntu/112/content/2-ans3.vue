@@ -13,7 +13,7 @@
 	<vl exp="\Rightarrow" /> (A) 或 (C) 正確<br>
 	<br>
 	由於
-	<vl c exp="a_2 = -a_1 + 6a_0 = -B + 6A" />
+	<vl c exp="a_2 = -a_1 + 6a_0 = 6A - B" />
 	所以代入 <vl exp="n = 2" /> 到選項 (A) (C)，求 <vl exp="a_2" />：<br>
 	(A) <vl exp="6A-B" />
 	(C) <vl exp="6A+B" /><br>
