@@ -22,13 +22,7 @@
 									<span class="ts-icon is-school-icon"></span>
 								</td>
 								<td>
-									<div class="column ts-select is-solid is-fluid">
-										<select v-model="uni" @change="year = config.uni[uni].yearList[0]">
-											<option v-for="_uni in config.uniList" :key="_uni" :value="_uni">
-												{{ config.uni[_uni].shortName ? config.uni[_uni].shortName : '-' }}
-											</option>
-										</select>
-									</div>
+									{{ config.uni[uni].shortName ? config.uni[uni].shortName : "-" }}
 								</td>
 							</tr>
 							<tr>
@@ -36,22 +30,9 @@
 									<span class="ts-icon is-calendar-icon"></span>
 								</td>
 								<td>
-									<div class="column ts-select is-solid is-fluid">
-										<select v-model="year">
-											<option v-for="_year in config.uni[uni].yearList" :key="_year" :value="_year">
-												{{ _year ? _year : '-' }}&nbsp;年
-											</option>
-										</select>
-									</div>
+									{{ year ? year : "-" }} 年
 								</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="ts-divider "></div>
-				<div class="ts-content is-dense">
-					<table class="sidebar-table">
-						<tbody>
 							<tr>
 								<td>
 									<span class="ts-icon is-hashtag-icon"></span>
@@ -155,25 +136,40 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
 
-const uni = ref("ntu"); // 選取的學校
-const year = ref(config.uni[uni.value].yearList[0]); // 選取的年份
-const examConfig = ref({}); // 選取的題本設定檔
+const uni = ref("ntu"); // 學校
+const year = ref(config.uni[uni.value].yearList[0]); // 年份
+const examConfig = ref({}); // 題本設定檔
 
-watch(year, async (newYear) => { // 當選取的年份 (題本) 改變時
-	try {
-		const module = await import(`../components/exam/${uni.value}/${newYear}/config.json`);
-		examConfig.value = module.default;
-	} catch (error) {
-		console.error(
-			`Exam config is not exist. (${uni.value}, ${newYear})\n`+
-			`-> Check if @/components/exam/${uni.value}/${newYear}/config.json exist?\n`
-		);
-		examConfig.value = {};
+const route = useRoute(); // 目前的路由資訊
+const router = useRouter(); // 路由器
+watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
+	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
+	if (idParam.length != 2){ // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
+		router.push("/exam");
+		return;
 	}
-}, { immediate: true }); // 頁面載入時, 讀一次 config.json
+	const [_uni, _year] = idParam; // 題本 id 的第一個參數為 uni, 第二個參數為 year
+	
+	try { // 嘗試讀取題本設定檔
+		const configFile = await import(`../components/exam/${_uni}/${_year}/config.json`); // 讀取題本設定檔
+		uni.value = _uni;
+		year.value = _year;
+		examConfig.value = configFile.default;
+	} catch (error) { // 若題本設定檔不存在或路徑錯誤, 報錯, 並轉址回題本清單
+		handleExamMissing(_uni, _year);
+	}
+}, { immediate: true });
+const handleExamMissing = (_uni, _year) => { // 若題本設定檔不存在或路徑錯誤, 報錯, 並轉址回題本清單
+	console.error(
+		`Exam config is not exist. (exam ${_uni}-${_year})\n`+
+		`-> Check if @/components/exam/${_uni}/${_year}/config.json exist?\n`
+	);
+	router.push("/exam"); // 轉址回題本清單
+};
 
 const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容

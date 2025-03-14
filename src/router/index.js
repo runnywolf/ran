@@ -3,7 +3,8 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   { path: "/", name: "Home", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", name: "Notes", component: () => import("@/views/NotesView.vue") },
-	{ path: "/exam", name: "Exam", component: () => import("@/views/ExamView.vue") },
+	{ path: "/exam", name: "ExamMenu", component: () => import("@/views/ExamMenuView.vue") },
+	{ path: "/exam/:id", name: "Exam", component: () => import("@/views/ExamView.vue") },
 	{ path: "/search", name: "Search", component: () => import("@/views/SearchView.vue") },
 	{ path: "/practice", name: "Practice", component: () => import("@/views/PracticeView.vue") },
 	{ path: "/other", name: "Other", component: () => import("@/views/OtherView.vue") },
