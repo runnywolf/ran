@@ -99,7 +99,7 @@
 				<div class="ts-content is-dense">
 					<span class="ts-icon is-link-icon is-end-spaced"></span>
 					<a v-if="examConfig.link"
-						class="sidebar-link-text"
+						class="hyperlink"
 						:href="examConfig.link"
 						:data-tooltip="examConfig.linkTip ? examConfig.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
 						target="_blank"
@@ -140,12 +140,13 @@ import { useRoute, useRouter } from "vue-router";
 import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
 
+const route = useRoute(); // 目前的路由資訊
+const router = useRouter(); // 路由器
+
 const uni = ref("ntu"); // 學校
 const year = ref(config.uni[uni.value].yearList[0]); // 年份
 const examConfig = ref({}); // 題本設定檔
 
-const route = useRoute(); // 目前的路由資訊
-const router = useRouter(); // 路由器
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
 	if (idParam.length != 2){ // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
@@ -251,12 +252,5 @@ const clickDownload = () => { // 下載題本
 .sidebar-timer-progress {
 	margin-top: 7px; /* 計時器進度條與按鈕的垂直間距 */
 	background-color: #999; /* 進度條底色 */
-}
-.sidebar-link-text {
-	text-decoration: none; /* 隱藏超連結的底線 */
-	color: #44f;
-}
-.sidebar-link-text:hover {
-	color: #f3f;
 }
 </style>
