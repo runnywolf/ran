@@ -5,7 +5,12 @@
 				<table class="ts-table is-celled is-dense is-compact menu-table">
 					<thead>
 						<tr>
-							<th v-for="uni in config.uniList">{{ config.uni[uni].shortName }}</th>
+							<th v-for="uni in config.uniList">
+								<span :data-tooltip="config.uni[uni].name" data-position="top">
+									{{ config.uni[uni].shortName }}
+								</span>
+								
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,6 +55,9 @@ onMounted(() => { // 當組件載入時
 </script>
 
 <style scoped>
+.menu-table {
+	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
+}
 .menu-table > thead > tr > th {
 	text-align: center; /* 元素置中 */
 }

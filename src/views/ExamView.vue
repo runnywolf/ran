@@ -2,6 +2,11 @@
 	<div class="ts-grid">
 		<div class="column">
 			<div class="ts-box is-vertical is-compact sidebar">
+				<div class="ts-content is-dense">
+					<span class="ts-icon is-reply-icon is-end-spaced"></span>
+					<router-link to="/exam" class="hyperlink">回題本目錄</router-link>
+				</div>
+				<div class="ts-divider"></div>
 				<div class="ts-content is-dense sidebar-setting">
 					<label class="ts-switch">
 						<input type="checkbox" v-model="isExamModeEnabled" checked />
