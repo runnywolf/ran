@@ -4,7 +4,7 @@
 			<div class="ts-box is-vertical is-compact sidebar">
 				<div class="ts-content is-dense">
 					<span class="ts-icon is-reply-icon is-end-spaced"></span>
-					<router-link to="/exam" class="hyperlink">回題本目錄</router-link>
+					<router-link to="/exam" class="hyperlink">&nbsp;回題本選單</router-link>
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense sidebar-setting">
@@ -20,46 +20,12 @@
 				</div>
 				<div class="ts-divider"></div>
 				<div class="ts-content is-dense">
-					<table class="sidebar-table">
-						<tbody>
-							<tr>
-								<td>
-									<span class="ts-icon is-school-icon"></span>
-								</td>
-								<td>
-									{{ config.uni[uni].shortName ? config.uni[uni].shortName : "-" }}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-calendar-icon"></span>
-								</td>
-								<td>
-									{{ year ? year : "-" }} 年
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-hashtag-icon"></span>
-								</td>
-								<td>
-									<span>{{ examConfig.id ? examConfig.id : "-" }}</span>
-									<span
-										class="ts-icon is-circle-question-icon is-start-spaced"
-										data-tooltip="題本編號"
-									></span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-file-icon"></span>
-								</td>
-								<td>
-									{{ examConfig.subject ? examConfig.subject : "-" }}
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<ExamInfo
+						:uniShortName="config.uni[uni].shortName"
+						:year="year"
+						:subjectId="examConfig.id"
+						:subject="examConfig.subject"
+					></ExamInfo>
 				</div>
 				<div class="ts-divider"></div>
 				<div
@@ -143,6 +109,7 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
+import ExamInfo from "@/components/exam-view/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
 import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
 
 const route = useRoute(); // 目前的路由資訊
@@ -222,8 +189,8 @@ const resetTimer = () => { // 重置計時器
 const toggleTimer = () => { // 切換計時器的狀態
 	isTimerActive.value ? pauseTimer() : startTimer();
 };
-watch(remainingSec, (newSec) => {
-	if (newSec <= 0) isProblemVisible.value = false; // 如果剩餘時間歸零, 將題目隱藏
+watch(remainingSec, (newSec) => { // 如果剩餘時間歸零, 將題目隱藏
+	if (newSec <= 0) isProblemVisible.value = false;
 });
 
 const clickDownload = () => { // 下載題本
@@ -238,15 +205,6 @@ const clickDownload = () => { // 下載題本
 }
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
-}
-.sidebar-table > tbody > tr > td:first-child {
-	text-align: center; /* 置中 icon */
-}
-.sidebar-table > tbody > tr:not(:first-child) > td {
-	padding-top: 4px; /* select 間的距離 */
-}
-.sidebar-table > tbody > tr > td:not(:first-child) {
-	padding-left: 8px; /* 學校下拉選單跟 icon 的距離 */
 }
 .sidebar-timer {
 	padding: 10px 15px 12px 15px; /* 計時器區塊的 padding 修正 */
