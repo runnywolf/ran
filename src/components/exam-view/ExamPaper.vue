@@ -1,58 +1,85 @@
 <template>
+	
+	<!-- 考卷部分 -->
 	<div
 		class="ts-content problem-font exam"
 		:style="{ filter: isProblemVisible ? 'none' : 'blur(10px)' } /* 模糊化題本 */"
 	>
 		<template v-for="(sectionId, i) in examConfig.section">
+			
+			<!-- 題目 -->
 			<ol v-if="sectionId[0] !== '-'"
 				:style="{ 'padding-left': (11+9*sectionId.length)+'px' }"
 				:start="sectionId"
-			>
-				<li><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
+			><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
+				<li>
 					<Problem
 						:uni="uni" :year="year" :no="sectionId"
 						:problemConfig="examConfig.problem[sectionId]"
-						:isContentVisible="isContentVisible"
+						:contentType="isContentVisible ? 'content': undefined"
+						isScoreVisible
 					></Problem>
 				</li>
 			</ol>
-			<div v-else><!-- 題號開頭若為 '-', 會隱藏題號, 且沒有解答 -->
-				<Problem :uni="uni" :year="year" :no="sectionId"></Problem>
+			
+			<!-- 題本的說明區塊, 不是題目 -->
+			<div v-else>
+				<Problem :uni="uni" :year="year" :no="sectionId"></Problem><!-- 題號開頭若為 '-', 會隱藏題號, 且沒有解答 -->
 			</div>
-			<div v-if="i != examConfig.section.length - 1" class="ts-divider is-section"></div><!-- 題目間的分隔線 -->
+			
+			<!-- 題目間的分隔線 -->
+			<div v-if="i != examConfig.section.length - 1" class="ts-divider is-section"></div>
+			
 		</template>
 	</div>
+	
+	<!-- 遮住考卷的 ui -->
 	<template v-if="!isProblemVisible">
-		<div v-if="!isExamOver" class="ts-wrap is-vertical is-middle-aligned exam-cover"><!-- 開始作答的 ui, 覆蓋於模糊的題目之上 -->
-			<div class="ts-text is-huge is-bold"><!-- 題本年份 -->
+		
+		<!-- 開始作答的 ui, 覆蓋於模糊的題目之上 -->
+		<div v-if="!isExamOver" class="ts-wrap is-vertical is-middle-aligned exam-cover">
+			
+			<!-- 題本年份 -->
+			<div class="ts-text is-huge is-bold">
 				{{ config.uni[uni].shortName }}&nbsp;&nbsp;{{ year }}
 			</div>
-			<div class="ts-list is-unordered"><!-- 考試建議 -->
+			
+			<!-- 考試建議 -->
+			<div class="ts-list is-unordered">
 				<div class="item">
 					快速看過全部題目後再開始作答，考試時間為 {{ Math.floor(examTimeSec / 60) }} 分鐘，請做好配速。
 				</div>
 				<div class="item">如果有給手寫答案紙，且題本沒有附註「只寫答案即可」，建議附上運算過程。</div>
 				<div class="item">簡單題目請先做完，若時間夠，驗算一遍後再做剩餘題目。</div>
 			</div>
+			
+			<!-- 開始作答的按鈕 -->
 			<button class="ts-button is-start-icon" @click="emit('clickStartExam');">
 				<span class="ts-icon is-pen-icon"></span>開始作答
 			</button>
+			
+			<!-- 最下面的提示 -->
 			<div class="ts-text is-small is-secondary is-italic">
 				如果你只想翻閱一下歷屆試題，可以關閉左側選單中的「測驗模式」
 			</div>
+			
 		</div>
-		<div v-else class="ts-wrap is-vertical is-middle-aligned exam-cover"><!-- 考試結束的 ui -->
+		
+		<!-- 考試結束的 ui -->
+		<div v-else class="ts-wrap is-vertical is-middle-aligned exam-cover">
 			<div class="ts-text is-huge is-bold">考試結束</div>
 			<button class="ts-button is-start-icon" @click="emit('resetTimer');">
 				<span class="ts-icon is-arrow-rotate-left-icon"></span>重新計時
 			</button>
 		</div>
+		
 	</template>
+	
 </template>
 
 <script setup>
 import Problem from "@/components/exam/Problem.vue"; // 用於顯示題目與解答的組件
-import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
+import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const props = defineProps({
   uni: String, // 學校英文縮寫

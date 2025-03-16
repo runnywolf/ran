@@ -43,7 +43,7 @@
 	有重根 ( 代數重數 <vl exp="k_i \gt 1" />)<br>
 	<br>
 	如果所有的特徵值 <vl exp="\lambda_i" /> 都可以對應到 <vl exp="k_i" /> 個特徵向量 ( 代數重數 = 幾何重數 )，<br>
-	即 <vl exp="\forall \lambda_i, \text{dim}[ N(A - \lambda_i I) ] = k_i" />，則 <vl exp="A" />
+	即 <vl exp="\forall \lambda_i ~,~ \text{dim}[ N(A - \lambda_i I) ] = k_i" />，則 <vl exp="A" />
 	可對角化。
 	<div class="ts-wrap is-compact">
 		<span>(C)</span>

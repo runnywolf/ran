@@ -1,6 +1,8 @@
 <template>
 	<table class="sidebar-table">
 		<tbody>
+			
+			<!-- 學校簡稱 -->
 			<tr>
 				<td>
 					<span class="ts-icon is-school-icon"></span>
@@ -9,6 +11,8 @@
 					{{ uniShortName ? uniShortName : "-" }}
 				</td>
 			</tr>
+			
+			<!-- 題本年份 -->
 			<tr>
 				<td>
 					<span class="ts-icon is-calendar-icon"></span>
@@ -17,6 +21,8 @@
 					{{ year ? year : "-" }} 年
 				</td>
 			</tr>
+			
+			<!-- 題本的科目代號 -->
 			<tr>
 				<td>
 					<span class="ts-icon is-hashtag-icon"></span>
@@ -26,6 +32,8 @@
 					<span class="ts-icon is-circle-question-icon is-start-spaced" data-tooltip="科目代號"></span>
 				</td>
 			</tr>
+			
+			<!-- 題本的科目 -->
 			<tr>
 				<td>
 					<span class="ts-icon is-file-icon"></span>
@@ -34,6 +42,7 @@
 					{{ subject ? subject : "-" }}
 				</td>
 			</tr>
+			
 		</tbody>
 	</table>
 </template>

@@ -3,16 +3,17 @@
 		<div class="ts-content is-padded">
       <div class="ts-box">
 				<table class="ts-table is-celled is-dense is-compact menu-table">
+					
 					<thead>
 						<tr>
 							<th v-for="uni in config.uniList">
 								<span :data-tooltip="config.uni[uni].name" data-position="top">
 									{{ config.uni[uni].shortName }}
 								</span>
-								
 							</th>
 						</tr>
 					</thead>
+					
 					<tbody>
 						<tr v-for="year in yearList">
 							<td v-for="uni in config.uniList">
@@ -23,6 +24,7 @@
 							</td>
 						</tr>
 					</tbody>
+					
 				</table>
 			</div>
     </div>

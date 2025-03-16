@@ -19,6 +19,7 @@
 }
 
 .upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
+	margin-top: 0;
 	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
 	list-style-type: upper-alpha;
 	counter-reset: list-counter; /* 重置計數器，從 "A" 開始 */
