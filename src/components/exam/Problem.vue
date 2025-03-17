@@ -10,7 +10,7 @@
 		
 		<!-- 顯示題目頁面的連結按鈕 -->
 		<div v-if="contentType === 'link' && no[0] != '-'">
-			ans-link
+			<button class="ts-button" @click="router.push(`/exam/${uni}-${year}/${no}`)">解答</button>
 		</div>
 		
 		<!-- 顯示多個內容區塊 -->
@@ -38,6 +38,7 @@
 
 <script setup>
 import { shallowRef, watch, defineAsyncComponent } from "vue";
+import { useRouter } from "vue-router";
 import ProblemNotFoundComp from "@/components/exam/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "@/components/exam/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
 
@@ -53,6 +54,8 @@ const props = defineProps({
 const emit = defineEmits([
 	"loadingCompleted" // 元件載入完成的 event
 ]);
+
+const router = useRouter(); // 路由器
 
 const problemAsyncComp = shallowRef(null);
 const contentAsyncComps = shallowRef([]);
@@ -83,12 +86,12 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 	);
 }, { immediate: true });
 
-const loadingCompleted = (module) => { // 題目載入完成時, 要做的事
+function loadingCompleted(module) { // 題目載入完成時, 要做的事
 	emit("loadingCompleted"); // 元件載入完成的 event
 	return module;
 };
 
-const handleProblemCompMissing = () => { // 題目組件載入失敗時, 顯示錯誤訊息組件
+function handleProblemCompMissing() { // 題目組件載入失敗時, 顯示錯誤訊息組件
 	console.error( // 在 console 報錯
 		`Problem comp is not exist. (problem ${props.no})\n`+
 		`-> Check if @/components/exam/${props.uni}/${props.year}/problem/${props.no}.vue exist?\n`+
@@ -98,7 +101,7 @@ const handleProblemCompMissing = () => { // 題目組件載入失敗時, 顯示�
 	return ProblemNotFoundComp; // 回傳錯誤訊息組件
 };
 
-const handleProblemConfigMissing = () => { // 題目設定檔不存在
+function handleProblemConfigMissing() { // 題目設定檔不存在
 	console.error(
 		`Problem config is not exist. (problem ${props.no})\n`+
 		`-> Set the `+
@@ -106,7 +109,7 @@ const handleProblemConfigMissing = () => { // 題目設定檔不存在
 	);
 };
 
-const handleProblemContentEmpty = () => { // 題目設定檔定義的內容區塊組件不存在或留空
+function handleProblemContentEmpty() { // 題目設定檔定義的內容區塊組件不存在或留空
 	console.warn(
 		`Problem content is undefined or empty. (problem ${props.no})\n`+
 		`-> Add { "type": ?, "id": ? } in `+
@@ -114,7 +117,7 @@ const handleProblemContentEmpty = () => { // 題目設定檔定義的內容區�
 	);
 };
 
-const handleContentMissing = (contentId) => { // 內容區塊組件載入失敗時
+function handleContentMissing(contentId) { // 內容區塊組件載入失敗時
 	console.error(
 		`Content comp is not exist. (problem ${props.no}, content ${contentId})\n`+
 		`-> Check if @/components/exam/${props.uni}/${props.year}/content/${contentId}.vue exist?\n`+

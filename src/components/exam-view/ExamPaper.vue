@@ -2,7 +2,7 @@
 	
 	<!-- 考卷部分 -->
 	<div
-		class="ts-content problem-font exam"
+		class="ts-content exam"
 		:style="{ filter: isProblemVisible ? 'none' : 'blur(10px)' } /* 模糊化題本 */"
 	>
 		<template v-for="(sectionId, i) in examConfig.section">
@@ -12,11 +12,11 @@
 				:style="{ 'padding-left': (11+9*sectionId.length)+'px' }"
 				:start="sectionId"
 			><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
-				<li>
+				<li class="problem-font-marker">
 					<Problem
 						:uni="uni" :year="year" :no="sectionId"
 						:problemConfig="examConfig.problem[sectionId]"
-						:contentType="isContentVisible ? 'content': undefined"
+						:contentType="isContentVisible ? 'link': undefined"
 						isScoreVisible
 					></Problem>
 				</li>

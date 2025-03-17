@@ -171,7 +171,7 @@ function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的參數個�
 	);
 	router.push("/exam"); // 轉址回題本清單
 }
-const handleExamMissing = (_uni, _year) => { // 若題本設定檔不存在或路徑錯誤
+function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路徑錯誤
 	console.error(
 		`Exam config is not exist. (exam ${_uni}-${_year})\n`+
 		`-> Check if @/components/exam/${_uni}/${_year}/config.json exist?\n`

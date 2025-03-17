@@ -5,6 +5,13 @@
 	word-spacing: 0.06em; /* 單詞之間空白的距離 */
 	line-height: 1.2em; /* 行距 (倍) */
 }
+.problem-font-marker::marker { /* 題目的字體 */
+	font-family: "Times New Roman", Times, serif;
+	font-size: 18px; /* 字體大小 */
+	letter-spacing: 0.02em; /* 字母之間的距離 */
+	word-spacing: 0.06em; /* 單詞之間空白的距離 */
+	line-height: 1.2em; /* 行距 (倍) */
+}
 .katex { /* latex 文字 */
 	white-space: nowrap; /* 禁止換行 */
 	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
