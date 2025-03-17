@@ -51,10 +51,6 @@ const props = defineProps({
 	isScoreVisible: { type: Boolean, default: false }, // 是否要顯示題目中的配分
 });
 
-const emit = defineEmits([
-	"loadingCompleted" // 元件載入完成的 event
-]);
-
 const router = useRouter(); // 路由器
 
 const problemAsyncComp = shallowRef(null);
@@ -87,7 +83,6 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 }, { immediate: true });
 
 function loadingCompleted(module) { // 題目載入完成時, 要做的事
-	emit("loadingCompleted"); // 元件載入完成的 event
 	return module;
 };
 
