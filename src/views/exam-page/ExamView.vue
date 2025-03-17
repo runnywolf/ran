@@ -1,7 +1,18 @@
 <template>
 	<div class="ts-grid">
+		
+		<!-- 左側的資訊板 -->
 		<div class="column">
 			<div class="ts-box is-vertical is-compact sidebar">
+				
+				<!-- "回題本選單" 的連結 -->
+				<div class="ts-content is-dense">
+					<span class="ts-icon is-reply-icon is-end-spaced"></span>
+					<router-link to="/exam" class="hyperlink">&nbsp;回題本選單</router-link>
+				</div>
+				<div class="ts-divider"></div>
+				
+				<!-- 測驗模式的開關 -->
 				<div class="ts-content is-dense sidebar-setting">
 					<label class="ts-switch">
 						<input type="checkbox" v-model="isExamModeEnabled" checked />
@@ -14,73 +25,28 @@
 					</label>
 				</div>
 				<div class="ts-divider"></div>
+				
+				<!-- 題本資訊的表格 -->
 				<div class="ts-content is-dense">
-					<table class="sidebar-table">
-						<tbody>
-							<tr>
-								<td>
-									<span class="ts-icon is-school-icon"></span>
-								</td>
-								<td>
-									<div class="column ts-select is-solid is-fluid">
-										<select v-model="uni" @change="year = config.uni[uni].yearList[0]">
-											<option v-for="_uni in config.uniList" :key="_uni" :value="_uni">
-												{{ config.uni[_uni].shortName ? config.uni[_uni].shortName : '-' }}
-											</option>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-calendar-icon"></span>
-								</td>
-								<td>
-									<div class="column ts-select is-solid is-fluid">
-										<select v-model="year">
-											<option v-for="_year in config.uni[uni].yearList" :key="_year" :value="_year">
-												{{ _year ? _year : '-' }}&nbsp;年
-											</option>
-										</select>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="ts-divider "></div>
-				<div class="ts-content is-dense">
-					<table class="sidebar-table">
-						<tbody>
-							<tr>
-								<td>
-									<span class="ts-icon is-hashtag-icon"></span>
-								</td>
-								<td>
-									<span>{{ examConfig.id ? examConfig.id : "-" }}</span>
-									<span
-										class="ts-icon is-circle-question-icon is-start-spaced"
-										data-tooltip="題本編號"
-									></span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="ts-icon is-file-icon"></span>
-								</td>
-								<td>
-									{{ examConfig.subject ? examConfig.subject : "-" }}
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<ExamInfo
+						:uniShortName="config.uni[uni] ? config.uni[uni].shortName : undefined"
+						:year="year"
+						:subjectId="examConfig.id"
+						:subject="examConfig.subject"
+					></ExamInfo>
 				</div>
 				<div class="ts-divider"></div>
+				
+				<!-- 計時器 -->
 				<div
 					class="ts-content is-dense sidebar-timer"
 					:style="{ opacity: isExamModeEnabled ? 1 : 0.4 }"
-				><!-- 非測驗模式會禁用計時器 -->
+				>
+					
+					<!-- 開始暫停按鈕, 重置按鈕, 剩餘時間 -->
 					<div class="ts-wrap is-compact is-middle-aligned">
+						
+						<!-- 開始暫停按鈕 -->
 						<button
 							class="ts-button is-small is-icon is-outlined"
 							@click="clickToggleButton"
@@ -89,6 +55,8 @@
 							<span v-if="isTimerActive" class="ts-icon is-pause-icon"></span>
 							<span v-else class="ts-icon is-play-icon"></span>
 						</button>
+						
+						<!-- 重置按鈕 -->
 						<button
 							class="ts-button is-small is-icon is-outlined"
 							@click="clickResetButton"
@@ -96,15 +64,20 @@
 						><!-- 計時器的重設按鈕 -->
 							<span class="ts-icon is-rotate-left-icon"></span>
 						</button>
+						
+						<!-- 剩餘時間 -->
 						<span v-if="remainingSec >= 0" class="sidebar-timer-time"><!-- 剩餘時間 -->
 							{{ Math.floor(remainingSec / 60) }}:{{ String(remainingSec % 60).padStart(2, '0') }}
 						</span>
 						<span v-else class="sidebar-timer-time">0:00</span><!-- 如果剩餘時間 < 0, 顯示 0:00 -->
+						
 					</div>
+					
+					<!-- 剩餘時間的進度條. 如果計時器正在計時, 進度條背景會有動畫 -->
 					<div
 						class="ts-progress is-tiny sidebar-timer-progress"
 						:class="isTimerActive ? 'is-processing' : ''"
-					><!-- 剩餘時間的進度條. 如果計時器正在計時, 進度條背景會有動畫 -->
+					>
 						<div
 							class="bar"
 							:style="{
@@ -113,12 +86,15 @@
 							}"
 						></div>
 					</div>
+					
 				</div>
 				<div class="ts-divider"></div>
+				
+				<!-- 題本來源的超連結 -->
 				<div class="ts-content is-dense">
 					<span class="ts-icon is-link-icon is-end-spaced"></span>
 					<a v-if="examConfig.link"
-						class="sidebar-link-text"
+						class="hyperlink"
 						:href="examConfig.link"
 						:data-tooltip="examConfig.linkTip ? examConfig.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
 						target="_blank"
@@ -126,6 +102,8 @@
 					<span v-else>來源未知</span>
 				</div>
 				<div class="ts-divider"></div>
+				
+				<!-- 下載按鈕 (未實作) -->
 				<div class="ts-content is-dense">
 					<button
 						class="ts-button is-outlined is-start-icon"
@@ -135,8 +113,11 @@
 						<span class="ts-icon is-download-icon"></span>下載題本
 					</button>
 				</div>
+				
 			</div>
 		</div>
+		
+		<!-- 右側的考卷 -->
 		<div class="column is-fluid">
 			<div class="ts-box">
 				<ExamPaper
@@ -150,30 +131,53 @@
 				></ExamPaper>
 			</div>
 		</div>
+		
 	</div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
-import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
+import ExamInfo from "@/components/exam-view/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
+import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
-const uni = ref("ntu"); // 選取的學校
-const year = ref(config.uni[uni.value].yearList[0]); // 選取的年份
-const examConfig = ref({}); // 選取的題本設定檔
+const route = useRoute(); // 目前的路由資訊
+const router = useRouter(); // 路由器
 
-watch(year, async (newYear) => { // 當選取的年份 (題本) 改變時
-	try {
-		const module = await import(`../components/exam/${uni.value}/${newYear}/config.json`);
-		examConfig.value = module.default;
-	} catch (error) {
-		console.error(
-			`Exam config is not exist. (${uni.value}, ${newYear})\n`+
-			`-> Check if @/components/exam/${uni.value}/${newYear}/config.json exist?\n`
-		);
-		examConfig.value = {};
+const uni = ref(undefined); // 學校
+const year = ref(undefined); // 年份
+const examConfig = ref({}); // 題本設定檔
+
+watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
+	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
+	if (idParam.length != 2){ // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
+		handleWrongExamIdFormat(newExamId);
+		return;
 	}
-}, { immediate: true }); // 頁面載入時, 讀一次 config.json
+	const [_uni, _year] = idParam; // 題本 id 的第一個參數為 uni, 第二個參數為 year
+	
+	const configFile = await import(`../../components/exam/${_uni}/${_year}/config.json`) // 讀取題本設定檔
+		.catch(() => handleExamMissing(_uni, _year)); // 若題本設定檔不存在或路徑錯誤, 報錯, 並轉址回題本清單
+	if (!configFile) return;
+	
+	uni.value = _uni;
+	year.value = _year;
+	examConfig.value = configFile.default; // json -> Object
+}, { immediate: true }); // 組件載入時, 做一次
+function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的參數個數不為 2, 視為無效 id
+	console.error(
+		`Wrong id format. (exam id: ${wrongExamId})\n`
+	);
+	router.push("/exam"); // 轉址回題本清單
+}
+function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路徑錯誤
+	console.error(
+		`Exam config is not exist. (exam ${_uni}-${_year})\n`+
+		`-> Check if @/components/exam/${_uni}/${_year}/config.json exist?\n`
+	);
+	router.push("/exam"); // 轉址回題本清單
+};
 
 const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
@@ -220,8 +224,8 @@ const resetTimer = () => { // 重置計時器
 const toggleTimer = () => { // 切換計時器的狀態
 	isTimerActive.value ? pauseTimer() : startTimer();
 };
-watch(remainingSec, (newSec) => {
-	if (newSec <= 0) isProblemVisible.value = false; // 如果剩餘時間歸零, 將題目隱藏
+watch(remainingSec, (newSec) => { // 如果剩餘時間歸零, 將題目隱藏
+	if (newSec <= 0) isProblemVisible.value = false;
 });
 
 const clickDownload = () => { // 下載題本
@@ -232,19 +236,11 @@ const clickDownload = () => { // 下載題本
 <style scoped>
 .sidebar {
 	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
+	width: 160px; /* 側邊欄的寬度 */
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
 }
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
-}
-.sidebar-table > tbody > tr > td:first-child {
-	text-align: center; /* 置中 icon */
-}
-.sidebar-table > tbody > tr:not(:first-child) > td {
-	padding-top: 4px; /* select 間的距離 */
-}
-.sidebar-table > tbody > tr > td:not(:first-child) {
-	padding-left: 8px; /* 學校下拉選單跟 icon 的距離 */
 }
 .sidebar-timer {
 	padding: 10px 15px 12px 15px; /* 計時器區塊的 padding 修正 */
@@ -255,12 +251,5 @@ const clickDownload = () => { // 下載題本
 .sidebar-timer-progress {
 	margin-top: 7px; /* 計時器進度條與按鈕的垂直間距 */
 	background-color: #999; /* 進度條底色 */
-}
-.sidebar-link-text {
-	text-decoration: none; /* 隱藏超連結的底線 */
-	color: #44f;
-}
-.sidebar-link-text:hover {
-	color: #f3f;
 }
 </style>
