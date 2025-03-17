@@ -1,5 +1,5 @@
-# CS Math (Moyako 0.1)
-![](https://img.shields.io/badge/moyako-v0.1.0-c0c?style=flat)
+# CS Math (Moyako 0.2)
+![](https://img.shields.io/badge/moyako-v0.2.0-c0c?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://github.com/vuejs/core)
 <br>
 一款用於準備資工所數學的網頁 App。<br>
