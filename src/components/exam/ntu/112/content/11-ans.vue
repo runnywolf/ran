@@ -34,8 +34,9 @@
 	則
 	<vl c exp="
 		\begin{split}
-			g(T) &= a_0 + a_1 T + a_2 T^2 + \cdots + a_m T^m \\
-					 &= a_0 + a_1 \sum\limits_{i=1}^{k} {\lambda_i} T_i +
+			g(T) &= a_0 I + a_1 T + a_2 T^2 + \cdots + a_m T^m \\
+					 &= a_0 \sum\limits_{i=1}^{k} T_i +
+					 		a_1 \sum\limits_{i=1}^{k} {\lambda_i} T_i +
 					 		a_2 \sum\limits_{i=1}^{k} {\lambda_i}^2 T_i + \cdots +
 							a_m \sum\limits_{i=1}^{k} {\lambda_i}^m T_i \\
 					 &= \sum\limits_{i=1}^{k} ( a_0 + a_1 \lambda_i + a_2 {\lambda_i}^2 + \cdots + a_m {\lambda_i}^m ) T_i \\

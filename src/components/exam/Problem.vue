@@ -21,7 +21,7 @@
 				
 				<!-- 解答類型的內容區塊 -->
 				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
-					<details class="ts-accordion">
+					<details class="ts-accordion" name="answer">
 						<summary>解答 {{ contentData.suffix }}</summary>
 						<component :is="contentAsyncComps[i]"></component><!-- 解答 -->
 					</details>
