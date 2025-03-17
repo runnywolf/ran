@@ -136,11 +136,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { globalStore } from "@/store/global"; // pinia 全域變數
 import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
 import ExamInfo from "@/components/exam-view/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
+
+const globalVar = globalStore(); // 全域變數
 
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
@@ -148,6 +151,23 @@ const router = useRouter(); // 路由器
 const uni = ref(undefined); // 學校
 const year = ref(undefined); // 年份
 const examConfig = ref({}); // 題本設定檔
+
+onMounted(() => { // 若從題目跳轉到題本, 題本頁面需要自動滾動到題目的位置
+	if (!globalVar.examScrollProbNo) return;
+	
+	const loopMax = 10; // 最大尋找次數
+	let loopCount = 0; // 目前的尋找次數
+	const intervalId = setInterval(() => {
+		loopCount++; // 尋找次數 +1
+		if (loopCount > loopMax) clearInterval(intervalId); // 尋找次數達到上限會停止
+		const targetOl = document.querySelector(`#exam-paper-p${globalVar.examScrollProbNo}`); // 取得題目的 ol 標籤
+		if (!targetOl) return; // 找不到標籤, 重新找
+		
+		targetOl.scrollIntoView({ behavior: "smooth", block: "start" }); // 滾動至題目
+		globalVar.examScrollProbNo = undefined; // 成功滾動過會清除這個值
+		clearInterval(intervalId);
+	}, 100); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
+});
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id

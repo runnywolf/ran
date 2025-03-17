@@ -11,6 +11,7 @@
 			<ol v-if="sectionId[0] !== '-'"
 				:style="{ 'padding-left': (11+9*sectionId.length)+'px' }"
 				:start="sectionId"
+				:id="`exam-paper-p${sectionId}`"
 			><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
 				<li class="problem-font-marker">
 					<Problem
