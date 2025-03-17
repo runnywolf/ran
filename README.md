@@ -3,7 +3,7 @@
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://github.com/vuejs/core)
 <br>
 一款用於準備資工所數學的網頁 App。<br>
-[Ran](https://runnywolf.github.io/cs-math/#/exam)
+[Ran](https://runnywolf.github.io/ran/#/exam)
 
 # 功能
 
