@@ -205,7 +205,7 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	router.push("/exam"); // 轉址回題本清單
 };
 
-const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為關閉
+const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為關閉
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
 const isTimerActive = ref(false); // 計時器是否正在計時
 const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘

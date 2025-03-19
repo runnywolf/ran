@@ -9,15 +9,25 @@
 		></component>
 		
 		<!-- 顯示題目頁面的連結按鈕 -->
-		<div v-if="contentType === 'link' && no[0] != '-'">
+		<div v-if="contentType === 'link' && no[0] != '-'" class="ts-wrap">
+			
+			<!-- 答案 -->
+			<Content colorStyle="green" collapsed>
+				<span>Ans:&nbsp;&nbsp;</span>
+				<vl :exp="problemConfig.answerLatex ? problemConfig.answerLatex : '?'" />
+			</Content>
+			
+			<!-- 詳解連結-->
 			<button class="ts-button" @click="router.push(`/exam/${uni}-${year}/${no}`)">詳解</button>
+			
 		</div>
 		
 		<!-- 顯示多個內容區塊 -->
 		<div v-else-if="contentType === 'content' && no[0] != '-' && problemConfig"
 			class="ts-wrap is-compact is-vertical content"
 		>
-			<Content colorStyle="green" collapsed><!-- 答案的內容區塊 -->
+			<!-- 答案的內容區塊 -->
+			<Content colorStyle="green" collapsed>
 				<span>Ans:&nbsp;&nbsp;</span>
 				<vl :exp="problemConfig.answerLatex ? problemConfig.answerLatex : '?'" />
 			</Content>
