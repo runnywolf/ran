@@ -8,12 +8,12 @@
 	<vl exp="\sum\limits_{n=0}^{\infty} (kx)^n = \frac{1}{1-kx}" />：
 	<vl c exp="
 		\begin{split}
-		  G(x) &= \sum_{n=0}^{\infty} a_n x^n \\
-		       &= \sum_{n=0}^{\infty} [h_1(-2)^n + h_2 3^n] x^n \\
-		       &= h_1 \sum_{n=0}^{\infty} (-2)^n x^n + h_2 \sum_{n=0}^{\infty} 3^n x^n \\
-		       &= h_1 \sum_{n=0}^{\infty} (-2x)^n + h_2 \sum_{n=0}^{\infty} (3x)^n \\
-		       &= h_1 \frac{1}{1-(-2x)} + h_2 \frac{1}{1-3x} \\
-		       &= \frac{h_1}{1+2x} + \frac{h_2}{1-3x}
+			G(x) &= \sum_{n=0}^{\infty} a_n x^n \\
+					 &= \sum_{n=0}^{\infty} [h_1(-2)^n + h_2 3^n] x^n \\
+					 &= h_1 \sum_{n=0}^{\infty} (-2)^n x^n + h_2 \sum_{n=0}^{\infty} 3^n x^n \\
+					 &= h_1 \sum_{n=0}^{\infty} (-2x)^n + h_2 \sum_{n=0}^{\infty} (3x)^n \\
+					 &= h_1 \frac{1}{1-(-2x)} + h_2 \frac{1}{1-3x} \\
+					 &= \frac{h_1}{1+2x} + \frac{h_2}{1-3x}
 		\end{split}
 	" />
 	觀察每個選項的特徵值 (分母) <vl exp="\Rightarrow" /> (A) (B) (C) 可能正確<br>

@@ -42,7 +42,7 @@
 			
 			<!-- 題本年份 -->
 			<div class="ts-text is-huge is-bold">
-				{{ config.uni[uni].shortName }}&nbsp;&nbsp;{{ year }}
+				{{ config.uni[uni] ? config.uni[uni].shortName : "-" }}&nbsp;&nbsp;{{ year }}
 			</div>
 			
 			<!-- 考試建議 -->
@@ -79,13 +79,13 @@
 </template>
 
 <script setup>
-import Problem from "@/components/exam/Problem.vue"; // 用於顯示題目與解答的組件
+import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const props = defineProps({
-  uni: String, // 學校英文縮寫
+	uni: String, // 學校英文縮寫
 	year: String, // 題本年份
-  examConfig: Object, // 題本資料
+	examConfig: Object, // 題本資料
 	isContentVisible: Boolean, // 是否顯示題目之下的內容區塊 (例如答案)
 	isProblemVisible: Boolean, // 是否顯示題目
 	isExamOver: Boolean, // 考試是否結束

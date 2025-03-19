@@ -1,29 +1,29 @@
 <template>
-  <div class="ts-app-navbar navbar">
+	<div class="ts-app-navbar navbar">
 		<router-link :class="getClass(['Home'])" :to="{ name: 'Home' }">
-      <div class="ts-icon is-house-icon"></div>
-      <div class="label">首頁</div>
-    </router-link>
+			<div class="ts-icon is-house-icon"></div>
+			<div class="label">首頁</div>
+		</router-link>
 		<router-link :class="getClass(['Notes'])" :to="{ name: 'Notes' }">
-      <div class="ts-icon is-book-icon"></div>
-      <div class="label">筆記</div>
-    </router-link>
+			<div class="ts-icon is-book-icon"></div>
+			<div class="label">筆記</div>
+		</router-link>
 		<router-link :class="getClass(['ExamMenu', 'Exam'])" :to="{ name: 'ExamMenu' }">
-      <div class="ts-icon is-file-icon"></div>
-      <div class="label">歷屆試題</div>
-    </router-link>
+			<div class="ts-icon is-file-icon"></div>
+			<div class="label">歷屆試題</div>
+		</router-link>
 		<router-link :class="getClass(['Search'])" :to="{ name: 'Search' }">
-      <div class="ts-icon is-magnifying-glass-icon"></div>
-      <div class="label">搜尋題目</div>
-    </router-link>
+			<div class="ts-icon is-magnifying-glass-icon"></div>
+			<div class="label">搜尋題目</div>
+		</router-link>
 		<router-link :class="getClass(['Practice'])" :to="{ name: 'Practice' }">
-      <div class="ts-icon is-pen-icon"></div>
-      <div class="label">模擬室</div>
-    </router-link>
+			<div class="ts-icon is-pen-icon"></div>
+			<div class="label">模擬室</div>
+		</router-link>
 		<router-link :class="getClass(['Other'])" :to="{ name: 'Other' }">
-      <div class="ts-icon is-ellipsis-icon"></div>
-      <div class="label">更多</div>
-    </router-link>
+			<div class="ts-icon is-ellipsis-icon"></div>
+			<div class="label">更多</div>
+		</router-link>
 	</div>
 </template>
 

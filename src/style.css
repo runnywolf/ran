@@ -17,14 +17,6 @@
 	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
 
-.option-true-color { /* 正確選項的顏色(綠) */
-	color: #0e0;
-}
-.option-false-color { /* 錯誤選項的顏色(紅) */
-	margin-left: -2px;
-	color: #f00;
-}
-
 .upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
 	margin-top: 0;
 	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
@@ -33,7 +25,7 @@
 }
 .upper-alpha-list > li {
 	padding-left: 6px; /* 題目編號與題目的距離 */
-  counter-increment: list-counter; /* A, B, C, ... */
+	counter-increment: list-counter; /* A, B, C, ... */
 }
 .upper-alpha-list > li::marker {
 	content: "(" counter(list-counter, upper-alpha) ")";
@@ -48,4 +40,8 @@
 }
 .hyperlink:hover {
 	color: #f3f;
+}
+
+details.ts-accordion[open] details.ts-accordion:not([open]) summary::before { /* tocas ui bug */
+	transform: rotate(270deg);
 }

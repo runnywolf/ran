@@ -39,7 +39,7 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { globalStore } from "@/store/global"; // pinia 全域變數
-import Problem from "@/components/exam/Problem.vue"; // 用於顯示題目與解答的組件
+import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const globalVar = globalStore(); // 全域變數
