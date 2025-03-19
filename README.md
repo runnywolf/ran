@@ -1,5 +1,5 @@
-# Ran 0.2
-![](https://img.shields.io/badge/ran-v0.2.0-55f?style=flat)
+# Ran 0.2.1
+![](https://img.shields.io/badge/ran-v0.2.1-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://github.com/vuejs/core)
 <br>
 一款用於準備資工所數學的網頁 App。<br>
