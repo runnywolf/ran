@@ -1,7 +1,7 @@
 <template>
 	<div class="ts-box ts-wrap is-center-aligned">
 		<div class="ts-content is-padded">
-      <div class="ts-box">
+			<div class="ts-box">
 				<table class="ts-table is-celled is-dense is-compact menu-table">
 					
 					<thead>
@@ -27,7 +27,7 @@
 					
 				</table>
 			</div>
-    </div>
+		</div>
 	</div>
 </template>
 

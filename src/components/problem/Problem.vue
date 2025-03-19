@@ -21,7 +21,7 @@
 				
 				<!-- 解答類型的內容區塊 -->
 				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
-					<details class="ts-accordion" name="answer">
+					<details class="ts-accordion" name="problem-answer">
 						<summary>解答 {{ contentData.suffix }}</summary>
 						<component :is="contentAsyncComps[i]"></component><!-- 解答 -->
 					</details>
@@ -39,14 +39,14 @@
 <script setup>
 import { shallowRef, watch, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
-import ProblemNotFoundComp from "@/components/exam/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
-import ContentNotFoundComp from "@/components/exam/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
+import ProblemNotFoundComp from "@/components/problem/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
+import ContentNotFoundComp from "@/components/problem/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
 
 const props = defineProps({
-  uni: String, // 學校英文縮寫
+	uni: String, // 學校英文縮寫
 	year: String, // 題本年份
 	no: String, // 題號
-  problemConfig: Object, // 題目資訊
+	problemConfig: Object, // 題目資訊
 	contentType: String, // 題目下面內容區塊的類型, 不傳入則不生成 ( link: 題目的超連結按鈕 / content: 解答等等... )
 	isScoreVisible: { type: Boolean, default: false }, // 是否要顯示題目中的配分
 });

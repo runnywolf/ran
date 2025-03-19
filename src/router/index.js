@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
-  { path: "/", name: "Home", component: () => import("@/views/HomeView.vue") },
+	{ path: "/", name: "Home", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", name: "Notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", name: "ExamMenu", component: () => import("@/views/exam-page/ExamMenuView.vue") },
 	{ path: "/exam/:id", name: "Exam", component: () => import("@/views/exam-page/ExamView.vue") },
@@ -14,7 +14,7 @@ const routes = [
 
 const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes,
+	routes,
 });
 
 export default router;

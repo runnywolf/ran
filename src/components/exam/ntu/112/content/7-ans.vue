@@ -7,7 +7,7 @@
 	<vl c exp="
 		\begin{split}
 			T(f(x)) &= f''(x) + 2f'(x) - f(x) \\
-			        &= 2a_2 + 2(a_1 + 2a_2 x) - (a_0 + a_1 x + a_2 x^2) \\
+							&= 2a_2 + 2(a_1 + 2a_2 x) - (a_0 + a_1 x + a_2 x^2) \\
 							&= (-a_0 + 2a_1 + 2a_2) + (-a_1 + 4a_2)x + (-a_2)x^2
 		\end{split}
 	" />
@@ -16,7 +16,7 @@
 		M \!\begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix}\!
 		= \!\begin{bmatrix} -a_0 & +2a_1 & +2a_2 \\ & -a_1 & +4a_2 \\ & & -a_2 \end{bmatrix}\!
 		= \!\begin{bmatrix} -1 & 2 & 2 \\ 0 & -1 & 4 \\ 0 & 0 & -1 \end{bmatrix}\!
-		  \!\begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix}\!
+			\!\begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix}\!
 	" />
 	<vl exp="\Rightarrow ~ M = \!\begin{bmatrix} -1 & 2 & 2 \\ 0 & -1 & 4 \\ 0 & 0 & -1 \end{bmatrix}\!" /><br>
 	<br>

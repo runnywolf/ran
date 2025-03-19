@@ -15,7 +15,7 @@
 				<!-- 測驗模式的開關 -->
 				<div class="ts-content is-dense sidebar-setting">
 					<label class="ts-switch">
-						<input type="checkbox" v-model="isExamModeEnabled" checked />
+						<input type="checkbox" v-model="isExamModeEnabled" />
 						<span>測驗模式&nbsp;</span>
 						<span
 							class="ts-icon is-circle-question-icon"
@@ -152,11 +152,17 @@ const uni = ref(undefined); // 學校
 const year = ref(undefined); // 年份
 const examConfig = ref({}); // 題本設定檔
 
-onMounted(() => { // 若從題目跳轉到題本, 題本頁面需要自動滾動到題目的位置
+onMounted(() => { // page 載入時
+	scrollToProblem(); // 檢查要不要滾動至題目
+});
+const scrollToProblem = () => { // 若從題目跳轉到題本, 題本頁面需要自動滾動到題目的位置
 	if (!globalVar.examScrollProbNo) return;
+	
+	isExamModeEnabled.value = false; // 若需要滾動, 必須關掉測驗模式
 	
 	const loopMax = 10; // 最大尋找次數
 	let loopCount = 0; // 目前的尋找次數
+	
 	const intervalId = setInterval(() => {
 		loopCount++; // 尋找次數 +1
 		if (loopCount > loopMax) clearInterval(intervalId); // 尋找次數達到上限會停止
@@ -167,7 +173,7 @@ onMounted(() => { // 若從題目跳轉到題本, 題本頁面需要自動滾動
 		globalVar.examScrollProbNo = undefined; // 成功滾動過會清除這個值
 		clearInterval(intervalId);
 	}, 100); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
-});
+};
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
@@ -199,7 +205,7 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	router.push("/exam"); // 轉址回題本清單
 };
 
-const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為開啟
+const isExamModeEnabled = ref(false); // 是否開啟測驗模式, 預設為關閉
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
 const isTimerActive = ref(false); // 計時器是否正在計時
 const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
