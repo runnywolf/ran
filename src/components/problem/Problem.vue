@@ -10,25 +10,30 @@
 		
 		<!-- 顯示題目頁面的連結按鈕 -->
 		<div v-if="contentType === 'link' && no[0] != '-'">
-			<button class="ts-button" @click="router.push(`/exam/${uni}-${year}/${no}`)">解答</button>
+			<button class="ts-button" @click="router.push(`/exam/${uni}-${year}/${no}`)">詳解</button>
 		</div>
 		
 		<!-- 顯示多個內容區塊 -->
 		<div v-else-if="contentType === 'content' && no[0] != '-' && problemConfig"
 			class="ts-wrap is-compact is-vertical content"
 		>
+			<Content colorStyle="green" collapsed><!-- 答案的內容區塊 -->
+				<span>Ans:&nbsp;&nbsp;</span>
+				<vl :exp="problemConfig.answerLatex ? problemConfig.answerLatex : '?'" />
+			</Content>
+			
 			<template v-for="(contentData, i) in problemConfig.content">
 				
-				<!-- 解答類型的內容區塊 -->
-				<Content v-if="contentData.type === 'answer'" :borderColor="'#7af'" :bgColor="'#def'">
+				<!-- 詳解類型的內容區塊 -->
+				<Content v-if="contentData.type === 'answer'" colorStyle="blue">
 					<details class="ts-accordion" name="problem-answer">
-						<summary>解答 {{ contentData.suffix }}</summary>
-						<component :is="contentAsyncComps[i]"></component><!-- 解答 -->
+						<summary>詳解 {{ contentData.suffix }}</summary>
+						<component :is="contentAsyncComps[i]"></component><!-- 詳解 -->
 					</details>
 				</Content>
 				
 				<!-- 若內容區塊的類型填錯, 顯示錯誤訊息 -->
-				<Content v-else error>錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶</Content>
+				<Content v-else colorStyle="red">錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶</Content>
 				
 			</template>
 		</div>
