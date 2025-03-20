@@ -2,11 +2,12 @@
 	<div class="ts-wrap is-vertical">
 		
 		<!-- 題目 -->
-		<component
-			:is="problemAsyncComp"
-			class="problem-font"
-			:class="isScoreVisible ? '' : 'hide-problem-score'"
-		></component>
+		<div class="problem-font">
+			<component
+				:is="problemAsyncComp"
+				:class="isScoreVisible ? '' : 'hide-problem-score'"
+			></component>
+		</div>
 		
 		<!-- 顯示題目頁面的連結按鈕 -->
 		<div v-if="contentType === 'link' && no[0] != '-'" class="ts-wrap">
@@ -78,8 +79,8 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 			.catch(handleProblemCompMissing) // 題目組件載入失敗時, 顯示錯誤訊息組件
 	);
 	
-	if (props.no[0] == "-") return; // 題號開頭若為 '-', 會被視為是題本的說明區塊, 沒有內容
-	if (props.contentType != "content") return; // 內容區塊的類型必須是 content, 才會載入內容區塊組件
+	if (props.no[0] == "-") return; // 題號開頭若為 '-', 會被視為是題本的說明區塊, 只有題目區塊
+	if (props.contentType != "content" && props.contentType != "link") return; // 內容區塊的類型必須是 content, 才會載入內容區塊組件
 	if (!props.problemConfig) { // 如果題目設定檔不存在
 		handleProblemConfigMissing();
 		return;
