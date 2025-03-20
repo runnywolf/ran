@@ -4,12 +4,12 @@
 		"ntu": {
 			"name": "國立臺灣大學",
 			"shortName": "台大",
-			"yearList": [ "112", "111" ]
+			"yearList": [ "114", "112" ]
 		},
 		"nctu": {
 			"name": "國立陽明交通大學",
 			"shortName": "交大",
-			"yearList": [ "111", "109" ]
+			"yearList": []
 		}
 	}
 }

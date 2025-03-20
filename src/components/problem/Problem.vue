@@ -14,7 +14,7 @@
 			<!-- 答案 -->
 			<Content colorStyle="green" collapsed>
 				<span>Ans:&nbsp;&nbsp;</span>
-				<vl :exp="problemConfig.answerLatex ? problemConfig.answerLatex : '?'" />
+				<vl :exp="answerLatex" />
 			</Content>
 			
 			<!-- 詳解連結-->
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { shallowRef, watch, defineAsyncComponent } from "vue";
+import { ref, shallowRef, watch, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import ProblemNotFoundComp from "@/components/problem/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "@/components/problem/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
@@ -69,13 +69,13 @@ const props = defineProps({
 const router = useRouter(); // 路由器
 
 const problemAsyncComp = shallowRef(null);
+const answerLatex = ref("?"); // 綠框答案的 latex
 const contentAsyncComps = shallowRef([]);
 
 watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題目和內容區塊的組件
 	problemAsyncComp.value = defineAsyncComponent(() => // 載入題目的組件
 		import(`../exam/${props.uni}/${props.year}/problem/${props.no}.vue`)
 			.catch(handleProblemCompMissing) // 題目組件載入失敗時, 顯示錯誤訊息組件
-			.then(loadingCompleted) // 題目載入完成時, 要做的事
 	);
 	
 	if (props.no[0] == "-") return; // 題號開頭若為 '-', 會被視為是題本的說明區塊, 沒有內容
@@ -89,6 +89,8 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 		return;
 	}
 	
+	if (props.problemConfig.answerLatex) answerLatex.value = props.problemConfig.answerLatex; // 載入答案的 latex
+	
 	contentAsyncComps.value = await Promise.all( // 載入內容區塊的組件 (內容區塊有可能是解答, 文字區塊等等...)
 		props.problemConfig.content.map(async (contentData) => defineAsyncComponent(() => 
 			import(`../exam/${props.uni}/${props.year}/content/${contentData.id}.vue`) // 載入題目組件
@@ -96,10 +98,6 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 		))
 	);
 }, { immediate: true });
-
-function loadingCompleted(module) { // 題目載入完成時, 要做的事
-	return module;
-};
 
 function handleProblemCompMissing() { // 題目組件載入失敗時, 顯示錯誤訊息組件
 	console.error( // 在 console 報錯
