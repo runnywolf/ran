@@ -2,11 +2,8 @@
 	<div class="ts-wrap is-vertical">
 		
 		<!-- 題目 -->
-		<div class="problem-font">
-			<component
-				:is="problemAsyncComp"
-				:class="isScoreVisible ? '' : 'hide-problem-score'"
-			></component>
+		<div class="problem-font" :class="isScoreVisible ? '' : 'hide-problem-score'">
+			<component :is="problemAsyncComp"></component>
 		</div>
 		
 		<!-- 顯示題目頁面的連結按鈕 -->
@@ -15,7 +12,7 @@
 			<!-- 答案 -->
 			<Content colorStyle="green" collapsed>
 				<span>Ans:&nbsp;&nbsp;</span>
-				<vl :exp="answerLatex" />
+				<vl :exp="getAnswerLatex()" />
 			</Content>
 			
 			<!-- 詳解連結-->
@@ -53,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, watch, defineAsyncComponent } from "vue";
+import { shallowRef, watch, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import ProblemNotFoundComp from "@/components/problem/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "@/components/problem/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
@@ -70,8 +67,13 @@ const props = defineProps({
 const router = useRouter(); // 路由器
 
 const problemAsyncComp = shallowRef(null);
-const answerLatex = ref("?"); // 綠框答案的 latex
 const contentAsyncComps = shallowRef([]);
+
+const getAnswerLatex = () => {
+	if (!props.problemConfig) return "?";
+	if (!props.problemConfig.answerLatex) return "?";
+	return props.problemConfig.answerLatex;
+};
 
 watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題目和內容區塊的組件
 	problemAsyncComp.value = defineAsyncComponent(() => // 載入題目的組件
@@ -89,8 +91,6 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 		handleProblemContentEmpty(); // 題目設定檔定義的內容區塊組件不存在或留空
 		return;
 	}
-	
-	if (props.problemConfig.answerLatex) answerLatex.value = props.problemConfig.answerLatex; // 載入答案的 latex
 	
 	contentAsyncComps.value = await Promise.all( // 載入內容區塊的組件 (內容區塊有可能是解答, 文字區塊等等...)
 		props.problemConfig.content.map(async (contentData) => defineAsyncComponent(() => 
