@@ -2,7 +2,7 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			<span class="problem-score">(5%)</span>
-			Which ones of the following directed graphs are Eulerian? ______
+			Which ones of the following directed graphs are Eulerian? _______
 		</div>
 		<div class="column ts-grid is-compact opt">
 			<div class="ts-wrap is-vertical is-middle-aligned is-compact">

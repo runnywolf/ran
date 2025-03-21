@@ -82,7 +82,7 @@ watch(() => props.problemConfig, async () => { // 當題目改變時, 載入題�
 	);
 	
 	if (props.no[0] == "-") return; // 題號開頭若為 '-', 會被視為是題本的說明區塊, 只有題目區塊
-	if (props.contentType != "content" && props.contentType != "link") return; // 內容區塊的類型必須是 content, 才會載入內容區塊組件
+	if (props.contentType != "content") return; // 內容區塊的類型必須是 content, 才會載入內容區塊組件
 	if (!props.problemConfig) { // 如果題目設定檔不存在
 		handleProblemConfigMissing();
 		return;
