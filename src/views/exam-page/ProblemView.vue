@@ -86,11 +86,3 @@ watch(() => route.params.prob, (newProblemNo) => { // 當路由的題目編號�
 	no.value = newProblemNo;
 }, { immediate: true }); // 組件載入時, 做一次
 </script>
-
-<style scoped>
-.sidebar {
-	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
-	width: 160px; /* 側邊欄的寬度 */
-	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
-}
-</style>

@@ -260,11 +260,6 @@ const clickDownload = () => { // 下載題本
 </script>
 
 <style scoped>
-.sidebar {
-	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
-	width: 160px; /* 側邊欄的寬度 */
-	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
-}
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
 }

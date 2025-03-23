@@ -12,6 +12,7 @@
 	word-spacing: 0.06em; /* 單詞之間空白的距離 */
 	line-height: 1.2em; /* 行距 (倍) */
 }
+
 .katex { /* latex 文字 */
 	white-space: nowrap; /* 禁止換行 */
 	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
@@ -32,23 +33,4 @@
 }
 .upper-alpha-list > li:not(:first-child) {
 	margin-top: 6px; /* 清單項目的間距 */
-}
-
-.hyperlink { /* 超連結樣式 */
-	text-decoration: none; /* 隱藏超連結的底線 */
-	color: #44f;
-}
-.hyperlink:hover {
-	color: #f3f;
-}
-
-.native-table { /* html 原生的表格樣式 */
-	border-collapse: collapse; border-spacing: 0;
-}
-.native-table td {
-	border: 1px #000 solid;
-}
-
-details.ts-accordion[open] details.ts-accordion:not([open]) summary::before { /* tocas ui bug */
-	transform: rotate(270deg);
 }
