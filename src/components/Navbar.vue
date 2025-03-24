@@ -14,8 +14,6 @@
 <script setup>
 import { useRoute } from 'vue-router';
 
-const route = useRoute(); // 路由
-
 /* 導覽列的每個選項的資訊
  * iconName: 選項的圖示 id (font-awesome)
  * label: 選項的文字
@@ -31,9 +29,11 @@ const navbarOptionList = [
 	{ iconName: "ellipsis", label: "更多", toRouteName: "Other", activeRouteNames: [ "Other" ] },
 ];
 
+const route = useRoute(); // 路由
+
 const getClass = (activeRouteNames) => { // 根據目前的路由名稱讓特定選項看起來被選中
 	if (activeRouteNames.includes(route.name)) return "is-active";
-	if (activeRouteNames[0] == "Practice" && route.name.includes("Practice")) return "is-active"; // Practice 子頁面的例外處理
+	if (activeRouteNames[0] == "Practice" && route.name?.includes("Practice")) return "is-active"; // Practice 子頁面的例外處理
 	return "";
 };
 </script>

@@ -139,8 +139,8 @@
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { globalStore } from "@/store/global"; // pinia 全域變數
-import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
-import ExamInfo from "@/components/exam-view/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
+import ExamPaper from "./comp/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
+import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const globalVar = globalStore(); // 全域變數

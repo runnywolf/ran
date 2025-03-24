@@ -86,5 +86,6 @@ export class ConjugateRoot { // 共軛根
 		this.m = m;
 		this.s = s;
 		this.d = d;
+		this.std();
 	}
 }
