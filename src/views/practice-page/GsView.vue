@@ -1,0 +1,3 @@
+<template>
+	gs-view
+</template>

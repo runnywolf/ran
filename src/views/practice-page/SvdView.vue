@@ -1,0 +1,3 @@
+<template>
+	svd-view
+</template>

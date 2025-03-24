@@ -1,0 +1,3 @@
+<template>
+	qr-view
+</template>

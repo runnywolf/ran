@@ -1,0 +1,3 @@
+<template>
+	diag-view
+</template>

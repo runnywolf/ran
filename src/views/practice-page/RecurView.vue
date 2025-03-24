@@ -1,0 +1,3 @@
+<template>
+	recur-view
+</template>

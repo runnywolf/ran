@@ -1,0 +1,3 @@
+<template>
+	inconsis-view
+</template>

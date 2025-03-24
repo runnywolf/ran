@@ -1,28 +1,12 @@
 <template>
 	<div class="ts-app-navbar navbar">
-		<router-link :class="getClass(['Home'])" :to="{ name: 'Home' }">
-			<div class="ts-icon is-house-icon"></div>
-			<div class="label">首頁</div>
-		</router-link>
-		<router-link :class="getClass(['Notes'])" :to="{ name: 'Notes' }">
-			<div class="ts-icon is-book-icon"></div>
-			<div class="label">筆記</div>
-		</router-link>
-		<router-link :class="getClass(['ExamMenu', 'Exam'])" :to="{ name: 'ExamMenu' }">
-			<div class="ts-icon is-file-icon"></div>
-			<div class="label">歷屆試題</div>
-		</router-link>
-		<router-link :class="getClass(['Search'])" :to="{ name: 'Search' }">
-			<div class="ts-icon is-magnifying-glass-icon"></div>
-			<div class="label">搜尋題目</div>
-		</router-link>
-		<router-link :class="getClass(['Practice'])" :to="{ name: 'Practice' }">
-			<div class="ts-icon is-pen-icon"></div>
-			<div class="label">模擬室</div>
-		</router-link>
-		<router-link :class="getClass(['Other'])" :to="{ name: 'Other' }">
-			<div class="ts-icon is-ellipsis-icon"></div>
-			<div class="label">更多</div>
+		<router-link v-for="optionInfo in navbarOptionList"
+			class="item"
+			:class="getClass(optionInfo.activeRouteNames)"
+			:to="{ name: optionInfo.toRouteName }"
+		>
+			<div :class="`ts-icon is-${optionInfo.iconName}-icon`"></div>
+			<div class="label">{{ optionInfo.label }}</div>
 		</router-link>
 	</div>
 </template>
@@ -32,9 +16,25 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute(); // 路由
 
-const getClass = (selectNames) => { // 根據目前的路由名稱, 決定目前的導航列項目樣式
-	for (const name of selectNames) if (route.name === name) return "item is-active"; // 讓當前路由名稱的項目看起來被選中
-	return "item";
+/* 導覽列的每個選項的資訊
+ * iconName: 選項的圖示 id (font-awesome)
+ * label: 選項的文字
+ * toRouteName: 點擊後會切換到的路由名稱
+ * activeRouteName: 若目前的路由名稱在這個 array 裡, 會使選項變成淺色 (看起來被選取)
+ */
+const navbarOptionList = [
+	{ iconName: "house", label: "首頁", toRouteName: "Home", activeRouteNames: [ "Home" ] },
+	{ iconName: "book", label: "筆記", toRouteName: "Notes", activeRouteNames: [ "Notes" ] },
+	{ iconName: "file", label: "歷屆試題", toRouteName: "ExamMenu", activeRouteNames: [ "ExamMenu", "Exam" ] },
+	{ iconName: "magnifying-glass", label: "搜尋題目", toRouteName: "Search", activeRouteNames: [ "Search" ] },
+	{ iconName: "pen", label: "模擬室", toRouteName: "Practice", activeRouteNames: [ "Practice" ] },
+	{ iconName: "ellipsis", label: "更多", toRouteName: "Other", activeRouteNames: [ "Other" ] },
+];
+
+const getClass = (activeRouteNames) => { // 根據目前的路由名稱讓特定選項看起來被選中
+	if (activeRouteNames.includes(route.name)) return "is-active";
+	if (activeRouteNames[0] == "Practice" && route.name.includes("Practice")) return "is-active"; // Practice 子頁面的例外處理
+	return "";
 };
 </script>
 
