@@ -41,45 +41,81 @@
 		
 		<!-- 遞迴式 (有很多輸入框) -->
 		<div class="ts-wrap is-middle-aligned" style="--gap: 0;">
+			
 			<vl exp="a_n = " />
+			
+			<!-- 齊次部分 (遞迴) -->
 			<div class="group-box" style="--bg: #fcc;">
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="a_{n-1} ~ +" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="a_{n-2} ~ +" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="a_{n-3}" />
+				<template v-for="i in recurNum">
+					<span
+						contenteditable
+						class="number-input"
+						@input="recurCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
+					></span>
+					<vl :exp="`a_{n-${i}}` + (i == recurNum ? '' : '~+')" />
+				</template>
 			</div>
 			<vl exp="+" />
+			
+			<!-- 非齊次部分 (多項式) -->
 			<div class="group-box" style="--bg: #bfb;">
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="+" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="n ~ +" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="n^2 ~ +" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="n^3" />
+				<template v-for="i in polyDegree+1">
+					<span
+						contenteditable
+						class="number-input"
+						@input="polyCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
+					></span>
+					<vl v-if="polyDegree != 0" :exp="getTermLatex(i-1)" />
+				</template>
 			</div>
 			<vl exp="+" />
+			
+			<!-- 非齊次部分 (指數) -->
 			<div class="group-box" style="--bg: #ccf;">
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="\cdot" />
-				<span class="number-input" contenteditable="true">0</span>
-				<vl exp="^n" />
+				<template v-for="i in expFuncNum">
+					<span
+						contenteditable
+						class="number-input"
+						@input="expFuncInput[i-1][0] = Frac.fromStr($event.target.innerText)"
+					></span>
+					<vl exp="\cdot" />
+					<span
+						contenteditable
+						class="number-input"
+						@input="expFuncInput[i-1][1] = Frac.fromStr($event.target.innerText)"
+					></span>
+					<vl :exp="'^n' + (i == expFuncNum ? '' : '~+')" />
+				</template>
+			</div>
+			
+		</div>
+		
+		<!-- 遞迴初始條件 (有很多輸入框) -->
+		<div class="ts-wrap is-compact is-middle-aligned">
+			<div v-for="i in recurNum" class="group-box" style="--bg: #ddd;">
+				<vl :exp="`a_${i-1} =`" />
+				<span
+					contenteditable
+					class="number-input"
+					@input="initConstInput[i-1] = Frac.fromStr($event.target.innerText)"
+				></span>
 			</div>
 		</div>
 		
-		<div>
-			{{ recurNum }}, {{ polyDegree }}, {{ expFuncNum }}
-		</div>
+		<!-- 根據輸入框得到的遞迴式 -->
+		<vl c :exp="`\\begin{gather*} a_n = ${getLatex()} \\end{gather*}`" />
 	</div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { Frac, makeLatexTerm } from "@/libs/RanMath.js"; // 分數
 
-const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數, 指數項數
+const emit = defineEmits([
+	"input", // 遞迴式改變時, 上傳遞迴式資訊
+]);
+
+const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數, 指數項數 的調整按鈕
 	{
 		name: "遞迴階數", // 區塊名稱
 		bgColor: "#fcc", // 區塊的背景顏色
@@ -104,8 +140,106 @@ const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數,
 ];
 
 const recurNum = ref(2); // 遞迴階數, 範圍: 1 ~ 3
-const polyDegree = ref(1); // 多項式次數, 範圍: -1 ~ 2
+const polyDegree = ref(-1); // 多項式次數, 範圍: -1 ~ 2
 const expFuncNum = ref(0); // 指數項數, 範圍: 0 ~ 2
+
+const recurCoefInput = ref([]); // 遞迴的係數 Arr[Frac], 元素個數 = 遞迴階數
+const polyCoefInput = ref([]); // 多項式的係數 Arr[Frac], 元素個數-1 = 多項式次數
+const expFuncInput = ref([]); // 指數部分的係數和底數 Arr[[Frac, Frac]], 元素個數 = 指數項數
+const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
+
+const expFunc = ref({}); // 將 expFuncInput 的重複項合併成 { key: 底數, value: 係數 }
+
+const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
+	const term = (n == 0 ? "" : (n == 1 ? "x" : `x^${n}`));
+	const add = (n == polyDegree.value ? "" : (n == 0 ? "+" : "~+"));
+	return term + add;
+};
+
+watch(recurNum, (newRecurNum) => { // 當遞迴階數改變時
+	while (recurCoefInput.value.length < newRecurNum) recurCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
+	while (recurCoefInput.value.length > newRecurNum) recurCoefInput.value.pop(); // array 長度過長就刪除尾端
+	while (initConstInput.value.length < newRecurNum) initConstInput.value.push(new Frac(0)); // array 長度不夠就補 0
+	while (initConstInput.value.length > newRecurNum) initConstInput.value.pop(); // array 長度過長就刪除尾端
+}, { immediate: true });
+
+watch(polyDegree, (newPolyDegree) => { // 當多項式次數改變時
+	while (polyCoefInput.value.length < newPolyDegree+1) polyCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
+	while (polyCoefInput.value.length > newPolyDegree+1) polyCoefInput.value.pop(); // array 長度過長就刪除尾端
+}, { immediate: true });
+
+watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
+	while (expFuncInput.value.length < newExpFuncNum) { // array 長度不夠就補 [0, 0]
+		expFuncInput.value.push([new Frac(0), new Frac(0)]);
+	}
+	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
+}, { immediate: true });
+
+watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合併
+	const expFuncDict = {}; // 使用 dict 來合併重複的指數
+	for (const exp of newInput) {
+		const key = `${exp[1].n}/${exp[1].d}`; // 將底數作為 key
+		if (!(key in expFuncDict)) expFuncDict[key] = new Frac(0);
+		expFuncDict[key] = expFuncDict[key].add(exp[0]); // 將係數作為 value
+	}
+	expFuncDict["0/1"] = new Frac(0); // 0^n 項應該被刪除
+	
+	expFunc.value = expFuncDict;
+}, { immediate: true, deep: true });
+
+const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞迴部分的 latex 字串
+	let resultLatex = "";
+	for (const [i, frac_coef] of recurCoefInput.value.entries()) { // 處理所有的係數 p_i
+		resultLatex += makeLatexTerm(frac_coef, `a_{n-${i+1}}`, 1); // 加上 p_i * a_{n-i}
+	}
+	return resultLatex; // 用 + 把遞迴部分的每一項連接起來
+};
+
+const getResultPolyLatex = () => { // 根據輸入框得到的遞迴式 的多項式部分的 latex 字串
+	let resultLatex = "";
+	for (let [i, frac_coef] of polyCoefInput.value.entries()) { // 處理所有的係數 q_i
+		resultLatex += makeLatexTerm(frac_coef, "x", i); // 加上 p_i * x^i
+	}
+	return resultLatex;
+};
+
+const getResultExpLatex = () => { // 根據輸入框得到的遞迴式 的指數部分的 latex 字串
+	let resultLatex = "";
+	for (const [s_base, frac_coef] of Object.entries(expFunc.value)) {
+		const frac_base = Frac.fromStr(s_base); // 底數
+		
+		const isPositiveInt = (frac_base.n > 0 && frac_base.isInt()); // 底數是否是正整數
+		const baseLatex = isPositiveInt ? frac_base.toLatex() : `\\left(${frac_base.toLatex()}\\right)`; // 若底數不是正整數, 要加括號
+		
+		resultLatex += makeLatexTerm(frac_coef, baseLatex, "n", true);
+	}
+	return resultLatex;
+};
+
+const getResultLatex = () => { // 根據輸入框得到的遞迴式的 latex 字串
+	let resultLatex = getResultRecurLatex() + getResultPolyLatex() + getResultExpLatex();
+	if (resultLatex == "") return "0"; // 若遞迴式都為空, 回傳 "0"
+	if (resultLatex[0] == "+") resultLatex = resultLatex.slice(1); // 去掉開頭的 +
+	return resultLatex;
+};
+
+const getInitConstLatex = () => { // 根據輸入框得到的初始條件的 latex 字串
+	let resultLatexArray = [];
+	for (const [i, frac_init] of initConstInput.value.entries()) { // 處理所有的係數 q_i
+		resultLatexArray.push(`a_${i} = ${frac_init.toLatex()}`); // 加上 a_i = ?
+	}
+	return resultLatexArray.join(" ~,\\enspace ");
+};
+
+const getLatex = () => {
+	emit("input", { // 上傳遞迴式至 RecurView
+		recurCoef: recurCoefInput.value,
+		polyCoef: polyCoefInput.value,
+		expFunc: expFunc.value,
+		initConst: initConstInput.value,
+	});
+	return getResultLatex() + " \\\\ " + getInitConstLatex();
+};
 </script>
 
 <style scoped>
