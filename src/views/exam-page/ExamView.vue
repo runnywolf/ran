@@ -177,7 +177,7 @@ const scrollToProblem = () => { // 若從題目跳轉到題本, 題本頁面需�
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
-	if (idParam.length != 2){ // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
+	if (idParam.length != 2) { // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
 		handleWrongExamIdFormat(newExamId);
 		return;
 	}

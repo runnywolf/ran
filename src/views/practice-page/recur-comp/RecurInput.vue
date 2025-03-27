@@ -151,7 +151,7 @@ const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數
 const expFunc = ref({}); // 將 expFuncInput 的重複項合併成 { key: 底數, value: 係數 }
 
 const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
-	const term = (n == 0 ? "" : (n == 1 ? "x" : `x^${n}`));
+	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
 	const add = (n == polyDegree.value ? "" : (n == 0 ? "+" : "~+"));
 	return term + add;
 };
@@ -174,6 +174,8 @@ watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
 	}
 	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
+
+// 多項式最高次項為 0, 去除
 
 watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合併
 	const expFuncDict = {}; // 使用 dict 來合併重複的指數
@@ -198,7 +200,7 @@ const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞�
 const getResultPolyLatex = () => { // 根據輸入框得到的遞迴式 的多項式部分的 latex 字串
 	let resultLatex = "";
 	for (let [i, frac_coef] of polyCoefInput.value.entries()) { // 處理所有的係數 q_i
-		resultLatex += makeLatexTerm(frac_coef, "x", i); // 加上 p_i * x^i
+		resultLatex += makeLatexTerm(frac_coef, "n", i); // 加上 p_i * x^i
 	}
 	return resultLatex;
 };

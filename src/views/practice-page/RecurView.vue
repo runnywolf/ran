@@ -1,5 +1,7 @@
 <template>
 	<RecurInput @input="recurInputChange"></RecurInput>
+	<div class="ts-divider is-section"></div>
+	<!-- solution -->
 </template>
 
 <script setup>
