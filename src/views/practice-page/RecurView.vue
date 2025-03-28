@@ -11,6 +11,3 @@ const recurInputChange = (recurData) => {
 	console.log(recurData); // test
 };
 </script>
-
-<style scoped>
-</style>

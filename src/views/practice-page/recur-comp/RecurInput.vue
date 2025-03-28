@@ -148,7 +148,10 @@ const polyCoefInput = ref([]); // 多項式的係數 Arr[Frac], 元素個數-1 =
 const expFuncInput = ref([]); // 指數部分的係數和底數 Arr[[Frac, Frac]], 元素個數 = 指數項數
 const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
 
+const recurCoef = ref([]); // 去除 0 係數遞迴
+const polyCoef = ref([]); // 去除 0 係數項
 const expFunc = ref({}); // 將 expFuncInput 的重複項合併成 { key: 底數, value: 係數 }
+const initConst = ref({}); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 
 const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
 	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
@@ -162,11 +165,22 @@ watch(recurNum, (newRecurNum) => { // 當遞迴階數改變時
 	while (initConstInput.value.length < newRecurNum) initConstInput.value.push(new Frac(0)); // array 長度不夠就補 0
 	while (initConstInput.value.length > newRecurNum) initConstInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
+watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
+	let coef = [...newInput];
+	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數遞迴
+	recurCoef.value = coef;
+	initConst.value = initConstInput.value.slice(0, coef.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+}, { immediate: true, deep: true });
 
 watch(polyDegree, (newPolyDegree) => { // 當多項式次數改變時
 	while (polyCoefInput.value.length < newPolyDegree+1) polyCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
 	while (polyCoefInput.value.length > newPolyDegree+1) polyCoefInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
+watch(polyCoefInput, (newInput) => { // 遞迴部分被修改
+	let coef = [...newInput];
+	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數項
+	polyCoef.value = coef;
+}, { immediate: true, deep: true });
 
 watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
 	while (expFuncInput.value.length < newExpFuncNum) { // array 長度不夠就補 [0, 0]
@@ -174,9 +188,6 @@ watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
 	}
 	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
-
-// 多項式最高次項為 0, 去除
-
 watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合併
 	const expFuncDict = {}; // 使用 dict 來合併重複的指數
 	for (const exp of newInput) {
@@ -191,7 +202,7 @@ watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合
 
 const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞迴部分的 latex 字串
 	let resultLatex = "";
-	for (const [i, frac_coef] of recurCoefInput.value.entries()) { // 處理所有的係數 p_i
+	for (const [i, frac_coef] of recurCoef.value.entries()) { // 處理所有的係數 p_i
 		resultLatex += makeLatexTerm(frac_coef, `a_{n-${i+1}}`, 1); // 加上 p_i * a_{n-i}
 	}
 	return resultLatex; // 用 + 把遞迴部分的每一項連接起來
@@ -199,7 +210,7 @@ const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞�
 
 const getResultPolyLatex = () => { // 根據輸入框得到的遞迴式 的多項式部分的 latex 字串
 	let resultLatex = "";
-	for (let [i, frac_coef] of polyCoefInput.value.entries()) { // 處理所有的係數 q_i
+	for (let [i, frac_coef] of polyCoef.value.entries()) { // 處理所有的係數 q_i
 		resultLatex += makeLatexTerm(frac_coef, "n", i); // 加上 p_i * x^i
 	}
 	return resultLatex;
@@ -227,18 +238,18 @@ const getResultLatex = () => { // 根據輸入框得到的遞迴式的 latex 字
 
 const getInitConstLatex = () => { // 根據輸入框得到的初始條件的 latex 字串
 	let resultLatexArray = [];
-	for (const [i, frac_init] of initConstInput.value.entries()) { // 處理所有的係數 q_i
+	for (const [i, frac_init] of initConst.value.entries()) { // 處理所有的係數 q_i
 		resultLatexArray.push(`a_${i} = ${frac_init.toLatex()}`); // 加上 a_i = ?
 	}
 	return resultLatexArray.join(" ~,\\enspace ");
 };
 
-const getLatex = () => {
+const getLatex = () => { // 顯示在遞迴產生器下方的遞迴式的 latex 字串
 	emit("input", { // 上傳遞迴式至 RecurView
-		recurCoef: recurCoefInput.value,
-		polyCoef: polyCoefInput.value,
+		recurCoef: recurCoef.value,
+		polyCoef: polyCoef.value,
 		expFunc: expFunc.value,
-		initConst: initConstInput.value,
+		initConst: initConst.value,
 	});
 	return getResultLatex() + " \\\\ " + getInitConstLatex();
 };
