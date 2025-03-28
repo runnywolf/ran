@@ -327,6 +327,12 @@ export class SolveCubic { // 解三次方程式
 	}
 }
 
+export class SolveRecur { // 解非齊次遞迴
+	constructor(recurCoef, polyCoef, expFunc, initConst) {
+		
+	}
+}
+
 export function makeLatexTerm(coef, s_base, pow, drawCdot = false) { // 根據係數, 底數名稱, 次方數生成 latex 語法
 	const frac_coef = (typeof coef === "number" ? new Frac(coef) : coef);
 	

@@ -151,7 +151,7 @@ const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數
 const recurCoef = ref([]); // 去除 0 係數遞迴
 const polyCoef = ref([]); // 去除 0 係數項
 const expFunc = ref({}); // 將 expFuncInput 的重複項合併成 { key: 底數, value: 係數 }
-const initConst = ref({}); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+const initConst = ref([]); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 
 const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
 	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
@@ -195,9 +195,13 @@ watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合
 		if (!(key in expFuncDict)) expFuncDict[key] = new Frac(0);
 		expFuncDict[key] = expFuncDict[key].add(exp[0]); // 將係數作為 value
 	}
-	expFuncDict["0/1"] = new Frac(0); // 0^n 項應該被刪除
+	delete expFuncDict["0/1"] // 0^n 項應該被刪除
 	
 	expFunc.value = expFuncDict;
+}, { immediate: true, deep: true });
+
+watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
+	initConst.value = newInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 }, { immediate: true, deep: true });
 
 const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞迴部分的 latex 字串
@@ -245,13 +249,28 @@ const getInitConstLatex = () => { // 根據輸入框得到的初始條件的 lat
 };
 
 const getLatex = () => { // 顯示在遞迴產生器下方的遞迴式的 latex 字串
-	emit("input", { // 上傳遞迴式至 RecurView
+	emitRecurData(); // 當遞迴式改變時, 上傳遞迴式至 RecurView
+	return getResultLatex() + " \\\\ " + getInitConstLatex();
+};
+
+const emitRecurData = () => { // 上傳遞迴式至 RecurView
+	const polyAddConst = [...polyCoef.value];
+	if ("1/1" in expFunc.value) { // c1^n 指數項視為常數 c, 加到多項式
+		if (polyAddConst.length === 0) polyAddConst.push(expFunc.value["1/1"]);
+		else polyAddConst[0] = polyAddConst[0].add(expFunc.value["1/1"]);
+	}
+	
+	const expFuncRemoveConst = {} // 將 c1^n 指數項移除
+	for (let [key, value] of Object.entries(expFunc.value)) {
+		if (key != "1/1") expFuncRemoveConst[key] = value;
+	}
+	
+	emit("input", {
 		recurCoef: recurCoef.value,
-		polyCoef: polyCoef.value,
-		expFunc: expFunc.value,
+		polyCoef: polyAddConst,
+		expFunc: expFuncRemoveConst,
 		initConst: initConst.value,
 	});
-	return getResultLatex() + " \\\\ " + getInitConstLatex();
 };
 </script>
 
