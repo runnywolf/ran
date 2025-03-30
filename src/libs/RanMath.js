@@ -25,6 +25,8 @@ export function isPerfectSquare(n) { // 是不是完全平方數
 	return sqrt_int ** 2 == n;
 }
 
+export const isNatural = (n) => Number.isInteger(n) && n >= 0; // n 是否是自然數
+
 export class Prime { // 質數
 	static prime = [2];
 	
@@ -49,7 +51,7 @@ export class Prime { // 質數
 export class Frac { // 分數
 	static fromStr(str) { // 將字串轉為分數
 		const arrayFrac = str.split("/");
-		for (const i of arrayFrac) if (!isInt(i)) return new Frac(0); // 若某個部份不是整數, 回傳 0
+		for (const i of arrayFrac) if (!isStrInt(i)) return new Frac(0); // 若某個部份不是整數, 回傳 0
 		
 		if (arrayFrac.length == 1) { // 輸入整數
 			return new Frac(Number(arrayFrac[0]));
@@ -150,6 +152,10 @@ export class Frac { // 分數
 	equal(frac) { // 比較兩個分數是否相同
 		return this.n == frac.n && this.d == frac.d;
 	}
+}
+
+export class Matrix { // 矩陣
+	
 }
 
 export class SolveQuad { // 解二次方程式
@@ -327,42 +333,57 @@ export class SolveCubic { // 解三次方程式
 	}
 }
 
+export class SolveInverse { // 解反矩陣
+	
+}
+
+export class SolveLinear { // 解線性方程組
+	constructor() {
+		
+	}
+}
+
 export class SolveRecur { // 解非齊次遞迴
 	constructor(recurCoef, polyCoef, expFunc, initConst) {
 		
 	}
 }
 
-export function makeLatexTerm(coef, s_base, pow, drawCdot = false) { // 根據係數, 底數名稱, 次方數生成 latex 語法
-	const frac_coef = (typeof coef === "number" ? new Frac(coef) : coef);
+export function makeLatexTerm(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 latex 語法
+	if (coef instanceof Frac) coef = coef.toLatex();
+	else coef = String(coef);
 	
-	if (frac_coef.isZero()) return ""; // 係數為 0, 那這一項就不存在
+	if (base instanceof Frac) {
+		if (!base.isInt()) base = `\\left(${base.toLatex()}\\right)`; // 分數為底數要加括號
+		else base = base.toLatex();
+	} else base = String(base);
+	if (base[0] === "-") base = `\\left(${base}\\right)`; // 底數有負號要加括號
+	
+	if (pow instanceof Frac) pow = `${pow.n}/${pow.d}`;
+	else pow = String(pow);
+	
+	if (coef === "0" || base === "0") return (firstPos ? "+" : "") + "0";
 	
 	let s_coefLatex = ""; // 係數部分的 latex 字串
-	if (frac_coef.isInt()) { // 若係數為整數, 將參數 (分數型態) 轉為整數的 latex
-		if (frac_coef.n == 1) s_coefLatex = "";
-		else if (frac_coef.n == -1) s_coefLatex = "-";
-		else s_coefLatex = `${frac_coef.n}`; // 如果整數不為 1 或 -1, 顯示係數
-		
-		if (Math.abs(frac_coef.n) == 1 && pow == 0) s_coefLatex += "1";
-		
-		if (frac_coef.n > 0) s_coefLatex = "+" + s_coefLatex; // 若參數為正整數, 需要在前面補 "+"
-		
-		if (drawCdot && Math.abs(frac_coef.n) > 1 && pow != 0) s_coefLatex += "\\cdot"; // 是否要繪製乘法
-	} else { // 若係數為分數
-		s_coefLatex = `+${frac_coef.toLatex()}`;
-	}
+	if (coef === "-1") s_coefLatex = (pow === "0" ? "-1" : "-");
+	else if (coef === "1") s_coefLatex = (pow === "0" ? "1" : "");
+	else s_coefLatex = coef;
+	if (s_coefLatex[0] !== "-") s_coefLatex = (firstPos ? "+" : "") + s_coefLatex; // 開頭無負號要補 +
 	
 	let s_varLatex = ""; // 變數部分的 latex
-	if (pow != 0) {
-		s_varLatex += s_base; // 次方不為 0, 顯示底數
-		if (pow != 1) s_varLatex = `{${s_varLatex}}^{${pow}}`; // 次方不為 0 or 1, 顯示指數
+	if (pow !== "0") {
+		s_varLatex += base; // 次方不為 0, 顯示底數
+		if (pow !== "1") s_varLatex = `{${s_varLatex}}^{${pow}}`; // 次方不為 0 or 1, 顯示指數
+	}
+	
+	if (isStrInt(s_coefLatex[s_coefLatex.length-1]) && isStrInt(base[0])) {
+		s_coefLatex += " \\cdot "; // 係數與底數連接處若都為數字, 需要加乘點分離
 	}
 	
 	return s_coefLatex + s_varLatex;
 }
 
-export const isInt = (str) => /^-?\d+$/.test(str); // 某個字串是否為整數
+export const isStrInt = (str) => /^-?\d+$/.test(str); // 某個字串是否為整數
 
 function throwErr(method, message) {
 	console.error(`[RanMath.${method}] ${message}`);

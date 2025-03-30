@@ -50,6 +50,7 @@
 					<span
 						contenteditable
 						class="number-input"
+						:class="(recurCoefInput[i-1].isZero() ? 'number-input-error' : '')"
 						@input="recurCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
 					></span>
 					<vl :exp="`a_{n-${i}}` + (i == recurNum ? '' : '~+')" />
@@ -63,6 +64,7 @@
 					<span
 						contenteditable
 						class="number-input"
+						:class="(polyCoefInput[i-1].isZero() ? 'number-input-error' : '')"
 						@input="polyCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
 					></span>
 					<vl v-if="polyDegree != 0" :exp="getTermLatex(i-1)" />
@@ -76,15 +78,25 @@
 					<span
 						contenteditable
 						class="number-input"
+						:class="(expFuncInput[i-1][0].isZero() ? 'number-input-error' : '')"
 						@input="expFuncInput[i-1][0] = Frac.fromStr($event.target.innerText)"
 					></span>
 					<vl exp="\cdot" />
 					<span
 						contenteditable
 						class="number-input"
+						:class="(expFuncInput[i-1][1].isZero() ? 'number-input-error' : '')"
 						@input="expFuncInput[i-1][1] = Frac.fromStr($event.target.innerText)"
 					></span>
-					<vl :exp="'^n' + (i == expFuncNum ? '' : '~+')" />
+					<vl exp="^n \cdot" />
+					<span>n^</span>
+					<span
+						contenteditable
+						class="number-input"
+						:class="(!isNatural(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
+						@input="expFuncInput[i-1][2] = Number($event.target.innerText)"
+					>0</span>
+					<vl v-if="i != expFuncNum" exp="+" />
 				</template>
 			</div>
 			
@@ -109,7 +121,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Frac, makeLatexTerm } from "@/libs/RanMath.js"; // 分數
+import { isNatural, Frac, makeLatexTerm } from "@/libs/RanMath.js"; // 分數
 
 const emit = defineEmits([
 	"input", // 遞迴式改變時, 上傳遞迴式資訊
@@ -128,14 +140,14 @@ const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數,
 		bgColor: "#bfb",
 		add: (n) => { polyDegree.value += n; },
 		isMin: () => polyDegree.value <= -1,
-		isMax: () => polyDegree.value >= 2,
+		isMax: () => polyDegree.value >= 3,
 	},
 	{
 		name: "指數項數",
 		bgColor: "#ccf",
 		add: (n) => { expFuncNum.value += n; },
 		isMin: () => expFuncNum.value <= 0,
-		isMax: () => expFuncNum.value >= 2,
+		isMax: () => expFuncNum.value >= 3,
 	},
 ];
 
@@ -145,12 +157,11 @@ const expFuncNum = ref(0); // 指數項數, 範圍: 0 ~ 2
 
 const recurCoefInput = ref([]); // 遞迴的係數 Arr[Frac], 元素個數 = 遞迴階數
 const polyCoefInput = ref([]); // 多項式的係數 Arr[Frac], 元素個數-1 = 多項式次數
-const expFuncInput = ref([]); // 指數部分的係數和底數 Arr[[Frac, Frac]], 元素個數 = 指數項數
+const expFuncInput = ref([]); // 指數部分的係數和底數 Arr[[Frac, Frac, int]], 元素個數 = 指數項數
 const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
 
-const recurCoef = ref([]); // 去除 0 係數遞迴
-const polyCoef = ref([]); // 去除 0 係數項
-const expFunc = ref({}); // 將 expFuncInput 的重複項合併成 { key: 底數, value: 係數 }
+const recurCoef = ref([]); // 去除 0 係數的遞迴
+const nonHomoFunc = ref({}); // 非齊次的 c n^p (a/b)^n 項會表示為 { "p|a/b": c , ... }
 const initConst = ref([]); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 
 const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
@@ -165,6 +176,19 @@ watch(recurNum, (newRecurNum) => { // 當遞迴階數改變時
 	while (initConstInput.value.length < newRecurNum) initConstInput.value.push(new Frac(0)); // array 長度不夠就補 0
 	while (initConstInput.value.length > newRecurNum) initConstInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
+
+watch(polyDegree, (newPolyDegree) => { // 當多項式次數改變時
+	while (polyCoefInput.value.length < newPolyDegree+1) polyCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
+	while (polyCoefInput.value.length > newPolyDegree+1) polyCoefInput.value.pop(); // array 長度過長就刪除尾端
+}, { immediate: true });
+
+watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
+	while (expFuncInput.value.length < newExpFuncNum) { // array 長度不夠就補 [0, 0]
+		expFuncInput.value.push([new Frac(0), new Frac(0), 0]);
+	}
+	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
+}, { immediate: true });
+
 watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
 	let coef = [...newInput];
 	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數遞迴
@@ -172,32 +196,23 @@ watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
 	initConst.value = initConstInput.value.slice(0, coef.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 }, { immediate: true, deep: true });
 
-watch(polyDegree, (newPolyDegree) => { // 當多項式次數改變時
-	while (polyCoefInput.value.length < newPolyDegree+1) polyCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
-	while (polyCoefInput.value.length > newPolyDegree+1) polyCoefInput.value.pop(); // array 長度過長就刪除尾端
-}, { immediate: true });
-watch(polyCoefInput, (newInput) => { // 遞迴部分被修改
-	let coef = [...newInput];
-	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數項
-	polyCoef.value = coef;
-}, { immediate: true, deep: true });
-
-watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
-	while (expFuncInput.value.length < newExpFuncNum) { // array 長度不夠就補 [0, 0]
-		expFuncInput.value.push([new Frac(0), new Frac(0)]);
-	}
-	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
-}, { immediate: true });
-watch(expFuncInput, (newInput) => { // 當指數部分被修改, 將重複項合併
-	const expFuncDict = {}; // 使用 dict 來合併重複的指數
-	for (const exp of newInput) {
-		const key = `${exp[1].n}/${exp[1].d}`; // 將底數作為 key
-		if (!(key in expFuncDict)) expFuncDict[key] = new Frac(0);
-		expFuncDict[key] = expFuncDict[key].add(exp[0]); // 將係數作為 value
-	}
-	delete expFuncDict["0/1"] // 0^n 項應該被刪除
+watch([polyCoefInput, expFuncInput], ([newPolyCoefInput, newExpFuncInput]) => { // 當非齊次部分被修改
+	let expFunc = {}; // 使用 dict 來合併重複的指數
+	const addTerm = (frac_c, p, frac_b) => { // 將 c n^p b^n 項加入到 expFunc
+		if (frac_c.isZero() || frac_b.isZero()) return; // 係數為 0 或底數為 0 -> 可忽略
+		
+		const key = `${p},${frac_b.n}/${frac_b.d}`; // 非齊次的 c n^p (a/b)^n 項會表示為 { "p,a/b": c , ... }
+		if (key in expFunc) expFunc[key] = expFunc[key].add(frac_c); // key 存在
+		else expFunc[key] = frac_c; // key 不存在就建立新的
+	};
 	
-	expFunc.value = expFuncDict;
+	for (const [i, coef] of newPolyCoefInput.entries()) addTerm(coef, i, new Frac(1)); // 讀取多項式部分輸入
+	
+	for (const [frac_c, frac_b, p] of newExpFuncInput) if (isNatural(p)) addTerm(frac_c, p, frac_b); // 讀取指數部分的輸入
+	
+	for (const [key, frac_c] of Object.entries(expFunc)) if (frac_c.isZero()) delete expFunc[key]; // 刪除係數為 0 的項
+	
+	nonHomoFunc.value = expFunc;
 }, { immediate: true, deep: true });
 
 watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
@@ -207,36 +222,34 @@ watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
 const getResultRecurLatex = () => { // 根據輸入框得到的遞迴式 的遞迴部分的 latex 字串
 	let resultLatex = "";
 	for (const [i, frac_coef] of recurCoef.value.entries()) { // 處理所有的係數 p_i
-		resultLatex += makeLatexTerm(frac_coef, `a_{n-${i+1}}`, 1); // 加上 p_i * a_{n-i}
+		const s_term = makeLatexTerm(frac_coef, `a_{n-${i+1}}`, 1);
+		if (s_term !== "+0") resultLatex += s_term; // 若為非零項, 則加上 p_i * a_{n-i}
 	}
+	
 	return resultLatex; // 用 + 把遞迴部分的每一項連接起來
 };
 
-const getResultPolyLatex = () => { // 根據輸入框得到的遞迴式 的多項式部分的 latex 字串
+const getResultNonHomoLatex = () => { // 根據輸入框得到的遞迴式 的非齊次部分的 latex 字串
 	let resultLatex = "";
-	for (let [i, frac_coef] of polyCoef.value.entries()) { // 處理所有的係數 q_i
-		resultLatex += makeLatexTerm(frac_coef, "n", i); // 加上 p_i * x^i
-	}
-	return resultLatex;
-};
-
-const getResultExpLatex = () => { // 根據輸入框得到的遞迴式 的指數部分的 latex 字串
-	let resultLatex = "";
-	for (const [s_base, frac_coef] of Object.entries(expFunc.value)) {
-		const frac_base = Frac.fromStr(s_base); // 底數
+	for (const [key, frac_c] of Object.entries(nonHomoFunc.value)) {
+		const [s_p, s_frac_b] = key.split(","); // n^p
+		const frac_b = Frac.fromStr(s_frac_b); // b^n
 		
-		const isPositiveInt = (frac_base.n > 0 && frac_base.isInt()); // 底數是否是正整數
-		const baseLatex = isPositiveInt ? frac_base.toLatex() : `\\left(${frac_base.toLatex()}\\right)`; // 若底數不是正整數, 要加括號
-		
-		resultLatex += makeLatexTerm(frac_coef, baseLatex, "n", true);
+		let s_term = makeLatexTerm(frac_c, "n", s_p); // c n^p
+		if (!frac_b.equal(new Frac(1))) {
+			if (s_term[0] === "+") s_term = s_term.slice(1);
+			s_term = makeLatexTerm(s_term, frac_b, "n"); // 若 b^n 部分不為 1^n , 接在後端
+		}
+		if (s_term !== "+0") resultLatex += s_term; // 若為非零項, 則加上 c n^p b^n
 	}
 	return resultLatex;
 };
 
 const getResultLatex = () => { // 根據輸入框得到的遞迴式的 latex 字串
-	let resultLatex = getResultRecurLatex() + getResultPolyLatex() + getResultExpLatex();
+	
+	let resultLatex = getResultRecurLatex() + getResultNonHomoLatex();
 	if (resultLatex == "") return "0"; // 若遞迴式都為空, 回傳 "0"
-	if (resultLatex[0] == "+") resultLatex = resultLatex.slice(1); // 去掉開頭的 +
+	if (resultLatex[0] === "+") resultLatex = resultLatex.slice(1); // 去掉開頭的 +
 	return resultLatex;
 };
 
@@ -254,21 +267,9 @@ const getLatex = () => { // 顯示在遞迴產生器下方的遞迴式的 latex 
 };
 
 const emitRecurData = () => { // 上傳遞迴式至 RecurView
-	const polyAddConst = [...polyCoef.value];
-	if ("1/1" in expFunc.value) { // c1^n 指數項視為常數 c, 加到多項式
-		if (polyAddConst.length === 0) polyAddConst.push(expFunc.value["1/1"]);
-		else polyAddConst[0] = polyAddConst[0].add(expFunc.value["1/1"]);
-	}
-	
-	const expFuncRemoveConst = {} // 將 c1^n 指數項移除
-	for (let [key, value] of Object.entries(expFunc.value)) {
-		if (key != "1/1") expFuncRemoveConst[key] = value;
-	}
-	
 	emit("input", {
 		recurCoef: recurCoef.value,
-		polyCoef: polyAddConst,
-		expFunc: expFuncRemoveConst,
+		nonHomoFunc: nonHomoFunc.value,
 		initConst: initConst.value,
 	});
 };
@@ -297,5 +298,8 @@ const emitRecurData = () => { // 上傳遞迴式至 RecurView
 	text-align: center;
 	line-height: 1.8;
 	white-space: nowrap; /* 禁止換行 */
+}
+.number-input-error { /* 不合法的輸入值會變成紅色 */
+	color: #f00;
 }
 </style>
