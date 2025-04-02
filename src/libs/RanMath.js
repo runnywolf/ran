@@ -25,7 +25,9 @@ export function isPerfectSquare(n) { // 是不是完全平方數
 	return sqrt_int ** 2 == n;
 }
 
-export const isNatural = (n) => Number.isInteger(n) && n >= 0; // n 是否是自然數
+export function isNatural (n) { // n 是否是自然數
+	return Number.isInteger(n) && n >= 0;
+}
 
 export class Prime { // 質數
 	static prime = [2];
@@ -155,7 +157,7 @@ export class Frac { // 分數
 }
 
 export class Matrix { // 矩陣
-	
+	// inverse
 }
 
 export class SolveQuad { // 解二次方程式
@@ -333,23 +335,17 @@ export class SolveCubic { // 解三次方程式
 	}
 }
 
-export class SolveInverse { // 解反矩陣
-	
+// 以下為字串處理
+
+function throwErr(method, message) {
+	console.error(`[RanMath.${method}] ${message}`);
 }
 
-export class SolveLinear { // 解線性方程組
-	constructor() {
-		
-	}
+export function isStrInt(str) { // 某個字串是否為整數
+	return /^-?\d+$/.test(str);
 }
 
-export class SolveRecur { // 解非齊次遞迴
-	constructor(recurCoef, polyCoef, expFunc, initConst) {
-		
-	}
-}
-
-export function makeLatexTerm(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 latex 語法
+export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
 	if (coef instanceof Frac) coef = coef.toLatex();
 	else coef = String(coef);
 	
@@ -368,7 +364,12 @@ export function makeLatexTerm(coef, base, pow, firstPos = true) { // 根據係�
 	if (coef === "-1") s_coefLatex = (pow === "0" ? "-1" : "-");
 	else if (coef === "1") s_coefLatex = (pow === "0" ? "1" : "");
 	else s_coefLatex = coef;
+	
 	if (s_coefLatex[0] !== "-") s_coefLatex = (firstPos ? "+" : "") + s_coefLatex; // 開頭無負號要補 +
+	
+	if (isStrInt(s_coefLatex[s_coefLatex.length-1]) && isStrInt(base[0])) {
+		s_coefLatex += " \\cdot "; // 係數與底數連接處若都為數字, 需要加乘點分離
+	}
 	
 	let s_varLatex = ""; // 變數部分的 latex
 	if (pow !== "0") {
@@ -376,15 +377,38 @@ export function makeLatexTerm(coef, base, pow, firstPos = true) { // 根據係�
 		if (pow !== "1") s_varLatex = `{${s_varLatex}}^{${pow}}`; // 次方不為 0 or 1, 顯示指數
 	}
 	
-	if (isStrInt(s_coefLatex[s_coefLatex.length-1]) && isStrInt(base[0])) {
-		s_coefLatex += " \\cdot "; // 係數與底數連接處若都為數字, 需要加乘點分離
-	}
-	
 	return s_coefLatex + s_varLatex;
 }
 
-export const isStrInt = (str) => /^-?\d+$/.test(str); // 某個字串是否為整數
-
-function throwErr(method, message) {
-	console.error(`[RanMath.${method}] ${message}`);
+export function makeRecurLatex(recurCoef, nonHomoFunc, initConst) { // 生成遞迴關係式的 latex 字串
+	let s_latex = "";
+	
+	for (const [i, frac_coef] of recurCoef.entries()) { // 生成齊次部分: r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}
+		const s_term = makeTermLatex(frac_coef, `a_{n-${i+1}}`, 1);
+		if (s_term !== "+0") s_latex += s_term; // 只顯示係數 r_i 不為 0 的項
+	}
+	
+	for (const [key, frac_c] of Object.entries(nonHomoFunc)) { // 生成非齊次部分: frac_c n^k (frac_b)^n + ...
+		const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
+		const frac_b = Frac.fromStr(s_frac_b); // frac_b
+		
+		let s_term = makeTermLatex(frac_c, "n", s_k); // c n^k 部分的 latex 字串
+		if (!frac_b.equal(new Frac(1))) s_term = makeTermLatex(s_term, frac_b, "n", false); // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
+		if (s_term !== "+0") s_latex += s_term; // 只顯示 c n^k 不為 0 的項
+	}
+	
+	if (s_latex === "") s_latex = "0"; // 如果齊次與非齊次部分沒有任何一項, 顯示 "0"
+	if (s_latex[0] === "+") s_latex = s_latex.slice(1); // 去掉開頭的 +
+	s_latex = "a_n = " + s_latex; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
+	
+	s_latex += `~,\\enspace n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+	s_latex += "\\\\"; // 換行
+	
+	let initConstLatexArr = []; // 每一個初始條件 a_i = ? 的 latex 字串
+	for (const [i, frac_init] of initConst.entries()) { // 生成初始條件部分: a_0 = ? , a_1 = ? , a_2 = ?
+		initConstLatexArr.push(`a_${i} = ${frac_init.toLatex()}`);
+	}
+	s_latex += initConstLatexArr.join(" ~,\\enspace ");
+	
+	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
 }
