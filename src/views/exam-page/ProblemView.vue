@@ -14,7 +14,7 @@
 						@click="() => { globalVar.examScrollProbNo = no; }"
 					>
 						<span>&nbsp;{{ config.uni[uni] ? config.uni[uni].shortName : "" }}</span>
-						<span>&nbsp;{{ year ? year : "" }}</span>
+						<span>&nbsp;{{ year ?? "" }}</span>
 					</router-link>
 				</div>
 				

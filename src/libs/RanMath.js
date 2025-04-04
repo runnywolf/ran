@@ -25,7 +25,7 @@ export function isPerfectSquare(n) { // 是不是完全平方數
 	return sqrt_int ** 2 == n;
 }
 
-export function isNatural (n) { // n 是否是自然數
+export function isNatural(n) { // n 是否是自然數
 	return Number.isInteger(n) && n >= 0;
 }
 
@@ -161,7 +161,7 @@ export class Matrix { // 矩陣
 }
 
 export class SolveQuad { // 解二次方程式
-	static TYPE_SQRT = 0; // 解形式為: (n ± m√s) / d
+	static TYPE_SQRT = 0; // 解形式為: (n ± m√s) / d  ;  n,s為整數  ;  m,d 為正整數
 	static TYPE_FRAC = 1; // 解形式為: frac_r1 , frac_r2
 	
 	constructor(frac_a, frac_b, frac_c) { // 計算共軛根
@@ -206,11 +206,43 @@ export class SolveQuad { // 解二次方程式
 		this.d /= nmd_gcd;
 	}
 	
-	toStr() {
+	toStr() { // 解的 debug 字串
 		if (this.solutionType() == SolveQuad.TYPE_FRAC) {
 			return `${this.frac_r1.toStr()} , ${this.frac_r2.toStr()}`;
 		}
 		return `(${this.n} ± ${this.m}√${this.s}) / ${this.d}`;
+	}
+	
+	toLatex() { // 解的 latex 字串
+		const type = this.solutionType();
+		if (type === SolveQuad.TYPE_FRAC) {
+			return `${this.frac_r1.toLatex()} ${SCL} ${this.frac_r2.toLatex()}`; // frac_r1 , frac_r2
+		}
+		if (type === SolveQuad.TYPE_SQRT) {
+			if (this.s > 0) {
+				let s_latex = "";
+				if (this.m != 1) s_latex = `${this.m}`; // 若 m 不為 1, 顯示 m
+				s_latex = `\\pm ${s_latex} \\sqrt{${this.s}}`; // 顯示根號和 ± -> ± m√s
+				if (this.n != 0) s_latex = `${this.n} ${s_latex}`; // 若 n 不為 0 -> n ± m√s
+				if (this.d != 1) s_latex = `\\frac{${s_latex}}{${this.d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
+				
+				return s_latex; // (n ± m√s) / d
+			}
+			if (this.s < 0) {
+				let frac_re = new Frac(this.n, this.d); // 實部 (frac)
+				let frac_im = new Frac(this.m, this.d); // 虛部 (frac)
+				
+				let s_latex = "";
+				if (frac_im.n != 1) s_latex = `${frac_im.n}`; // 若 m 不為 1, 顯示 m
+				if (this.s != -1) s_latex = `${s_latex} \\sqrt{${-this.s}}`; // 若 s 不為 -1, 顯示根號
+				if (frac_im.d != 1) s_latex = `\\frac{${s_latex}}{${frac_im.d}}`; // 若 d 不為 1, 顯示分數
+				s_latex = `\\pm ${s_latex} i`; // ± im i
+				if (!frac_re.isZero()) s_latex = `${frac_re.toLatex()} ${s_latex}`; // 若實部不為 0, 變成 re ± im i
+				
+				return s_latex;
+			}
+		}
+		return "?"; // wtf
 	}
 	
 	solutionType() { // 回傳解的形式
@@ -311,17 +343,32 @@ export class SolveCubic { // 解三次方程式
 		}
 	}
 	
-	toStr() {
+	toStr() { // 解的 debug 字串
 		const type = this.solutionType();
 		if (type === SolveCubic.TYPE_3FRAC || type === SolveCubic.TYPE_FRAC_QUAD) {
-			return `${this.frac_r1.toStr()} , ${this.quad.toStr()}`;
+			return `${this.frac_r1.toStr()} , ${this.quad.toStr()}`; // frac_r1 , quad
 		}
 		if (type === SolveCubic.TYPE_3REAL) {
-			return `${this.r1.toFixed(4)} , ${this.r2.toFixed(4)} , ${this.r3.toFixed(4)}`;
+			return `${this.r1.toFixed(4)} , ${this.r2.toFixed(4)} , ${this.r3.toFixed(4)}`; // r1 , r2 , r3
 		}
 		if (type === SolveCubic.TYPE_REAL_IM) {
-			return `${this.r1.toFixed(4)} , ${this.cRe.toFixed(4)} ± ${this.cIm.toFixed(4)}i`;
+			return `${this.r1.toFixed(4)} , ${this.cRe.toFixed(4)} ± ${this.cIm.toFixed(4)}i`; // r1 , cRe ± cIm i
 		}
+		return "?";
+	}
+	
+	toLatex () { // 解的 latex 字串
+		const type = this.solutionType();
+		if (type === SolveCubic.TYPE_3FRAC || type === SolveCubic.TYPE_FRAC_QUAD) {
+			return `${this.frac_r1.toLatex()} ${SCL} ${this.quad.toLatex()}`; // frac_r1 , quad
+		}
+		if (type === SolveCubic.TYPE_3REAL) {
+			return `${this.r1.toFixed(4)} ${SCL} ${this.r2.toFixed(4)} ${SCL} ${this.r3.toFixed(4)}`; // r1 , r2 , r3
+		}
+		if (type === SolveCubic.TYPE_REAL_IM) {
+			return `${this.r1.toFixed(4)} ${SCL} ${this.cRe.toFixed(4)} \\pm ${this.cIm.toFixed(4)} i`; // r1 , cRe ± cIm i
+		}
+		return "?";
 	}
 	
 	solutionType() { // 回傳解的形式
@@ -337,6 +384,8 @@ export class SolveCubic { // 解三次方程式
 
 // 以下為字串處理
 
+const SCL = "~,\\enspace"; // separate comma latex
+
 function throwErr(method, message) {
 	console.error(`[RanMath.${method}] ${message}`);
 }
@@ -346,6 +395,7 @@ export function isStrInt(str) { // 某個字串是否為整數
 }
 
 export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+	// start: 根據不同型態的輸入, 統一轉為 String
 	if (coef instanceof Frac) coef = coef.toLatex();
 	else coef = String(coef);
 	
@@ -359,6 +409,7 @@ export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係�
 	else pow = String(pow);
 	
 	if (coef === "0" || base === "0") return (firstPos ? "+" : "") + "0";
+	// end: 根據不同型態的輸入, 統一轉為 String
 	
 	let s_coefLatex = ""; // 係數部分的 latex 字串
 	if (coef === "-1") s_coefLatex = (pow === "0" ? "-1" : "-");
@@ -399,16 +450,16 @@ export function makeRecurLatex(recurCoef, nonHomoFunc, initConst) { // 生成遞
 	
 	if (s_latex === "") s_latex = "0"; // 如果齊次與非齊次部分沒有任何一項, 顯示 "0"
 	if (s_latex[0] === "+") s_latex = s_latex.slice(1); // 去掉開頭的 +
-	s_latex = "a_n = " + s_latex; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
+	s_latex = `a_n = ${s_latex}`; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
 	
-	s_latex += `~,\\enspace n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
-	s_latex += "\\\\"; // 換行
+	s_latex += ` ${SCL} n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+	s_latex += " \\\\ "; // 換行
 	
 	let initConstLatexArr = []; // 每一個初始條件 a_i = ? 的 latex 字串
 	for (const [i, frac_init] of initConst.entries()) { // 生成初始條件部分: a_0 = ? , a_1 = ? , a_2 = ?
 		initConstLatexArr.push(`a_${i} = ${frac_init.toLatex()}`);
 	}
-	s_latex += initConstLatexArr.join(" ~,\\enspace ");
+	s_latex += initConstLatexArr.join(` ${SCL} `);
 	
 	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
 }

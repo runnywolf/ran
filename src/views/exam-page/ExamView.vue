@@ -96,7 +96,7 @@
 					<a v-if="examConfig.link"
 						class="hyperlink"
 						:href="examConfig.link"
-						:data-tooltip="examConfig.linkTip ? examConfig.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
+						:data-tooltip="examConfig.linkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
 						target="_blank"
 					>題本來源</a>
 					<span v-else>來源未知</span>

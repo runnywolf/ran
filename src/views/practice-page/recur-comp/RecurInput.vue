@@ -39,7 +39,7 @@
 			
 		</div>
 		
-		<!-- 遞迴式 (有很多輸入框) -->
+		<!-- 遞迴式 (有超多輸入框) -->
 		<div class="ts-wrap is-middle-aligned" style="--gap: 0;">
 			
 			<vl exp="a_n = " />
@@ -102,7 +102,7 @@
 			
 		</div>
 		
-		<!-- 遞迴初始條件 (有很多輸入框) -->
+		<!-- 遞迴初始條件 (有一些輸入框) -->
 		<div class="ts-wrap is-compact is-middle-aligned">
 			<div v-for="i in recurNum" class="group-box" style="--bg: #ddd;">
 				<vl :exp="`a_${i-1} =`" />
@@ -116,12 +116,13 @@
 		
 		<!-- 根據輸入框得到的遞迴式 -->
 		<vl c :exp="getLatex()" />
+		
 	</div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
-import { isNatural, Frac, makeRecurLatex } from "@/libs/RanMath.js"; // 分數
+import { isNatural, Frac, makeRecurLatex } from "@/libs/RanMath.js";
 
 const emit = defineEmits([
 	"input", // 遞迴式改變時, 上傳遞迴式資訊

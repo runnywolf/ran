@@ -8,7 +8,7 @@
 					<span class="ts-icon is-school-icon"></span>
 				</td>
 				<td>
-					{{ uniShortName ? uniShortName : "-" }}
+					{{ uniShortName ?? "-" }}
 				</td>
 			</tr>
 			
@@ -18,7 +18,7 @@
 					<span class="ts-icon is-calendar-icon"></span>
 				</td>
 				<td>
-					{{ year ? year : "-" }} 年
+					{{ year ?? "-" }} 年
 				</td>
 			</tr>
 			
@@ -28,7 +28,7 @@
 					<span class="ts-icon is-hashtag-icon"></span>
 				</td>
 				<td>
-					<span>{{ subjectId ? subjectId : "-" }}</span>
+					<span>{{ subjectId ?? "-" }}</span>
 					<span class="ts-icon is-circle-question-icon is-start-spaced" data-tooltip="科目代號"></span>
 				</td>
 			</tr>
@@ -39,7 +39,7 @@
 					<span class="ts-icon is-file-icon"></span>
 				</td>
 				<td>
-					{{ subject ? subject : "-" }}
+					{{ subject ?? "-" }}
 				</td>
 			</tr>
 			
