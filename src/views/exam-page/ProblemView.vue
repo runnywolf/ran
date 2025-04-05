@@ -68,12 +68,14 @@ watch(() => route.params.id, async (newExamId) => { // 當路由的題本 id 改
 	year.value = _year;
 	examConfig.value = configFile.default; // json -> Object
 }, { immediate: true }); // 組件載入時, 做一次
+
 function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的參數個數不為 2, 視為無效 id
 	console.error(
 		`Wrong id format. (exam id: ${wrongExamId})\n`
 	);
 	router.push("/exam"); // 轉址回題本清單
 }
+
 const handleExamMissing = (_uni, _year) => { // 若題本設定檔不存在或路徑錯誤
 	console.error(
 		`Exam config is not exist. (exam ${_uni}-${_year})\n`+

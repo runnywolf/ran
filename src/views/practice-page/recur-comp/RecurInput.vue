@@ -77,7 +77,7 @@
 						contenteditable
 						class="number-input"
 						:class="(recurCoefInput[i-1].isZero() ? 'number-input-error' : '')"
-						@input="recurCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
+						@input="recurCoefInput[i-1] = checkFracInput($event.target.innerText)"
 					></span>
 					<vl :exp="`a_{n-${i}}` + (i == recurNum ? '' : '~+')" />
 				</template>
@@ -91,7 +91,7 @@
 						contenteditable
 						class="number-input"
 						:class="(polyCoefInput[i-1].isZero() ? 'number-input-error' : '')"
-						@input="polyCoefInput[i-1] = Frac.fromStr($event.target.innerText)"
+						@input="polyCoefInput[i-1] = checkFracInput($event.target.innerText)"
 					></span>
 					<vl v-if="polyDegree != 0" :exp="getTermLatex(i-1)" />
 				</template>
@@ -105,14 +105,14 @@
 						contenteditable
 						class="number-input"
 						:class="(expFuncInput[i-1][0].isZero() ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][0] = Frac.fromStr($event.target.innerText)"
+						@input="expFuncInput[i-1][0] = checkFracInput($event.target.innerText)"
 					></span>
 					<vl exp="\cdot" />
 					<span
 						contenteditable
 						class="number-input"
 						:class="(expFuncInput[i-1][1].isZero() ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][1] = Frac.fromStr($event.target.innerText)"
+						@input="expFuncInput[i-1][1] = checkFracInput($event.target.innerText)"
 					></span>
 					<vl exp="^n \cdot" />
 					<span>n^</span>
@@ -120,7 +120,7 @@
 						contenteditable
 						class="number-input"
 						:class="(!isNatural(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][2] = Number($event.target.innerText)"
+						@input="expFuncInput[i-1][2] = checkPowerInput($event.target.innerText)"
 					>0</span>
 					<vl v-if="i != expFuncNum" exp="+" />
 				</template>
@@ -135,7 +135,7 @@
 				<span
 					contenteditable
 					class="number-input"
-					@input="initConstInput[i-1] = Frac.fromStr($event.target.innerText)"
+					@input="initConstInput[i-1] = checkFracInput($event.target.innerText)"
 				></span>
 			</div>
 		</div>
@@ -226,16 +226,6 @@ const polyCoefInput = ref([]); // 輸入框取得: 多項式的係數 Arr[Frac],
 const expFuncInput = ref([]); // 輸入框取得: 指數部分的係數和底數 Arr[[Frac, Frac, int]], 元素個數 = 指數項數
 const initConstInput = ref([]); // 輸入框取得: 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
 
-const recurCoef = ref([]); // 去除 0 係數的遞迴
-const nonHomoFunc = ref({}); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
-const initConst = ref([]); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
-
-const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
-	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
-	const add = (n == polyDegree.value ? "" : (n == 0 ? "+" : "~+"));
-	return term + add;
-};
-
 watch(recurNum, (newRecurNum) => { // 當遞迴階數改變時
 	while (recurCoefInput.value.length < newRecurNum) recurCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
 	while (recurCoefInput.value.length > newRecurNum) recurCoefInput.value.pop(); // array 長度過長就刪除尾端
@@ -254,6 +244,30 @@ watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
 	}
 	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
 }, { immediate: true });
+
+const MAX_INPUT_LENGTH = 6; // 輸入框的最大字符限制
+const MAX_EXP_POWER = 3; // c n^k b^n 項的 k 的最大值
+
+const recurCoef = ref([]); // 去除 0 係數的遞迴
+const nonHomoFunc = ref({}); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
+const initConst = ref([]); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+
+const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
+	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
+	const add = (n == polyDegree.value ? "" : (n == 0 ? "+" : "~+"));
+	return term + add;
+};
+
+const checkFracInput = (inputText) => { // 檢查分數輸入
+	if (inputText.length > MAX_INPUT_LENGTH) return new Frac(0); // 0 默認為不佳 (或是錯誤) 的輸入
+	return Frac.fromStr(inputText);
+};
+
+const checkPowerInput = (inputText) => { // 檢查非齊次的 c n^k b^n 項的 k 的輸入, 是否在正常範圍
+	const power = Number(inputText);
+	if (isNatural(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
+	return -1; // -1 會被認為是錯誤的輸入 (會在 nonHomoFunc 建構時被忽略)
+};
 
 watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
 	let coef = [...newInput];

@@ -243,7 +243,7 @@ export class SolveQuad { // 解二次方程式
 				s_latex = `\\pm ${s_latex} i`; // ± im i
 				if (!frac_re.isZero()) s_latex = `${frac_re.toLatex()} ${s_latex}`; // 若實部不為 0, 變成 re ± im i
 				
-				return s_latex;
+				return s_latex; // re ± im i
 			}
 		}
 		return "?"; // wtf
@@ -305,13 +305,13 @@ export class SolveCubic { // 解三次方程式
 	constructor(frac_a, frac_b, frac_c, frac_d) { // 計算共軛根
 		for (const [frac, i] of [[frac_a, "a"], [frac_b, "b"], [frac_c, "c"], [frac_d, "d"]]) { // 參數不為 Frac
 			if (!(frac instanceof Frac)) {
-				throwErr("SolveQuad.constructor", `Parameter frac_${i} is not Frac.`);
+				throwErr("SolveCubic.constructor", `Parameter frac_${i} is not Frac.`);
 				frac_a = new Frac(1); frac_b = new Frac(0); frac_c = new Frac(0); frac_d = new Frac(0);
 				break;
 			}
 		}
 		if (frac_a.isZero()) { // a 若為 0, 則這不是一個三次函數
-			throwErr("SolveQuad.constructor", "0x^3 + bx^2 + cx + d is not a cubic equation.");
+			throwErr("SolveCubic.constructor", "0x^3 + bx^2 + cx + d is not a cubic equation.");
 			frac_a = new Frac(1); frac_b = new Frac(0); frac_c = new Frac(0); frac_d = new Frac(0);
 		}
 		
