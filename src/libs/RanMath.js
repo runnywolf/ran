@@ -29,6 +29,10 @@ export function isNatural(n) { // n 是否是自然數
 	return Number.isInteger(n) && n >= 0;
 }
 
+export function getRandomInt(min, max) { // 隨機整數
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export class Prime { // 質數
 	static prime = [2];
 	
@@ -444,7 +448,9 @@ export function makeRecurLatex(recurCoef, nonHomoFunc, initConst) { // 生成遞
 		const frac_b = Frac.fromStr(s_frac_b); // frac_b
 		
 		let s_term = makeTermLatex(frac_c, "n", s_k); // c n^k 部分的 latex 字串
-		if (!frac_b.equal(new Frac(1))) s_term = makeTermLatex(s_term, frac_b, "n", false); // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
+		if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
+			s_term = makeTermLatex(makeTermLatex(frac_c, "n", s_k, false), frac_b, "n");
+		}
 		if (s_term !== "+0") s_latex += s_term; // 只顯示 c n^k 不為 0 的項
 	}
 	

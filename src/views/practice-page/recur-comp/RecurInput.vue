@@ -1,15 +1,42 @@
 <template>
 	<div class="ts-wrap is-vertical is-compact">
 		
-		<!-- 隨機生成按鈕, 調整遞迴式各區塊的按鈕 -->
+		<!-- 隨機生成器 -->
 		<div class="ts-wrap is-compact is-middle-aligned">
 			
 			<!-- 隨機生成按鈕 -->
-			<button class="ts-button is-icon is-outlined">
-				<span class="ts-icon is-dice-icon"></span>
-			</button>
+			<button class="ts-button is-outlined" @click="makeRandomRecur">隨機生成</button>
 			
-			<!-- 調整遞迴式各區塊的按鈕 -->
+			<!-- 常數範圍 -->
+			<div class="ts-select is-solid">
+				<select v-model="randomRange">
+					<option value="3">± 3&nbsp;&nbsp;以內</option>
+					<option value="6">± 6&nbsp;&nbsp;以內</option>
+					<option value="10">± 10&nbsp;&nbsp;以內</option>
+				</select>
+			</div>
+			
+			<!-- 常數型態 -->
+			<div class="ts-select is-solid">
+				<select v-model="randomType">
+					<option value="z">整數</option>
+					<option value="q">有理數</option>
+				</select>
+			</div>
+			
+			<span>的遞迴特徵值和非齊次常數</span>
+			
+			<!-- 有理係數的提示 -->
+			<span
+				class="ts-icon is-circle-question-icon"
+				data-tooltip="「± 3 以內的有理數」<br>表示分子和分母均介於 ± 3 以內"
+				data-html=true
+			></span>
+			
+		</div>
+		
+		<!-- 調整遞迴式各區塊的按鈕 -->
+		<div class="ts-wrap is-compact is-middle-aligned">
 			<div v-for="regionInfo in regionList"
 				class="ts-wrap is-middle-aligned group-box"
 				style="--gap: 2px;"
@@ -36,7 +63,6 @@
 					<span class="ts-icon is-plus-icon"></span>
 				</button>
 			</div>
-			
 		</div>
 		
 		<!-- 遞迴式 (有超多輸入框) -->
@@ -122,11 +148,50 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { isNatural, Frac, makeRecurLatex } from "@/libs/RanMath.js";
+import { getRandomInt, isNatural, Frac, makeRecurLatex } from "@/libs/RanMath.js";
 
 const emit = defineEmits([
 	"input", // 遞迴式改變時, 上傳遞迴式資訊
 ]);
+
+const randomRange = ref(3); // 隨機生成的常數範圍
+const randomType = ref("z"); // 隨機生成整數/有理數
+
+const getRandomNum = (range, isInt, nonZero = false) => { // 生成隨機數字, 回傳 Frac
+	const denom = isInt ? 1 : getRandomInt(1, range); // 分母
+	if (nonZero) return new Frac(getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1), denom); // 回傳隨機非零數字
+	return new Frac(getRandomInt(-range, range), denom); // 回傳隨機數字
+};
+
+const makeRandomRecur = () => { // 生成隨機遞迴
+	const r = randomRange.value; // 隨機生成的範圍
+	const isInt = (randomType.value != "q"); // 生成的數字類型, 只要不為有理數, 就是整數
+	
+	const level = recurNum.value; // 遞迴階數, 隨機生成 齊次遞迴的特徵多項式的根
+	const [r1, r2, r3] = Array.from({ length: level }, () => getRandomNum(r, isInt, true)); // 根必須非零, 不然遞迴會降階
+	if (level == 1) { // (x-r1)=0  >>>  x = r1
+		recurCoefInput.value = [ r1 ];
+	} else if (level == 2) { // (x-r1)(x-r2)=0  >>>  x^2 = (r1+r2)x - r1r2
+		recurCoefInput.value = [ r1.add(r2), r1.mul(r2).muli(-1) ];
+	} else if (level == 3) { // (x-r1)(x-r2)(x-r3)=0  >>>  x^3 = (r1+r2+r3)x^2 - (r1r2+r2r3+r3r1)x + r1r2r3
+		recurCoefInput.value = [
+			r1.add(r2).add(r3), r1.mul(r2).add(r2.mul(r3)).add(r3.mul(r1)).muli(-1), r1.mul(r2).mul(r3)
+		];
+	}
+	
+	const pd = polyDegree.value; // 多項式次數
+	polyCoefInput.value = Array.from({ length: pd+1 }, (v, i) => { // 隨機生成 多項式的係數
+		if (i === pd) return getRandomNum(r, isInt, true); // 多項式最高項不為 0
+		return getRandomNum(r, isInt);
+	});
+	
+	const efn = expFuncNum.value; // 指數項數
+	expFuncInput.value = Array.from({ length: efn }, () => { // 隨機生成 指數部分的係數和底數
+		return [ getRandomNum(r, isInt, true), getRandomNum(r, isInt, true), 0 ];
+	});
+	
+	initConstInput.value = Array.from({ length: level }, (v, i) => new Frac(i)); // 隨機生成 遞迴的初始條件
+};
 
 const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數, 指數項數 的調整按鈕
 	{
@@ -153,13 +218,13 @@ const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數,
 ];
 
 const recurNum = ref(2); // 遞迴階數, 範圍: 1 ~ 3
-const polyDegree = ref(-1); // 多項式次數, 範圍: -1 ~ 2
-const expFuncNum = ref(0); // 指數項數, 範圍: 0 ~ 2
+const polyDegree = ref(-1); // 多項式次數, 範圍: -1 ~ 3
+const expFuncNum = ref(0); // 指數項數, 範圍: 0 ~ 3
 
-const recurCoefInput = ref([]); // 遞迴的係數 Arr[Frac], 元素個數 = 遞迴階數
-const polyCoefInput = ref([]); // 多項式的係數 Arr[Frac], 元素個數-1 = 多項式次數
-const expFuncInput = ref([]); // 指數部分的係數和底數 Arr[[Frac, Frac, int]], 元素個數 = 指數項數
-const initConstInput = ref([]); // 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
+const recurCoefInput = ref([]); // 輸入框取得: 遞迴的係數 Arr[Frac], 元素個數 = 遞迴階數
+const polyCoefInput = ref([]); // 輸入框取得: 多項式的係數 Arr[Frac], 元素個數-1 = 多項式次數
+const expFuncInput = ref([]); // 輸入框取得: 指數部分的係數和底數 Arr[[Frac, Frac, int]], 元素個數 = 指數項數
+const initConstInput = ref([]); // 輸入框取得: 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
 
 const recurCoef = ref([]); // 去除 0 係數的遞迴
 const nonHomoFunc = ref({}); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
