@@ -158,6 +158,9 @@ export class Frac { // 分數
 	equal(frac) { // 比較兩個分數是否相同
 		return this.n == frac.n && this.d == frac.d;
 	}
+	lt(frac) { // 小於
+		return this.n * frac.d < this.d * frac.n;
+	}
 }
 
 export class Matrix { // 矩陣
@@ -361,7 +364,7 @@ export class SolveCubic { // 解三次方程式
 		return "?";
 	}
 	
-	toLatex () { // 解的 latex 字串
+	toLatex() { // 解的 latex 字串
 		const type = this.solutionType();
 		if (type === SolveCubic.TYPE_3FRAC || type === SolveCubic.TYPE_FRAC_QUAD) {
 			return `${this.frac_r1.toLatex()} ${SCL} ${this.quad.toLatex()}`; // frac_r1 , quad
@@ -384,6 +387,20 @@ export class SolveCubic { // 解三次方程式
 			else return SolveCubic.TYPE_REAL_IM;
 		}
 	}
+	
+	getDoubleRoot() { // 回傳二重根, 若沒有則回傳 null
+		if (this.solutionType() !== SolveCubic.TYPE_3FRAC) return null; // 只有 3 有理根情況, 才有可能重根
+		if (this.frac_r1.equal(this.frac_r2)) return this.frac_r1; // r1 = r2
+		if (this.frac_r2.equal(this.frac_r3)) return this.frac_r2; // r2 = r3
+		if (this.frac_r3.equal(this.frac_r1)) return this.frac_r3; // r3 = r1
+		return null;
+	} // 注: quad.s 若為 0 或 1 會被約掉而變成 TYPE_3FRAC, 所以只有 3 有理根情況, 才有可能重根
+	
+	getTripleRoot() { // 回傳三重根, 若沒有則回傳 null
+		if (this.solutionType() !== SolveCubic.TYPE_3FRAC) return null; // 只有 3 有理根情況, 才有可能重根
+		if (this.frac_r1.equal(this.frac_r2) && this.frac_r2.equal(this.frac_r3)) return this.frac_r1; // r1 = r2 = r3
+		return null;
+	}
 }
 
 // 以下為字串處理
@@ -392,6 +409,11 @@ const SCL = "~,\\enspace"; // separate comma latex
 
 function throwErr(method, message) {
 	console.error(`[RanMath.${method}] ${message}`);
+}
+
+export function removePrefix(str, prefix) { // 移除開頭字串
+  if (str.startsWith(prefix)) return str.slice(prefix.length);
+  return str;
 }
 
 export function isStrInt(str) { // 某個字串是否為整數
@@ -404,10 +426,10 @@ export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係�
 	else coef = String(coef);
 	
 	if (base instanceof Frac) {
-		if (!base.isInt()) base = `\\left(${base.toLatex()}\\right)`; // 分數為底數要加括號
+		if (!base.isInt()) base = `\\left( ${base.toLatex()} \\right)`; // 分數為底數要加括號
 		else base = base.toLatex();
 	} else base = String(base);
-	if (base[0] === "-") base = `\\left(${base}\\right)`; // 底數有負號要加括號
+	if (base[0] === "-") base = `\\left( ${base} \\right)`; // 底數有負號要加括號
 	
 	if (pow instanceof Frac) pow = `${pow.n}/${pow.d}`;
 	else pow = String(pow);
@@ -435,7 +457,7 @@ export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係�
 	return s_coefLatex + s_varLatex;
 }
 
-export function makeRecurLatex(recurCoef, nonHomoFunc, initConst) { // 生成遞迴關係式的 latex 字串
+export function makeRecurLatex(recurCoef = [], nonHomoFunc = {}, initConst = []) { // 生成遞迴關係式的 latex 字串
 	let s_latex = "";
 	
 	for (const [i, frac_coef] of recurCoef.entries()) { // 生成齊次部分: r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}
@@ -455,8 +477,7 @@ export function makeRecurLatex(recurCoef, nonHomoFunc, initConst) { // 生成遞
 	}
 	
 	if (s_latex === "") s_latex = "0"; // 如果齊次與非齊次部分沒有任何一項, 顯示 "0"
-	if (s_latex[0] === "+") s_latex = s_latex.slice(1); // 去掉開頭的 +
-	s_latex = `a_n = ${s_latex}`; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
+	s_latex = `a_n = ${removePrefix(s_latex, "+")}`; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
 	
 	s_latex += ` ${SCL} n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
 	s_latex += " \\\\ "; // 換行
