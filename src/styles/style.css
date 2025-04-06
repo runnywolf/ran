@@ -1,9 +1,3 @@
-.sidebar { /* 側邊欄的統一樣式 */
-	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
-	width: 160px; /* 側邊欄的寬度 */
-	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
-}
-
 .hyperlink { /* 超連結樣式 */
 	text-decoration: none; /* 隱藏超連結的底線 */
 	color: #44f;
@@ -19,7 +13,7 @@
 	border: 1px #000 solid;
 }
 
-.neko::before {
+span.neko::before { /* 貓咪 */
 	content: "ฅ^⦁⩊⦁^ฅ ੭";
 }
 

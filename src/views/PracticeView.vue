@@ -1,36 +1,35 @@
 <template>
-	<div class="ts-grid">
+	<BodyLayout>
 		
 		<!-- 左側的練習項目 -->
-		<div class="column">
-			<div class="ts-box is-vertical is-compact sidebar">
-				<div class="ts-content is-compact ts-menu is-dense is-separated is-start-icon">
-					<router-link v-for="optionInfo in navbarOptionList"
-						class="item"
-						:class="route.name == optionInfo.toRouteName ? 'is-active' : ''"
-						:to="{ name: optionInfo.toRouteName }"
-						:data-tooltip="optionInfo.tooltip"
-						data-position="right"
-					>
-						<span :class="`ts-icon is-${optionInfo.iconName}-icon`"></span>
-						<span>{{ optionInfo.label }}</span>
-					</router-link>
-				</div>
+		<template #sidebar>
+			<div class="ts-content is-compact ts-menu is-dense is-separated is-start-icon">
+				<router-link v-for="optionInfo in navbarOptionList"
+					class="item"
+					:class="route.name == optionInfo.toRouteName ? 'is-active' : ''"
+					:to="{ name: optionInfo.toRouteName }"
+					:data-tooltip="optionInfo.tooltip"
+					data-position="right"
+				>
+					<span :class="`ts-icon is-${optionInfo.iconName}-icon`"></span>
+					<span>{{ optionInfo.label }}</span>
+				</router-link>
 			</div>
-		</div>
+		</template>
 		
 		<!-- 右側的模擬室區域 -->
-		<div class="column is-fluid">
-			<div class="ts-box ts-content">
+		<template #content>
+			<div class="ts-content">
 				<router-view></router-view>
 			</div>
-		</div>
+		</template>
 		
-	</div>
+	</BodyLayout>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
+import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 
 const route = useRoute(); // 路由
 

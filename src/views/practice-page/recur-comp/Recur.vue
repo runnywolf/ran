@@ -20,6 +20,8 @@
 		因此將齊次解設為
 		<vl c :exp="`a_n^{(h)} = ${makeHomogFormLatex()}`" />
 		
+		<!-- todo: 虛數轉 cos/sin -->
+		
 		<span class="ts-text is-large is-bold">Step2：求特解</span><br>
 	</div>
 	<Content v-else colorStyle="red" collapsed>
@@ -116,7 +118,7 @@ const makeHomogFormLatex = () => { // 齊次解的形式 (latex 字串)
 	const mRootHomogLatex = multiRootHomogLatex.value
 	
 	if (type === SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
-		if (mRootNum == 3) return mRootHomogLatex; // 三重根
+		if (mRootNum == 3) return mRootHomogLatex; // 三重根先判定, 因為三重根包含二重根
 		if (mRootNum == 2) {
 			for (const frac_r of [sc.frac_r1, sc.frac_r2, sc.frac_r3]) if (!frac_r.equal(frac_mRoot)) {
 				return mRootHomogLatex + makeExpLatex("h_3 ", frac_r); // 二重根 + 剩餘根 (如果為 0 會不顯示)

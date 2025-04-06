@@ -1,44 +1,43 @@
 <template>
-	<div class="ts-grid">
+	<BodyLayout>
 		
 		<!-- 左側的資訊板 -->
-		<div class="column">
-			<div class="ts-box is-vertical is-compact sidebar">
-				
-				<!-- 題本的連結 -->
-				<div class="ts-content is-dense">
-					<span class="ts-icon is-reply-icon is-end-spaced"></span>
-					<router-link
-						class="hyperlink"
-						:to="{ path: `/exam/${uni}-${year}`}"
-						@click="() => { globalVar.examScrollProbNo = no; }"
-					>
-						<span>&nbsp;{{ config.uni[uni] ? config.uni[uni].shortName : "" }}</span>
-						<span>&nbsp;{{ year ?? "" }}</span>
-					</router-link>
-				</div>
-				
+		<template #sidebar>
+			
+			<!-- 題本的連結 -->
+			<div class="ts-content is-dense">
+				<span class="ts-icon is-reply-icon is-end-spaced"></span>
+				<router-link
+					class="hyperlink"
+					:to="{ path: `/exam/${uni}-${year}`}"
+					@click="() => { globalVar.examScrollProbNo = no; }"
+				>
+					<span>&nbsp;{{ config.uni[uni] ? config.uni[uni].shortName : "" }}</span>
+					<span>&nbsp;{{ year ?? "" }}</span>
+				</router-link>
 			</div>
-		</div>
+			
+		</template>
 		
 		<!-- 右側的題目區域 -->
-		<div class="column is-fluid">
-			<div class="ts-box ts-content">
+		<template #content>
+			<div class="ts-content">
 				<Problem v-if="examConfig.problem"
 					:uni="uni" :year="year" :no="no"
 					:problemConfig="examConfig.problem[no]"
 					contentType="content"
 				></Problem>
 			</div>
-		</div>
+		</template>
 		
-	</div>
+	</BodyLayout>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { globalStore } from "@/store/global"; // pinia 全域變數
+import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
