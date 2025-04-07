@@ -57,6 +57,7 @@ watch(() => props.recurCoef, (newRecurCoef) => { // 齊次係數改變時, 更�
 	const exp = dRoot ? makeTermLatex(1, dRoot, "n", false) : "?"; // b^n 的 latex
 	if (tRoot) multiRootHomogLatex.value = `h_1 ${exp} + h_2 n ${exp} + h_3 n^2 ${exp}`; // h_1 b^n + h_2 n b^n + h_3 n^2 b^n
 	else if (dRoot) multiRootHomogLatex.value = `h_1 ${exp} + h_2 n ${exp}`; // h_1 b^n + h_2 n b^n
+	else multiRootHomogLatex.value = "?";
 });
 
 // 以下的 func 不存在 write
