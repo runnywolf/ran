@@ -11,7 +11,7 @@
 <script setup>
 import { ref } from "vue";
 import RecurInput from "./recur-comp/RecurInput.vue"; // 遞迴輸入與隨機產生器
-import Recur from "./recur-comp/Recur.vue"; // 遞迴解答生成器
+import Recur from "@/components/answer-generator/Recur.vue"; // 遞迴解答生成器
 
 const recurData = ref({}); // 遞迴資訊
 </script>
