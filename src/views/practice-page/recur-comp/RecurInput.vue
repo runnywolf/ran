@@ -309,7 +309,6 @@ watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newIn
 		nonHomoFunc: newNonHomoFunc,
 		initConst: newInitConst,
 	});
-	console.log("test")
 });
 </script>
 
