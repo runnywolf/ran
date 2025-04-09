@@ -5,7 +5,7 @@
 		
 		<span class="ts-text is-large is-bold">Step1：求齊次解的形式</span><br>
 		遞迴的齊次部分為 <vl :exp="getRecurHomogLatex(recurCoef)" /><br>
-		<vl exp="\Rightarrow" /> 特徵方程式為 <vl :exp="makeCharPolyLatex(recurCoef)" /><br>
+		<vl exp="\Rightarrow" /> 特徵方程式為 <vl :exp="recur.makeCharPolyLatex()" /><br>
 		<vl :exp="`\\Rightarrow ~ t = ${recur.makeCharLatex()}`" />
 		<span v-if="recur.showNoRationalRoot()" style="color: #eb0; margin-left: 10px;">
 			<span class="ts-icon is-circle-exclamation-icon"></span>
@@ -25,7 +25,10 @@
 			遞迴的非齊次部分為
 			<vl c :exp="getRecurNonHomogLatex(nonHomoFunc)" />
 			合併同類指數項：
-			<vl c :exp="makeCombinedExpLatex(nonHomoFunc)" />
+			<vl c :exp="recur.makeCombinedExpLatex()" />
+			猜測特解的形式為：
+			<vl c :exp="recur.makeParticularFormLatex()" />
+			其中多項式 <vl exp="g_i(n)" /> 的次數應與 <vl exp="f_i(n)" /> 相同。<br>
 		</div>
 		<div v-else>
 			沒有非齊次部分，跳過這一步驟。
@@ -59,27 +62,47 @@ class SolveRecur { // 解非齊次遞迴
 		const tRoot = this.cubic.getTripleRoot(); // 三重根的值
 		this.multiRootNum = dRoot ? (tRoot ? 3 : 2) : 1; // 最高重根數
 		this.frac_multiRoot = dRoot; // 重根值. 三重根的值 = 二重根, 所以直接用 dRoot
+		
+		let combinedExpFunc = {};
+		for (const [key, frac_c] of Object.entries(this.nonHomoFunc)) { // 合併同類指數項
+			const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
+			const k = Number(s_k); // n^k 的 k (0~3)
+			
+			if (!(s_frac_b in combinedExpFunc)) combinedExpFunc[s_frac_b] = []; // 新增指數項
+			while (combinedExpFunc[s_frac_b].length - 1 < k) combinedExpFunc[s_frac_b].push(new Frac(0)); // 補足多項式 f_i(n) 的次數
+			combinedExpFunc[s_frac_b][k] = frac_c; // 設定係數
+		}
+		this.combinedExpFunc = combinedExpFunc; // 同類指數項: { "b.n/b.d": [ f0, f1, f2 ], ... } 代表 (f0 + f1n + f2n^2) b^n + ...
 	}
 	
-	makeCharLatex() { // 特徵值 t (latex 字串)
+	makeCharPolyLatex = () => { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
+		let l = this.recurCoef.length; // 遞迴階數
+		let s_latex = this.recurCoef.map(
+			(frac_coef, i) => termLatexNot0(frac_coef, "t", l-1-i)
+		).join("");
+		if (s_latex === "") s_latex = "0"; // 若特徵方程式為 0 多項式
+		return `${makeTermLatex("", "t", l, false)} = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "t^l ="
+	};
+	
+	makeCharLatex() { // 特徵值 "t = ? , ? , ?" (latex)
 		if (this.recurCoef.length == 1) return this.recurCoef[0].toLatex(); // 一次方程式的解
 		if (this.recurCoef.length == 2) return this.cubic.quad.toLatex(); // 二次方程式的解
 		if (this.recurCoef.length == 3) return this.cubic.toLatex(); // 三次方程式的解
 		return "{?}";
 	}
 	
-	showNoRationalRoot() { // 是否要顯示 "不存在有理數特徵值"
+	showNoRationalRoot() { // 是否要顯示 "(!)不存在有理數特徵值" 的警告訊息
 		return this.cubic.frac_r1 === undefined; // TYPE_3FRAC 和 TYPE_FRAC_QUAD 型態才存在有理數根
 	}
 	
-	makeMultiRootHomogLatex() { // 重根齊次形式 (latex 字串)
+	makeMultiRootHomogLatex() { // 重根齊次形式 "h_1 b^n + h_2 n b^n + h_3 n^2 b^n" (latex)
 		const exp = this.frac_multiRoot ? makeTermLatex(1, this.frac_multiRoot, "n", false) : "{?}"; // b^n 的 latex
 		if (this.multiRootNum == 2) return `h_1 ${exp} + h_2 n ${exp}`; // h_1 b^n + h_2 n b^n
 		if (this.multiRootNum == 3) return `h_1 ${exp} + h_2 n ${exp} + h_3 n^2 ${exp}`; // h_1 b^n + h_2 n b^n + h_3 n^2 b^n
 		return "{?}";
 	}
 	
-	makeHomogFormLatex() { // 齊次解的形式 (latex 字串)
+	makeHomogFormLatex() { // 齊次解的形式 (latex)
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 三次式的解形式
 		const mRootNum = this.multiRootNum; // 重根個數
@@ -124,6 +147,27 @@ class SolveRecur { // 解非齊次遞迴
 		
 		return "{?}";
 	};
+	
+	makeCombinedExpLatex = () => { // 合併同類指數項 "F(n) = Σ_i f_i(n) b_i^n = (f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
+		let s_latex = Object.entries(this.combinedExpFunc).map(([s_frac_b, combinedExp]) => { // combinedExpFunc = { "b.n/b.d": [ f0, f1, f2 ], ... }
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+			const f = combinedExp.map((frac_c, i) => termLatexNot0(frac_c, "n", i)).join(""); // "+ f0 + f1n + f2n^2 + ..." (latex)
+			return makeTermLatex(`(${removePrefix(f, "+")})`, frac_b, "n", false); // "(f0 + f1n + f2n^2 + ...) b^n" (latex)
+		}).join(" + ");
+		
+		return `F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${s_latex}`;
+	};
+	
+	makeParticularFormLatex = () => { // 猜測特解的形式為 "a_n^{(p)} = Σ_i g_i(n) b_i^n = (p1 + p2n + ...) b^n + ...?" (latex)
+		let pi = 1; // 未知係數 p_i 的 i, 是個計數器, 用於生成 p_1, p_2, ...
+		let s_latex = Object.entries(this.combinedExpFunc).map(([s_frac_b, combinedExp]) => {
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+			const f = combinedExp.map((frac_c, i) => termLatexNot0(`p_{${pi++}}`, "n", i)).join(""); // "+ f0 + f1n + f2n^2 + ..." (latex)
+			return makeTermLatex(`(${removePrefix(f, "+")})`, frac_b, "n", false); // "(f0 + f1n + f2n^2 + ...) b^n" (latex)
+		}).join(" + ");
+		
+		return `a_n^{(p)} = \\sum\\limits_{i} g_i(n) {b_i}^n = ${s_latex}`;
+	};
 }
 
 const props = defineProps({
@@ -144,7 +188,6 @@ watch(() => [props.recurCoef, props.nonHomoFunc, props.initConst],
 		recur.value = new SolveRecur(newRecurCoef, newNonHomoFunc, newInitConst); // 遞迴參數改變時, 更新遞迴資訊
 		recurLatex.value = makeRecurLatex(newRecurCoef, newNonHomoFunc, newInitConst); // 生成遞迴關係式的 latex 字串
 		emit("recurLatex", recurLatex.value); // 上傳遞迴關係式的 latex 字串
-		console.log(recur.value.makeHomogFormLatex());
 	}
 );
 
@@ -198,32 +241,5 @@ const makeRecurLatex = (recurCoef = [], nonHomoFunc = {}, initConst = []) => { /
 	s_latex += initConst.map((frac_init, i) => `a_${i} = ${frac_init.toLatex()}`).join(` ${SCL} `); // 生成初始條件部分: a_0 = ? , a_1 = ? , a_2 = ?
 	
 	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
-};
-
-const makeCharPolyLatex = (recurCoef = []) => { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
-	let l = recurCoef.length; // 遞迴階數
-	let s_latex = recurCoef.map((frac_coef, i) => termLatexNot0(frac_coef, "t", l-1-i)).join(""); // 若特徵方程式
-	if (s_latex === "") s_latex = "0"; // 若特徵方程式為 0 多項式
-	return `${makeTermLatex("", "t", l, false)} = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "t^l ="
-};
-
-const makeCombinedExpLatex = (nonHomoFunc = {}) => { // 合併同類指數項 (latex)
-	let combinedExpFunc = {}; // 同類指數項: { "b.n/b.d": [ f0, f1, f2 ], ... } 代表 (f0 + f1n + f2n^2) b^n
-	for (const [key, frac_c] of Object.entries(nonHomoFunc)) { // 合併同類指數項
-		const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
-		const k = Number(s_k); // n^k 的 k (0~3)
-		
-		if (!(s_frac_b in combinedExpFunc)) combinedExpFunc[s_frac_b] = []; // 新增指數項
-		while (combinedExpFunc[s_frac_b].length - 1 < k) combinedExpFunc[s_frac_b].push(new Frac(0)); // 補足多項式 f_i(n) 的次數
-		combinedExpFunc[s_frac_b][k] = frac_c; // 設定係數
-	}
-	
-	let s_latex = Object.entries(combinedExpFunc).map(([s_frac_b, combinedExp]) => { // 生成 "(f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
-		const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-		const f = combinedExp.map((frac_c, i) => termLatexNot0(frac_c, "n", i)).join(""); // "+ f0 + f1n + f2n^2 + ..." (latex)
-		return makeTermLatex(`(${removePrefix(f, "+")})`, frac_b, "n", false); // "(f0 + f1n + f2n^2 + ...) b^n" (latex)
-	}).join(" + ");
-	
-	return `F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${s_latex}`; // "F(n) = Σ_i f_i(n) b_i^n = (f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
 };
 </script>
