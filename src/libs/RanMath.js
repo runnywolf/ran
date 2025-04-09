@@ -405,7 +405,7 @@ export class SolveCubic { // 解三次方程式
 
 // 以下為字串處理
 
-const SCL = "~,\\enspace"; // separate comma latex
+export const SCL = "~,\\enspace"; // separate comma latex
 
 function throwErr(method, message) {
 	console.error(`[RanMath.${method}] ${message}`);
@@ -455,38 +455,4 @@ export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係�
 	}
 	
 	return s_coefLatex + s_varLatex;
-}
-
-export function makeRecurLatex(recurCoef = [], nonHomoFunc = {}, initConst = []) { // 生成遞迴關係式的 latex 字串
-	let s_latex = "";
-	
-	for (const [i, frac_coef] of recurCoef.entries()) { // 生成齊次部分: r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}
-		const s_term = makeTermLatex(frac_coef, `a_{n-${i+1}}`, 1);
-		if (s_term !== "+0") s_latex += s_term; // 只顯示係數 r_i 不為 0 的項
-	}
-	
-	for (const [key, frac_c] of Object.entries(nonHomoFunc)) { // 生成非齊次部分: frac_c n^k (frac_b)^n + ...
-		const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
-		const frac_b = Frac.fromStr(s_frac_b); // frac_b
-		
-		let s_term = makeTermLatex(frac_c, "n", s_k); // c n^k 部分的 latex 字串
-		if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-			s_term = makeTermLatex(makeTermLatex(frac_c, "n", s_k, false), frac_b, "n");
-		}
-		if (s_term !== "+0") s_latex += s_term; // 只顯示 c n^k 不為 0 的項
-	}
-	
-	if (s_latex === "") s_latex = "0"; // 如果齊次與非齊次部分沒有任何一項, 顯示 "0"
-	s_latex = `a_n = ${removePrefix(s_latex, "+")}`; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
-	
-	s_latex += ` ${SCL} n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
-	s_latex += " \\\\ "; // 換行
-	
-	let initConstLatexArr = []; // 每一個初始條件 a_i = ? 的 latex 字串
-	for (const [i, frac_init] of initConst.entries()) { // 生成初始條件部分: a_0 = ? , a_1 = ? , a_2 = ?
-		initConstLatexArr.push(`a_${i} = ${frac_init.toLatex()}`);
-	}
-	s_latex += initConstLatexArr.join(` ${SCL} `);
-	
-	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
 }

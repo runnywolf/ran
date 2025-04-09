@@ -141,14 +141,18 @@
 		</div>
 		
 		<!-- 根據輸入框得到的遞迴式 -->
-		<vl c :exp="getLatex()" />
+		<vl c :exp="recurLatex" />
 		
 	</div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
-import { getRandomInt, isNatural, Frac, makeRecurLatex } from "@/libs/RanMath.js";
+import { getRandomInt, isNatural, Frac } from "@/libs/RanMath.js";
+
+const props = defineProps({
+	recurLatex: { type: String, default: "?" }, // 遞迴關係式的 latex 字串
+});
 
 const emit = defineEmits([
 	"input", // 遞迴式改變時, 上傳遞迴式資訊
@@ -299,14 +303,14 @@ watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
 	initConst.value = newInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 }, { immediate: true, deep: true });
 
-const getLatex = () => { // 顯示在遞迴產生器下方的遞迴式的 latex 字串
+watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newInitConst]) => {
 	emit("input", { // 當遞迴式改變時, 上傳遞迴式至 RecurView
-		recurCoef: recurCoef.value,
-		nonHomoFunc: nonHomoFunc.value,
-		initConst: initConst.value,
+		recurCoef: newRecurCoef,
+		nonHomoFunc: newNonHomoFunc,
+		initConst: newInitConst,
 	});
-	return makeRecurLatex(recurCoef.value, nonHomoFunc.value, initConst.value);
-};
+	console.log("test")
+});
 </script>
 
 <style scoped>

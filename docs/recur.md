@@ -87,7 +87,7 @@ $$
 > $$
 
 ## 遞迴變數 ( `class SolveRecur` )
-組件參數 `recurCoef` 更新時，會更新 `recur = new SolveRecur(...ZZ)`
+組件參數 `recurCoef` 更新時，會更新 `recur = new SolveRecur(...)`
 
 | variable | type | 說明 |
 | :- | :- | :- |
@@ -124,6 +124,24 @@ $$
 
 由於特徵方程式最高次數為 3，所以三重根與二重根值相同，<br>
 因此 `frac_multiRoot` 必等於 `cubic.getDoubleRoot()`。
+
+### 生成遞迴通解的形式
+根據 `cubic` 的多種解形式和其他因素，以下列出齊次解的所有形式：
+| `solutionType()` | 額外條件 | 齊次解形式 ( 只有 $h_i$ 為未知係數 ) | 通解運算形式 |
+| :- | :- | :- | :- |
+| `TYPE_3FRAC` | `multiRootNum == 1` | $h_1 {r_1}^p + h_2 {r_2}^p + h_3 {r_3}^p$ | `TYPE_NORMAL`<br>`Frac` 型態 |
+| `TYPE_3FRAC` | `multiRootNum == 2` | $h_1 {r_1}^p + h_2 n {r_2}^p + h_3 {r_3}^p$ | `TYPE_NORMAL`<br>`Frac` 型態 |
+| `TYPE_3FRAC` | `multiRootNum == 3` | $h_1 {r_1}^p + h_2 n {r_2}^p + h_3 n^2 {r_3}^p$ | `TYPE_NORMAL`<br>`Frac` 型態 |
+| `TYPE_FRAC_QUAD` | `cubic.quad.s` $= 0, 1$ | 會自動轉為 `TYPE_3FRAC` | - |
+| `TYPE_FRAC_QUAD` | `cubic.quad.s` $\gt 0$ | $h_1 \left( \frac{ n + m \sqrt{s} }{d} \right)^p + h_2 \left( \frac{ n - m \sqrt{s} }{d} \right)^p + h_3 {r_3}^p$ | `TYPE_SQRT`<br>`Frac` 型態 |
+| `TYPE_FRAC_QUAD` | `cubic.quad.s` $\lt 0$ | $h_1 \cos(p \theta) r^p + h_2 \sin(p \theta) r^p + h_3 {r_3}^p$ <br> $r = \frac{ \sqrt{n^2 - m^2 s} }{d} ~~,~~ \theta = \tan^{-1}(\frac{ m \sqrt{-s} }{n})$ | `TYPE_SQRT`<br>`Frac` 型態 |
+| `TYPE_3REAL` | - | $h_1 {r_1}^p + h_2 {r_2}^p + h_3 {r_3}^p$ | `TYPE_NORMAL`<br>`float` 型態 |
+| `TYPE_REAL_IM` | - | $h_1 \cos(p \theta) r^p + h_2 \sin(p \theta) r^p + h_3 {r_3}^p$ <br> $r = \sqrt{ { c_{re} }^2 + { c_{im} }^2 } ~~,~~ \theta = \tan^{-1}(\frac{ c_{im} }{ c_{re} })$ | `TYPE_SQRT`<br>`float` 型態 |
+
+
+
+->>>>>>>> or 做成 g_i(n) d_i 形式, 泛化更強
+自動將 number + frac -> number
 
 ## 解題步驟
 解題步驟的實作細節。
@@ -201,25 +219,6 @@ $b^n$ 由 `makeTermLatex(1, dRoot, "n", false)` 生成。
 | `TYPE_FRAC_QUAD` | 無重根 | `cubic.quad.toLatex()` 回傳的解一定包含 " $\pm$ "<br>將 $\pm$ 替換為 $+$ 和 $-$ 來製作兩個根的 latex，<br>加上剩餘一根 `cubic.frac_r1` 後回傳 |
 | `TYPE_3REAL` | 無重根 | " $h_1 {r_1}^n + h_2 {r_2}^n + h_3 {r_3}^n$ " |
 | `TYPE_REAL_IM` | 無重根 | " $h_1 (c_{re} + c_{im} i)^n + h_2 (c_{re} - c_{im} i)^n + h_3 {r_3}^n$ " |
-
-### step1 - 處理複數齊次解
-[!] 嘗試合併至上一步, 統一生成齊次解資料結構
-
-`SolveCubic` 有兩種解的形式會產生共軛複根：
-| if `solutionType()` == |  |  |
-| :- | :- | :- |
-| `TYPE_FRAC_QUAD` |  |  |
-| `TYPE_REAL_IM` |  |  |
-
-### 齊次解資料結構
-TYPE_FRAC -> {expFunc: Frac} x
-TYPE_QUAD -> quad + {expFunc: Frac} x
-TYPE_FLOAT -> {expFunc: number} x
-TYPE_FRAC_EULER -> frac-euler + {expFunc: Frac} x
-TYPE_FLOAT_EULER -> float-euler + {expFunc: Frac} x
-
-->>>>>>>> or 做成 g_i(n) d_i 形式, 泛化更強
-自動將 number + frac -> number
 
 ### step2 - 非齊次部分
 
