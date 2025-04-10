@@ -433,9 +433,9 @@ export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係�
 	
 	if (pow instanceof Frac) pow = `${pow.n}/${pow.d}`;
 	else pow = String(pow);
+	// end: 根據不同型態的輸入, 統一轉為 String
 	
 	if (coef === "0" || base === "0") return (firstPos ? "+" : "") + "0";
-	// end: 根據不同型態的輸入, 統一轉為 String
 	
 	let s_coefLatex = ""; // 係數部分的 latex 字串
 	if (coef === "-1") s_coefLatex = (pow === "0" ? "-1" : "-");
