@@ -52,6 +52,12 @@
 			<div style="height: 12px;"></div>
 			因此特解的形式為：
 			<vl c :exp="recur.makeLatexNewParticularForm()" />
+			將上式代入原遞迴關係：
+			<vl c :exp="makeLatexParticularIntoRecur(recurCoef)" />
+			想要求出特解 <vl exp="a_n^{(p)}" /> 之中的 {{ recur.maxPi }} 個未知係數
+			<vl :exp="recur.makeLatexSomePi()" />，<br>
+			需要將 <vl :exp="recur.makeLatexNRange()" />
+			代入上式，產生 {{ recur.maxPi }} 個式子的線性方程組，並解聯立。
 		</div>
 		<div v-else>
 			遞迴式沒有非齊次部分，跳過這一步驟。
@@ -79,14 +85,14 @@ class SolveRecur { // 解非齊次遞迴
 		
 		let coef = [...recurCoef];
 		while (coef.length < 3) coef.push(new Frac(0)); // 0, 1, 2 階遞迴要解三次特徵方程式需要補足係數
-		this.cubic = new SolveCubic(new Frac(1), coef[0].muli(-1), coef[1].muli(-1), coef[2].muli(-1)); // t^3 - r1t^2 - r2t - r3 = 0
+		this.cubic = new SolveCubic(new Frac(1), coef[0].muli(-1), coef[1].muli(-1), coef[2].muli(-1)); // 解方程式 t^3 - r1t^2 - r2t - r3 = 0
 		
 		const dRoot = this.cubic.getDoubleRoot(); // 二重根的值
 		const tRoot = this.cubic.getTripleRoot(); // 三重根的值
 		this.multiRootNum = dRoot ? (tRoot ? 3 : 2) : 1; // 最高重根數
 		this.frac_multiRoot = dRoot; // 重根值. 三重根的值 = 二重根, 所以直接用 dRoot
 		
-		let expFunc = {}; // 同類指數項: { "b.n/b.d": [ f0, f1, f2 ], ... } 代表 (f0 + f1n + f2n^2) b^n + ...
+		let expFunc = {};
 		for (const [key, frac_c] of Object.entries(this.nonHomoFunc)) { // 合併同類指數項
 			const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
 			const k = Number(s_k); // n^k 的 k (0~3)
@@ -95,27 +101,29 @@ class SolveRecur { // 解非齊次遞迴
 			while (expFunc[s_frac_b].length - 1 < k) expFunc[s_frac_b].push(new Frac(0)); // 補足多項式 f_i(n) 的次數
 			expFunc[s_frac_b][k] = frac_c; // 設定係數
 		}
-		this.combinedExpFunc = expFunc;
+		this.combinedExpFunc = expFunc; // 同類指數項: { "b.n/b.d": [ f0, f1, f2 ], ... } 代表 (f0 + f1n + f2n^2) b^n + ...
 		
-		this.varPiIndex = {}; // 特解當中的 p_i 的編號 i, 結構與 combinedExpFunc 相同
+		let varPiIndex = {};
 		let pi = 1; // 未知係數 p_i 的 i, 是個計數器, 用於生成 p_1, p_2, ...
 		for (const [s_frac_b, combinedExp] of Object.entries(this.combinedExpFunc)) {
-			this.varPiIndex[s_frac_b] = combinedExp.map(() => pi++);
+			varPiIndex[s_frac_b] = combinedExp.map(() => pi++);
 		}
+		this.varPiIndex = varPiIndex; // 特解當中的 p_i 的編號 i, 結構與 combinedExpFunc 相同
+		this.maxPi = pi-1; // p_i 的最大編號 i
 		
 		const cs = this.cubic;
 		const type = cs.solutionType(); // 三次函數的解形式
 		let rationalRoots = []; // 齊次解的有理數特徵值
 		if (type === SolveCubic.TYPE_3FRAC) rationalRoots = [ cs.frac_r1, cs.frac_r2, cs.frac_r3 ];
 		else if (type === SolveCubic.TYPE_FRAC_QUAD) rationalRoots = [ cs.frac_r1 ];
-		let homogRootConflictNum = {}; // 齊次解的某個特徵值 b 的重根數, 且 b^n 存在於特解內. 決定非齊次指數項需要乘 n^? 保持線性獨立
+		let homogRootConflictNum = {};
 		for (const frac_r of rationalRoots) if (!frac_r.isZero()) { // 檢查齊次解的所有非零 b
 			const key = `${frac_r.n}/${frac_r.d}`;
 			if (key in this.combinedExpFunc) { // 如果齊次解的 b^n 也存在於特解, 記錄一下齊次解的 b 的重根數
 				homogRootConflictNum[key] = (homogRootConflictNum[key] ?? 0) + 1;
 			}
 		}
-		this.homogRootConflictNum = homogRootConflictNum;
+		this.homogRootConflictNum = homogRootConflictNum; // 齊次解的某個特徵值 b 的重根數, 且 b^n 存在於特解內. 決定非齊次指數項需要乘 n^? 保持線性獨立
 	}
 	
 	makeLatexCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
@@ -248,6 +256,16 @@ class SolveRecur { // 解非齊次遞迴
 		}).join(" + ");
 		return `a_n^{(p)} = ${s_latex}`;
 	}
+	
+	makeLatexSomePi() { // 想要求出特解 a_n^{(p)} 之中的 ? 個未知係數 "p1 ~ p?" (latex)
+		return this.maxPi == 1 ? 'p_1' : `p_1 ~,~ \\cdots ,~ p_${this.maxPi}`;
+	}
+	
+	makeLatexNRange() { // 需要將 "n = ? ~ ?" 代入上式， (latex)
+		let s_latex = `n = ${this.recurCoef.length}`;
+		if (this.maxPi > 1) s_latex += `\\sim ${this.recurCoef.length + this.maxPi - 1}`;
+		return s_latex;
+	}
 }
 
 const props = defineProps({
@@ -266,7 +284,7 @@ const recur = ref(new SolveRecur());
 watch(() => [props.recurCoef, props.nonHomoFunc, props.initConst],
 	([newRecurCoef, newNonHomoFunc, newInitConst]) => {
 		recur.value = new SolveRecur(newRecurCoef, newNonHomoFunc, newInitConst); // 遞迴參數改變時, 更新遞迴資訊
-		recurLatex.value = makeRecurLatex(newRecurCoef, newNonHomoFunc, newInitConst); // 生成遞迴關係式的 latex 字串
+		recurLatex.value = makeLatexRecur(newRecurCoef, newNonHomoFunc, newInitConst); // 生成遞迴關係式的 latex 字串
 		emit("recurLatex", recurLatex.value); // 上傳遞迴關係式的 latex 字串
 	}
 );
@@ -277,22 +295,22 @@ const termLatexNot0 = (coef, base, pow) => { // 若 makeTermLatex 輸出為 "+0"
 };
 
 const getLatexRecurHomog = (recurCoef = []) => { // 生成 遞迴的齊次部分 "a_n = r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
-	let s_latex = makeRecurHomogLatex(recurCoef);
+	let s_latex = makeLatexRecurHomog(recurCoef);
 	if (s_latex === "") s_latex = "0"; // 如果齊次部分沒有任何一項, 顯示 "0"
 	return `a_n = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "a_n ="
 };
 
 const getLatexRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
-	let s_latex = makeRecurNonHomogLatex(nonHomoFunc);
+	let s_latex = makeLatexRecurNonHomog(nonHomoFunc);
 	if (s_latex === "") s_latex = "0"; // 如果非齊次部分沒有任何一項, 顯示 "0"
 	return `F(n) = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "F(n) ="
 };
 
-const makeRecurHomogLatex = (recurCoef = []) => { // 生成 遞迴的齊次部分 "+ r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
+const makeLatexRecurHomog = (recurCoef = []) => { // 生成 遞迴的齊次部分 "+ r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
 	return recurCoef.map((frac_coef, i) => termLatexNot0(frac_coef, `a_{n-${i+1}}`, 1)).join("");
 };
 
-const makeRecurNonHomogLatex = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "+ c n^k b^n + ..." (latex)
+const makeLatexRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "+ c n^k b^n + ..." (latex)
 	let s_latex = "";
 	
 	for (const [key, frac_c] of Object.entries(nonHomoFunc)) { // 生成非齊次部分: "+ c n^k b^n + ..."
@@ -309,8 +327,8 @@ const makeRecurNonHomogLatex = (nonHomoFunc = {}) => { // 生成 遞迴的非齊
 	return s_latex;
 };
 
-const makeRecurLatex = (recurCoef = [], nonHomoFunc = {}, initConst = []) => { // 生成遞迴關係式的 latex 字串
-	let s_latex = makeRecurHomogLatex(recurCoef) + makeRecurNonHomogLatex(nonHomoFunc);
+const makeLatexRecur = (recurCoef = [], nonHomoFunc = {}, initConst = []) => { // 生成遞迴關係式的 latex 字串
+	let s_latex = makeLatexRecurHomog(recurCoef) + makeLatexRecurNonHomog(nonHomoFunc);
 	
 	if (s_latex === "") s_latex = "0"; // 如果齊次與非齊次部分沒有任何一項, 顯示 "0"
 	s_latex = `a_n = ${removePrefix(s_latex, "+")}`; // 在開頭加上 "a_n =", 此時 latex 字串為: "a_n = 齊次部分 + 非齊次部分"
@@ -319,6 +337,18 @@ const makeRecurLatex = (recurCoef = [], nonHomoFunc = {}, initConst = []) => { /
 	s_latex += " \\\\ "; // 換行
 	
 	s_latex += initConst.map((frac_init, i) => `a_${i} = ${frac_init.toLatex()}`).join(` ${SCL} `); // 生成初始條件部分: a_0 = ? , a_1 = ? , a_2 = ?
+	
+	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
+};
+
+const makeLatexParticularIntoRecur = (recurCoef = []) => { // 將上式代入原遞迴關係: ... (latex)
+	let s_latex = recurCoef.map(
+		(frac_coef, i) => termLatexNot0(frac_coef, `a_{n-${i+1}}^{(p)}`, 1)
+	).join("");
+	
+	s_latex = `a_n^{(p)} = ${removePrefix(s_latex, "+")} + F(n)`; // 在開頭加上 "a_n^{(p)} =", 此時 latex 字串為: "a_n^{(p)} = 齊次部分 + F(n)"
+	
+	s_latex += ` ${SCL} n \\ge ${recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
 	
 	return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
 };
