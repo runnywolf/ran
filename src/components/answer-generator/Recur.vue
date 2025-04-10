@@ -191,23 +191,26 @@ class SolveRecur { // 解非齊次遞迴
 		return "{?}";
 	}
 	
+	_makeLatexExpTerm(s_frac_b, isUnknownCoef, extraNPow = 0) { // 生成 "(p1 + p2n + ...) b^n" (latex). extraNPow 為額外乘上去的 n^p
+		const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+		const s_latex = this.combinedExpFunc[s_frac_b].map((frac_c, i) => { // "+ p1 + p2n + ..." (latex)
+			if (isUnknownCoef) frac_c = `p_{${this.varPiIndex[s_frac_b][i]}}`; // isUnknownCoef 開啟會把係數替換成未知數 p_i
+			return termLatexNot0(frac_c, "n", i + extraNPow);
+		}).join("");
+		return makeTermLatex(`(${removePrefix(s_latex, "+")})`, frac_b, "n", false);
+	}
+	
 	makeLatexCombinedExp() { // 合併相同的指數項: "F(n) = Σ_i f_i(n) b_i^n = (f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
-		let s_latex = Object.entries(this.combinedExpFunc).map(([s_frac_b, combinedExp]) => { // combinedExpFunc = { "b.n/b.d": [ f0, f1, f2 ], ... }
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			const f = combinedExp.map((frac_c, i) => termLatexNot0(frac_c, "n", i)).join(""); // "+ f0 + f1n + f2n^2 + ..." (latex)
-			return makeTermLatex(`(${removePrefix(f, "+")})`, frac_b, "n", false); // "(f0 + f1n + f2n^2 + ...) b^n" (latex)
-		}).join(" + ");
-		
+		let s_latex = Object.keys(this.combinedExpFunc).map(
+			s_frac_b => this._makeLatexExpTerm(s_frac_b, false)
+		).join(" + ");
 		return `F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${s_latex}`;
 	}
 	
 	makeLatexParticularForm() { // 猜測特解的形式為: "a_n^{(p)} = Σ_i g_i(n) b_i^n = (p1 + p2n + ...) b^n + ..." (latex)
-		let s_latex = Object.entries(this.varPiIndex).map(([s_frac_b, PiIndexList]) => {
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			const g = PiIndexList.map((pi, i) => termLatexNot0(`p_{${pi}}`, "n", i)).join(""); // "+ p1 + p2n + ..." (latex)
-			return makeTermLatex(`(${removePrefix(g, "+")})`, frac_b, "n", false); // "(p1 + p2n + ...) b^n" (latex)
-		}).join(" + ");
-		
+		let s_latex = Object.keys(this.combinedExpFunc).map(
+			s_frac_b => this._makeLatexExpTerm(s_frac_b, true)
+		).join(" + ");
 		return `a_n^{(p)} = \\sum\\limits_{i} g_i(n) {b_i}^n = ${s_latex}`;
 	}
 	
@@ -230,25 +233,19 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	makeLatexChangeExpList() { // 為了保證特解與齊次解的線性獨立性，需要將 "(p1 + p2n) b^n" 設為 "(p1n^2 + p2n^3) b^n". (齊次解有二重根 b)
-		const makeLatexExp = (s_frac_b, extraNPow) => { // 生成 "(p1 + p2n + ...) b^n" (latex). extraNPow 為額外乘上去的 n^p
-			const PiIndexList = this.varPiIndex[s_frac_b];
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			const g = PiIndexList.map((pi, i) => termLatexNot0(`p_{${pi}}`, "n", i+extraNPow)).join(""); // "+ p1 + p2n + ..." (latex)
-			return makeTermLatex(`(${removePrefix(g, "+")})`, frac_b, "n", false); // "(p1 + p2n + ...) b^n" (latex)
-		};
 		return Object.entries(this.homogRootConflictNum).map(([s_frac_b, conflictNum]) => { // 衝突的 b^n
-			return [ makeLatexExp(s_frac_b, 0), makeLatexExp(s_frac_b, conflictNum) ]; // "沒乘 n^p 的 g(n)" 設為 "有乘 n^p 的 g(n)" (latex)
+			return [
+				this._makeLatexExpTerm(s_frac_b, true), // "沒乘 n^p 的 g(n)" (latex)
+				this._makeLatexExpTerm(s_frac_b, true, conflictNum) // "有乘 n^p 的 g(n)" (latex)
+			];
 		});
 	}
 	
 	makeLatexNewParticularForm() { // 因此特解的形式為: "a_n^{(p)} = (p1 + p2n + ...) b^n + ..." (latex)
-		let s_latex = Object.entries(this.varPiIndex).map(([s_frac_b, PiIndexList]) => {
+		let s_latex = Object.keys(this.combinedExpFunc).map(s_frac_b => {
 			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			const g = PiIndexList.map((pi, i) => termLatexNot0(`p_{${pi}}`, "n", i+extraNPow)).join(""); // "+ p1 + p2n + ..." (latex)
-			return makeTermLatex(`(${removePrefix(g, "+")})`, frac_b, "n", false); // "(p1 + p2n + ...) b^n" (latex)
+			return this._makeLatexExpTerm(s_frac_b, true, extraNPow);
 		}).join(" + ");
-		
 		return `a_n^{(p)} = ${s_latex}`;
 	}
 }
