@@ -57,7 +57,11 @@
 			想要求出特解 <vl exp="a_n^{(p)}" /> 之中的 {{ recur.maxPi }} 個未知係數
 			<vl :exp="recur.makeLatexSomePi()" />，<br>
 			需要將 <vl :exp="recur.makeLatexNRange()" />
-			代入上式，產生 {{ recur.maxPi }} 個式子的線性方程組，並解聯立。
+			代入上式，產生 {{ recur.maxPi }} 個式子的線性方程組，並解聯立。<br>
+			移項後得到：
+			<vl c :exp="recur.makeLatexEquationSystemP1()" />
+			其中
+			<vl c :exp="recur.makeLatexPiLinearEquation()" />
 		</div>
 		<div v-else>
 			遞迴式沒有非齊次部分，跳過這一步驟。
@@ -74,7 +78,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Frac, SolveCubic, makeTermLatex, removePrefix, SCL } from "@/libs/RanMath.js";
+import { Frac, SolveCubic, makeTermLatex, removePrefix, removePostfix, SCL } from "@/libs/RanMath.js";
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
 
 class SolveRecur { // 解非齊次遞迴
@@ -82,6 +86,8 @@ class SolveRecur { // 解非齊次遞迴
 		this.recurCoef = recurCoef;
 		this.nonHomoFunc = nonHomoFunc;
 		this.initConst = initConst;
+		
+		this.recurLevel = this.recurCoef.length; // 遞迴階數
 		
 		let coef = [...recurCoef];
 		while (coef.length < 3) coef.push(new Frac(0)); // 0, 1, 2 階遞迴要解三次特徵方程式需要補足係數
@@ -124,10 +130,26 @@ class SolveRecur { // 解非齊次遞迴
 			}
 		}
 		this.homogRootConflictNum = homogRootConflictNum; // 齊次解的某個特徵值 b 的重根數, 且 b^n 存在於特解內. 決定非齊次指數項需要乘 n^? 保持線性獨立
+		
+		const newG = Array.from({ length: this.maxPi }, (_, j) => (() => new Frac(0))); // newG[j](n) 回傳 a_n^{(p)} 內的未知數 p_{1+j} 的常係數; n>=0; j>=0
+		for (const [s_frac_b, combinedExp] of Object.entries(this.combinedExpFunc)) {
+			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+			for (let i = 0; i < combinedExp.length; i++) { // 遍歷 (p_1 + p_2 n + p_3 n^2) b^n 展開後的 p_1 n^0 b^n , p_2 n^1 b^n , p_3 n^2 b^n
+				const pi = this.varPiIndex[s_frac_b][i];
+				newG[pi-1] = (n) => new Frac(n**(i+extraNPow)).mul(frac_b.pow(n)); // a_n^{(p)} 內的未知數 p_j 的常係數 n^? * b^n
+			}
+		}
+		this.particularCoefEquationSystem = Array.from( // a_n^{(p)} 代入 n = 0 ~ ? 產生 用於求特解未知數 p_j 所需的足量線性方程式 a_i^{(p)}
+			{ length: this.recurLevel + this.maxPi },
+			(_, i) => Array.from({ length: this.maxPi }, (_, j) => newG[j](i))
+		); // arr[i][j] 為 a_i^{(p)} 內的未知數 p_{1+j} 的常係數; i>=0; j>=0
+		
+		this.particularCoefEquationSystemIntoRecur = undefined;
 	}
 	
 	makeLatexCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
-		let l = this.recurCoef.length; // 遞迴階數
+		let l = this.recurLevel; // 遞迴階數
 		let s_latex = this.recurCoef.map(
 			(frac_coef, i) => termLatexNot0(frac_coef, "t", l-1-i)
 		).join("");
@@ -136,9 +158,9 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	makeLatexChar() { // 特徵值 "t = ? , ? , ?" (latex)
-		if (this.recurCoef.length == 1) return this.recurCoef[0].toLatex(); // 一次方程式的解
-		if (this.recurCoef.length == 2) return this.cubic.quad.toLatex(); // 二次方程式的解
-		if (this.recurCoef.length == 3) return this.cubic.toLatex(); // 三次方程式的解
+		if (this.recurLevel == 1) return this.recurCoef[0].toLatex(); // 一次方程式的解
+		if (this.recurLevel == 2) return this.cubic.quad.toLatex(); // 二次方程式的解
+		if (this.recurLevel == 3) return this.cubic.toLatex(); // 三次方程式的解
 		return "{?}";
 	}
 	
@@ -262,9 +284,38 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	makeLatexNRange() { // 需要將 "n = ? ~ ?" 代入上式， (latex)
-		let s_latex = `n = ${this.recurCoef.length}`;
-		if (this.maxPi > 1) s_latex += `\\sim ${this.recurCoef.length + this.maxPi - 1}`;
+		let s_latex = `n = ${this.recurLevel}`;
+		if (this.maxPi > 1) s_latex += `\\sim ${this.recurLevel + this.maxPi - 1}`;
 		return s_latex;
+	}
+	
+	makeLatexEquationSystemP1() { // 移項後得到: "將所有 n 代入上式的聯立方程式 (latex)" ; 我已經想不出如何命名 method 了
+		const l = this.recurLevel; // 遞迴階數
+		let s_latex = Array.from({ length: this.maxPi }, (_, n) => {
+			let s_equationLatex = this.recurCoef.map( // "- h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)}" (latex)
+				(frac_coef, i) => termLatexNot0(frac_coef.muli(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1)
+			).join(" ");
+			return `a_{${n+l}}^{(p)} ${s_equationLatex} = F(${n+l})`; // "a_n^{(p)} - h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)} = F(n)" (latex)
+		}).join(" \\\\ "); // 以換行符連接所有的式子
+		
+		return `\\begin{cases} ${s_latex} \\end{cases}`; // 加上聯立方程式的 latex 對齊規則
+	}
+	
+	makeLatexPiLinearEquation() { // 其中: "" (latex)
+		let s_latex = Array.from({ length: this.recurLevel + this.maxPi }, (_, n) => {
+			let s_equationLatex = this.particularCoefEquationSystem[n].map((frac_PjCoef, j) => {
+				if (frac_PjCoef.isZero()) return "&&"; // 某一個長係數為 0, 為了要保持後續 p_i 的對齊, 回傳 &&
+				return `~${makeTermLatex(frac_PjCoef, `&p_{${j+1}}&`, 1)}`; // 避免運算子緊貼上一項, 開頭加上 ~ 符號增加間距
+			}).join(" ");
+			
+			if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
+			if (s_equationLatex.split("&&").length - 1 === this.maxPi) s_equationLatex = "~0"; // 若某個 a_n^(p) 為 0
+			s_equationLatex = removePostfix(s_equationLatex, "&"); // 最後一個字符不能是 &, vatex 會報錯
+			return `a_{${n}}^{(p)} &=& ${s_equationLatex}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
+		}).join(" \\\\ "); // 以換行符連接所有的式子
+		
+		s_latex = `\\begin{alignat*}{${this.maxPi+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_i 和 "=" 對齊)
+		return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
 	}
 }
 

@@ -168,7 +168,7 @@ export class Matrix { // 矩陣
 }
 
 export class SolveQuad { // 解二次方程式
-	static TYPE_SQRT = 0; // 解形式為: (n ± m√s) / d  ;  n,s為整數  ;  m,d 為正整數
+	static TYPE_SQRT = 0; // 解形式為: (n ± m√s) / d ; n,s為整數 ; m,d 為正整數
 	static TYPE_FRAC = 1; // 解形式為: frac_r1 , frac_r2
 	
 	constructor(frac_a, frac_b, frac_c) { // 計算共軛根
@@ -411,8 +411,13 @@ function throwErr(method, message) {
 	console.error(`[RanMath.${method}] ${message}`);
 }
 
-export function removePrefix(str, prefix) { // 移除開頭字串
-  if (str.startsWith(prefix)) return str.slice(prefix.length);
+export function removePrefix(str, prefix) { // 移除字串開頭
+	if (str.startsWith(prefix)) return str.slice(prefix.length);
+	return str;
+}
+
+export function removePostfix(str, postfix) { // 移除字串尾部
+	if (str.endsWith(postfix)) return str.slice(0, -postfix.length);
   return str;
 }
 
