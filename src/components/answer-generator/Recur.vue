@@ -24,7 +24,7 @@
 		<vl c :exp="`a_n^{(h)} = ${recur.makeLatexHomogForm()}`" />
 		
 		<span class="ts-text is-large is-bold">Step2：求特解</span><br>
-		<div v-if="Object.keys(nonHomoFunc).length !== 0">
+		<div v-if="Object.keys(nonHomoFunc).length > 0">
 			遞迴的非齊次部分為
 			<vl c :exp="getLatexRecurNonHomog(nonHomoFunc)" />
 			合併相同的指數項：
@@ -62,6 +62,11 @@
 			<vl c :exp="recur.makeLatexEquationSystemP1()" />
 			其中
 			<vl c :exp="recur.makeLatexPiLinearEquation()" />
+			你可以將以上兩個聯立方程式化為矩陣，再相乘。<br>
+			展開後得到：
+			<vl c :exp="recur.makeLatexSolvePiLinearEquation()" />
+			使用高斯消去法解 <vl exp="p_i" /> 的聯立方程式，得到：
+			<vl c :exp="recur.makeLatexPiAnswer()" />
 		</div>
 		<div v-else>
 			遞迴式沒有非齊次部分，跳過這一步驟。
@@ -78,7 +83,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Frac, SolveCubic, makeTermLatex, removePrefix, removePostfix, SCL } from "@/libs/RanMath.js";
+import { Frac, SolveCubic, Matrix, makeTermLatex, SCL } from "@/libs/RanMath.js";
+import { removePrefix, removePostfix } from "@/libs/StringTool.js";
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
 
 class SolveRecur { // 解非齊次遞迴
@@ -98,6 +104,10 @@ class SolveRecur { // 解非齊次遞迴
 		this.multiRootNum = dRoot ? (tRoot ? 3 : 2) : 1; // 最高重根數
 		this.frac_multiRoot = dRoot; // 重根值. 三重根的值 = 二重根, 所以直接用 dRoot
 		
+		if (Object.keys(this.nonHomoFunc).length > 0) this._initNonHomog(); // 如果遞迴有非齊次部分才需要計算
+	}
+	
+	_initNonHomog() { // 如果遞迴有非齊次部分才需要計算
 		let expFunc = {};
 		for (const [key, frac_c] of Object.entries(this.nonHomoFunc)) { // 合併同類指數項
 			const [s_k, s_frac_b] = key.split(","); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
@@ -140,12 +150,37 @@ class SolveRecur { // 解非齊次遞迴
 				newG[pi-1] = (n) => new Frac(n**(i+extraNPow)).mul(frac_b.pow(n)); // a_n^{(p)} 內的未知數 p_j 的常係數 n^? * b^n
 			}
 		}
-		this.particularCoefEquationSystem = Array.from( // a_n^{(p)} 代入 n = 0 ~ ? 產生 用於求特解未知數 p_j 所需的足量線性方程式 a_i^{(p)}
+		this.PiEquationSystem = Array.from( // a_n^{(p)} 代入 n = 0 ~ ? 產生 用於求特解未知數 p_j 所需的足量線性方程式 a_i^{(p)}
 			{ length: this.recurLevel + this.maxPi },
 			(_, i) => Array.from({ length: this.maxPi }, (_, j) => newG[j](i))
 		); // arr[i][j] 為 a_i^{(p)} 內的未知數 p_{1+j} 的常係數; i>=0; j>=0
 		
-		this.particularCoefEquationSystemIntoRecur = undefined;
+		const F = (n) => { // 非齊次部分 F(n) 代入 n 的結果
+			let frac_sum = new Frac(0);
+			for (const [s_frac_b, combinedExp] of Object.entries(this.combinedExpFunc)) {
+				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+				for (const [i, frac_c] of combinedExp.entries()) {
+					frac_sum = frac_sum.add(frac_c.mul(new Frac(n**i)).mul(frac_b.pow(n)));
+				}
+			}
+			return frac_sum;
+		};
+		this.nonHomogFn = Array.from({ length: this.recurLevel + this.maxPi }, (_, n) => F(n)); // 非齊次部分 F(n) 代入 0 ~ ? 的結果
+		
+		const l = this.recurLevel; // 遞迴階數
+		const matrix_p1es = Matrix.create(this.maxPi, this.recurLevel + this.maxPi);
+		for (let n = 0; n < this.maxPi; n++) { // 將那個有很多 a_n^(p) 的聯立方程式轉為矩陣
+			matrix_p1es.A[n][n+l] = new Frac(1);
+			for (const [i, frac_coef] of this.recurCoef.entries()) {
+				matrix_p1es.A[n][n+(l-1)-i] = frac_coef.muli(-1);
+			}
+		}
+		this.matrix_solvePi = matrix_p1es.mul(new Matrix(this.PiEquationSystem)); // 與有很多 p_i 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_i 的聯立方程式)
+		
+		const matrix_b = new Matrix([this.nonHomogFn.slice(this.recurLevel)]).trans();
+		this.PiAnswer = this.matrix_solvePi.inverse().mul(matrix_b).trans().A[0]; // 解 p_i 的聯立 Ax = b ; x 會等於 A^-1 b
+		
+		// todo 試試看能不能使太長的 latex 變成滾動條
 	}
 	
 	makeLatexCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
@@ -301,10 +336,10 @@ class SolveRecur { // 解非齊次遞迴
 		return `\\begin{cases} ${s_latex} \\end{cases}`; // 加上聯立方程式的 latex 對齊規則
 	}
 	
-	makeLatexPiLinearEquation() { // 其中: "" (latex)
+	makeLatexPiLinearEquation() { // 其中: "a_i^(p) 的 p_i 的線性組合" (latex)
 		let s_latex = Array.from({ length: this.recurLevel + this.maxPi }, (_, n) => {
-			let s_equationLatex = this.particularCoefEquationSystem[n].map((frac_PjCoef, j) => {
-				if (frac_PjCoef.isZero()) return "&&"; // 某一個長係數為 0, 為了要保持後續 p_i 的對齊, 回傳 &&
+			let s_equationLatex = this.PiEquationSystem[n].map((frac_PjCoef, j) => {
+				if (frac_PjCoef.isZero()) return "&&"; // 某一個長係數為 0, 為了要保持後續 p_j 的對齊, 回傳 &&
 				return `~${makeTermLatex(frac_PjCoef, `&p_{${j+1}}&`, 1)}`; // 避免運算子緊貼上一項, 開頭加上 ~ 符號增加間距
 			}).join(" ");
 			
@@ -314,8 +349,31 @@ class SolveRecur { // 解非齊次遞迴
 			return `a_{${n}}^{(p)} &=& ${s_equationLatex}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
 		}).join(" \\\\ "); // 以換行符連接所有的式子
 		
-		s_latex = `\\begin{alignat*}{${this.maxPi+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_i 和 "=" 對齊)
+		s_latex = `\\begin{alignat*}{${this.maxPi+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_j 和 "=" 對齊)
 		return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
+	}
+	
+	makeLatexSolvePiLinearEquation() { // 展開後得到: "p_i 的線性聯立方程式" (latex)
+		const l = this.recurLevel; // 遞迴階數
+		let s_latex = this.matrix_solvePi.A.map((row, n) => {
+			let s_equationLatex = row.map((frac_PjCoef, j) => {
+				if (frac_PjCoef.isZero()) return "&&"; // 某一個長係數為 0, 為了要保持後續 p_j 的對齊, 回傳 &&
+				return `~${makeTermLatex(frac_PjCoef, `&p_{${j+1}}&`, 1)}`; // 避免運算子緊貼上一項, 開頭加上 ~ 符號增加間距
+			}).join(" ");
+			
+			if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
+			if (s_equationLatex.split("&&").length - 1 === this.maxPi) s_equationLatex = "~0"; // 若某個 a_n^(p) 為 0
+			return `${s_equationLatex} &= ${this.nonHomogFn[n+l].toLatex()}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
+		}).join(" \\\\ "); // 以換行符連接所有的式子
+		
+		s_latex = `\\begin{alignat*}{${this.maxPi+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_j 和 "=" 對齊)
+		return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
+	}
+	
+	makeLatexPiAnswer() { // 使用高斯消去法解 p_i 的聯立方程式，得到: "..." (latex)
+		return this.PiAnswer.map(
+			(frac_Pi, i) => `p_{${i+1}} = ${frac_Pi.toLatex()}`
+		).join(` ${SCL} `);
 	}
 }
 

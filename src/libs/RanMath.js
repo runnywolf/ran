@@ -69,6 +69,10 @@ export class Frac { // 分數
 		return new Frac(0); // 若輸入非整數或分數, 回傳 0
 	}
 	
+	static isFrac(frac) { // 是否是分數
+		return frac instanceof Frac;
+	}
+	
 	constructor(n, d = 1) {
 		if (typeof n !== "number" || typeof d !== "number") { // 參數不為數字
 			throwErr("Frac.constructor", "n & d must be Number.");
@@ -163,8 +167,175 @@ export class Frac { // 分數
 	}
 }
 
+export class FNop { // Frac 和 Number 混合運算
+	static makeOp(fn1, fn2, fracOp, numberOp) { // 定義 Frac 和 Number 的混合算子
+		if (Frac.isFrac(fn1) && Frac.isFrac(fn2)) return fracOp(fn1, fn2);
+		if (Frac.isFrac(fn1)) fn1 = fn1.toFloat(); // 如果其中一個數為 number, 降級為 number 運算
+		if (Frac.isFrac(fn2)) fn2 = fn2.toFloat();
+		return numberOp(fn1, fn2);
+	}
+	
+	static add(fn1, fn2) { // 加法
+		return FNop.makeOp(fn1, fn2, (fn1, fn2) => fn1.add(fn2), (fn1, fn2) => fn1 + fn2);
+	}
+	
+	static sub(fn1, fn2) { // 加法
+		return FNop.makeOp(fn1, fn2, (fn1, fn2) => fn1.sub(fn2), (fn1, fn2) => fn1 - fn2);
+	}
+	
+	static mul(fn1, fn2) { // 乘法
+		return FNop.makeOp(fn1, fn2, (fn1, fn2) => fn1.mul(fn2), (fn1, fn2) => fn1 * fn2);
+	}
+	
+	static div(fn1, fn2) { // 除法
+		return FNop.makeOp(fn1, fn2, (fn1, fn2) => fn1.div(fn2), (fn1, fn2) => fn1 / fn2);
+	}
+	
+	static equal(fn1, fn2) { // 等於
+		return FNop.makeOp(fn1, fn2, (fn1, fn2) => fn1.equal(fn2), (fn1, fn2) => fn1 === fn2);
+	}
+}
+
 export class Matrix { // 矩陣
-	// inverse
+	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
+		if (!Array.isArray(arr)) { // 如果 A 不是 Array
+			if (err) throwErr("Matrix.isMatrix", "Variable arr is not an Array.");
+			return false;
+		}
+		
+		for (const [i, rowI] of arr.entries()) { // 檢查矩陣內是否存在非 Frac 或 Number 的元素
+			if (!Array.isArray(rowI)) { // 如果 row 不是 Array
+				if (err) throwErr("Matrix.isMatrix", `Element arr[${i}] is not an Array.`);
+				return false;
+			}
+			for (const [j, Aij] of rowI.entries()) {
+				if (!Frac.isFrac(Aij) && typeof Aij !== "number") {
+					if (err) throwErr("Matrix.isMatrix", `Element arr[${i}][${j}] = ${Aij} is not a number.`);
+					return false;
+				}
+			}
+		}
+		
+		const rowsLength = arr.map(rowI => rowI.length); // 每個 row 的元素個數
+		if (!rowsLength.every(rowL => rowL === rowsLength[0])) { // 若存在兩個 row 的元素個數不相同
+			if (err) throwErr("Matrix.isMatrix", "The rows in the arr have inconsistent lengths.");
+			return false;
+		}
+		if (rowsLength.length === 0 || rowsLength[0] === 0) { // arr 不可以是 ?*0 矩陣
+			if (err) throwErr("Matrix.isMatrix", "arr is a ?*0 matrix.");
+			return false;
+		}
+		return true;
+	}
+	
+	static create(n, m, element = null) { // 生成一個元素全為 element 的 n*m 矩陣, 不傳入 element 會將元素設為 Frac(0)
+		if (!(Number.isInteger(n) && n >= 1 && Number.isInteger(m) && m >= 1)) { // n, m 必須是正整數
+			throwErr("Matrix.create", "Matrix size n & m must be a positive integer.")
+			return new Matrix(null);
+		}
+		
+		const arr = Array.from({ length: n }, () => Array.from({ length: m }, () => {
+			if (Frac.isFrac(element)) return new Frac(element.n, element.d); // 如果元素是 Frac
+			if (typeof element === "number") return element; // 如果元素是 Number
+			return new Frac(0); // 元素的預設值為 Frac(0)
+		}));
+		return new Matrix(arr);
+	}
+	
+	static createI(n) { // 生成單位矩陣
+		if (!(Number.isInteger(n) && n >= 1)) { // n 必須是正整數
+			throwErr("Matrix.create", "Matrix size n must be a positive integer.")
+			return new Matrix(null);
+		}
+		
+		const arr = Array.from(
+			{ length: n },
+			(_, i) => Array.from({ length: n }, (_, j) => new Frac(i == j ? 1 : 0))
+		);
+		return new Matrix(arr);
+	}
+	
+	constructor(arr, copy = false) {
+		this.A = arr;
+		if (!Matrix.isMatrix(arr, true)) this.A = null; // null 代表非矩陣
+		else if (copy) { // deep copy
+			this.A = arr.map(row => row.map(Aij => Frac.isFrac(Aij) ? new Frac(Aij.n, Aij.d) : Aij));
+		}
+		
+		this.n = this.A ? this.A.length : 0; // n*m 矩陣, 只有在非矩陣情況下為 0
+		this.m = this.A ? this.A[0].length : 0;
+	}
+	
+	toStr() { // 轉 debug 字串
+		// todo
+	}
+	
+	mul(M) { // 矩陣乘法
+		if (!this.A || !Matrix.isMatrix(M?.A)) { // 自身或參數不為 Matrix 或 null Matrix
+			throwErr("Matrix.mul", "Input or self is not a vaild Matrix.");
+			return new Matrix(null);
+		}
+		if (this.m !== M.n) { // 只有 n*m 跟 m*p 矩陣才能相乘
+			throwErr("Matrix.mul", "Only an n*m matrix can be multiplied by an m*p matrix.");
+			return new Matrix(null);
+		}
+		
+		let arr = Array.from({ length: this.n }, (_, i) => Array.from({ length: M.m }, (_, j) => {
+			let fn_sum = new Frac(0);
+			for (let k = 0; k < this.m; k++) fn_sum = FNop.add(fn_sum, FNop.mul(this.A[i][k], M.A[k][j]));
+			return fn_sum;
+		}));
+		return new Matrix(arr);
+	}
+	
+	trans() { // 轉置
+		let matrix_trans = Matrix.create(this.m, this.n);
+		for (let i = 0; i < this.n; i++) for (let j = 0; j < this.m; j++) {
+			matrix_trans.A[j][i] = this.A[i][j];
+		}
+		return matrix_trans;
+	}
+	
+	inverse() { // 反矩陣
+		if (this.n !== this.m) { // 只有方陣才有反矩陣
+			throwErr("Matrix.inverse", "Only square matrices have an inverse.");
+			return new Matrix(null);
+		}
+		
+		const n = this.n; // 矩陣邊長
+		let m_simplify = new Matrix(this.A, true); // 執行簡化列運算的矩陣
+		let m_inverse = Matrix.createI(n); // 建構反矩陣
+		for (let i = 0; i < n; i++) { // 消去原矩陣的下三角部分
+			let swapI = i;
+			while (FNop.equal(m_simplify.A[swapI][i], 0)) {
+				swapI++; // 若對角線元素為 0, 交換兩行使對角線元素不為 0
+				if (swapI >= n) return new Matrix(null); // 矩陣為奇異矩陣, 不可逆
+			}
+			
+			[m_simplify.A[i], m_simplify.A[swapI]] = [m_simplify.A[swapI], m_simplify.A[i]]; // 交換兩行使對角線元素不為 0
+			[m_inverse.A[i], m_inverse.A[swapI]] = [m_inverse.A[swapI], m_inverse.A[i]];
+			
+			for (let j = i+1; j < n; j++) {
+				const frac_f = FNop.div(m_simplify.A[j][i], m_simplify.A[i][i]); // 乘 frac_f 倍加到下面某一個 row, 消去
+				for (let k = 0; k < n; k++) {
+					m_simplify.A[j][k] = FNop.sub(m_simplify.A[j][k], FNop.mul(m_simplify.A[i][k], frac_f));
+					m_inverse.A[j][k] = FNop.sub(m_inverse.A[j][k], FNop.mul(m_inverse.A[i][k], frac_f));
+				}
+			}
+		}
+		for (let i = n-1; i >= 0; i--) { // 消去原矩陣的上三角部分
+			for (let j = i-1; j >= 0; j--) {
+				const frac_f = FNop.div(m_simplify.A[j][i], m_simplify.A[i][i]); // 乘 frac_f 倍加到上面某一個 row, 消去
+				for (let k = 0; k < n; k++) {
+					m_inverse.A[j][k] = FNop.sub(m_inverse.A[j][k], FNop.mul(m_inverse.A[i][k], frac_f));
+				}
+			}
+		}
+		for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { // 同除對角線
+			m_inverse.A[i][j] = FNop.div(m_inverse.A[i][j], m_simplify.A[i][i]);
+		}
+		return m_inverse;
+	}
 }
 
 export class SolveQuad { // 解二次方程式
@@ -173,7 +344,7 @@ export class SolveQuad { // 解二次方程式
 	
 	constructor(frac_a, frac_b, frac_c) { // 計算共軛根
 		for (const [frac, i] of [[frac_a, "a"], [frac_b, "b"], [frac_c, "c"]]) {
-			if (!(frac instanceof Frac)) {
+			if (!Frac.isFrac(frac)) {
 				throwErr("SolveQuad.constructor", `Parameter frac_${i} is not Frac.`);
 				frac_a = new Frac(1); frac_b = new Frac(0); frac_c = new Frac(0);
 				break;
@@ -307,7 +478,7 @@ export class SolveCubic { // 解三次方程式
 	
 	constructor(frac_a, frac_b, frac_c, frac_d) { // 計算共軛根
 		for (const [frac, i] of [[frac_a, "a"], [frac_b, "b"], [frac_c, "c"], [frac_d, "d"]]) { // 參數不為 Frac
-			if (!(frac instanceof Frac)) {
+			if (!Frac.isFrac(frac)) {
 				throwErr("SolveCubic.constructor", `Parameter frac_${i} is not Frac.`);
 				frac_a = new Frac(1); frac_b = new Frac(0); frac_c = new Frac(0); frac_d = new Frac(0);
 				break;
@@ -408,17 +579,7 @@ export class SolveCubic { // 解三次方程式
 export const SCL = "~,\\enspace"; // separate comma latex
 
 function throwErr(method, message) {
-	console.error(`[RanMath.${method}] ${message}`);
-}
-
-export function removePrefix(str, prefix) { // 移除字串開頭
-	if (str.startsWith(prefix)) return str.slice(prefix.length);
-	return str;
-}
-
-export function removePostfix(str, postfix) { // 移除字串尾部
-	if (str.endsWith(postfix)) return str.slice(0, -postfix.length);
-  return str;
+	console.error(`[RanMath][${method}] ${message}`);
 }
 
 export function isStrInt(str) { // 某個字串是否為整數
@@ -427,16 +588,16 @@ export function isStrInt(str) { // 某個字串是否為整數
 
 export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
 	// start: 根據不同型態的輸入, 統一轉為 String
-	if (coef instanceof Frac) coef = coef.toLatex();
+	if (Frac.isFrac(coef)) coef = coef.toLatex();
 	else coef = String(coef);
 	
-	if (base instanceof Frac) {
+	if (Frac.isFrac(base)) {
 		if (!base.isInt()) base = `\\left( ${base.toLatex()} \\right)`; // 分數為底數要加括號
 		else base = base.toLatex();
 	} else base = String(base);
 	if (base[0] === "-") base = `\\left( ${base} \\right)`; // 底數有負號要加括號
 	
-	if (pow instanceof Frac) pow = `${pow.n}/${pow.d}`;
+	if (Frac.isFrac(pow)) pow = `${pow.n}/${pow.d}`;
 	else pow = String(pow);
 	// end: 根據不同型態的輸入, 統一轉為 String
 	
