@@ -17,6 +17,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				text: "Practice Page",
 				items: [
 					{ text: "Recur.vue", link: "/recur" },
+					{ text: "RecurNonHomog.vue", link: "/recur-non-homog" },
 				]
 			}
 		],

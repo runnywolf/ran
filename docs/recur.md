@@ -138,11 +138,6 @@ $$
 | `TYPE_3REAL` | - | $h_1 {r_1}^p + h_2 {r_2}^p + h_3 {r_3}^p$ | `TYPE_NORMAL`<br>`float` 型態 |
 | `TYPE_REAL_IM` | - | $h_1 \cos(p \theta) r^p + h_2 \sin(p \theta) r^p + h_3 {r_3}^p$ <br> $r = \sqrt{ { c_{re} }^2 + { c_{im} }^2 } ~~,~~ \theta = \tan^{-1}(\frac{ c_{im} }{ c_{re} })$ | `TYPE_SQRT`<br>`float` 型態 |
 
-
-
-->>>>>>>> or 做成 g_i(n) d_i 形式, 泛化更強
-自動將 number + frac -> number
-
 ## 解題步驟
 解題步驟的實作細節。
 
