@@ -67,6 +67,8 @@
 			<vl c :exp="recur.makeLatexSolvePiLinearEquation()" />
 			使用高斯消去法解 <vl exp="p_i" /> 的聯立方程式，得到：
 			<vl c :exp="recur.makeLatexPiAnswer()" />
+			將 <vl exp="p_i" /> 代回 <vl exp="a_n^{(p)}" />，得到特解為
+			<vl c :exp="recur.makeLatexParticular()" />
 		</div>
 		<div v-else>
 			遞迴式沒有非齊次部分，跳過這一步驟。
@@ -179,8 +181,6 @@ class SolveRecur { // 解非齊次遞迴
 		
 		const matrix_b = new Matrix([this.nonHomogFn.slice(this.recurLevel)]).trans();
 		this.PiAnswer = this.matrix_solvePi.inverse().mul(matrix_b).trans().A[0]; // 解 p_i 的聯立 Ax = b ; x 會等於 A^-1 b
-		
-		// todo 試試看能不能使太長的 latex 變成滾動條
 	}
 	
 	makeLatexCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
@@ -375,6 +375,22 @@ class SolveRecur { // 解非齊次遞迴
 			(frac_Pi, i) => `p_{${i+1}} = ${frac_Pi.toLatex()}`
 		).join(` ${SCL} `);
 	}
+	
+	makeLatexParticular() { // 將 p_i 代回 a_n^(p), 得到特解為 "..." (latex)
+		let s_latex = Object.entries(this.combinedExpFunc).map(([s_frac_b, combinedExp]) => {
+			const frac_b = Frac.fromStr(s_frac_b); // frac_b
+			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
+			return combinedExp.map((frac_c, i) => {
+				const pi = this.varPiIndex[s_frac_b][i];
+				let s_term = makeTermLatex(this.PiAnswer[pi-1], "n", i+extraNPow); // c n^k 部分的 latex 字串
+				if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
+					s_term = makeTermLatex(removePrefix(s_term, "+"), frac_b, "n");
+				}
+				if (s_term !== "+0") return s_term; // 只顯示 c n^k 不為 0 的項
+			}).join(" ");
+		}).join(" ");
+		return `a_n^{(p)} = ${removePrefix(s_latex, "+")}`;
+	}
 }
 
 const props = defineProps({
@@ -428,7 +444,7 @@ const makeLatexRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊
 		
 		let s_term = makeTermLatex(frac_c, "n", s_k); // c n^k 部分的 latex 字串
 		if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-			s_term = makeTermLatex(makeTermLatex(frac_c, "n", s_k, false), frac_b, "n");
+			s_term = makeTermLatex(removePrefix(s_term, "+"), frac_b, "n");
 		}
 		if (s_term !== "+0") s_latex += s_term; // 只顯示 c n^k 不為 0 的項
 	}
