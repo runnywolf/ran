@@ -1,5 +1,5 @@
 ---
-outline: [2, 3] # 顯示 h2, h3 (不確定效果)
+outline: [2, 3] # 顯示 h2, h3
 head:
   - - link
     - rel: stylesheet

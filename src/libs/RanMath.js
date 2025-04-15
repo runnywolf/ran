@@ -56,6 +56,8 @@ export class Prime { // 質數
 
 export class Frac { // 分數
 	static fromStr(str) { // 將字串轉為分數
+		if (typeof str !== "string") return new Frac(0); // 若 str 不是字串, 回傳 0
+		
 		const arrayFrac = str.split("/");
 		for (const i of arrayFrac) if (!isStrInt(i)) return new Frac(0); // 若某個部份不是整數, 回傳 0
 		
@@ -71,6 +73,19 @@ export class Frac { // 分數
 	
 	static isFrac(frac) { // 是否是分數
 		return frac instanceof Frac;
+	}
+	
+	static sum(fracArr) { // 加總
+		if (!Array.isArray(fracArr)) {
+			throwErr("Frac.sum", "Input is not an Array.");
+			return new Frac(0);
+		}
+		
+		let frac_sum = new Frac(0);
+		for (const [i, frac] of fracArr.entries()) if (Frac.isFrac(frac)) { // 元素若非 Frac 會自動忽略, 不會報錯
+			frac_sum = frac_sum.add(frac);
+		}
+		return frac_sum;
 	}
 	
 	constructor(n, d = 1) {
@@ -586,7 +601,12 @@ export function isStrInt(str) { // 某個字串是否為整數
 	return /^-?\d+$/.test(str);
 }
 
-export function makeTermLatex(coef, base, pow, firstPos = true) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+export function makeTermLatex(coef, base, pow, firstPos = true, nonZero = false) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+	if (nonZero) { // 若 nonZero 為 true, 且生成的 latex 字串的數值為 0, 會回傳空字串而不是 "+0"
+		let s_latex = makeTermLatex(coef, base, pow);
+		return s_latex === "+0" ? "" : s_latex;
+	}
+	
 	// start: 根據不同型態的輸入, 統一轉為 String
 	if (Frac.isFrac(coef)) coef = coef.toLatex();
 	else coef = String(coef);
