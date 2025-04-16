@@ -20,7 +20,7 @@ import { removePrefix, removePostfix } from "@/libs/StringTool.js";
 const props = defineProps({
 	recurCoef: { type: Array, default: [] }, // 齊次部分的係數, length 代表遞迴階數
 	frac_b: { type: Frac, default: new Frac(0) }, // 指數項 b^n 的 b
-	polyCoef: { type: Array[Frac], default: [] }, // 含有相同指數項的多項式係數
+	polyCoef: { type: Array, default: [] }, // 含有相同指數項的多項式係數
 	extraNPow: { type: Number, default: 0 }, // 為保持特解的線性獨立性, 額外乘上去的 n^p
 	startPj: { type: Number, default: 0 }, // 特解當中指數項 b^n 對應的多項式的未知係數 p_j 的最小 j
 	_mlExpTerm: { type: Function, default: () => "{?}" }, // 來自 RecurNonHomog.vue 的閉包, 注意: s_frac_b 已被傳入, 只需給予 isUnknownCoef, extraNPow
@@ -48,13 +48,11 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	_initPjLinearEquation() { // a_n^(p) 以 p_j 表示的線性關係
-		const newG = this.polyCoef.map( // newG[i](n) 回傳 a_n^{(p)} 內的未知數 p_{startPj + i} 的常係數; n>=0; i>=0
-			(_, i) => (n) => new Frac(n**(i+this.extraNPow)).mul(this.frac_b.pow(n))
-		);
-		this.PjLinearEquation = Array.from( // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式 a_i^{(p)}
+		const coef = (n, i) => new Frac(n**(i+this.extraNPow)).mul(this.frac_b.pow(n)); // 回傳 a_n^{(p)} 內 p_{startPj + i} 的係數 n^(i+k) b^n
+		this.PjLinearEquation = Array.from( // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式
 			{ length: this.recurLevel + this.PjNum },
-			(_, i) => Array.from({ length: this.PjNum }, (_, j) => newG[j](i))
-		); // arr[i][j] 為 a_i^{(p)} 內的未知數 p_{startPj + j} 的常係數; i>=0; j>=0
+			(_, n) => Array.from({ length: this.PjNum }, (_, i) => coef(n, i))
+		); // arr[i][j] 為 a_i^{(p)} 內的未知數 p_{startPj + j} 的常係數
 	}
 	
 	_initNonHomogFn() { // 將常數代入非齊次部分 F(n) 得到的值
@@ -62,7 +60,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 			const fracArr = this.polyCoef.map((frac_c, i) => frac_c.mul(new Frac(n**i))); // 代入 n 得到的常數 c0 , c1 n , c2 n^2 , ...
 			return Frac.sum(fracArr).mul(this.frac_b.pow(n)) // (c0 + c1 n + c2 n^2 + ...) b^n
 		};
-		this.nonHomogFn = Array.from({ length: this.recurLevel + this.PjNum }, (_, n) => F(n)); // 將常數代入非齊次部分 F(n) 得到的值
+		this.nonHomogFn = Array.from({ length: this.PjNum }, (_, n) => F(n + this.recurLevel)); // 將常數代入非齊次部分 F(n) 得到的值
 	}
 	
 	_initPjEquationSystem() { // 生成 p_j 的聯立方程式
@@ -78,8 +76,8 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	_initSolvePj() { // 解聯立求 p_j
-		const matrix_b = new Matrix([this.nonHomogFn.slice(this.recurLevel)]).trans();
-		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_b).trans().A[0]; // 解 p_j 的聯立 Ax = b ; x 會等於 A^-1 b
+		const matrix_F = new Matrix([this.nonHomogFn]).trans(); // 因為 this.nonHomogFn 前面是多餘的
+		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_F).trans().A[0]; // 解 p_j 的聯立 Ax = b ; x 會等於 A^-1 b
 	}
 	
 	mlExp() { // 計算 a_n^(p) 之中, 指數項 "{b_i}^n" ... (latex)
@@ -140,7 +138,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 			
 			if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
 			if (s_equationLatex.split("&&").length - 1 === this.PjNum) s_equationLatex = "~0"; // 若某個 a_n^(p) 為 0
-			return `${s_equationLatex} &= ${this.nonHomogFn[n+l].toLatex()}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
+			return `${s_equationLatex} &= ${this.nonHomogFn[n].toLatex()}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
 		}).join(" \\\\ "); // 以換行符連接所有的式子
 		
 		s_latex = `\\begin{alignat*}{${this.PjNum + 1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_j 和 "=" 對齊)

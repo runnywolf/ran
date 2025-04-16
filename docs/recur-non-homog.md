@@ -8,7 +8,7 @@ head:
 
 # RecurNonHomog.vue
 > [!WARNING]
-> 這個組件是 [Recur.vue](./recur) 拆分出的子組件，你不應該直接使用它。
+> 這個組件是 [Recur.vue](./recur) 拆分出的子組件，你不應該單獨使用它。
 
 用於解遞迴的非齊次部分
 $$

@@ -228,19 +228,19 @@ watch( // 遞迴式更新時, 重新計算非齊次部分
 	{ immediate: true, deep: true }
 );
 
-const pjDataBuffer = ref([]);
-const particularLatex = ref("?");
+const pjDataBuffer = ref([]); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
+const particularLatex = ref("?"); // 特解的計算結果 (latex)
 
 watch(pjDataBuffer, (newPjDataBuffer) => {
-	if (newPjDataBuffer.length !== Object.keys(recur.value.combinedExpFunc).length) return;
+	if (newPjDataBuffer.length !== Object.keys(recur.value.combinedExpFunc).length) return; // 因為要清空 p_j 緩存, 防止無限迴圈
 	
-	let pjAnswer = new Array(recur.value.pjNum);
-	for (const pjData of newPjDataBuffer) for (const [j, frac_pj] of pjData) pjAnswer[j-1] = frac_pj;
-	let s_latex = recur.value.mlParticular(pjAnswer);
-	if (particularLatex.value === s_latex) {
+	let pjAnswer = new Array(recur.value.pjNum); // 特解係數 p_j
+	for (const pjData of newPjDataBuffer) for (const [j, frac_pj] of pjData) pjAnswer[j-1] = frac_pj; // 合併多組特解係數 p_j
+	let s_latex = recur.value.mlParticular(pjAnswer); // 生成特解的 latex
+	if (particularLatex.value === s_latex) { // 上傳計算完成的特解係數 p_j 至 RecurNonHomog.vue
 		console.log("emit")
 	};
 	particularLatex.value = s_latex;
-	pjDataBuffer.value = [];
+	pjDataBuffer.value = []; // 接收完所有特解係數 p_j 後, 清空 p_j 緩存
 }, { deep: true });
 </script>
