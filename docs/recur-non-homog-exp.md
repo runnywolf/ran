@@ -73,8 +73,8 @@ $$
 ### `extraNPow`
 當齊次與非齊次部分都存在相同的指數部分 ${b_i}^n$ 時，需要額外乘上 $n^k$ 保證線性獨立。
 
-- 若 $a_n^{(h)}$ 存在 ${b_i}^n$ 項，需要額外乘上 $n^1$，變成 $p_s n + p_{s+1} n^2 + \cdots$。
-- 若 $a_n^{(h)}$ 存在 ${b_i}^n$、$n {b_i}^n$ 項，需要額外乘上 $n^2$，變成 $p_s n^2 + p_{s+1} n^3 + \cdots$。
+- 若 $a_n^{(h)}$ 存在 ${b_i}^n$ 項，需要額外乘上 $n^1$，變成 $(p_s n + p_{s+1} n^2 + \cdots) {b_i}^n$。
+- 若 $a_n^{(h)}$ 存在 ${b_i}^n$、$n {b_i}^n$ 項，需要額外乘上 $n^2$，變成 $(p_s n^2 + p_{s+1} n^3 + \cdots) {b_i}^n$。
 
 以此類推
 
@@ -96,7 +96,7 @@ $$
 > $$
 
 ### `_mlExpTerm`
-來自 [RecurNonHomog - _mlExpTerm (link 待補)]() 的閉包。
+來自 [RecurNonHomog - _mlExpTerm](./recur-non-homog#_mlexpterm) 的閉包。
 
 注意： `s_frac_b` 已在 `RecurNonHomog.vue` 內被傳入<br>
 只需給予 `isUnknownCoef`、`extraNPow`。
@@ -104,20 +104,20 @@ $$
 ## emit
 | `emit` | Type | Description |
 | -------- | ---- | ---- |
-| `PjAnswer` | `Array<Frac>` | 非齊次部分 ${b_i}^n$ 對應的多個未知係數 $p_j$ 的計算結果 |
+| `PjAnswer` | `Array<Frac>` | 特解形式中的 ${b_i}^n$ 對應的多個未知係數 $p_j$ 的計算結果 |
 
 ### `PjAnswer`
 當未知係數 $p_j$ 計算完成時，上傳結果至 [`RecurNonHomog.vue`](./recur-non-homog.md)。
 
-Example
-```js
-expData.startPj = 3;
-PjAnswer = [ new Frac(-2, 7), new Frac(6), new Frac(3, 4) ];
-```
-表示：
-$$
-p_3 = \frac{-2}{7} ~~,~~ p_4 = 6 ~~,~~ p_5 = \frac{3}{4}
-$$
+> Example
+> ```js
+> expData.startPj = 3;
+> PjAnswer = [ new Frac(-2, 7), new Frac(6), new Frac(3, 4) ];
+> ```
+> 表示：
+> $$
+> p_3 = \frac{-2}{7} ~~,~~ p_4 = 6 ~~,~~ p_5 = \frac{3}{4}
+> $$
 
 ## `SolveNonHomogExp` 的變數
 建構子參數 `recurCoef`、`frac_b`、`polyCoef`、`extraNPow`、`startPj` 同 [組件參數](#組件參數)。

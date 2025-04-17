@@ -1,6 +1,6 @@
 <template>
 	遞迴的非齊次部分為
-	<vl c :exp="mlRecurNonHomogPrefix(nonHomoFunc)" />
+	<vl c :exp="recurNonHomogLatex" />
 	合併相同的指數項：
 	<vl c :exp="`F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${recur.mlCombinedExp()}`" />
 	猜測特解的形式為：
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref, toRaw, watch } from "vue";
+import { computed, ref, toRaw, watch } from "vue";
 import { Frac, SolveCubic, makeTermLatex, SCL } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomogExp from "./RecurNonHomogExp.vue"; // 計算聯立方程式並顯示未知係數 p_j 的組件
@@ -66,14 +66,14 @@ const props = defineProps({
 	recurCoef: { type: Array, default: [] }, // 齊次部分的係數, length 代表遞迴階數
 	nonHomoFunc: { type: Object, default: {} }, // 非齊次的 c n^k b^n 項會表示為 { "k,b.n/b.d": c , ... }
 	cubic: { type: Object, default: {} }, // 特徵方程式的解
-	mlRecurNonHomogPrefix: { type: Function, default: () => "?" }, // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
+	recurNonHomogLatex: { type: String, default: "?" }, // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
 });
 
 const emit = defineEmits([
 	"particular" // 特解的未知係數 p_j 的計算結果
 ]);
 
-class SolveRecurNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算過程
+class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算過程
 	constructor(recurCoef, nonHomoFunc, cubic) {
 		this.recurCoef = recurCoef;
 		this.nonHomoFunc = nonHomoFunc;
@@ -231,26 +231,20 @@ class SolveRecurNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運
 }
 
 const recur = ref(null); // 遞迴非齊次部分的計算結果
+const PjBuffer = ref({}); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
 
 watch( // 遞迴式更新時, 重新計算非齊次部分
 	() => [props.recurCoef, props.nonHomoFunc, props.cubic],
 	([newRecurCoef, newNonHomoFunc, newCubic]) => {
-		recur.value = new SolveRecurNonHomog(newRecurCoef, newNonHomoFunc, newCubic);
+		recur.value = new SolveNonHomog(newRecurCoef, newNonHomoFunc, newCubic);
+		PjBuffer.value = {}; // 清空來自多個子組件計算完成的 p_j
 	},
 	{ immediate: true, deep: true }
 );
 
-const PjBuffer = ref({}); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
-const particularLatex = ref("?"); // 特解的計算結果 (latex)
-
-watch(PjBuffer, (newPjBuffer) => {
-	newPjBuffer = toRaw(newPjBuffer);
-	if (Object.keys(newPjBuffer).length === 0) return; // 防止無窮迴圈
-	const s_latex = recur.value.mlParticular(newPjBuffer);
-	if (s_latex === particularLatex.value) { // 防止 emit 2次
-		emit("particular", recur.value.getParticular(newPjBuffer)); // 上傳特解的形式至 Recur.vue
-	}
-	particularLatex.value = s_latex;
-	PjBuffer.value = {}; // 每次計算完會清空緩存
-}, { deep: true });
+const particularLatex = computed(() => { // 特解的計算結果 (latex)
+	if (Object.keys(PjBuffer.value).length === 0) return "?";
+	emit("particular", recur.value.getParticular(toRaw(PjBuffer.value))); // 上傳特解的形式至 Recur.vue
+	return recur.value.mlParticular(toRaw(PjBuffer.value));
+});
 </script>

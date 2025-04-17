@@ -29,8 +29,8 @@
 				:recurCoef="recurCoef"
 				:nonHomoFunc="nonHomoFunc"
 				:cubic="recur.cubic"
-				:mlRecurNonHomogPrefix="mlRecurNonHomogPrefix"
-				@particular="(p) => console.log(p)"
+				:recurNonHomogLatex="mlRecurNonHomogPrefix(nonHomoFunc)"
+				@particular="(p) => console.log('recur', p)"
 			></RecurNonHomog>
 		</div>
 		<div v-else>
