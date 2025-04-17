@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, toRaw, watch } from "vue";
 import { Frac, Matrix, makeTermLatex, SCL } from "@/libs/RanMath.js";
 import { removePrefix, removePostfix } from "@/libs/StringTool.js";
 
@@ -27,7 +27,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-	"pjData", // 非齊次部分的未知係數 p_j 的計算結果
+	"PjAnswer", // 非齊次部分的未知係數 p_j 的計算結果
 ]);
 
 class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n 對應的未知係數 p_j (比較係數法允許這麼做)
@@ -150,10 +150,6 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 			(frac_Pj, i) => `p_{${this.startPj + i}} = ${frac_Pj.toLatex()}`
 		).join(` ${SCL} `);
 	}
-	
-	getIndexedPj() { // 回傳 [ [ j, frac_Pj ], ... ] 的 array
-		return this.PjAnswer.map((frac_Pj, i) => [this.startPj + i, frac_Pj]);
-	}
 }
 
 const expData = ref(null); // 未知係數 p_j 的計算結果
@@ -162,7 +158,7 @@ watch( // 遞迴式更新時, 重新計算未知係數 p_j
 	() => [props.recurCoef, props.frac_b, props.polyCoef, props.extraNPow, props.startPj],
 	([newRC, newB, newCE, newENP, newSPj]) => {
 		expData.value = new SolveNonHomogExp(newRC, newB, newCE, newENP, newSPj);
-		emit("pjData", expData.value.getIndexedPj()); // 上傳未知係數 p_j 至 RecurNonHomog.vue
+		emit("PjAnswer", toRaw(expData.value.PjAnswer)); // 上傳係數 p_j 至 RecurNonHomog.vue
 	},
 	{ immediate: true, deep: true }
 );

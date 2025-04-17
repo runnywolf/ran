@@ -45,7 +45,7 @@
 							:extraNPow="recur.homogRootConflictNum[s_frac_b] ?? 0"
 							:startPj="recur.varPjIndex[s_frac_b][0]"
 							:_mlExpTerm="(i, e) => recur._mlExpTerm(s_frac_b, i, e)"
-							@pjData="(pjData) => pjDataBuffer.push(pjData)"
+							@PjAnswer="(PjAnswer) => PjBuffer[s_frac_b] = PjAnswer"
 						></RecurNonHomogExp>
 					</td>
 				</tr>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, toRaw, watch } from "vue";
 import { Frac, SolveCubic, makeTermLatex, SCL } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomogExp from "./RecurNonHomogExp.vue"; // 計算聯立方程式並顯示未知係數 p_j 的組件
@@ -68,6 +68,10 @@ const props = defineProps({
 	cubic: { type: Object, default: {} }, // 特徵方程式的解
 	mlRecurNonHomogPrefix: { type: Function, default: () => "?" }, // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
 });
+
+const emit = defineEmits([
+	"particular" // 特解的未知係數 p_j 的計算結果
+]);
 
 class SolveRecurNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算過程
 	constructor(recurCoef, nonHomoFunc, cubic) {
@@ -201,20 +205,28 @@ class SolveRecurNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運
 		return `\\begin{cases} ${s_latex} \\end{cases}`;
 	}
 	
-	mlParticular(pjAnswer) { // 將 p_j 代回 a_n^(p), 得到特解為 "..." (latex)
-		let s_latex = Object.entries(this.combinedExpFunc).map(([s_frac_b, combinedExp]) => {
+	mlParticular(PjAnswer) { // 將 p_j 代回 a_n^(p), 得到特解為 "..." (latex)
+		let s_latex = Object.entries(PjAnswer).map(([s_frac_b, expPjAnswer]) => {
 			const frac_b = Frac.fromStr(s_frac_b); // frac_b
 			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
-			return combinedExp.map((frac_c, i) => {
-				const pj = this.varPjIndex[s_frac_b][i];
-				let s_term = makeTermLatex(pjAnswer[pj-1], "n", i+extraNPow); // c n^k 部分的 latex 字串
+			return expPjAnswer.map((frac_Pj, i) => {
+				let s_term = makeTermLatex(frac_Pj, "n", i+extraNPow); // c n^k 部分的 latex 字串
 				if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
 					s_term = makeTermLatex(removePrefix(s_term, "+"), frac_b, "n");
 				}
-				if (s_term !== "+0") return s_term; // 只顯示 c n^k 不為 0 的項
-			}).join(" ");
+				return s_term;
+			}).filter(s_term => s_term !== "+0").join(" "); // 只顯示 c n^k 不為 0 的項
 		}).join(" ");
 		return `a_n^{(p)} = ${removePrefix(s_latex, "+")}`;
+	}
+	
+	getParticular(PjAnswer) { // 生成特解的形式, 用於 emit 至 Recur.vue
+		let particular = {};
+		for (const [s_frac_b, expPjAnswer] of Object.entries(PjAnswer)) {
+			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
+			particular[s_frac_b] = [...Array(extraNPow).fill(new Frac(0)), ...expPjAnswer]; // 將多項式乘上 extraNPow
+		}
+		return particular;
 	}
 }
 
@@ -228,19 +240,17 @@ watch( // 遞迴式更新時, 重新計算非齊次部分
 	{ immediate: true, deep: true }
 );
 
-const pjDataBuffer = ref([]); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
+const PjBuffer = ref({}); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
 const particularLatex = ref("?"); // 特解的計算結果 (latex)
 
-watch(pjDataBuffer, (newPjDataBuffer) => {
-	if (newPjDataBuffer.length !== Object.keys(recur.value.combinedExpFunc).length) return; // 因為要清空 p_j 緩存, 防止無限迴圈
-	
-	let pjAnswer = new Array(recur.value.pjNum); // 特解係數 p_j
-	for (const pjData of newPjDataBuffer) for (const [j, frac_pj] of pjData) pjAnswer[j-1] = frac_pj; // 合併多組特解係數 p_j
-	let s_latex = recur.value.mlParticular(pjAnswer); // 生成特解的 latex
-	if (particularLatex.value === s_latex) { // 上傳計算完成的特解係數 p_j 至 RecurNonHomog.vue
-		console.log("emit")
-	};
+watch(PjBuffer, (newPjBuffer) => {
+	newPjBuffer = toRaw(newPjBuffer);
+	if (Object.keys(newPjBuffer).length === 0) return; // 防止無窮迴圈
+	const s_latex = recur.value.mlParticular(newPjBuffer);
+	if (s_latex === particularLatex.value) { // 防止 emit 2次
+		emit("particular", recur.value.getParticular(newPjBuffer)); // 上傳特解的形式至 Recur.vue
+	}
 	particularLatex.value = s_latex;
-	pjDataBuffer.value = []; // 接收完所有特解係數 p_j 後, 清空 p_j 緩存
+	PjBuffer.value = {}; // 每次計算完會清空緩存
 }, { deep: true });
 </script>

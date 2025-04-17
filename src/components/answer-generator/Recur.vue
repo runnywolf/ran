@@ -30,6 +30,7 @@
 				:nonHomoFunc="nonHomoFunc"
 				:cubic="recur.cubic"
 				:mlRecurNonHomogPrefix="mlRecurNonHomogPrefix"
+				@particular="(p) => console.log(p)"
 			></RecurNonHomog>
 		</div>
 		<div v-else>

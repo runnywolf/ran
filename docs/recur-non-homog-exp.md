@@ -42,7 +42,7 @@ a_n^{(p)} = g(n) n^k b^n = (p_{s} + p_{s+1} n + p_{s+2} n^2 + \cdots) n^k b^n
 $$
 
 ## 組件參數
-| `props.` | 型態 | 描述 |
+| `props.` | Type | Description |
 | -------- | ---- | ---- |
 | `recurCoef` | `Array<Frac>` | 齊次部分的係數，`.length` 代表遞迴階數 |
 | `frac_b` | `Frac` | 指數項 $b^n$ 的 $b$ |
@@ -102,20 +102,17 @@ $$
 只需給予 `isUnknownCoef`、`extraNPow`。
 
 ## emit
-| `emit` | 型態 | 描述 |
+| `emit` | Type | Description |
 | -------- | ---- | ---- |
-| `pjData` | `Array<[number, Frac]>` | 非齊次部分 ${b_i}^n$ 對應的多個未知係數 $p_j$ 的計算結果 |
+| `PjAnswer` | `Array<Frac>` | 非齊次部分 ${b_i}^n$ 對應的多個未知係數 $p_j$ 的計算結果 |
 
-### `pjData`
+### `PjAnswer`
 當未知係數 $p_j$ 計算完成時，上傳結果至 [`RecurNonHomog.vue`](./recur-non-homog.md)。
 
 Example
 ```js
-pjData = [
-	[ 3, new Frac(-2, 7) ],
-	[ 4, new Frac(6) ],
-	[ 5, new Frac(3, 4) ],
-];
+expData.startPj = 3;
+PjAnswer = [ new Frac(-2, 7), new Frac(6), new Frac(3, 4) ];
 ```
 表示：
 $$
@@ -125,7 +122,7 @@ $$
 ## `SolveNonHomogExp` 的變數
 建構子參數 `recurCoef`、`frac_b`、`polyCoef`、`extraNPow`、`startPj` 同 [組件參數](#組件參數)。
 
-| `this.` | 型態 | 描述 |
+| `this.` | Type | Description |
 | :-- | :-- | :-- |
 | `recurLevel` | `number` ( `int` ) | 遞迴階數 |
 | `PjNum` | `number` ( `int` ) | 未知係數 $p_j$ 的數量 |
@@ -174,6 +171,48 @@ $$\text{coef}(n, i) = n^{k+i} b^n$$
 算出的特解係數 $p_j$。
 
 會在 `SolveNonHomogExp._initSolvePj()` 內計算。
+
+## `SolveNonHomogExp` 的方法
+`ml` 是 `makeLatex` 的縮寫。
+
+| Method | Return | Description |
+| -------- | ------ | ---- |
+| `_initPjLinearEquation` | `void` | 計算 `PjLinearEquation` |
+| `_initNonHomogFn` | `void` | 計算 `nonHomogFn` |
+| `_initPjEquationSystem` | `void` | 計算 `matrix_solvePj` |
+| `_initSolvePj` | `void` | 計算 `PjAnswer` |
+| `mlExp` | `string` | 回傳 " $b^n$ " ( LaTeX ) |
+| `mlSomePj` | `string` | 回傳未知係數 $p_j$ 的範圍<br>( LaTeX ) |
+| `mlNRange` | `string` | 回傳需要代入的 $n$ 值範圍<br>( LaTeX ) |
+| `mlParticularLinearEquation` | `string` | 回傳 $F(n)$ 以 $a_n^{(p)}$ 表示的線性關係<br>( LaTeX ) |
+| `mlPjLinearEquation` | `string` | 回傳 $a_n^{(p)}$ 以 $p_j$ 表示的線性關係<br>( LaTeX ) |
+| `mlSolvePjEquationSystem` | `string` | 回傳 $p_j$ 的聯立方程組<br>( LaTeX ) |
+| `mlPjAnswer` | `string` | 回傳 $p_j$ 的答案 ( LaTeX ) |
+
+### 組件顯示的解題過程
+計算 $a_n^{(p)}$ 之中，指數項 `expData.mlExp()` 對應的 `expData.PjNum` 個未知係數 `expData.mlSomePj()`，
+需要將 `expData.mlNRange()` 代入式 ( 1 )，<br>產生 `expData.PjNum` 個式子的線性方程組，並解聯立：<br>
+<div style="text-align: center;"><code>expData.mlParticularLinearEquation()</code></div>
+
+其中 $F(n) =$ `_mlExpTerm(false, 0)`，<br>
+$a_n^{(p)} =$ `_mlExpTerm(true, extraNPow)`，代入常數後得到：<br>
+<div style="text-align: center;"><code>expData.mlPjLinearEquation()</code></div>
+
+展開後得到：<br>
+<div style="text-align: center;"><code>expData.mlSolvePjEquationSystem()</code></div>
+
+使用高斯消去法解 $p_j$ 的聯立方程式，得到：<br>
+<div style="text-align: center;"><code>expData.mlPjAnswer()</code></div>
+
+## ref 變數
+| `ref` | Type | Description |
+| :-- | :-- | :-- |
+| `expData` | [`SolveNonHomogExp`](#solvenonhomogexp-的變數) | 未知係數 $p_j$ 的計算結果 |
+
+### `expData`
+未知係數 $p_j$ 的計算結果，計算所需的變數和方法都封裝在內。
+
+當組件參數 `recurCoef`、`frac_b`、`polyCoef`、`extraNPow`、`startPj` 改變時會更新此值。
 
 ## 解題過程
 以下示範如何解
