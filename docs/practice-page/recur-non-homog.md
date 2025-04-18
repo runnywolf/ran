@@ -252,18 +252,18 @@ $$F(n) = \sum\limits_{i} f_i(n) {b_i}^n = \text{recur.mlCombinedExp()}$$
 | `ref` | Type | Description |
 | :-- | :-- | :-- |
 | `recur` | [`SolveNonHomog`](#solvenonhomog-的變數) | 特解的未知係數 $p_j$ 的計算過程 |
-| `PjBuffer` | `{ key: Array<Frac> }` | 用於暫存多個 [`RecurNonHomogExp.vue`](./recur-non-homog-exp.md) 回傳的 $p_j$ |
+| `PjBuffer` | `{ key: Array<Frac> }` | 用於暫存多個 [`RecurNonHomogExp.vue`](./recur-non-homog-exp) 回傳的 $p_j$ |
 | `particularLatex` | `String` | 計算完成的特解 ( LaTeX ) |
 
-## `recur`
+### `recur`
 特解的未知係數 $p_j$ 的計算過程，計算所需的變數和方法都封裝在內。
 
 當組件參數 `recurCoef`、`nonHomoFunc`、`cubic` 改變時會更新此值。
 
-## `PjBuffer`
-用於暫存多個 [`RecurNonHomogExp.vue`](./recur-non-homog-exp.md) 回傳的 $p_j$。
+### `PjBuffer`
+用於暫存多個 [`RecurNonHomogExp.vue`](./recur-non-homog-exp) 回傳的 $p_j$。
 
-## `particularLatex`
+### `particularLatex`
 計算完成的特解 ( LaTeX )，由 `SolveNonHomogExp.mlParticular` 生成。
 
 ## 解題過程

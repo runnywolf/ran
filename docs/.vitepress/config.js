@@ -10,15 +10,15 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "docs", link: "/recur" }
+			{ text: "docs", link: "/practice-page/recur" }
 		],
 		sidebar: [
 			{
 				text: "Practice Page",
 				items: [
-					{ text: "Recur.vue", link: "/recur" },
-					{ text: "RecurNonHomog.vue", link: "/recur-non-homog" },
-					{ text: "RecurNonHomogExp.vue", link: "/recur-non-homog-exp" },
+					{ text: "Recur.vue", link: "/practice-page/recur" },
+					{ text: "RecurNonHomog.vue", link: "/practice-page/recur-non-homog" },
+					{ text: "RecurNonHomogExp.vue", link: "/practice-page/recur-non-homog-exp" },
 				]
 			}
 		],

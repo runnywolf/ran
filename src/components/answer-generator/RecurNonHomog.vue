@@ -1,9 +1,9 @@
 <template>
-	遞迴的非齊次部分為
+	遞迴的非齊次部分為<br>
 	<vl c :exp="recurNonHomogLatex" />
-	合併相同的指數項：
+	合併相同的指數項：<br>
 	<vl c :exp="`F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${recur.mlCombinedExp()}`" />
-	猜測特解的形式為：
+	猜測特解的形式為：<br>
 	<vl c :exp="recur.mlParticularForm()" />
 	其中多項式 <vl exp="g_i(n)" /> 的次數應與 <vl exp="f_i(n)" /> 相同。<br>
 	<br>
@@ -24,15 +24,15 @@
 		<vl exp="\Rightarrow" /> 不存在相同的指數部分。
 	</div>
 	<div style="height: 12px;"></div>
-	因此特解的形式為：
+	因此特解的形式為：<br>
 	<vl c :exp="recur.mlNewParticularForm()" />
-	將 <vl exp="a_n^{(p)}" /> 代入原遞迴關係： ( 將 <vl exp="a_n" /> 替換為 <vl exp="a_n^{(p)}" /> 即可，不要將形式代入 )
+	將 <vl exp="a_n^{(p)}" /> 代入原遞迴關係： ( 將 <vl exp="a_n" /> 替換為 <vl exp="a_n^{(p)}" /> 即可，不要將形式代入 )<br>
 	<vl c :exp="recur.mlParticularIntoRecur()" />
-	移項後得到： ( 式 1 )
+	移項後得到： ( 式 1 )<br>
 	<vl c :exp="recur.mlParticularIntoRecurTrans()" />
-	其中
+	其中<br>
 	<vl c :exp="recur.mlParticularIntoRecurWhere()" />
-	接下來需要對每個指數項 <vl exp="{b_i}^n" /> 對應的多項式，分別求未知係數 <vl exp="p_j" />。
+	接下來需要對每個指數項 <vl exp="{b_i}^n" /> 對應的多項式，分別求未知係數 <vl exp="p_j" />。<br>
 	<div class="ts-box" style="margin: 12px 0;">
 		<table class="ts-table">
 			<tbody>
@@ -52,7 +52,7 @@
 			</tbody>
 		</table>
 	</div>
-	將 <vl exp="p_j" /> 代回 <vl exp="a_n^{(p)}" />，得到特解為
+	將 <vl exp="p_j" /> 代回 <vl exp="a_n^{(p)}" />，得到特解為<br>
 	<vl c :exp="particularLatex" />
 </template>
 
@@ -78,7 +78,9 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 		this.recurCoef = recurCoef;
 		this.nonHomoFunc = nonHomoFunc;
 		this.cubic = cubic;
+		
 		this.recurLevel = this.recurCoef.length; // 遞迴階數
+		
 		this._initCombineExp(); // 合併相同的指數項
 		this._initNumberTheUnknownPj(); // 對特解的未知係數編號
 		this._initConflictRoot(); // 檢查 a_n^{(p)} 和 a_n^{(h)} 是否有重複的 b^n
@@ -112,7 +114,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 		const type = cs.solutionType(); // 三次函數的解形式
 		let rationalRoots = []; // 齊次解的有理數特徵值
 		if (type === SolveCubic.TYPE_3FRAC) rationalRoots = [ cs.frac_r1, cs.frac_r2, cs.frac_r3 ];
-		else if (type === SolveCubic.TYPE_FRAC_QUAD) rationalRoots = [ cs.frac_r1 ];
+		else if (type === SolveCubic.TYPE_FRAC_QUAD) rationalRoots = [ cs.frac_r1 ]; // 非齊次的 b 必為有理數, 所以只需要檢查這兩種狀態即可
 		let homogRootConflictNum = {};
 		for (const frac_r of rationalRoots) if (!frac_r.isZero()) { // 檢查齊次解的所有非零 b
 			const key = `${frac_r.n}/${frac_r.d}`;

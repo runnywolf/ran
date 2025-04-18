@@ -8,7 +8,7 @@ head:
 
 # RecurNonHomogExp.vue
 > [!WARNING]
-> 這個組件是 [RecurNonHomog.vue](./recur-non-homog.md) 拆分出的子組件，你不應該單獨使用它。
+> 這個組件是 [RecurNonHomog.vue](./recur-non-homog) 拆分出的子組件，你不應該單獨使用它。
 
 用於計算非齊次遞迴的特解當中的未知係數 $p_j$，並且顯示計算過程。
 
@@ -107,7 +107,7 @@ $$
 | `PjAnswer` | `Array<Frac>` | 特解形式中的 ${b_i}^n$ 對應的多個未知係數 $p_j$ 的計算結果 |
 
 ### `PjAnswer`
-當未知係數 $p_j$ 計算完成時，上傳結果至 [`RecurNonHomog.vue`](./recur-non-homog.md)。
+當未知係數 $p_j$ 計算完成時，上傳結果至 [`RecurNonHomog.vue`](./recur-non-homog)。
 
 > Example
 > ```js
