@@ -149,16 +149,16 @@ $$
 
 對應至 `makeRecurHomogLatex()`
 
-1. 利用 `makeTermLatex(frac_r, "a_{n-${i+1}}", 1)` 生成出 " $+~ r_i a_{n-i}$ "
+1. 利用 `mlTerm(frac_r, "a_{n-${i+1}}", 1)` 生成出 " $+~ r_i a_{n-i}$ "
 2. 將每一項的 latex 字串拼接起來，此時為 " $+ r_1 a_{n-1} + r_2 a_{n-2}$ "。<br>
-   若 `makeTermLatex` 回傳 `+0` 代表該項為 0，不顯示。
+   若 `mlTerm` 回傳 `+0` 代表該項為 0，不顯示。
 3. 若拼接完成的字串為 `""`，代表所有齊次遞迴係數都為 0，顯示 " $0$ "。
 4. 開頭要加上 " $a_n =$ "，所以如果 latex 字串開頭為 + 要去除。
 
 ### step1 - 特徵方程式
 顯示 " $t^l = r_1 t^{l-1} + r_2 t^{l-2} + r_3 t^{l-3}$ "，$l$ 為遞迴階數。
 
-1. 利用 `makeTermLatex(frac_r, "t", l-i-1)` 生成出 " $r_i t^{l-i}$ "。
+1. 利用 `mlTerm(frac_r, "t", l-i-1)` 生成出 " $r_i t^{l-i}$ "。
 
 2, 3, 4 步與 [step1 - 齊次部分](#step1-齊次部分) 類似。
 
@@ -197,7 +197,7 @@ $$
 | 2 | " $h_1 b^n + h_2 n b^n$ " |
 | 3 | " $h_1 b^n + h_2 n b^n + h_3 n^2 b^n$ " |
 
-$b^n$ 由 `makeTermLatex(1, dRoot, "n", false)` 生成。
+$b^n$ 由 `mlTerm(1, dRoot, "n", false)` 生成。
 
 ### step1 - 齊次解的形式
 顯示齊次解 $a_n^{(h)} = h_1 {b_1}^n + h_2 {b_2}^n + h_3 {b_3}^n$

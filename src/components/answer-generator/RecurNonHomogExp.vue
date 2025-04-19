@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, Matrix, makeTermLatex, SCL } from "@/libs/RanMath.js";
+import { Frac, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix, removePostfix } from "@/libs/StringTool.js";
 
 const props = defineProps({
@@ -81,7 +81,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	mlExp() { // 計算 a_n^(p) 之中, 指數項 "{b_i}^n" ... (latex)
-		return removePrefix(makeTermLatex(1, this.frac_b, 'n'), '+');
+		return removePrefix(mlTerm(1, this.frac_b, 'n'), '+');
 	}
 	
 	mlSomePj() { // 對應的未知係數 "p_j, ... , p_{j+l-1}" (latex)
@@ -103,7 +103,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		const l = this.recurLevel; // 遞迴階數
 		let s_latex = Array.from({ length: this.PjNum }, (_, n) => { // 需要求幾個未知係數 p_j, 就要生成幾個式子
 			let s_equationLatex = this.recurCoef.map( // "- h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)}" (latex)
-				(frac_coef, i) => makeTermLatex(frac_coef.muli(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
+				(frac_coef, i) => mlTerm(frac_coef.muli(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
 			).join(" ");
 			return `a_{${n+l}}^{(p)} ${s_equationLatex} = F(${n+l})`; // "a_n^{(p)} - h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)} = F(n)" (latex)
 		}).join(" \\\\ "); // 以換行符連接所有的式子
@@ -112,37 +112,25 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	mlPjLinearEquation() { // 代入常數後得到："..." (latex)
-		let s_latex = Array.from({ length: this.recurLevel + this.PjNum }, (_, n) => {
-			let s_equationLatex = this.PjLinearEquation[n].map((frac_PjCoef, j) => {
-				if (frac_PjCoef.isZero()) return "&&"; // 某一個長係數為 0, 為了要保持後續 p_j 的對齊, 回傳 &&
-				return `~${makeTermLatex(frac_PjCoef, `&p_{${this.startPj + j}}&`, 1)}`; // 避免運算子緊貼上一項, 開頭加上 ~ 符號增加間距
-			}).join(" ");
-			
-			if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
-			if (s_equationLatex.split("&&").length - 1 === this.PjNum) s_equationLatex = "~0"; // 若某個 a_n^(p) 為 0
-			s_equationLatex = removePostfix(s_equationLatex, "&"); // 最後一個字符不能是 &, vatex 會報錯
-			return `a_{${n}}^{(p)} &=& ${s_equationLatex}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
-		}).join(" \\\\ "); // 以換行符連接所有的式子
-		
-		s_latex = `\\begin{alignat*}{${this.PjNum + 1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_j 和 "=" 對齊)
-		return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
+		return mlEquationSystem(
+			this.recurLevel + this.PjNum,
+			this.PjNum,
+			(n, j) => this.PjLinearEquation[n][j],
+			(n, j) => `p_{${this.startPj + j}}`,
+			(n) => `a_{${n}}^{(p)}`,
+			"left"
+		);
 	}
 	
 	mlSolvePjEquationSystem() { // 展開後得到: "p_j 的線性聯立方程式" (latex)
-		const l = this.recurLevel; // 遞迴階數
-		let s_latex = this.matrix_solvePj.A.map((row, n) => {
-			let s_equationLatex = row.map((frac_PjCoef, j) => {
-				if (frac_PjCoef.isZero()) return "&&"; // 某一個常係數為 0, 為了要保持後續 p_j 的對齊, 回傳 &&
-				return `~${makeTermLatex(frac_PjCoef, `&p_{${this.startPj + j}}&`, 1)}`; // 避免運算子緊貼上一項, 開頭加上 ~ 符號增加間距
-			}).join(" ");
-			
-			if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
-			if (s_equationLatex.split("&&").length - 1 === this.PjNum) s_equationLatex = "~0"; // 若某個 a_n^(p) 為 0
-			return `${s_equationLatex} &= ${this.nonHomogFn[n].toLatex()}`; // 加上 a_n^(p). 加上 "&" 讓 "=" 符號對齊
-		}).join(" \\\\ "); // 以換行符連接所有的式子
-		
-		s_latex = `\\begin{alignat*}{${this.PjNum + 1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數 p_j 和 "=" 對齊)
-		return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
+		return mlEquationSystem(
+			this.PjNum,
+			this.PjNum,
+			(i, j) => this.matrix_solvePj.A[i][j],
+			(i, j) => `p_{${j+1}}`,
+			(i) => `${this.nonHomogFn[i].toLatex()}`,
+			"right"
+		);
 	}
 	
 	mlPjAnswer() { // 使用高斯消去法解 p_j 的聯立方程式，得到: "..." (latex)

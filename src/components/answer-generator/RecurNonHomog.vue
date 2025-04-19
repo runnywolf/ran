@@ -58,7 +58,7 @@
 
 <script setup>
 import { computed, ref, toRaw, watch } from "vue";
-import { Frac, SolveCubic, makeTermLatex, SCL } from "@/libs/RanMath.js";
+import { Frac, SolveCubic, mlTerm, SCL } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomogExp from "./RecurNonHomogExp.vue"; // 計算聯立方程式並顯示未知係數 p_j 的組件
 
@@ -129,9 +129,9 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 		const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
 		const s_latex = this.combinedExpFunc[s_frac_b].map((frac_c, i) => { // "+ p1 + p2n + ..." (latex)
 			if (isUnknownCoef) frac_c = `p_{${this.varPjIndex[s_frac_b][i]}}`; // isUnknownCoef 開啟會把係數替換成未知數 p_j
-			return makeTermLatex(frac_c, "n", i + extraNPow, true, true);
+			return mlTerm(frac_c, "n", i + extraNPow, true, true);
 		}).join("");
-		return makeTermLatex(`(${removePrefix(s_latex, "+")})`, frac_b, "n", false);
+		return mlTerm(`(${removePrefix(s_latex, "+")})`, frac_b, "n", false);
 	}
 	
 	mlCombinedExp() { // 合併相同的指數項: "F(n) = Σ_i f_i(n) b_i^n = (f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
@@ -152,7 +152,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 		for (const [s_frac_b, conflictNum] of Object.entries(this.homogRootConflictNum)) {
 			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
 			for (let i = 0; i < conflictNum; i++) {
-				expLatexs.push(makeTermLatex(makeTermLatex(1, "n", i, false), frac_b, "n", false));
+				expLatexs.push(mlTerm(mlTerm(1, "n", i, false), frac_b, "n", false));
 			}
 		}
 		return expLatexs.join(" ~,~ ");
@@ -161,7 +161,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 	mlExistParticularExp() { // ，若特解與 a_n^{(p)} 也包含同樣項次 ... 會導致與齊次解重疊 (latex)
 		return Object.keys(this.homogRootConflictNum).map(s_frac_b => {
 			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			return makeTermLatex(`p_{${this.varPjIndex[s_frac_b][0]}}`, frac_b, "n", false);
+			return mlTerm(`p_{${this.varPjIndex[s_frac_b][0]}}`, frac_b, "n", false);
 		}).join(" ~,~ ");
 	}
 	
@@ -184,7 +184,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 	
 	mlParticularIntoRecur() { // 將 a_n^(p) 代入原遞迴關係: ... (latex)
 		let s_latex = this.recurCoef.map(
-			(frac_coef, i) => makeTermLatex(frac_coef, `a_{n-${i+1}}^{(p)}`, 1, true, true)
+			(frac_coef, i) => mlTerm(frac_coef, `a_{n-${i+1}}^{(p)}`, 1, true, true)
 		).join("");
 		
 		s_latex = `a_n^{(p)} = ${removePrefix(s_latex, "+")} + F(n)`; // 在開頭加上 "a_n^{(p)} =", 此時 latex 字串為: "a_n^{(p)} = 齊次部分 + F(n)"
@@ -194,7 +194,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 	
 	mlParticularIntoRecurTrans() { // 移項後得到: ... (latex)
 		let s_latex = this.recurCoef.map(
-			(frac_coef, i) => makeTermLatex(frac_coef.muli(-1), `a_{n-${i+1}}^{(p)}`, 1, true, true)
+			(frac_coef, i) => mlTerm(frac_coef.muli(-1), `a_{n-${i+1}}^{(p)}`, 1, true, true)
 		).join("");
 		
 		s_latex = `a_n^{(p)} ${s_latex} = F(n)`;
@@ -212,9 +212,9 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 			const frac_b = Frac.fromStr(s_frac_b); // frac_b
 			const extraNPow = this.homogRootConflictNum[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
 			return expPjAnswer.map((frac_Pj, i) => {
-				let s_term = makeTermLatex(frac_Pj, "n", i+extraNPow); // c n^k 部分的 latex 字串
+				let s_term = mlTerm(frac_Pj, "n", i+extraNPow); // c n^k 部分的 latex 字串
 				if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-					s_term = makeTermLatex(removePrefix(s_term, "+"), frac_b, "n");
+					s_term = mlTerm(removePrefix(s_term, "+"), frac_b, "n");
 				}
 				return s_term;
 			}).filter(s_term => s_term !== "+0").join(" "); // 只顯示 c n^k 不為 0 的項

@@ -1,3 +1,5 @@
+import { removePostfix } from "./StringTool";
+
 export function gcd(a, b) { // 最大公因數
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
@@ -181,6 +183,10 @@ export class Frac { // 分數
 		return this.n * frac.d < this.d * frac.n;
 	}
 }
+
+export class EF {}
+
+export class Hop {}
 
 export class FNop { // Frac 和 Number 混合運算
 	static makeOp(fn1, fn2, fracOp, numberOp) { // 定義 Frac 和 Number 的混合算子
@@ -601,9 +607,9 @@ export function isStrInt(str) { // 某個字串是否為整數
 	return /^-?\d+$/.test(str);
 }
 
-export function makeTermLatex(coef, base, pow, firstPos = true, nonZero = false) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
 	if (nonZero) { // 若 nonZero 為 true, 且生成的 latex 字串的數值為 0, 會回傳空字串而不是 "+0"
-		let s_latex = makeTermLatex(coef, base, pow);
+		let s_latex = mlTerm(coef, base, pow);
 		return s_latex === "+0" ? "" : s_latex;
 	}
 	
@@ -641,4 +647,26 @@ export function makeTermLatex(coef, base, pow, firstPos = true, nonZero = false)
 	}
 	
 	return s_coefLatex + s_varLatex;
+}
+
+export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 生成聯立方程式的 latex (會將未知數對齊)
+	let s_latex = Array.from({ length: row }, (_, i) => {
+		let s_equationLatex = Array.from({ length: col }, (_, j) => {
+			const coef = coefFunc(i, j) ?? "?"; // 係數, 可以為 string, number, Frac
+			const varLatex = varFunc(i, j) ?? "?"; // 未知數的 latex
+			const s_termLatex = mlTerm(coef, `&${varLatex}&`, 1);
+			return s_termLatex === "+0" ? "&&" : `~${s_termLatex}`; // 某一個常係數為 0, 為了要保持後續未知數的對齊, 回傳 "&&"
+		}).join(" ");
+		
+		if (s_equationLatex.startsWith("~+")) s_equationLatex = s_equationLatex.replace("+", ""); // 去除開頭的 +
+		if (s_equationLatex.split("&&").length - 1 === col) s_equationLatex = `~0 ${s_equationLatex}`; // 若某一個 row 沒有任何一項, 顯示 0
+		
+		if (equalMode === "left") s_equationLatex = `${equalFunc(i) ?? "?"} &=& ${s_equationLatex}`; // "=" 在左側 (加上 "&" 讓 "=" 符號對齊)
+		else s_equationLatex = `${s_equationLatex} &= ${equalFunc(i) ?? "?"}`; // "=" 在右側
+		
+		return removePostfix(s_equationLatex, "&"); // 最後一個字符不能是 &, katex 會報錯
+	}).join(" \\\\ "); // 以換行符連接所有的式子
+	
+	s_latex = `\\begin{alignat*}{${col+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
+	return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
 }
