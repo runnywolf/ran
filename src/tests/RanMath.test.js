@@ -14,7 +14,7 @@ export function testSolveQuad_fracRoot() {
 	roots.sort((a, b) => a.toFloat()-b.toFloat());
 	
 	const a = getRandomFrac(); if (a.isZero()) return;
-	const b = roots[0].add(roots[1]).mul(a).muli(-1);
+	const b = roots[0].add(roots[1]).mul(a).mul(-1);
 	const c = roots[0].mul(roots[1]).mul(a);
 	
 	const testList = [
@@ -51,9 +51,9 @@ export function testSolveCubic_fracRoot() {
 	roots.sort((a, b) => a.toFloat()-b.toFloat());
 	
 	const a = getRandomFrac(); if (a.isZero()) return;
-	const b = roots[0].add(roots[1]).add(roots[2]).mul(a).muli(-1);
+	const b = roots[0].add(roots[1]).add(roots[2]).mul(a).mul(-1);
 	const c = (roots[0].mul(roots[1])).add(roots[1].mul(roots[2])).add(roots[2].mul(roots[0])).mul(a);
-	const d = roots[0].mul(roots[1]).mul(roots[2]).mul(a).muli(-1);
+	const d = roots[0].mul(roots[1]).mul(roots[2]).mul(a).mul(-1);
 	
 	const testList = [
 		new SolveCubic(a, b, c, d),

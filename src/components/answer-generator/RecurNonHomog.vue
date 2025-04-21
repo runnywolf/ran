@@ -194,7 +194,7 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 	
 	mlParticularIntoRecurTrans() { // 移項後得到: ... (latex)
 		let s_latex = this.recurCoef.map(
-			(frac_coef, i) => mlTerm(frac_coef.muli(-1), `a_{n-${i+1}}^{(p)}`, 1, true, true)
+			(frac_coef, i) => mlTerm(frac_coef.mul(-1), `a_{n-${i+1}}^{(p)}`, 1, true, true)
 		).join("");
 		
 		s_latex = `a_n^{(p)} ${s_latex} = F(n)`;

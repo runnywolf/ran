@@ -54,7 +54,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { Frac, SolveQuad, SolveCubic, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { Frac, EF, SolveCubic, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomog from "./RecurNonHomog.vue"; // 計算並顯示非齊次部分的組件
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
@@ -79,7 +79,7 @@ class SolveRecur { // 解非齊次遞迴
 	_initCubic() { // 計算齊次解的特徵值
 		let coef = [...this.recurCoef];
 		while (coef.length < 3) coef.push(new Frac(0)); // 0, 1, 2 階遞迴要解三次特徵方程式需要補足係數
-		this.cubic = new SolveCubic(new Frac(1), coef[0].muli(-1), coef[1].muli(-1), coef[2].muli(-1)); // 解方程式 t^3 - r1t^2 - r2t - r3 = 0
+		this.cubic = new SolveCubic(new Frac(1), coef[0].mul(-1), coef[1].mul(-1), coef[2].mul(-1)); // 解方程式 t^3 - r1t^2 - r2t - r3 = 0
 	}
 	
 	_initHomogForm() { // 生成齊次形式的資訊. 注: this.homogForm[0] 可以讀取重根資訊
@@ -127,7 +127,7 @@ class SolveRecur { // 解非齊次遞迴
 		if (type === SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
 			const getCoef = []; // getCoef[i](n) 代表 a_n^(h) 代入常數 n 後, 未知數 h_{i+1} 的係數: (n^j r^n) h_{i+1}
 			this.homogForm.map(([frac_r, multiRootNum]) => {
-				for (let j = 0; j < multiRootNum; j++) getCoef.push((n) => frac_r.pow(n).muli(n**j)); // (n^j r^n) h_{i+1}
+				for (let j = 0; j < multiRootNum; j++) getCoef.push((n) => frac_r.pow(n).mul(n**j)); // (n^j r^n) h_{i+1}
 			}); // 注: getCoef.length == 遞迴階數
 			this.HiLinearEquation = Array.from(
 				{ length: this.recurLevel },
@@ -138,7 +138,7 @@ class SolveRecur { // 解非齊次遞迴
 			let [frac_a, frac_b] = [new Frac(sc.quad.n, sc.quad.d), new Frac(sc.quad.m, sc.quad.d)];
 			this.HiLinearEquation = Array.from({ length: this.recurLevel }, (_, n) => {
 				let [frac_fa, frac_fb] = this._fieldPow(frac_a, frac_b, new Frac(sc.quad.s), n); // (a + b√s)^n = fa + fb√s = [fa, fb]
-				[frac_fa, frac_fb] = [frac_fa.muli(2), frac_fb.muli(2*sc.quad.s)]; // [2*fa, 2s*fb]
+				[frac_fa, frac_fb] = [frac_fa.mul(2), frac_fb.mul(2*sc.quad.s)]; // [2*fa, 2s*fb]
 				if (this.recurLevel == 2) return [frac_fa, frac_fb];
 				if (this.recurLevel == 3) return [frac_fa, frac_fb, sc.frac_r1.pow(n)];
 			});

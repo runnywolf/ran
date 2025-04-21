@@ -69,7 +69,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		for (let n = 0; n < this.PjNum; n++) { // 將 a_n^(p) 以 p_j 表示的線性關係, 轉為矩陣
 			matrix_PLE.A[n][n+l] = new Frac(1);
 			for (const [i, frac_coef] of this.recurCoef.entries()) {
-				matrix_PLE.A[n][n+(l-1)-i] = frac_coef.muli(-1);
+				matrix_PLE.A[n][n+(l-1)-i] = frac_coef.mul(-1);
 			}
 		}
 		this.matrix_solvePj = matrix_PLE.mul(new Matrix(this.PjLinearEquation)); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
@@ -103,7 +103,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		const l = this.recurLevel; // 遞迴階數
 		let s_latex = Array.from({ length: this.PjNum }, (_, n) => { // 需要求幾個未知係數 p_j, 就要生成幾個式子
 			let s_equationLatex = this.recurCoef.map( // "- h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)}" (latex)
-				(frac_coef, i) => mlTerm(frac_coef.muli(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
+				(frac_coef, i) => mlTerm(frac_coef.mul(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
 			).join(" ");
 			return `a_{${n+l}}^{(p)} ${s_equationLatex} = F(${n+l})`; // "a_n^{(p)} - h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)} = F(n)" (latex)
 		}).join(" \\\\ "); // 以換行符連接所有的式子

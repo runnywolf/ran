@@ -176,10 +176,10 @@ const makeRandomRecur = () => { // 生成隨機遞迴
 	if (level == 1) { // (x-r1)=0  >>>  x = r1
 		recurCoefInput.value = [ r1 ];
 	} else if (level == 2) { // (x-r1)(x-r2)=0  >>>  x^2 = (r1+r2)x - r1r2
-		recurCoefInput.value = [ r1.add(r2), r1.mul(r2).muli(-1) ];
+		recurCoefInput.value = [ r1.add(r2), r1.mul(r2).mul(-1) ];
 	} else if (level == 3) { // (x-r1)(x-r2)(x-r3)=0  >>>  x^3 = (r1+r2+r3)x^2 - (r1r2+r2r3+r3r1)x + r1r2r3
 		recurCoefInput.value = [
-			r1.add(r2).add(r3), r1.mul(r2).add(r2.mul(r3)).add(r3.mul(r1)).muli(-1), r1.mul(r2).mul(r3)
+			r1.add(r2).add(r3), r1.mul(r2).add(r2.mul(r3)).add(r3.mul(r1)).mul(-1), r1.mul(r2).mul(r3)
 		];
 	}
 	
