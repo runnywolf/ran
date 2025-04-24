@@ -15,7 +15,7 @@
 <script setup>
 import { ref, toRaw, watch } from "vue";
 import { Frac, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
-import { removePrefix, removePostfix } from "@/libs/StringTool.js";
+import { removePrefix } from "@/libs/StringTool.js";
 
 const props = defineProps({
 	recurCoef: { type: Array, default: [] }, // 齊次部分的係數, length 代表遞迴階數
@@ -76,7 +76,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	_initSolvePj() { // 解聯立求 p_j
-		const matrix_F = new Matrix([this.nonHomogFn]).trans(); // 因為 this.nonHomogFn 前面是多餘的
+		const matrix_F = new Matrix([this.nonHomogFn]).trans();
 		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_F).trans().A[0]; // 解 p_j 的聯立 Ax = b ; x 會等於 A^-1 b
 	}
 	

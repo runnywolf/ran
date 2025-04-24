@@ -328,12 +328,10 @@ export class EF { // 擴張體運算 (a + b√s)
 			const nmd_gcd = gcd(gcd(n, m), d);
 			[n, m, d] = [n / nmd_gcd, m / nmd_gcd, d / nmd_gcd];
 			
-			let s_latex = "";
-			if (m != 1) s_latex = `${m}`; // 若 m 不為 1, 顯示 m
-			s_latex = `${s_latex} \\sqrt{${this.s.n}}`; // 顯示根號和 -> m√s
-			if (n != 0) s_latex = `${n} ${m > 0 ? "+" : ""}${s_latex}`; // 若 n 不為 0 -> n ± m√s
-			if (d != 1) s_latex = `\\frac{${s_latex}}{${d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
-			return s_latex;
+			let s_latex = mlTerm(m, `\\sqrt{${this.s.n}}`, 1); // m√s
+			if (n !== 0) s_latex = `${n} ${s_latex}`; // 若 n 不為 0 -> n ± m√s
+			if (d != 1) s_latex = `\\frac{${removePrefix(s_latex, "+")}}{${d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
+			return removePrefix(s_latex, "+");
 		}
 		// s < 0
 		if (!Frac.isFrac(this.a)) { // 浮點複數
@@ -342,13 +340,12 @@ export class EF { // 擴張體運算 (a + b√s)
 			return removePrefix(s_latex, "+");
 		}
 		
-		let s_latex = "";
-		if (this.b.n != 1) s_latex = `${this.b.n}`; // 若 m 不為 1, 顯示 m
-		if (this.s.n != -1) s_latex = `${s_latex} \\sqrt{${-this.s.n}}`; // 若 s 不為 -1, 顯示根號
-		if (this.b.d != 1) s_latex = `\\frac{${s_latex}}{${this.b.d}}`; // 若 d 不為 1, 顯示分數
-		s_latex = `\\pm ${s_latex} i`; // ± im i
+		let s_latex = `${this.b.n}`;
+		if (this.s.n != -1) s_latex = mlTerm(s_latex, `\\sqrt{${-this.s.n}}`, 1, false); // 若 s 不為 -1, 顯示根號
+		if (this.b.d != 1) s_latex = `\\frac{${s_latex}}{${this.b.d}}`; // 若 d 不為 1, 顯示分數 (分母不能有 +)
+		s_latex = mlTerm(s_latex, "i", 1); // ± im i
 		if (!this.a.isZero()) s_latex = `${this.a.toLatex()} ${s_latex}`; // 若實部不為 0, 變成 re ± im i
-		return s_latex; // re ± im i
+		return removePrefix(s_latex, "+"); // re ± im i
 	}
 	
 	_makeOp(ef, opName, op, err = true) { // 批量製作算子, 因為重複的部分太多了
@@ -372,7 +369,7 @@ export class EF { // 擴張體運算 (a + b√s)
 		return new EF(this.a, Hop.sub(0, this.b), this.s);
 	}
 	
-	norm() { // 範數: (a + b√s) -> (a^2 - b^2 s)
+	norm() { // 範數平方: (a + b√s) -> (a^2 - b^2 s)
 		return Hop.sub(Hop.mul(this.a, this.a), Hop.mul(Hop.mul(this.b, this.b), this.s));
 	}
 	
@@ -431,6 +428,9 @@ export class EF { // 擴張體運算 (a + b√s)
 		return b;
 	}
 }
+
+// super EF ?
+// Q( √1 , √2 , √3 , √6 )
 
 export class Matrix { // 矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
