@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<div v-else>
-		<vl exp="\Rightarrow" /> 不存在相同的指數部分。
+		不存在相同的指數部分。
 	</div>
 	<div style="height: 12px;"></div>
 	因此特解的形式為：<br>
