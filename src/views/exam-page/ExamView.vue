@@ -1,146 +1,143 @@
 <template>
-	<div class="ts-grid">
+	<BodyLayout>
 		
 		<!-- 左側的資訊板 -->
-		<div class="column">
-			<div class="ts-box is-vertical is-compact sidebar">
+		<template #sidebar>
+			
+			<!-- "回題本選單" 的連結 -->
+			<div class="ts-content is-dense">
+				<span class="ts-icon is-reply-icon is-end-spaced"></span>
+				<router-link to="/exam" class="hyperlink">&nbsp;回題本選單</router-link>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 測驗模式的開關 -->
+			<div class="ts-content is-dense sidebar-setting">
+				<label class="ts-switch">
+					<input type="checkbox" v-model="isExamModeEnabled" />
+					<span>測驗模式&nbsp;</span>
+					<span
+						class="ts-icon is-circle-question-icon"
+						data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且不顯示解答。"
+						data-html=true
+					></span>
+				</label>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 題本資訊的表格 -->
+			<div class="ts-content is-dense">
+				<ExamInfo
+					:uniShortName="config.uni[uni] ? config.uni[uni].shortName : undefined"
+					:year="year"
+					:subjectId="examConfig.id"
+					:subject="examConfig.subject"
+				></ExamInfo>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 計時器 -->
+			<div
+				class="ts-content is-dense sidebar-timer"
+				:style="{ opacity: isExamModeEnabled ? 1 : 0.4 }"
+			>
 				
-				<!-- "回題本選單" 的連結 -->
-				<div class="ts-content is-dense">
-					<span class="ts-icon is-reply-icon is-end-spaced"></span>
-					<router-link to="/exam" class="hyperlink">&nbsp;回題本選單</router-link>
-				</div>
-				<div class="ts-divider"></div>
-				
-				<!-- 測驗模式的開關 -->
-				<div class="ts-content is-dense sidebar-setting">
-					<label class="ts-switch">
-						<input type="checkbox" v-model="isExamModeEnabled" />
-						<span>測驗模式&nbsp;</span>
-						<span
-							class="ts-icon is-circle-question-icon"
-							data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且不顯示解答。"
-							data-html=true
-						></span>
-					</label>
-				</div>
-				<div class="ts-divider"></div>
-				
-				<!-- 題本資訊的表格 -->
-				<div class="ts-content is-dense">
-					<ExamInfo
-						:uniShortName="config.uni[uni] ? config.uni[uni].shortName : undefined"
-						:year="year"
-						:subjectId="examConfig.id"
-						:subject="examConfig.subject"
-					></ExamInfo>
-				</div>
-				<div class="ts-divider"></div>
-				
-				<!-- 計時器 -->
-				<div
-					class="ts-content is-dense sidebar-timer"
-					:style="{ opacity: isExamModeEnabled ? 1 : 0.4 }"
-				>
+				<!-- 開始暫停按鈕, 重置按鈕, 剩餘時間 -->
+				<div class="ts-wrap is-compact is-middle-aligned">
 					
-					<!-- 開始暫停按鈕, 重置按鈕, 剩餘時間 -->
-					<div class="ts-wrap is-compact is-middle-aligned">
-						
-						<!-- 開始暫停按鈕 -->
-						<button
-							class="ts-button is-small is-icon is-outlined"
-							@click="clickToggleButton"
-							:disabled="!isExamModeEnabled"
-						><!-- 計時器的 開始/暫停 按鈕 -->
-							<span v-if="isTimerActive" class="ts-icon is-pause-icon"></span>
-							<span v-else class="ts-icon is-play-icon"></span>
-						</button>
-						
-						<!-- 重置按鈕 -->
-						<button
-							class="ts-button is-small is-icon is-outlined"
-							@click="clickResetButton"
-							:disabled="!isExamModeEnabled"
-						><!-- 計時器的重設按鈕 -->
-							<span class="ts-icon is-rotate-left-icon"></span>
-						</button>
-						
-						<!-- 剩餘時間 -->
-						<span v-if="remainingSec >= 0" class="sidebar-timer-time"><!-- 剩餘時間 -->
-							{{ Math.floor(remainingSec / 60) }}:{{ String(remainingSec % 60).padStart(2, '0') }}
-						</span>
-						<span v-else class="sidebar-timer-time">0:00</span><!-- 如果剩餘時間 < 0, 顯示 0:00 -->
-						
-					</div>
-					
-					<!-- 剩餘時間的進度條. 如果計時器正在計時, 進度條背景會有動畫 -->
-					<div
-						class="ts-progress is-tiny sidebar-timer-progress"
-						:class="isTimerActive ? 'is-processing' : ''"
-					>
-						<div
-							class="bar"
-							:style="{
-								'--value': 100 * (remainingSec / examTimeSec), // 進度條的 css 參數, 100 代表全滿
-								'background-color': (remainingSec / examTimeSec) > 0.1 ? '#9bf' : '#f88' // 時間剩下 10% 時, 進度條會變成紅色
-							}"
-						></div>
-					</div>
-					
-				</div>
-				<div class="ts-divider"></div>
-				
-				<!-- 題本來源的超連結 -->
-				<div class="ts-content is-dense">
-					<span class="ts-icon is-link-icon is-end-spaced"></span>
-					<a v-if="examConfig.link"
-						class="hyperlink"
-						:href="examConfig.link"
-						:data-tooltip="examConfig.linkTip ? examConfig.linkTip : '沒有附註任何東西捏 (´･ω･`)'"
-						target="_blank"
-					>題本來源</a>
-					<span v-else>來源未知</span>
-				</div>
-				<div class="ts-divider"></div>
-				
-				<!-- 下載按鈕 (未實作) -->
-				<div class="ts-content is-dense">
+					<!-- 開始暫停按鈕 -->
 					<button
-						class="ts-button is-outlined is-start-icon"
-						@click="clickDownload"
-						data-tooltip="暫時想不到要怎麼做 ฅ^⦁⩊⦁^ฅ ੭"
-					>
-						<span class="ts-icon is-download-icon"></span>下載題本
+						class="ts-button is-small is-icon is-outlined"
+						@click="clickToggleButton"
+						:disabled="!isExamModeEnabled"
+					><!-- 計時器的 開始/暫停 按鈕 -->
+						<span v-if="isTimerActive" class="ts-icon is-pause-icon"></span>
+						<span v-else class="ts-icon is-play-icon"></span>
 					</button>
+					
+					<!-- 重置按鈕 -->
+					<button
+						class="ts-button is-small is-icon is-outlined"
+						@click="clickResetButton"
+						:disabled="!isExamModeEnabled"
+					><!-- 計時器的重設按鈕 -->
+						<span class="ts-icon is-rotate-left-icon"></span>
+					</button>
+					
+					<!-- 剩餘時間 -->
+					<span v-if="remainingSec >= 0" class="sidebar-timer-time"><!-- 剩餘時間 -->
+						{{ Math.floor(remainingSec / 60) }}:{{ String(remainingSec % 60).padStart(2, '0') }}
+					</span>
+					<span v-else class="sidebar-timer-time">0:00</span><!-- 如果剩餘時間 < 0, 顯示 0:00 -->
+					
+				</div>
+				
+				<!-- 剩餘時間的進度條. 如果計時器正在計時, 進度條背景會有動畫 -->
+				<div
+					class="ts-progress is-tiny sidebar-timer-progress"
+					:class="isTimerActive ? 'is-processing' : ''"
+				>
+					<div
+						class="bar"
+						:style="{
+							'--value': 100 * (remainingSec / examTimeSec), // 進度條的 css 參數, 100 代表全滿
+							'background-color': (remainingSec / examTimeSec) > 0.1 ? '#9bf' : '#f88' // 時間剩下 10% 時, 進度條會變成紅色
+						}"
+					></div>
 				</div>
 				
 			</div>
-		</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 題本來源的超連結 -->
+			<div class="ts-content is-dense">
+				<span class="ts-icon is-link-icon is-end-spaced"></span>
+				<a v-if="examConfig.link"
+					class="hyperlink"
+					:href="examConfig.link"
+					:data-tooltip="examConfig.linkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
+					target="_blank"
+				>題本來源</a>
+				<span v-else>來源未知</span>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 下載按鈕 (未實作) -->
+			<div class="ts-content is-dense">
+				<button
+					class="ts-button is-outlined is-start-icon"
+					@click="clickDownload"
+					data-tooltip="暫時想不到要怎麼做 ฅ^⦁⩊⦁^ฅ ੭"
+				>
+					<span class="ts-icon is-download-icon"></span>下載題本
+				</button>
+			</div>
+			
+		</template>
 		
 		<!-- 右側的考卷 -->
-		<div class="column is-fluid">
-			<div class="ts-box">
-				<ExamPaper
-					:uni="uni" :year="year" :examConfig="examConfig"
-					:isContentVisible="!isExamModeEnabled"
-					:isProblemVisible="isProblemVisible"
-					:isExamOver="remainingSec <= 0"
-					:examTimeSec="examTimeSec"
-					@clickStartExam="clickStartExam"
-					@resetTimer="resetTimer"
-				></ExamPaper>
-			</div>
-		</div>
+		<template #content>
+			<ExamPaper
+				:uni="uni" :year="year" :examConfig="examConfig"
+				:isContentVisible="!isExamModeEnabled"
+				:isProblemVisible="isProblemVisible"
+				:isExamOver="remainingSec <= 0"
+				:examTimeSec="examTimeSec"
+				@clickStartExam="clickStartExam"
+				@resetTimer="resetTimer"
+			></ExamPaper>
+		</template>
 		
-	</div>
+	</BodyLayout>
 </template>
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { globalStore } from "@/store/global"; // pinia 全域變數
-import ExamPaper from "@/components/exam-view/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
-import ExamInfo from "@/components/exam-view/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
+import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
+import ExamPaper from "./comp/ExamPaper.vue"; // 考卷的組件 (於 v0.1.0-dev.17 分離)
+import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const globalVar = globalStore(); // 全域變數
@@ -177,7 +174,7 @@ const scrollToProblem = () => { // 若從題目跳轉到題本, 題本頁面需�
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
-	if (idParam.length != 2){ // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
+	if (idParam.length != 2) { // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
 		handleWrongExamIdFormat(newExamId);
 		return;
 	}
@@ -260,11 +257,6 @@ const clickDownload = () => { // 下載題本
 </script>
 
 <style scoped>
-.sidebar {
-	position: sticky; top: 15px; /* 即使題目區往下移動, 這個 box 也會在原地 */
-	width: 160px; /* 側邊欄的寬度 */
-	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
-}
 .sidebar-setting {
 	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
 }

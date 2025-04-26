@@ -27,7 +27,7 @@
 			<!-- 答案的內容區塊 -->
 			<Content colorStyle="green" collapsed>
 				<span>Ans:&nbsp;&nbsp;</span>
-				<vl :exp="problemConfig.answerLatex ? problemConfig.answerLatex : '?'" />
+				<vl :exp="problemConfig.answerLatex ?? '?'" />
 			</Content>
 			
 			<template v-for="(contentData, i) in problemConfig.content">

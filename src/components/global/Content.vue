@@ -39,7 +39,7 @@ const getBgColor = () => { // 決定背景的顏色
 <style scoped>
 .box {
 	border-color: var(--border-color);
-	font-family: "noto sans tc"; font-size: 16px;
+	font-family: "noto sans tc"; font-size: 15px;
 }
 .box:deep(.ts-divider) { /* 如果內容含有分隔線(ts-divider), 將分隔線塗成邊框的顏色 */
 	border-color: var(--border-color);
