@@ -40,6 +40,7 @@ const navbarOptionList = [
 		tooltip: "齊次 / 非齊次遞迴",
 		toRouteName: "PracticeRecur"
 	},
+	/*
 	{
 		iconName: "arrow-down-short-wide",
 		label: "GS 正交化",
@@ -76,6 +77,7 @@ const navbarOptionList = [
 		tooltip: "對角化 / 正交對角化 / Jordan Form",
 		toRouteName: "PracticeDiag"
 	},
+	*/
 ];
 </script>
 

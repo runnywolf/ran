@@ -1,5 +1,9 @@
 import { removePrefix, removePostfix } from "./StringTool";
 
+// isNatural -> isN
+// Hop.isInt -> isZ
+// isZP ->
+
 export function gcd(a, b) { // 最大公因數
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
@@ -206,7 +210,7 @@ export class Hop { // Frac 和 number (int, float) 混合運算
 	}
 	
 	static isInt(fn) { // 是否為整數
-		return Number.isInteger(fn);
+		return Number.isInteger(fn); // ??? 根本不支援 frac
 	}
 	
 	static op(fn1, fn2, fracOp, numOp) { // 定義 Frac 和 number 的混合算子
@@ -429,8 +433,9 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 }
 
-// super EF ?
-// Q( √1 , √2 , √3 , √6 )
+export class BEF { // binary extension field
+	// k(a1 + √s1)(a2 + √s2)...
+}
 
 export class Matrix { // 矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
@@ -862,6 +867,10 @@ export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // �
 	}
 	
 	return s_coefLatex + s_varLatex;
+}
+
+export function mlMultipleTerm(latexArr) { // 用於組合多個 latex, 會偵測並以 "+" 連接多個 latex; 當整個式子為 0, 會回傳 0
+	// 採用 +0 合併, 去頭0
 }
 
 export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 生成聯立方程式的 latex (會將未知數對齊)

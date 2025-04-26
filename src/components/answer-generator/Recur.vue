@@ -82,7 +82,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, toRaw, watch } from "vue";
 import { Frac, EF, SolveCubic, Hop, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomog from "./RecurNonHomog.vue"; // 計算並顯示非齊次部分的組件
@@ -103,6 +103,8 @@ class SolveRecur { // 解非齊次遞迴
 		this._updateParticular(); // 此時子組件 RecurNonHomog.vue 還沒回傳特解資訊, 這裡先初始化一次
 		
 		this.homogFormLatex = this.mlHomogForm(); // 齊次解的形式 (latex)
+		
+		this._test(); // test
 	}
 	
 	_initCubic() { // 計算齊次解的特徵值
@@ -256,6 +258,28 @@ class SolveRecur { // 解非齊次遞迴
 		}
 	}
 	
+	_test() { // 測試答案的正確性
+		const maxN = 10; // 要計算到 n_?
+		
+		const F = (n) => Frac.sum( // 將自然數 n 代入非齊次部分
+			Object.entries(this.nonHomoFunc).map(([key, frac_c]) => {
+				const [s_k, s_frac_b] = key.split(","); // 非齊次的 c n^k b^n 項會表示為 { "k,b.n/b.d": c , ... }
+				const [k, frac_b] = [Number(s_k), Frac.fromStr(s_frac_b)]; // n^k 的 k (0~3) ; b^n 的 b (Frac)
+				return frac_c.mul(n**k).mul(frac_b.pow(n));
+			})
+		);
+		
+		const rawRecurCoef = this.recurCoef.map(frac_c => toRaw(frac_c)); // 齊次部分的係數
+		let recurAn = this.initConst.map(frac_c => toRaw(frac_c)); // 由遞迴式產生的 a_n
+		for (let n = this.recurLevel; n <= maxN; n++) {
+			recurAn.push(
+				Frac.sum(rawRecurCoef.map((frac_coef, i) => frac_coef.mul(recurAn[n-1-i]))).add(F(n))
+			);
+		}
+		
+		console.log(recurAn);
+	}
+	
 	mlCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
 		let l = this.recurLevel; // 遞迴階數
 		let s_latex = this.recurCoef.map(
@@ -401,7 +425,12 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	mlClosedFormAddAn() { // 通解不含 i, 將 h_1, h_2, ... 直接代回 a_n: "..." (latex)
-		return `a_n = ${removePrefix(`${this.mlClosedForm()}+a_n^{(p)}`, "+")}`; // 由於採用 +0 捨去的生成方法, 所以最後要去除開頭的 0
+		let s_latex = this.mlClosedForm();
+		if (this.haveNonHomog) s_latex += "+a_n^{(p)}";
+		
+		s_latex = removePrefix(s_latex, "+");
+		if (s_latex === "") s_latex = "0";
+		return `a_n = ${s_latex}`; // 由於採用 +0 捨去的生成方法, 所以最後要去除開頭的 0
 	}
 	
 	mlClosedFormIm() { // 遞迴的一般項, 把複數化簡為三角函數 (latex)
@@ -420,7 +449,12 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	mlClosedFormImAddAn() { // 先將複數部分轉為極座標，再使用歐拉公式： ... 因此 "..." (latex)
-		return `a_n = ${removePrefix(`${this.mlClosedFormIm()}+a_n^{(p)}`, "+")}`; // 由於採用 +0 捨去的生成方法, 所以最後要去除開頭的 0
+		let s_latex = this.mlClosedFormIm();
+		if (this.haveNonHomog) s_latex += "+a_n^{(p)}";
+		
+		s_latex = removePrefix(s_latex, "+");
+		if (s_latex === "") s_latex = "0";
+		return `a_n = ${s_latex}`; // 由於採用 +0 捨去的生成方法, 所以最後要去除開頭的 0
 	}
 	
 	mlClosedFormImWhere() { // 其中 "三角函數形式的 r 和 \theta" (latex)
@@ -499,7 +533,7 @@ class SolveRecur { // 解非齊次遞迴
 			else s_polyLatex = `( ${removePrefix(termLatexArr.join(""), "+")} )`; // 例: [ "?", "?n", "?n^2", ... ] -> "( ? + ?n + ?n^2 + ... )" (latex)
 			
 			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
-			if (frac_b.equal(1)) return `+${s_polyLatex}`; // 若出現 1^n, 不顯示指數部分
+			if (frac_b.equal(1)) return mlTerm(1, s_polyLatex, 1); // 若出現 1^n, 不顯示指數部分
 			return mlTerm(s_polyLatex, frac_b, "n", true, true); // "+ ( ? + ?n + ?n^2 + ... ) b^n"
 		}).join("");
 		
@@ -528,20 +562,14 @@ const emit = defineEmits([
 	"recurLatex", // 遞迴式改變時, 回傳遞迴關係式的 latex 字串. (用於供應 RecurInput 的遞迴預覽)
 ]);
 
+const mlRecurHomog = (recurCoef = []) => { // 生成 遞迴的齊次部分 "+ r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
+	return recurCoef.map((frac_coef, i) => mlTerm(frac_coef, `a_{n-${i+1}}`, 1, true, true)).join("");
+};
+
 const mlRecurHomogPrefix = (recurCoef = []) => { // 生成 遞迴的齊次部分 "a_n = r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
 	let s_latex = mlRecurHomog(recurCoef);
 	if (s_latex === "") s_latex = "0"; // 如果齊次部分沒有任何一項, 顯示 "0"
 	return `a_n = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "a_n ="
-};
-
-const mlRecurNonHomogPrefix = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
-	let s_latex = mlRecurNonHomog(nonHomoFunc);
-	if (s_latex === "") s_latex = "0"; // 如果非齊次部分沒有任何一項, 顯示 "0"
-	return `F(n) = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "F(n) ="
-};
-
-const mlRecurHomog = (recurCoef = []) => { // 生成 遞迴的齊次部分 "+ r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
-	return recurCoef.map((frac_coef, i) => mlTerm(frac_coef, `a_{n-${i+1}}`, 1, true, true)).join("");
 };
 
 const mlRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "+ c n^k b^n + ..." (latex)
@@ -559,6 +587,12 @@ const mlRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部�
 	}
 	
 	return s_latex;
+};
+
+const mlRecurNonHomogPrefix = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部分 "F(n) = c n^k b^n + ..." (latex)
+	let s_latex = mlRecurNonHomog(nonHomoFunc);
+	if (s_latex === "") s_latex = "0"; // 如果非齊次部分沒有任何一項, 顯示 "0"
+	return `F(n) = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "F(n) ="
 };
 
 const mlRecur = (recurCoef = [], nonHomoFunc = {}, initConst = []) => { // 生成遞迴關係式的 latex 字串
