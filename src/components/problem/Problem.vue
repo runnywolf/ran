@@ -40,6 +40,11 @@
 					</details>
 				</Content>
 				
+				<!-- 預設的內容區塊 -->
+				<Content v-else-if="contentData.type === 'default'">
+					<component :is="contentAsyncComps[i]"></component>
+				</Content>
+				
 				<!-- 若內容區塊的類型填錯, 顯示錯誤訊息 -->
 				<Content v-else colorStyle="red">錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶</Content>
 				

@@ -1,4 +1,6 @@
 <template>
+	hamilton cycle/circuit 的定義：一筆畫經過所有點，並且回到出發點。<br>
+	<br>
 	<div class="column ts-wrap is-compact is-top-aligned opt">
 		<span>(A)</span>
 		<img src="./img/1-a.webp">

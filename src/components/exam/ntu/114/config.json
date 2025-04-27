@@ -6,9 +6,10 @@
 	"section": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ],
 	"problem": {
 		"1": {
-			"answerLatex": "",
+			"answerLatex": "\\text{CD}",
 			"content": [
-				{ "type": "answer", "id": "1-ans" }
+				{ "type": "answer", "id": "1-ans" },
+				{ "type": "default", "id": "1-note" }
 			]
 		}
 	}
