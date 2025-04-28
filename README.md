@@ -4,13 +4,14 @@
 ![](https://img.shields.io/badge/ran--math.js-v1-55f?style=flat)
 <br>
 一款用於準備資工所數學的網頁 App。<br>
-[Ran](https://runnywolf.github.io/ran/#/exam)
+開始使用 → [Ran](https://runnywolf.github.io/ran/#/exam)
 
 > [!WARNING]  
 > 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
 
-# 功能
+如果需要離線版，直接 fork 就行，題本資訊都是靜態的。
 
+# 功能
 歷屆試題頁面：
 - 查詢特定學校和年份的數學考卷
 - 每一題都盡量提供詳細的解答
