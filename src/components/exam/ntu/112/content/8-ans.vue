@@ -30,7 +30,7 @@
 			\end{alignat*}
 			\right.
 		" />
-		※ <vl exp="\text{det}(AB) = \text{det}(A) \text{det}(B)" />
+		※ <vl exp="\det(AB) = \det(A) \det(B)" />
 	</OptionAnswer>
 	<div class="ts-divider is-section"></div>
 	

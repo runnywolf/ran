@@ -29,7 +29,7 @@
 		<vl c exp="\lambda(A + \frac{1}{2}) = \{ \frac{-1}{2} , \frac{3}{2} \}" />
 		可知 <vl exp="A + \frac{1}{2} I" /> 的特徵值 <vl exp="\neq 0" />，<br>
 		而行列式為所有特徵值之乘積，因此
-		<vl exp="\text{det}(A + \frac{1}{2}I) \neq 0" />。<br>
+		<vl exp="\det(A + \frac{1}{2}I) \neq 0" />。<br>
 		<vl exp="\Rightarrow ~ A + \frac{1}{2} I" /> 可逆。
 	</OptionAnswer>
 	<div class="ts-divider is-section"></div>
@@ -99,18 +99,18 @@
 		接下來以行列式檢查 <vl exp="U" /> 是否為非奇異矩陣：
 		<vl c exp="
 			\begin{split}
-				\text{det}(U) &= \text{det}(V D^{1/2} V^{-1}) \\
-											&= \text{det}(V) \text{det}(D^{1/2}) \text{det}(V^{-1}) \\
-											&= \text{det}(V) \text{det}(D^{1/2}) \text{det}(V)^{-1} \\
-											&= \text{det}(D^{1/2})
+				\det(U) &= \det(V D^{1/2} V^{-1}) \\
+											&= \det(V) \det(D^{1/2}) \det(V^{-1}) \\
+											&= \det(V) \det(D^{1/2}) \det(V)^{-1} \\
+											&= \det(D^{1/2})
 			\end{split}
 		" />
 		其中對角矩陣 <vl exp="D" /> 的對角線元素為 <vl exp="A" /> 的特徵值：
-		<vl c exp="\text{det}(D^{1/2}) = {\lambda_1}^{1/2} {\lambda_2}^{1/2} \cdots {\lambda_n}^{1/2}" />
+		<vl c exp="\det(D^{1/2}) = {\lambda_1}^{1/2} {\lambda_2}^{1/2} \cdots {\lambda_n}^{1/2}" />
 		若 <vl exp="A" /> 為正定矩陣<br>
 		<vl exp="\Rightarrow" /> 特徵值 <vl exp="\lambda_i \neq 0" /><br>
-		<vl exp="\Rightarrow ~ \text{det}(D^{1/2}) \neq 0" /><br>
-		<vl exp="\Rightarrow ~ \text{det}(U) \neq 0" /><br>
+		<vl exp="\Rightarrow ~ \det(D^{1/2}) \neq 0" /><br>
+		<vl exp="\Rightarrow ~ \det(U) \neq 0" /><br>
 		<vl exp="\Rightarrow ~ U" /> 為非奇異矩陣<br>
 		<br>
 		綜上所述，若 <vl exp="A" /> 正定，則存在非奇異矩陣 <vl exp="U = V D^{1/2} V^{-1}" /> 滿足 <vl exp="A = U^2" />。

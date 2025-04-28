@@ -11,6 +11,30 @@
 				{ "type": "answer", "id": "1-ans" },
 				{ "type": "default", "id": "1-note" }
 			]
+		},
+		"2": {
+			"answerLatex": "3",
+			"content": [
+				{ "type": "answer", "id": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "9",
+			"content": [
+				{ "type": "answer", "id": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "a_n = \\frac{17}{7} 2^n + \\frac{4}{7} (-5)^n",
+			"content": [
+				{ "type": "answer", "id": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"content": [
+				{ "type": "answer", "id": "5-ans" }
+			]
 		}
 	}
 }

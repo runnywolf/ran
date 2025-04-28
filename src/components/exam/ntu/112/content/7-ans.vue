@@ -26,6 +26,6 @@
 	而 <vl exp="M^{-1} + 2I" /> 的特徵值為 <vl exp="\lambda(M)^{-1} + 2" />：<br>
 	<vl c exp="\lambda(M^{-1} + 2I) = \{1, 1, 1\}" />
 	則 <vl exp="M^{-1} + 2I" /> 的行列式
-	<vl c exp="\text{det}(M^{-1} + 2I) = 1 \cdot 1 \cdot 1 = 1" />
+	<vl c exp="\det(M^{-1} + 2I) = 1 \cdot 1 \cdot 1 = 1" />
 	Ans: (B)
 </template>

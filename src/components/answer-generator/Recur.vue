@@ -276,8 +276,6 @@ class SolveRecur { // 解非齊次遞迴
 				Frac.sum(rawRecurCoef.map((frac_coef, i) => frac_coef.mul(recurAn[n-1-i]))).add(F(n))
 			);
 		}
-		
-		console.log(recurAn);
 	}
 	
 	mlCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
