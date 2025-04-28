@@ -2,7 +2,7 @@
 ![](https://img.shields.io/badge/Ran-v0.3.0-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v1-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://github.com/vuejs/core)
-[![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas/releases)
+[![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://tocas-ui.com/5.0/zh-tw/index.html)
 [![](https://img.shields.io/npm/v/vatex.svg?label=VaTex)](https://www.npmjs.com/package/vatex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <br>
