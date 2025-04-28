@@ -6,6 +6,9 @@
 一款用於準備資工所數學的網頁 App。<br>
 [Ran](https://runnywolf.github.io/ran/#/exam)
 
+> [!WARNING]  
+> 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
+
 # 功能
 
 歷屆試題頁面：
