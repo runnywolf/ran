@@ -15,5 +15,4 @@
 		&= 9
 		\end{split}
 	" />
-	Ans: 9
 </template>

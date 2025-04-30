@@ -43,9 +43,27 @@
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "\\text{ABE}",
 			"content": [
 				{ "type": "answer", "id": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "\\text{(A)} \\!\\begin{bmatrix} 2 & 0 & \\frac{2}{3} & 0 \\\\ 0 & \\frac{2}{3} & 0 & \\frac{2}{5} \\\\ \\frac{2}{3} & 0 & \\frac{2}{5} & 0 \\\\ 0 & \\frac{2}{5} & 0 & \\frac{2}{7} \\end{bmatrix}\\! \\quad \\text{(B)} ~ \\dfrac{20}{9}",
+			"content": [
+				{ "type": "answer", "id": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "(1-a^2)^n",
+			"content": [
+				{ "type": "answer", "id": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "2",
+			"content": [
+				{ "type": "answer", "id": "10-ans" }
 			]
 		}
 	}
