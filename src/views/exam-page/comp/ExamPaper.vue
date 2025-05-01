@@ -17,7 +17,7 @@
 					<Problem
 						:uni="uni" :year="year" :no="sectionId"
 						:problemConfig="examConfig.problem[sectionId]"
-						:contentType="isContentVisible ? 'link': undefined"
+						:displayMode="isContentVisible ? 'link': undefined"
 						isScoreVisible
 					></Problem>
 				</li>

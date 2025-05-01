@@ -25,7 +25,7 @@
 				<Problem v-if="examConfig.problem"
 					:uni="uni" :year="year" :no="no"
 					:problemConfig="examConfig.problem[no]"
-					contentType="content"
+					displayMode="content"
 				></Problem>
 			</div>
 		</template>
