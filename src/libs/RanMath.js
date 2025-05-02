@@ -21,12 +21,6 @@ export function getFactors(n) { // 回傳 n 的因數 array
 	return factors;
 }
 
-export function isPerfectSquare(n) { // 是不是完全平方數
-	if (n < 0) return false;
-	const sqrt_int = Math.floor(Math.sqrt(n));
-	return sqrt_int ** 2 == n;
-}
-
 export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
