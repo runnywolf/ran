@@ -28,7 +28,7 @@
 			<!-- 題本資訊的表格 -->
 			<div class="ts-content is-dense">
 				<ExamInfo
-					:uniShortName="config.uni[uni] ? config.uni[uni].shortName : undefined"
+					:uniShortName="config.uni[uni]?.shortName"
 					:year="year"
 					:subjectId="examConfig.id"
 					:subject="examConfig.subject"
@@ -96,7 +96,7 @@
 					:to="examConfig.link"
 					:tooltip="examConfig.linkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
 				>題本來源</RanLink>
-				<span v-else>來源未知</span>
+				<span v-else>未知的來源</span>
 			</div>
 			<div class="ts-divider"></div>
 			

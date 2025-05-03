@@ -14,7 +14,13 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		],
 		sidebar: [
 			{
-				text: "Practice Page",
+				text: "Exam Page (歷屆試題頁面)",
+				items: [
+					{ text: "如何新增題本", link: "/exam-page/create-exam" },
+				]
+			},
+			{
+				text: "Practice Page (模擬室頁面)",
 				items: [
 					{ text: "Recur.vue", link: "/practice-page/recur" },
 					{ text: "RecurNonHomog.vue", link: "/practice-page/recur-non-homog" },
