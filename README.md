@@ -27,4 +27,4 @@
 - [Vue Router](https://router.vuejs.org/) - 路由管理
 - [Pinia](https://pinia.vuejs.org/) - 全域變數
 - [VaTex](https://github.com/Shimada666/VaTex) - Vue3 可用的 katex 封裝
-- [Tocas UI](https://github.com/teacat/tocas) - 好用又好看的 CSS 模板
+- [Tocas UI](https://github.com/teacat/tocas) - 好用又好看的 CSS 框架
