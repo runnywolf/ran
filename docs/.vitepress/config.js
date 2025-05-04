@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-import markdownItKatex from "markdown-it-katex";
+import markdownItKatex from "markdown-it-katex"; // katex 語法支援
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
 	title: "Ran Docs",
@@ -14,19 +14,31 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		],
 		sidebar: [
 			{
-				text: "Exam Page (歷屆試題頁面)",
+				text: "Exam Page - 歷屆試題頁面",
 				items: [
 					{ text: "如何新增題本", link: "/exam-page/create-exam" },
 				]
 			},
 			{
-				text: "Practice Page (模擬室頁面)",
+				text: "Practice Page - 模擬室頁面",
 				items: [
-					{ text: "Recur.vue", link: "/practice-page/recur" },
-					{ text: "RecurNonHomog.vue", link: "/practice-page/recur-non-homog" },
-					{ text: "RecurNonHomogExp.vue", link: "/practice-page/recur-non-homog-exp" },
+					{ text: "Recur", link: "/practice-page/recur" },
+					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
+					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
 				]
-			}
+			},
+			{
+				text: "Components - 組件",
+				items: [
+					{ text: "Content - 內容區塊", link: "/components/content" },
+					{ text: "RanLink - 超連結", link: "" },
+					{ text: "MultiOption - 多選題", link: "" },
+					{ text: "Problem - 題目", link: "" },
+					{ text: "vl - 數學公式", link: "" },
+					{ text: "BodyLayout - 頁面布局", link: "" },
+					{ text: "Navbar - 導覽列", link: "" },
+				]
+			},
 		],
 		socialLinks: [
 			{ icon: "github", link: "https://github.com/runnywolf/ran" } // github link
