@@ -31,7 +31,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				text: "Components - 組件",
 				items: [
 					{ text: "Content - 內容區塊", link: "/components/content" },
-					{ text: "RanLink - 超連結", link: "" },
+					{ text: "RanLink - 超連結", link: "/components/ran-link" },
 					{ text: "MultiOption - 多選題", link: "" },
 					{ text: "Problem - 題目", link: "" },
 					{ text: "vl - 數學公式", link: "" },

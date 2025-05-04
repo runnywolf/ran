@@ -10,6 +10,10 @@ outline: [2, 3] # 顯示 h2, h3
 
 ## 範例
 ```html
+<Content>
+	預設為灰色系的外框和底色。
+</Content>
+
 <Content colorStyle="red">
 	紅色系的外框和底色，適合用在錯誤訊息。
 </Content>
@@ -20,10 +24,6 @@ outline: [2, 3] # 顯示 h2, h3
 
 <Content colorStyle="green" collapsed>
 	綠色系的外框和底色，寬度會隨著內容大小改變。
-</Content>
-
-<Content>
-	預設為灰色系的外框和底色。
 </Content>
 ```
 

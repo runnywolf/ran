@@ -26,7 +26,7 @@
 import { ref, watch } from "vue";
 
 const props = defineProps({
-	to: { type: String, default: "/" }, // 跳轉網址
+	to: { type: String, default: "#/" }, // 跳轉網址
 	tooltip: { type: String, default: null }, // 工具提示 (hover 會顯示的訊息)
 	newTab: { type: Boolean, default: false }, // 是否另開新分頁 (外部連結會強制另開新分頁)
 });
