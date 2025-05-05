@@ -6,7 +6,7 @@
 import { VueLatex } from "vatex";
 
 const props = defineProps({
-	exp: String, // latex 表達式
+	exp: { type: String, default: "?" }, // latex 表達式
 	c: { type: Boolean, default: false } // 是否置中
 });
 </script>

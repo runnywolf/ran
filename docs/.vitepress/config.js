@@ -10,7 +10,9 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "docs", link: "/practice-page/recur" }
+			{ text: "歷屆試題", link: "/exam-page/create-exam" },
+			{ text: "模擬室頁面", link: "/practice-page/recur" },
+			{ text: "組件", link: "/components/content" },
 		],
 		sidebar: [
 			{
@@ -32,11 +34,8 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				items: [
 					{ text: "Content - 內容區塊", link: "/components/content" },
 					{ text: "RanLink - 超連結", link: "/components/ran-link" },
-					{ text: "MultiOption - 多選題", link: "" },
-					{ text: "Problem - 題目", link: "" },
-					{ text: "vl - 數學公式", link: "" },
-					{ text: "BodyLayout - 頁面布局", link: "" },
-					{ text: "Navbar - 導覽列", link: "" },
+					{ text: "MultiOption - 多選題", link: "/components/multi-option" },
+					{ text: "vl - 數學公式", link: "/components/vl" },
 				]
 			},
 		],
