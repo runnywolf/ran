@@ -5,19 +5,19 @@
 		class="ts-content exam"
 		:style="{ filter: isProblemVisible ? 'none' : 'blur(10px)' } /* 模糊化題本 */"
 	>
-		<template v-for="(sectionId, i) in examConfig.section">
+		<template v-for="(s_sectionId, i) in examConfig.section"><!-- 生成題本的每一題 -->
 			
 			<!-- 題目 -->
-			<ol v-if="sectionId[0] !== '-'"
-				:style="{ 'padding-left': (11+9*sectionId.length)+'px' }"
-				:start="sectionId"
-				:id="`exam-paper-p${sectionId}`"
-			><!-- ol: 根據題目編號的長度修正 ol 的 padding-left -->
+			<ol v-if="s_sectionId[0] !== '-'"
+				:style="getOlStyle(s_sectionId)"
+				:start="s_sectionId"
+				:id="`exam-paper-p${s_sectionId}` /* 用於滾動至某一題 */"
+			>
 				<li class="problem-font-marker">
 					<Problem
-						:uni="uni" :year="year" :no="sectionId"
-						:problemConfig="examConfig.problem[sectionId]"
-						:contentType="isContentVisible ? 'link': undefined"
+						:uni="uni" :year="year" :no="s_sectionId"
+						:problemConfig="examConfig.problem[s_sectionId]"
+						:displayMode="isContentVisible ? 'link': undefined"
 						isScoreVisible
 					></Problem>
 				</li>
@@ -25,7 +25,7 @@
 			
 			<!-- 題本的說明區塊, 不是題目 -->
 			<div v-else>
-				<Problem :uni="uni" :year="year" :no="sectionId"></Problem><!-- 題號開頭若為 '-', 會隱藏題號, 且沒有解答 -->
+				<Problem :uni="uni" :year="year" :no="s_sectionId"></Problem><!-- 題號開頭若為 '-', 會隱藏題號, 且沒有解答 -->
 			</div>
 			
 			<!-- 題目間的分隔線 -->
@@ -42,7 +42,7 @@
 			
 			<!-- 題本年份 -->
 			<div class="ts-text is-huge is-bold">
-				{{ config.uni[uni] ? config.uni[uni].shortName : "-" }}&nbsp;&nbsp;{{ year }}
+				{{ config.uni[uni]?.shortName ?? "-" }}&nbsp;&nbsp;{{ year }}
 			</div>
 			
 			<!-- 考試建議 -->
@@ -79,23 +79,31 @@
 </template>
 
 <script setup>
+import { Hop } from "@/libs/RanMath"
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 import config from "@/components/exam/config.json"; // 保存所有題本資訊的設定檔
 
 const props = defineProps({
-	uni: String, // 學校英文縮寫
-	year: String, // 題本年份
-	examConfig: Object, // 題本資料
-	isContentVisible: Boolean, // 是否顯示題目之下的內容區塊 (例如答案)
-	isProblemVisible: Boolean, // 是否顯示題目
-	isExamOver: Boolean, // 考試是否結束
-	examTimeSec: Number, // 考試時間 (秒)
+	uni: { type: String }, // 學校英文縮寫
+	year: { type: String }, // 題本年份
+	examConfig: { type: Object }, // 題本資料
+	isContentVisible: { type: Boolean, default: false }, // 是否顯示題目之下的內容區塊 (例如答案)
+	isProblemVisible: { type: Boolean, default: true }, // 是否顯示題目
+	isExamOver: { type: Boolean, default: false }, // 考試是否結束
+	examTimeSec: { type: Number, default: 0 }, // 考試時間 (秒)
 });
 
 const emit = defineEmits([
-	"clickStartExam", // 按下開始作答的按鈕
-	"resetTimer" // 按下重新計時的按鈕
+	"clickStartExam", // 按下開始作答的按鈕會觸發
+	"resetTimer" // 按下重新計時的按鈕會觸發
 ]);
+
+const getOlStyle = (s_sectionId) => { // 獲取某一題的題號樣式 (ui 由 <ol> 顯示)
+	if (Hop.isPosInt(Number(s_sectionId))) { // 如果題號是整數, 顯示題號
+		return { "padding-left": `${11 + 9 * s_sectionId.length}px`, "list-style": "decimal" }; // 因為 ol 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
+	}
+	return { "padding-left": "0px", "list-style": "none" };	// 如果題號不是整數, 隱藏題號
+};
 </script>
 
 <style scoped>

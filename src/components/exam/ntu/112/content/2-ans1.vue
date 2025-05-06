@@ -8,8 +8,8 @@
 	<vl c exp="
 		\left\{
 		\begin{align*}
-			a_0 &= h_1 + h_2      &= A \\
-			a_1 &= -3 h_1 + 2 h_2 &= B
+		a_0 &= h_1 + h_2      &= A \\
+		a_1 &= -3 h_1 + 2 h_2 &= B
 		\end{align*}
 		\right.
 	" />
@@ -17,16 +17,16 @@
 	<vl c exp="
 		\left\{
 		\begin{align*}
-			h_1 &= \tfrac{1}{5} (2A-B) \\
-			h_2 &= \tfrac{1}{5} (3A+B)
+		h_1 &= \tfrac{1}{5} (2A-B) \\
+		h_2 &= \tfrac{1}{5} (3A+B)
 		\end{align*}
 		\right.
 	" />
 	將 <vl exp="h_1, h_2" /> 代回一般式：
 	<vl c exp="
 		\begin{split}
-			a_n &= \tfrac{1}{5} (2A-B) (-3)^n + \tfrac{1}{5} (3A+B) 2^n \\
-					&= \tfrac{1}{5} [ (-3)^n(2A-B) + 2^n(3A+B) ]
+		a_n &= \tfrac{1}{5} (2A-B) (-3)^n + \tfrac{1}{5} (3A+B) 2^n \\
+		&= \tfrac{1}{5} [ (-3)^n(2A-B) + 2^n(3A+B) ]
 		\end{split}
 	" />
 	Ans: (A)

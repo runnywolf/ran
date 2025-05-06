@@ -6,7 +6,7 @@ head:
       href: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css # katex 語法支援
 ---
 
-# RecurNonHomog.vue
+# RecurNonHomog
 > [!WARNING]
 > 這個組件是 [Recur.vue](./recur) 拆分出的子組件，你不應該單獨使用它。
 

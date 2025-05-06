@@ -17,9 +17,9 @@
 					<tbody>
 						<tr v-for="year in yearList">
 							<td v-for="uni in config.uniList">
-								<router-link v-if="yearSet[uni].has(year)" :to="`/exam/${uni}-${year}`" class="hyperlink">
+								<RanLink v-if="yearSet[uni].has(year)" :to="`#/exam/${uni}-${year}`">
 									{{ config.uni[uni].shortName }}&nbsp;{{ year }}
-								</router-link>
+								</RanLink>
 								<span v-else>&nbsp;</span><!-- 防止整個 row 都沒有 link 而塌陷 -->
 							</td>
 						</tr>

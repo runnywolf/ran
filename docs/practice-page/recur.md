@@ -6,7 +6,7 @@ head:
       href: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css # katex 語法支援
 ---
 
-# Recur.vue
+# Recur
 齊次 / 非齊次遞迴解答生成器
 
 用於解以下形式的遞迴：( 最高支援三階遞迴 )

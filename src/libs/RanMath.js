@@ -1,9 +1,5 @@
 import { removePrefix, removePostfix } from "./StringTool";
 
-// isNatural -> isN
-// Hop.isInt -> isZ
-// isZP ->
-
 export function gcd(a, b) { // 最大公因數
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
@@ -25,18 +21,16 @@ export function getFactors(n) { // 回傳 n 的因數 array
 	return factors;
 }
 
-export function isPerfectSquare(n) { // 是不是完全平方數
-	if (n < 0) return false;
-	const sqrt_int = Math.floor(Math.sqrt(n));
-	return sqrt_int ** 2 == n;
-}
-
-export function isNatural(n) { // n 是否是自然數
-	return Number.isInteger(n) && n >= 0;
-}
-
 export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function isNum(n) { // 是否為數字
+	return typeof n === "number";
+}
+
+export function isInt(n) { // 是否為整數
+	return Number.isInteger(n);
 }
 
 export class Prime { // 質數
@@ -95,7 +89,7 @@ export class Frac { // 分數
 	}
 	
 	constructor(n = 0, d = 1) {
-		if (typeof n !== "number" || typeof d !== "number") { // 參數不為數字
+		if (!isNum(n) || !isNum(d)) { // 參數不為數字
 			throwErr("Frac.constructor", "n & d must be Number.");
 			n = 0; d = 1;
 		}
@@ -130,23 +124,26 @@ export class Frac { // 分數
 		if (this.isInt()) return `${this.n}`;
 		return `${this.n}/${this.d}`;
 	}
+	
 	toLatex() { // 轉為 latex 字串
 		if (this.isInt()) return `${this.n}`;
 		return `\\frac{${this.n}}{${this.d}}`;
 	}
+	
 	toFloat() { // 轉為浮點數
 		return this.n / this.d;
 	}
 	
 	isZero() { // 是否為 0
-		return this.n == 0;
+		return this.n === 0;
 	}
+	
 	isInt() { // 是否是整數
-		return this.d == 1
+		return this.d === 1;
 	}
 	
 	_makeOp(fn, opName, op) { // 批量製作算子
-		if (Hop.isInt(fn)) fn = new Frac(fn); // 將 int 轉為 Frac
+		if (isInt(fn)) fn = new Frac(fn); // 將 int 轉為 Frac
 		
 		if (!Frac.isFrac(fn)) { // 如果參數不是 Frac / int, 回傳 null
 			throwErr(`Frac.${opName}`, "Param is not a Frac / int.");
@@ -185,7 +182,7 @@ export class Frac { // 分數
 	}
 	
 	pow(i) { // 整數次方
-		if (!Hop.isInt(i)) {
+		if (!isInt(i)) {
 			throwErr("Frac.pow", "Power must be an int.");
 			return null;
 		}
@@ -200,66 +197,89 @@ export class Frac { // 分數
 	}
 	
 	lt(frac) { // 小於: this < frac
-		return this.n * frac.d < this.d * frac.n;
+		return this._makeOp(frac, "lt", (frac1, frac2) => frac1.n * frac2.d < frac1.d * frac2.n);
 	}
 }
 
 export class Hop { // Frac 和 number (int, float) 混合運算
-	static isNum(fn) { // 是否為數字
-		return typeof fn === "number";
+	static ops(fn, fracOp, numOp, undefinedReturn = NaN) { // 定義 Frac 和 number 的混合算子 (單參數)
+		if (isInt(fn)) fn = new Frac(fn); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (Frac.isFrac(fn)) return fracOp(fn); // Frac 用分數運算
+		if (isNum(fn)) return numOp(fn); // 目前只剩 float, other ; 所以 number 必為 float
+		return undefinedReturn; // other (未定義)
 	}
 	
-	static isInt(fn) { // 是否為整數
-		return Number.isInteger(fn); // ??? 根本不支援 frac
-	}
-	
-	static op(fn1, fn2, fracOp, numOp) { // 定義 Frac 和 number 的混合算子
-		if (Hop.isInt(fn1)) fn1 = new Frac(fn1); // int -> Frac, 這樣只需處理 Frac, float, other
-		if (Hop.isInt(fn2)) fn2 = new Frac(fn2);
+	static op(fn1, fn2, fracOp, numOp, undefinedReturn = NaN) { // 定義 Frac 和 number 的混合算子 (雙參數)
+		if (isInt(fn1)) fn1 = new Frac(fn1); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (isInt(fn2)) fn2 = new Frac(fn2);
 		if (Frac.isFrac(fn1) && Frac.isFrac(fn2)) return fracOp(fn1, fn2); // 必須兩個數都為 Frac 才可以進行分數運算
 		
 		if (Frac.isFrac(fn1)) fn1 = fn1.toFloat(); // 如果其中一個數為 number, 降級為 number 運算, 目前只剩 float, other
 		if (Frac.isFrac(fn2)) fn2 = fn2.toFloat();
-		if (Hop.isNum(fn1) && Hop.isNum(fn2)) return numOp(fn1, fn2);
-		return NaN;
+		if (isNum(fn1) && isNum(fn2)) return numOp(fn1, fn2);
+		return undefinedReturn; // other (未定義)
 	}
 	
-	static toStr(fn) { // 轉 debug 字串
-		return Hop.op(fn, 0, fn => fn.toStr(), fn => fn.toFixed(4));
+	static toStr(fn, p = 4) { // 轉 debug 字串. 如果 fn 不是 Frac/number 會回傳 "?"
+		return Hop.ops(fn, frac => frac.toStr(), n => n.toFixed(p), "?"); // debug 字串
 	}
 	
-	static toLatex(fn) { // 轉 latex 語法
-		return Hop.op(fn, 0, fn => fn.toLatex(), fn => fn.toFixed(4));
+	static toLatex(fn, p = 4) { // 轉 latex 語法. 如果 fn 不是 Frac/number 會回傳 "?"
+		return Hop.ops(fn, frac => frac.toLatex(), n => n.toFixed(p), "?");
+	}
+	
+	// 對於 isNatural, isPosInt, isInt, isRational :
+	// 若 fn 為 int number, 會自動轉為 Frac
+	// 若 fn 為 number 且沒有被轉為 Frac
+	// => fn 為 float number (op 回傳 numOp(fn))
+	// => fn 不是整數
+	// => fn 必不為 isNatural, isPosInt, isInt, isRational
+	// 因此以下四個 func 的 numOp 都回傳 false
+	
+	static isPosInt(fn) { // 是否為正整數 1, 2, ... (Z+). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => frac.isInt() && new Frac(0).lt(frac), n => false, false); // int & (0 < n)
+	}
+	
+	static isNatural(fn) { // 是否為自然數 0, 1, 2, ... (N). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => frac.isInt() && !(frac.lt(0)), n => false, false); // !(n < 0) = (n >= 0) = (0 <= n)
+	}
+	
+	static isInt(fn) { // 是否為整數 (Z). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => frac.isInt(), n => false, false);
+	}
+	
+	static isRational(fn) { // 是否為有理數 (Q). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => true, n => false, false); // int number 會自動轉為 Frac, 而 Frac 必為有理數. (不考慮浮點有理數)
 	}
 	
 	static add(fn1, fn2) { // 加法
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.add(fn2), (fn1, fn2) => fn1 + fn2);
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.add(frac2), (n1, n2) => n1 + n2);
 	}
 	
 	static sub(fn1, fn2) { // 加法
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.sub(fn2), (fn1, fn2) => fn1 - fn2);
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.sub(frac2), (n1, n2) => n1 - n2);
 	}
 	
 	static mul(fn1, fn2) { // 乘法
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.mul(fn2), (fn1, fn2) => fn1 * fn2);
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.mul(frac2), (n1, n2) => n1 * n2);
 	}
 	
 	static div(fn1, fn2) { // 除法
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.div(fn2), (fn1, fn2) => fn1 / fn2);
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.div(frac2), (n1, n2) => n1 / n2);
 	}
 	
 	static pow(fn1, fn2) { // 次方: fn1 ** fn2
 		if (Frac.isFrac(fn2)) fn2 = fn2.toFloat(); // 次方轉 int or float
-		if (Frac.isFrac(fn1) && Hop.isInt(fn2)) return fn1.pow(fn2); // 整數次方
-		return fn1 ** fn2; // float
+		if (Frac.isFrac(fn1) && isInt(fn2)) return fn1.pow(fn2); // 整數次方
+		return fn1 ** fn2; // 浮點次方
 	}
 	
-	static equal(fn1, fn2) { // 等於
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.equal(fn2), (fn1, fn2) => fn1 === fn2);
+	static equal(fn1, fn2) { // 等於. 如果 fn1, fn2 其中一個不是數字會回傳 false
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
 	}
 	
-	static lt(fn1, fn2) { // 小於
-		return Hop.op(fn1, fn2, (fn1, fn2) => fn1.lt(fn2), (fn1, fn2) => fn1 < fn2);
+	static lt(fn1, fn2) { // 小於. 如果 fn1, fn2 其中一個不是數字會回傳 false
+		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
 	}
 }
 
@@ -269,15 +289,15 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 	
 	constructor(fn_a = 0, fn_b = 0, fn_s = 0) {
-		if (!Frac.isFrac(fn_a) && !Hop.isNum(fn_a)) { // 參數必須為 Frac 或 number
+		if (!Frac.isFrac(fn_a) && !isNum(fn_a)) { // 參數必須為 Frac 或 number
 			throwErr("EF.constructor", "fn_a is not Frac or number.");
 			fn_a = new Frac(0);
 		}
-		if (!Frac.isFrac(fn_b) && !Hop.isNum(fn_b)) {
+		if (!Frac.isFrac(fn_b) && !isNum(fn_b)) {
 			throwErr("EF.constructor", "fn_b is not Frac or number.");
 			fn_b = new Frac(0);
 		}
-		if (!Frac.isFrac(fn_s) && !Hop.isNum(fn_s)) {
+		if (!Frac.isFrac(fn_s) && !isNum(fn_s)) {
 			throwErr("EF.constructor", "fn_s is not Frac or number.");
 			fn_s = new Frac(0);
 		}
@@ -289,9 +309,9 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 	
 	std() { // 標準化, 待優化
-		if (Hop.isInt(this.a)) this.a = new Frac(this.a);
-		if (Hop.isInt(this.b)) this.b = new Frac(this.b);
-		if (Hop.isInt(this.s)) this.s = new Frac(this.s); // 執行此步後 a, b, s 只剩 Frac 和 number (float)
+		if (isInt(this.a)) this.a = new Frac(this.a);
+		if (isInt(this.b)) this.b = new Frac(this.b);
+		if (isInt(this.s)) this.s = new Frac(this.s); // 執行此步後 a, b, s 只剩 Frac 和 number (float)
 		
 		if (Frac.isFrac(this.a) && Frac.isFrac(this.b) && Frac.isFrac(this.s)) { // 化簡根號
 			this.b = Hop.div(this.b, this.s.d); // a + b√(n/d) -> a + (b/d)√(nd)
@@ -353,7 +373,7 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 	
 	_makeOp(ef, opName, op, err = true) { // 批量製作算子, 因為重複的部分太多了
-		if (Frac.isFrac(ef) || Hop.isNum(ef)) ef = new EF(ef); // 將 Frac 和 number 轉為 EF
+		if (Frac.isFrac(ef) || isNum(ef)) ef = new EF(ef); // 將 Frac 和 number 轉為 EF
 		
 		if (!EF.isEF(ef)) { // 如果參數不是 EF / Frac / number, 回傳 null
 			if (err) throwErr(`EF.${opName}`, "Param ef is not a EF / Frac / number.");
@@ -415,7 +435,7 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 	
 	pow(i) { // 整數次方: (a + b√s)^i
-		if (!Hop.isInt(i)) {
+		if (!isInt(i)) {
 			throwErr("EF.pow", "Power must be an int.");
 			return null;
 		}
@@ -450,7 +470,7 @@ export class Matrix { // 矩陣
 				return false;
 			}
 			for (const [j, Aij] of rowI.entries()) {
-				if (!Frac.isFrac(Aij) && typeof Aij !== "number") {
+				if (!Frac.isFrac(Aij) && !isNum(Aij)) {
 					if (err) throwErr("Matrix.isMatrix", `Element arr[${i}][${j}] = ${Aij} is not a number.`);
 					return false;
 				}

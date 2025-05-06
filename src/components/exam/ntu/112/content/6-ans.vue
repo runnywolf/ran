@@ -32,20 +32,20 @@
 	根據 <vl exp="A^n x = \lambda^n x" />：
 	<vl c exp="
 		\begin{split}
-			A^n x &= A^n (x_1 + x_2) \\
-				&= A^n x_1 + A^n x_2 \\
-				&= \lambda_1^n x_1 + \lambda_2^n x_2 \\
-				&= 1^n x_1 + (\tfrac{1}{5})^n x_2
+		A^n x &= A^n (x_1 + x_2) \\
+		&= A^n x_1 + A^n x_2 \\
+		&= \lambda_1^n x_1 + \lambda_2^n x_2 \\
+		&= 1^n x_1 + (\tfrac{1}{5})^n x_2
 		\end{split}
 	" />
 	求極限：
 	<vl c exp="
 		\begin{split}
-			\lim\limits_{n \to \infty} A^n x &= \lim\limits_{n \to \infty} (x_1 + (\tfrac{1}{5})^n x_2) \\
-				&= x_1 + \lim\limits_{n \to \infty} (\tfrac{1}{5})^n x_2 \\
-				&= x_1 + 0 x_2 \\
-				&= x_1 \\
-				&= \!\begin{bmatrix} 1 \\ 1 \end{bmatrix}\! = \!\begin{bmatrix} a \\ b \end{bmatrix}\!
+		\lim\limits_{n \to \infty} A^n x &= \lim\limits_{n \to \infty} (x_1 + (\tfrac{1}{5})^n x_2) \\
+		&= x_1 + \lim\limits_{n \to \infty} (\tfrac{1}{5})^n x_2 \\
+		&= x_1 + 0 x_2 \\
+		&= x_1 \\
+		&= \!\begin{bmatrix} 1 \\ 1 \end{bmatrix}\! = \!\begin{bmatrix} a \\ b \end{bmatrix}\!
 		\end{split}
 	" />
 	<vl exp="2a + b = 3" /><br>

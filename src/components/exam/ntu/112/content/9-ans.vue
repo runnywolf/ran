@@ -3,9 +3,9 @@
 	<vl exp="1 + 2 + \cdots + (n-1)" />：
 	<vl c exp="
 		\begin{split}
-			d_S &= n^2 - \sum\limits_{i=1}^{n-1} i \\
-					&= n^2 - \frac{n(n-1)}{2} \\
-					&= \frac{n(n+1)}{2}
+		d_S &= n^2 - \sum\limits_{i=1}^{n-1} i \\
+		&= n^2 - \frac{n(n-1)}{2} \\
+		&= \frac{n(n+1)}{2}
 		\end{split}
 	" />
 	<br>
@@ -38,9 +38,9 @@
 	並且 <vl exp="n" /> 個兩兩正交的向量需要單範化才能形成正交矩陣，自由度會減少 <vl exp="n" />：
 	<vl c exp="
 		\begin{split}
-			d_Q &= \sum\limits_{i=1}^{n} i - n \\
-					&= \frac{n(n+1)}{2} - n \\
-					&= \frac{n(n-1)}{2}
+		d_Q &= \sum\limits_{i=1}^{n} i - n \\
+		&= \frac{n(n+1)}{2} - n \\
+		&= \frac{n(n-1)}{2}
 		\end{split}
 	" />
 	計算答案的值：

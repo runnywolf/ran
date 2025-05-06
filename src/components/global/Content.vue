@@ -21,7 +21,7 @@ const style = {
 const props = defineProps({
 	borderColor: { type: String, default: "#aaa" }, // 邊框顏色, 預設為灰色
 	bgColor: { type: String, default: "#eee" }, // 背景顏色, 預設為淺灰色
-	colorStyle: { type: String, default: "gray" }, // 顏色風格
+	colorStyle: { type: String, default: null }, // 顏色風格
 	collapsed: { type: Boolean, default: false }, // 若啟用, 內容區塊不會自動水平延伸
 });
 

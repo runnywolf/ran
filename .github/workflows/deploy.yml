@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - main # push main branch 會觸發部署
 
 jobs:
   build:
@@ -16,33 +16,25 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        uses: npm ci
 
-      - name: Build project
+      - name: Build Vite site
         run: npm run build
+      
+      - name: Build VitePress docs
+        run: npm run docs:build
+      
+      - name: Copy docs to dist/docs
+        run: |
+          mkdir -p dist/docs
+          cp -r docs/.vitepress/dist/* dist/docs/
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-files
-          path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy both to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

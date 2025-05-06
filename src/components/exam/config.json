@@ -1,12 +1,12 @@
 {
-	"uniList": [ "ntu", "nctu" ],
+	"uniList": [ "ntu", "nycu" ],
 	"uni": {
 		"ntu": {
 			"name": "國立臺灣大學",
 			"shortName": "台大",
 			"yearList": [ "114", "112" ]
 		},
-		"nctu": {
+		"nycu": {
 			"name": "國立陽明交通大學",
 			"shortName": "交大",
 			"yearList": []

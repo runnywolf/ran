@@ -7,14 +7,13 @@
 			<!-- 題本的連結 -->
 			<div class="ts-content is-dense">
 				<span class="ts-icon is-reply-icon is-end-spaced"></span>
-				<router-link
-					class="hyperlink"
-					:to="{ path: `/exam/${uni}-${year}`}"
-					@click="() => { globalVar.examScrollProbNo = no; }"
+				<RanLink
+					:to="`#/exam/${uni}-${year}`"
+					@click="() => { globalVar.examScrollProbNo = no; /* 紀錄欲滾動至的題目編號 */ }"
 				>
-					<span>&nbsp;{{ config.uni[uni] ? config.uni[uni].shortName : "" }}</span>
+					<span>&nbsp;{{ config.uni[uni]?.shortName ?? "" }}</span>
 					<span>&nbsp;{{ year ?? "" }}</span>
-				</router-link>
+				</RanLink>
 			</div>
 			
 		</template>
@@ -25,7 +24,7 @@
 				<Problem v-if="examConfig.problem"
 					:uni="uni" :year="year" :no="no"
 					:problemConfig="examConfig.problem[no]"
-					contentType="content"
+					displayMode="content"
 				></Problem>
 			</div>
 		</template>

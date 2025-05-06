@@ -7,7 +7,7 @@
 			<!-- "回題本選單" 的連結 -->
 			<div class="ts-content is-dense">
 				<span class="ts-icon is-reply-icon is-end-spaced"></span>
-				<router-link to="/exam" class="hyperlink">&nbsp;回題本選單</router-link>
+				<RanLink to="#/exam">&nbsp;回題本選單</RanLink>
 			</div>
 			<div class="ts-divider"></div>
 			
@@ -28,7 +28,7 @@
 			<!-- 題本資訊的表格 -->
 			<div class="ts-content is-dense">
 				<ExamInfo
-					:uniShortName="config.uni[uni] ? config.uni[uni].shortName : undefined"
+					:uniShortName="config.uni[uni]?.shortName"
 					:year="year"
 					:subjectId="examConfig.id"
 					:subject="examConfig.subject"
@@ -92,13 +92,11 @@
 			<!-- 題本來源的超連結 -->
 			<div class="ts-content is-dense">
 				<span class="ts-icon is-link-icon is-end-spaced"></span>
-				<a v-if="examConfig.link"
-					class="hyperlink"
-					:href="examConfig.link"
-					:data-tooltip="examConfig.linkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
-					target="_blank"
-				>題本來源</a>
-				<span v-else>來源未知</span>
+				<RanLink v-if="examConfig.link"
+					:to="examConfig.link"
+					:tooltip="examConfig.linkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
+				>題本來源</RanLink>
+				<span v-else>未知的來源</span>
 			</div>
 			<div class="ts-divider"></div>
 			

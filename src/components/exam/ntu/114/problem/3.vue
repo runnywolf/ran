@@ -7,5 +7,5 @@
 	to
 	<vl exp="\{ 1, 2, 3, 4, 5 \}" />.
 	Calculate
-	<vl exp="N \!\! \mod 13" />: _______
+	<vl exp="N ~\text{mod}~ 13" />: _______
 </template>
