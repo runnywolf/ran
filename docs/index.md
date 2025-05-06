@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Ran Docs"
-  tagline: 好懶得寫文檔喔
+  tagline: 好懶得寫文檔喔...
   actions:
     - theme: brand
       text: "新增題本"
