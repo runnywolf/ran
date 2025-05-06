@@ -2,7 +2,7 @@ name: Deploy
 
 on: # push main branch 會觸發部署
   push:
-    branches: [ "main" ]
+    branches: main
 
 permissions:
   contents: read
@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -36,6 +36,9 @@ jobs:
       
       - name: Build Vite site
         run: npm run build
+      
+      - name: Build VitePress docs
+        run: npm run docs:build
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
