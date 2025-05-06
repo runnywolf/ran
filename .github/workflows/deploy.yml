@@ -21,7 +21,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        uses: npm ci
+        run: npm ci
 
       - name: Build Vite site
         run: npm run build
