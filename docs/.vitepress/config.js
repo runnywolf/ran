@@ -2,6 +2,7 @@ import { defineConfig } from "vitepress";
 import markdownItKatex from "markdown-it-katex"; // katex 語法支援
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
+	base: "/docs/",
 	title: "Ran Docs",
 	description: "-",
 	markdown: {
@@ -24,7 +25,6 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			{
 				text: "Practice Page - 模擬室頁面",
 				items: [
-					{ text: "Recur", link: "/practice-page/recur" },
 					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
 					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
 				]
