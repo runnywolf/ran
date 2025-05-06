@@ -3,6 +3,8 @@ import markdownItKatex from "markdown-it-katex"; // katex 語法支援
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
 	base: "/docs/",
+	cleanUrls: true,
+	
 	title: "Ran Docs",
 	description: "-",
 	markdown: {
