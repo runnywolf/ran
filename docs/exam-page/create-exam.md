@@ -184,10 +184,10 @@ src/
 介紹幾個在 Ran 內部封裝的全域 Vue 組件：
 | 組件 ( link 待補 ) | 說明 |
 | :- | :- |
-| [`vl`]() | 顯示 LaTex 語法 |
-| [`MultiOption`]() | 多選題的折疊選項 |
-| [`Content`]() | 顏色背景的 UI 區塊 |
-| [`RanLink`]() | 超連結 |
+| [`vl`](../components/vl) | 顯示 LaTex 語法 |
+| [`MultiOption`](../components/multi-option) | 多選題的折疊選項 |
+| [`Content`](../components/content) | 顏色背景的 UI 區塊 |
+| [`RanLink`](../components/ran-link) | 超連結 |
 
 Ran 使用的 UI 框架：[Tocas UI](https://tocas-ui.com/5.0/zh-tw/)
 
