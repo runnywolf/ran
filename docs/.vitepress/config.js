@@ -3,7 +3,7 @@ import markdownItKatex from "markdown-it-katex"; // katex 語法支援
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
 	base: "/ran/docs/", // 文檔路徑位於 /ran/docs/
-	cleanUrls: true, // 跳轉到某個頁面時, 不要在網址尾端加上 .html (這會導致 404)
+	cleanUrls: true, // 跳轉到某個頁面時, 不要在網址尾端加上 .html (有點醜)
 	
 	title: "Ran Docs", // 網頁分頁籤的標題
 	description: "-",
@@ -14,7 +14,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		nav: [
 			{ text: "首頁", link: "/" },
 			{ text: "歷屆試題", link: "/exam-page/create-exam" },
-			{ text: "模擬室頁面", link: "/practice-page/recur" },
+			{ text: "模擬室頁面", link: "/practice-page/recur-non-homog" },
 			{ text: "組件", link: "/components/content" },
 		],
 		sidebar: [
