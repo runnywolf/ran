@@ -1,13 +1,15 @@
-# Ran 0.3
-![](https://img.shields.io/badge/Ran-v0.3.0-55f?style=flat)
-![](https://img.shields.io/badge/RanMath.js-v1-55f?style=flat)
+# Ran 0.3.1
+![](https://img.shields.io/badge/Ran-v0.3.1-55f?style=flat)
+![](https://img.shields.io/badge/RanMath.js-v1.1-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://github.com/vuejs/core)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://tocas-ui.com/5.0/zh-tw/index.html)
 [![](https://img.shields.io/npm/v/vatex.svg?label=VaTex)](https://www.npmjs.com/package/vatex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-<br>
-一款用於準備資工所數學的網頁 App。<br>
-開始使用 → [Ran](https://runnywolf.github.io/ran/#/exam)
+
+一款用於準備資工所數學的網頁 App。
+
+開始使用 → [Ran](https://runnywolf.github.io/ran/#/exam)<br>
+文檔 → [Ran Docs](https://runnywolf.github.io/ran/docs/exam-page/create-exam)
 
 > [!WARNING]  
 > 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
@@ -26,5 +28,5 @@
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
 - [Vue Router](https://router.vuejs.org/) - 路由管理
 - [Pinia](https://pinia.vuejs.org/) - 全域變數
-- [VaTex](https://github.com/Shimada666/VaTex) - Vue3 可用的 katex 封裝
+- [VaTex](https://github.com/Shimada666/VaTex) - Vue3 可用的 KaTex 封裝
 - [Tocas UI](https://github.com/teacat/tocas) - 好用又好看的 CSS 框架
