@@ -40,10 +40,10 @@ jobs:
       - name: Build VitePress docs
         run: npm run docs:build
       
-      - name: Copy docs to ./dist/docs
+      - name: Move docs to ./dist/docs
         run: |
           mkdir -p dist/docs
-          cp -r docs/.vitepress/dist/* dist/docs/
+          mv docs/.vitepress/dist/* dist/docs/
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
