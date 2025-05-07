@@ -10,15 +10,16 @@ export function lcm(a, b) { // 最小公倍數
 	return a / gcd(a, b) * b;
 }
 
-export function getFactors(n) { // 回傳 n 的因數 array
+export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 	n = Math.abs(n); // 取絕對值
-	let factors = []; // n 的因數
+	
+	let factors1 = []; // n 的因數 ( <= √n )
+	let factors2 = []; // n 的因數 ( > √n )
 	for (let i = 1; i*i <= n; i++) if (n % i === 0) {
-		factors.push(i);
-		if (i*i != n) factors.push(n / i);
+		factors1.push(i);
+		if (i*i != n) factors2.unshift(n / i);
 	}
-	factors.sort((a, b) => a-b); // 升序排列後回傳
-	return factors;
+	return [...factors1, ...factors2];
 }
 
 export function getRandomInt(min, max) { // 隨機整數

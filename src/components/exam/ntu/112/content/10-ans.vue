@@ -100,7 +100,7 @@
 				&= V D^{-1/2} V^{-1}
 				\end{split}
 			" />
-			<vl exp="\Rightarrow~ U" /> 可逆<br>
+			<vl exp="\Rightarrow ~ U" /> 可逆<br>
 			<vl exp="\Rightarrow ~ U" /> 為非奇異矩陣<br>
 			<br>
 			綜上所述，若 <vl exp="A" /> 正定，則存在非奇異矩陣 <vl exp="U = V D^{1/2} V^{-1}" /> 滿足 <vl exp="A = U^2" />。
