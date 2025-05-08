@@ -1,13 +1,22 @@
 import { removePrefix, removePostfix } from "./StringTool";
 
-export function gcd(a, b) { // 最大公因數
+export function isNum(n) { // 是否為數字
+	return typeof n === "number";
+}
+
+export function isInt(n) { // 是否為整數
+	return Number.isInteger(n);
+}
+
+export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
 	return a;
 }
 
-export function lcm(a, b) { // 最小公倍數
-	return a / gcd(a, b) * b;
+export function lcm(a, b) { // 最小公倍數; lcm(0, 0) = 0
+	if (a === 0 || b === 0) return 0;
+	return Math.abs(a * b) / gcd(a, b);
 }
 
 export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
@@ -24,14 +33,6 @@ export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 
 export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function isNum(n) { // 是否為數字
-	return typeof n === "number";
-}
-
-export function isInt(n) { // 是否為整數
-	return Number.isInteger(n);
 }
 
 export class Prime { // 質數
@@ -60,7 +61,7 @@ export class Frac { // 分數
 		if (typeof str !== "string") return new Frac(0); // 若 str 不是字串, 回傳 0
 		
 		const arrayFrac = str.split("/");
-		for (const i of arrayFrac) if (!isStrInt(i)) return new Frac(0); // 若某個部份不是整數, 回傳 0
+		for (const i of arrayFrac) if (!isInt(Number(i))) return new Frac(0); // 若某個部份不是整數, 回傳 0
 		
 		if (arrayFrac.length == 1) { // 輸入整數
 			return new Frac(Number(arrayFrac[0]));
@@ -844,7 +845,7 @@ function throwErr(method, message) {
 	console.error(`[RanMath][${method}] ${message}`);
 }
 
-export function isStrInt(str) { // 某個字串是否為整數
+export function isStrInt(str) { // [棄用] 某個字串是否為整數
 	return /^-?\d+$/.test(str);
 }
 

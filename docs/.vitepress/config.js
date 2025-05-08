@@ -40,6 +40,13 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "vl - 數學公式", link: "/components/vl" },
 				]
 			},
+			{
+				text: "RanMath.js",
+				items: [
+					{ text: "介紹", link: "/ran-math/intro" },
+					{ text: "簡單數學運算", link: "/ran-math/simple-method" },
+				]
+			},
 		],
 		socialLinks: [
 			{ icon: "github", link: "https://github.com/runnywolf/ran" } // github link

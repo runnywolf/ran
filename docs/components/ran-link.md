@@ -44,6 +44,6 @@ Ran 自訂的超連結，快速又簡潔的跳轉至 Ran 內部或外部連結�
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `to` | `String` | `#/` | 要跳轉的網址，預設為 Ran 的首頁 |
-| `tooltip` | `String` | `null` | 工具提示<br>當滑鼠移動到超連結上時會顯示提示訊息 |
+| `to` | `string` | `#/` | 要跳轉的網址，預設為 Ran 的首頁 |
+| `tooltip` | `string` | `null` | 工具提示<br>當滑鼠移動到超連結上時會顯示提示訊息 |
 | `newTab` | `Boolean` | `false` | 是否另開新分頁 ( 外部連結會強制另開新分頁 ) |

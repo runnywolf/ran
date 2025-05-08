@@ -5,7 +5,5 @@
 </template>
 
 <script setup>
-import { _getFactors } from "@/libs/RanMath";
-
-console.log(_getFactors(16))
+console.log(typeof (Number("a23")))
 </script>

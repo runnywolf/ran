@@ -32,5 +32,5 @@ $$\langle f, g \rangle = \int_{-1}^{1} f(x) g(x) dx$$
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `exp` | `String` | `?` | LaTex 數學式 |
+| `exp` | `string` | `?` | LaTex 數學式 |
 | `c` | `Boolean` | `false` | 將數學式置中 |

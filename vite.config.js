@@ -2,9 +2,16 @@ import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 
 export default defineConfig({
-	base: "/ran/",
-  plugins: [vue()],
+	base: "/ran/", // ran 的路徑
+	plugins: [vue()],
 	resolve: {
-    alias: {"@": "/src"}
-  },
+		alias: {"@": "/src"} // @ 的相對路徑
+	},
+	test: { // 測試: npx vitest run --coverage
+		include: [ "src/tests/**/*.test.js" ], // 執行這些測試文件 (*.test.js)
+		coverage: { // 使用 v8 做覆蓋率測試
+			all: false, // 不顯示未執行的檔案
+			reporter: [ "text", "html" ], // result web: start coverage/lcov-report/index.html
+		},
+	},
 })
