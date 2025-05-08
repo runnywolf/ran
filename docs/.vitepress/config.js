@@ -16,6 +16,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			{ text: "歷屆試題", link: "/exam-page/create-exam" },
 			{ text: "模擬室頁面", link: "/practice-page/recur-non-homog" },
 			{ text: "組件", link: "/components/content" },
+			{ text: "RanMath", link: "/ran-math/intro" },
 		],
 		sidebar: [
 			{
@@ -45,6 +46,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				items: [
 					{ text: "介紹", link: "/ran-math/intro" },
 					{ text: "簡單數學運算", link: "/ran-math/simple-method" },
+					{ text: "Prime - 質數", link: "/ran-math/prime" },
 				]
 			},
 		],

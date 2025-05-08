@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { gcd } from "@/libs/RanMath";
+import { gcd } from "RanMath";
 
 const testArr = [
 	{ text: "gcd(0, 0)", input: [0, 0], output: 0 },

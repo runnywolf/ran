@@ -35,6 +35,14 @@ export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回傳 k
+	n = Math.abs(n); // 將負數 n 轉正
+	for (let i = Math.floor(Math.sqrt(n)); i >= 1; i--) {
+		if (n % (i*i) === 0) return i;
+	}
+	return 1; // 若 n = 0, 回傳 1
+}
+
 export class Prime { // 質數
 	static prime = [2];
 	
@@ -319,12 +327,9 @@ export class EF { // 擴張體運算 (a + b√s)
 			this.b = Hop.div(this.b, this.s.d); // a + b√(n/d) -> a + (b/d)√(nd)
 			this.s = Hop.mul(this.s.n, this.s.d);
 			
-			for (let i = 0, p = 2; p*p <= Math.abs(this.s.n); p = Prime.getNth(++i)) { // 將根號內的平方數提出
-				while (this.s.n % (p*p) === 0) {
-					this.s = Hop.div(this.s, p*p); // s 除 p*p
-					this.b = Hop.mul(this.b, p); // b 乘 p
-				}
-			}
+			const k = getSquareFactor(this.s); // 將 √s 內的 s 提出 k^2
+			this.s = Hop.div(this.s, k*k); // s 除 k^2
+			this.b = Hop.mul(this.b, k); // b 乘 k
 		} else { // 其中一個參數為 float, a + b√s = a + b*√|s| √(s/|s|)
 			if (Frac.isFrac(this.a)) this.a = this.a.toFloat();
 			if (Frac.isFrac(this.b)) this.b = this.b.toFloat();
@@ -634,12 +639,9 @@ export class SolveQuad { // 解二次方程式
 	}
 	
 	std() { // 標準化
-		for (let i = 0, p = 2; p*p <= Math.abs(this.s); p = Prime.getNth(++i)) { // 將根號內的平方數提出
-			while (this.s % (p*p) === 0) {
-				this.s /= p*p;
-				this.m *= p;
-			}
-		}
+		const k = getSquareFactor(this.s); // 將 m√s 內的 s 提出 k^2
+		this.s /= k*k; // s 除 k^2
+		this.m *= k; // m 乘 k
 		
 		const nmd_gcd = gcd(this.n, gcd(this.m, this.d)); // 對 n, m, d 做約分
 		this.n /= nmd_gcd;

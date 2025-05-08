@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { lcm } from "@/libs/RanMath";
+import { lcm } from "RanMath";
 
 const testArr = [
 	{ text: "lcm(0, 0)", input: [0, 0], output: 0 },

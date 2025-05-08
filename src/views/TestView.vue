@@ -5,5 +5,5 @@
 </template>
 
 <script setup>
-console.log(typeof (Number("a23")))
+
 </script>

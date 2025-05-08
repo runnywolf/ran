@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getFactors } from "@/libs/RanMath";
+import { getFactors } from "RanMath";
 
 const testArr = [
 	{ text: "Factors of 0", input: 0, output: [] },

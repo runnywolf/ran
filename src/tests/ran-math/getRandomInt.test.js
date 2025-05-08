@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getRandomInt } from "@/libs/RanMath";
+import { getRandomInt } from "RanMath";
 
 const testNumber = 100;
 for (let i = 0; i < testNumber; i++) {

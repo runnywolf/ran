@@ -5,7 +5,10 @@ export default defineConfig({
 	base: "/ran/", // ran 的路徑
 	plugins: [vue()],
 	resolve: {
-		alias: {"@": "/src"} // @ 的相對路徑
+		alias: { // 路徑別名
+			"@": "/src", // @ 代表 /src
+			"RanMath": "/src/libs/RanMath.js" // 可以直接 import "RanMath"
+		}
 	},
 	test: { // 測試: npx vitest run --coverage
 		include: [ "src/tests/**/*.test.js" ], // 執行這些測試文件 (*.test.js)

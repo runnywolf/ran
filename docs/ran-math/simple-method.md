@@ -11,12 +11,13 @@ head:
 
 | Function | Description |
 | :- | :- |
-| [`isNum`](#isint) | 檢查 n 是不是數字，與 `typeof n === "number"` 相同 |
-| [`isInt`](#isint) | 檢查 n 是不是整數，與 `Number.isInteger(n)` 相同 |
+| [`isNum`](#isint) | 檢查 $n$ 是不是數字，與 `typeof n === "number"` 相同 |
+| [`isInt`](#isint) | 檢查 $n$ 是不是整數，與 `Number.isInteger(n)` 相同 |
 | [`gcd`](#gcd) | 回傳兩數的最大公因數 ( Greatest Common Divisor ) |
 | [`lcm`](#lcm) | 回傳兩數的最小公倍數 ( Least Common Multiple ) |
-| [`getFactors`](#getfactors) | 回傳 n 的所有正因數 ( 升序排列 ) |
+| [`getFactors`](#getfactors) | 回傳 $n$ 的所有正因數 ( 升序排列 ) |
 | [`getRandomInt`](#getrandomint) | 回傳範圍 `[min, max]` 內的隨機整數 |
+| [`getSquareFactor`](#getsquarefactor) | 若 $k^2$ 為 $n$ 的最大平方因數，回傳 $k$ |
 
 ## `isNum`
 檢查是不是數字，與 `typeof n === "number"` 相同。
@@ -101,22 +102,22 @@ lcm(123456, 789012) // 8117355456
 ```
 
 ## `getFactors`
-回傳 n 的所有正因數 ( 升序排列 )。
+回傳 $n$ 的所有正因數 ( 升序排列 )。
 ```js
 getFactors(n: number): Array<number>
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `number` ( `int` ) | n |
+| `n` | `number` ( `int` ) | $n$ |
 
 若 `n` 為負數，會自動取絕對值。
 
 範例：
 ```js
-getFactors(0) // []
-getFactors(1) // [1]
-getFactors(3) // [1, 3]
+getFactors(0)  // []
+getFactors(1)  // [1]
+getFactors(3)  // [1, 3]
 getFactors(-6) // [1, 2, 3, 6]
 ```
 
@@ -134,4 +135,29 @@ getRandomInt(min: number, max: number): number
 範例：
 ```js
 getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
+```
+
+## `getSquareFactor`
+若 $k^2$ 為 $n$ 的最大平方因數，回傳 $k$。<br>
+可以用於化簡根號： $\sqrt{n} = \sqrt{k^2 s} = k \sqrt{s}$
+
+定義 $1$ 為 $0$ 的最大平方因數。
+
+```js
+getSquareFactor(n: number): number
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `n` | `number` ( `int` ) | $n$ |
+
+若 `n` 為負數，會自動取絕對值。<br>
+
+範例：
+```js
+getSquareFactor(0)      // 1 (定義)
+getSquareFactor(1)      // 1 -> √1 = 1√1
+getSquareFactor(90)     // 3 -> √90 = 3√10
+getSquareFactor(-97)    // 1 -> √-97 = 1√-97
+getSquareFactor(123456) // 8 -> √123456 = 8√1929
 ```

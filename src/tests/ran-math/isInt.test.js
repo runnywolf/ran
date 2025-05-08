@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { isInt } from "@/libs/RanMath";
+import { isInt } from "RanMath";
 
 const testArr = [
 	{ input: 123, output: true },            // 正整數
