@@ -31,10 +31,6 @@ export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 	return [...factors1, ...factors2];
 }
 
-export function getRandomInt(min, max) { // 隨機整數
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回傳 k
 	n = Math.abs(n); // 將負數 n 轉正
 	for (let i = Math.floor(Math.sqrt(n)); i >= 1; i--) {
@@ -43,12 +39,16 @@ export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回
 	return 1; // 若 n = 0, 回傳 1
 }
 
+export function getRandomInt(min, max) { // 隨機整數
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export class Prime { // 質數
 	static prime = [2];
 	
 	static getNth(n) { // 取得第 n 個質數
-		if (n < 0) return null;
-		if (n <= Prime.prime.length - 1) return Prime.prime[n];
+		if (n < 0) return NaN;
+		if (n <= Prime.prime.length - 1) return Prime.prime[n]; // 質數快取
 		
 		const lastPrime = Prime.prime[Prime.prime.length - 1]; // 最後一個質數
 		for (let i = lastPrime + 1; n > Prime.prime.length - 1; i++) {
@@ -839,13 +839,8 @@ export class SolveCubic { // 解三次方程式
 	}
 }
 
-// 以下為字串處理
-
+// 字串處理
 export const SCL = "~,\\enspace"; // separate comma latex
-
-function throwErr(method, message) {
-	console.error(`[RanMath][${method}] ${message}`);
-}
 
 export function isStrInt(str) { // [棄用] 某個字串是否為整數
 	return /^-?\d+$/.test(str);
@@ -918,3 +913,22 @@ export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMo
 	s_latex = `\\begin{alignat*}{${col+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
 	return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
 }
+// 字串處理
+
+// 錯誤處理, 參數驗證
+function throwErr(methodName, errMessage) {
+	console.error(`[RanMath][${methodName}] ${errMessage}`);
+}
+
+function checkParam(param, rule, methodName, errMessage) { // 回傳 rule(param), 若為 false 會報錯
+	const check = rule(param); // param 是否符合 rule 的規定
+	
+	if (typeof check !== "boolean") { // rule: (param: any) => boolean 沒有回傳布林值
+		throwErr("checkParam", 'Parameter "rule" must return a boolean.');
+		return false; // 直接 return false
+	}
+	
+	if (!check) throwErr(methodName, errMessage); // param 不符合 rule 的規定, 報錯
+	return check; // 回傳檢查結果
+}
+// 錯誤處理, 參數驗證

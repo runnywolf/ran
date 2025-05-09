@@ -16,11 +16,12 @@ head:
 | [`gcd`](#gcd) | 回傳兩數的最大公因數 ( Greatest Common Divisor ) |
 | [`lcm`](#lcm) | 回傳兩數的最小公倍數 ( Least Common Multiple ) |
 | [`getFactors`](#getfactors) | 回傳 $n$ 的所有正因數 ( 升序排列 ) |
-| [`getRandomInt`](#getrandomint) | 回傳範圍 `[min, max]` 內的隨機整數 |
 | [`getSquareFactor`](#getsquarefactor) | 若 $k^2$ 為 $n$ 的最大平方因數，回傳 $k$ |
+| [`getRandomInt`](#getrandomint) | 回傳範圍 `[min, max]` 內的隨機整數 |
 
 ## `isNum`
 檢查是不是數字，與 `typeof n === "number"` 相同。
+
 ```js
 isNum(n: any): boolean
 ```
@@ -40,6 +41,7 @@ isNum(new Number(5)) // false
 
 ## `isInt`
 檢查是不是整數，與 `Number.isInteger(n)` 相同。
+
 ```js
 isInt(n: any): boolean
 ```
@@ -61,6 +63,7 @@ isInt(new Number(5)) // false
 ## `gcd`
 回傳兩數的最大公因數 ( Greatest Common Divisor )：
 $$\gcd(a, b)$$
+
 ```js
 gcd(a: number, b: number): number
 ```
@@ -82,6 +85,7 @@ gcd(-60, 36) // 12
 ## `lcm`
 回傳兩數的最小公倍數 ( Least Common Multiple )：
 $$\text{lcm}(a, b)$$
+
 ```js
 lcm(a: number, b: number): number
 ```
@@ -103,6 +107,7 @@ lcm(123456, 789012) // 8117355456
 
 ## `getFactors`
 回傳 $n$ 的所有正因數 ( 升序排列 )。
+
 ```js
 getFactors(n: number): Array<number>
 ```
@@ -119,22 +124,6 @@ getFactors(0)  // []
 getFactors(1)  // [1]
 getFactors(3)  // [1, 3]
 getFactors(-6) // [1, 2, 3, 6]
-```
-
-## `getRandomInt`
-回傳範圍 `[min, max]` 內的隨機整數。
-```js
-getRandomInt(min: number, max: number): number
-```
-
-| Param | Type | Description |
-| :- | :- | :- |
-| `min` | `number` ( `int` ) | 隨機整數的最小值 |
-| `max` | `number` ( `int` ) | 隨機整數的最大值 |
-
-範例：
-```js
-getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
 ```
 
 ## `getSquareFactor`
@@ -161,3 +150,22 @@ getSquareFactor(90)     // 3 -> √90 = 3√10
 getSquareFactor(-97)    // 1 -> √-97 = 1√-97
 getSquareFactor(123456) // 8 -> √123456 = 8√1929
 ```
+
+
+## `getRandomInt`
+回傳範圍 `[min, max]` 內的隨機整數。
+
+```js
+getRandomInt(min: number, max: number): number
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `min` | `number` ( `int` ) | 隨機整數的最小值 |
+| `max` | `number` ( `int` ) | 隨機整數的最大值 |
+
+範例：
+```js
+getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
+```
+
