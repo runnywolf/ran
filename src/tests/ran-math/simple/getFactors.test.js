@@ -2,18 +2,17 @@ import { expect, test } from "vitest";
 import { getFactors } from "RanMath";
 
 const testArr = [
-	{ text: "Factors of 0", input: 0, output: [] },
-	{ text: "Factors of 1", input: 1, output: [1] },
-	{ text: "Factors of 6", input: 6, output: [1, 2, 3, 6] },
-	{ text: "Factors of 24", input: 24, output: [1, 2, 3, 4, 6, 8, 12, 24] },
-	{ text: "Factors of 2 (prime)", input: 2, output: [1, 2] },
-	{ text: "Factors of 7 (prime)", input: 7, output: [1, 7] },
-	{ text: "Factors of 927497 (big prime)", input: 927497, output: [1, 927497] },
-	{ text: "Factors of 4 (square)", input: 4, output: [1, 2, 4] },
-	{ text: "Factors of 36 (square)", input: 36, output: [1, 2, 3, 4, 6, 9, 12, 18, 36] },
-	{ text: "Factors of -12", input: -12, output: [1, 2, 3, 4, 6, 12] },
+	{ input: 0, output: [] },
+	{ input: 1, output: [1] },
+	{ input: 6, output: [1, 2, 3, 6] },
+	{ input: 24, output: [1, 2, 3, 4, 6, 8, 12, 24] },
+	{ input: 2, output: [1, 2] },
+	{ input: 7, output: [1, 7] },
+	{ input: 927497, output: [1, 927497] },
+	{ input: 4, output: [1, 2, 4] },
+	{ input: 36, output: [1, 2, 3, 4, 6, 9, 12, 18, 36] },
+	{ input: -12, output: [1, 2, 3, 4, 6, 12] },
 	{
-		text: "Factors of 908424",
 		input: 908424,
 		output: [
 			1, 2, 3, 4, 6, 8, 9, 11, 12, 18, 22, 24, 31, 33, 36, 37, 44, 62, 66, 72, 74, 88,
@@ -27,6 +26,7 @@ const testArr = [
 	},
 ];
 
-for (const t of testArr) {
-	test(t.text, () => expect(getFactors(t.input)).toStrictEqual(t.output));
-}
+for (const t of testArr) test(
+	`Factors of ${t.input} is [ ${t.output.join(", ")} ]`,
+	() => expect(getFactors(t.input)).toStrictEqual(t.output)
+);

@@ -7,7 +7,7 @@ head:
 ---
 
 # 簡單數學運算
-這裡的函式是被 `export function` 直接匯出的。
+這裡的函數是被 `export function` 直接匯出的。
 
 | Function | Description |
 | :- | :- |

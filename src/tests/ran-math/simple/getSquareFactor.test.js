@@ -14,6 +14,7 @@ const testArr = [
 	{ input: 123456, output: 8 }, // 123456 = 64*1929, 36 = 6^2
 ];
 
-for (const t of testArr) {
-	test(`Square factor of ${t.input}`, () => expect(getSquareFactor(t.input)).toBe(t.output));
-}
+for (const t of testArr) test(
+	`The largest square factor of ${t.input} is ${t.output}^2`,
+	() => expect(getSquareFactor(t.input)).toBe(t.output)
+);

@@ -18,6 +18,7 @@ const testArr = [
 	{ input: new Number(5), output: false }, // 包裝型 Number（物件）
 ];
 
-for (const t of testArr) {
-	test(`${t.input} is number?`, () => expect(isNum(t.input)).toBe(t.output));
-}
+for (const t of testArr) test(
+	`${t.input} is number? ${t.output}`,
+	() => expect(isNum(t.input)).toBe(t.output)
+);

@@ -915,20 +915,8 @@ export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMo
 }
 // 字串處理
 
-// 錯誤處理, 參數驗證
+// 錯誤處理
 function throwErr(methodName, errMessage) {
 	console.error(`[RanMath][${methodName}] ${errMessage}`);
 }
-
-function checkParam(param, rule, methodName, errMessage) { // 回傳 rule(param), 若為 false 會報錯
-	const check = rule(param); // param 是否符合 rule 的規定
-	
-	if (typeof check !== "boolean") { // rule: (param: any) => boolean 沒有回傳布林值
-		throwErr("checkParam", 'Parameter "rule" must return a boolean.');
-		return false; // 直接 return false
-	}
-	
-	if (!check) throwErr(methodName, errMessage); // param 不符合 rule 的規定, 報錯
-	return check; // 回傳檢查結果
-}
-// 錯誤處理, 參數驗證
+// 錯誤處理

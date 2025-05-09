@@ -21,6 +21,7 @@ const testArr = [
 	{ input: new Number(5), output: false }, // 包裝型 Number
 ];
 
-for (const t of testArr) {
-	test(`${t.input} is number?`, () => expect(isInt(t.input)).toBe(t.output));
-}
+for (const t of testArr) test(
+	`${t.input} is a number? ${t.output}`,
+	() => expect(isInt(t.input)).toBe(t.output)
+);
