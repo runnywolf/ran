@@ -25,10 +25,9 @@ $n$ 與 $d$ 滿足以下條件：
 | Function | Description |
 | :- | :- |
 | [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例，與 `frac instanceof Frac` 等價 |
-| [`Frac.fromStr`](#) | <function 描述> |
-| [`Frac.sum`](#) | <function 描述> |
-| [`new Frac`](#) | <function 描述> |
-| [`._std`](#) | <function 描述> |
+| [`Frac.fromStr`](#) |  |
+| [`Frac.sum`](#) |  |
+| [`new Frac`](#new-frac) | 建構子 |
 
 ## `.n`
 分子 ( Numerator )。
@@ -43,6 +42,9 @@ const frac = new Frac(6, -9); // 6/-9 = -2/3
 frac.n // -2
 ```
 
+> [!CAUTION]
+> 屬性 `n` 為唯讀 ( read only )，修改 `n` 並不會讓 `Frac` 實例執行標準化。
+
 ## `.d`
 分母 ( Denominator )。
 
@@ -55,6 +57,9 @@ frac.n // -2
 const frac = new Frac(6, -9); // 6/-9 = -2/3
 frac.d // 3
 ```
+
+> [!CAUTION]
+> 屬性 `d` 為唯讀 ( read only )，修改 `d` 並不會讓 `Frac` 實例執行標準化。
 
 ## `Frac.isFrac`
 檢查參數 `value` 是否為 `Frac` 的實例，與 `value instanceof Frac` 等價。
@@ -71,5 +76,24 @@ Frac.isFrac(value: any): boolean
 ```js
 const frac = new Frac(6, -9);
 Frac.isFrac(frac) // true
-Frac.isFrac(2)    // false
+Frac.isFrac(2/3)  // false
+```
+
+## `new Frac`
+類別 `Frac` 的建構子。
+
+```js
+new Frac(n: number = 0, d: number = 1): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `n` | `number` ( `int` ) | 分子 $n$ |
+| `d` | `number` ( `int` ) | 分母 $d$，不可以傳入 `0` |
+
+範例：
+```js
+new Frac();      // Frac { n: 0, d: 1 }  ; 建議還是用 new Frac(0) 宣告分數 0
+new Frac(17);    // Frac { n: 17, d: 1 }
+new Frac(6, -9); // Frac { n: -2, d: 3 } ; 6/-9 = -2/3
 ```

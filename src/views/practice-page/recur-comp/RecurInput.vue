@@ -10,9 +10,9 @@
 			<!-- 常數範圍 -->
 			<div class="ts-select is-solid">
 				<select v-model="randomRange">
-					<option value="3">± 3&nbsp;&nbsp;以內</option>
-					<option value="6">± 6&nbsp;&nbsp;以內</option>
-					<option value="10">± 10&nbsp;&nbsp;以內</option>
+					<option :value="3">± 3&nbsp;&nbsp;以內</option>
+					<option :value="6">± 6&nbsp;&nbsp;以內</option>
+					<option :value="10">± 10&nbsp;&nbsp;以內</option>
 				</select>
 			</div>
 			

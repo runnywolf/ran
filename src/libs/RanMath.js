@@ -133,35 +133,28 @@ export class Frac { // 分數
 	}
 	
 	constructor(n = 0, d = 1) {
-		if (!isNum(n) || !isNum(d)) { // 參數不為數字
-			throwErr("Frac.constructor", "n & d must be Number.");
+		if (!isInt(n) || !isInt(d)) { // 如果參數 n 或 d 不是整數, 會建構一個 new Frac(0)
+			throwErr("Frac.constructor", 'Param "n" & "d" must be a integer.');
 			n = 0; d = 1;
 		}
-		if (!Number.isInteger(n) || !Number.isInteger(d)) { // 參數不為整數
-			throwErr("Frac.constructor", "n & d must be integer.");
-			n = 0; d = 1;
-		}
-		if (d == 0) { // 分母為 0
-			throwErr("Frac.constructor", "Detect fraction ?/0");
+		if (d === 0) { // 分母為 0, 會建構一個 new Frac(0)
+			throwErr("Frac.constructor", "The denominator cannot be 0.");
 			n = 0; d = 1;
 		}
 		
-		this.n = n; // 分子, n ∈ Z
-		this.d = d; // 分母, d ∈ Z+
-		this.std(); // 標準化
-	}
-	
-	std() { // 標準化
-		if (this.d < 0) { // 若分母為負數, 同乘 -1
+		this.n = n; // 分子
+		this.d = d; // 分母
+		
+		// 標準化
+		if (this.d < 0) { // 若分母為負數, 將 n 和 d 同乘 -1, 保證 d ∈ Z
 			this.n *= -1;
 			this.d *= -1;
 		}
 		
-		const nd_gcd = gcd(this.n, this.d);
-		if (nd_gcd != 1) { // 約分. 會把 0/? 變成 0/1
-			this.n /= nd_gcd;
-			this.d /= nd_gcd;
-		}
+		const ndGcd = gcd(this.n, this.d);
+		this.n /= ndGcd; // 約分. (會把 0/? 變成 0/1)
+		this.d /= ndGcd; // 因為 n, d 不可能同時為 0, 所以 gcd(n, d) 不可能為 0
+		// 標準化
 	}
 	
 	isZero() { // 是否為 0
