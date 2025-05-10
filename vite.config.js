@@ -14,7 +14,7 @@ export default defineConfig({
 		include: [ "src/tests/**/*.test.js" ], // 執行這些測試文件 (*.test.js)
 		coverage: { // 使用 v8 做覆蓋率測試
 			all: false, // 不顯示未執行的檔案
-			reporter: [ "text", "html" ], // result web: start coverage/lcov-report/index.html
+			reporter: [ "text", "html" ], // result web: start coverage/index.html
 		},
 	},
 })

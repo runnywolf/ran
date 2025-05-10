@@ -9,19 +9,33 @@ export function isInt(n) { // 是否為整數
 }
 
 export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
+	if (!isInt(a) || !isInt(b)) { // 如果 a, b 不是整數, 回傳 NaN
+		throwErr("gcd", 'Param "a" & "b" must be a integer.');
+		return NaN;
+	}
+	
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
 	return a;
 }
 
 export function lcm(a, b) { // 最小公倍數; lcm(0, 0) = 0
+	if (!isInt(a) || !isInt(b)) { // 如果 a, b 不是整數, 回傳 NaN
+		throwErr("lcm", 'Param "a" & "b" must be a integer.');
+		return NaN;
+	}
+	
 	if (a === 0 || b === 0) return 0;
 	return Math.abs(a * b) / gcd(a, b);
 }
 
 export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
-	n = Math.abs(n); // 取絕對值
+	if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
+		throwErr("getFactors", 'Param "n" must be a integer.');
+		return NaN;
+	}
 	
+	n = Math.abs(n); // 將負數 n 轉正
 	let factors1 = []; // n 的因數 ( <= √n )
 	let factors2 = []; // n 的因數 ( > √n )
 	for (let i = 1; i*i <= n; i++) if (n % i === 0) {
@@ -32,6 +46,11 @@ export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 }
 
 export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回傳 k
+	if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
+		throwErr("getSquareFactor", 'Param "n" must be a integer.');
+		return NaN;
+	}
+	
 	n = Math.abs(n); // 將負數 n 轉正
 	for (let i = Math.floor(Math.sqrt(n)); i >= 1; i--) {
 		if (n % (i*i) === 0) return i;
@@ -40,6 +59,11 @@ export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回
 }
 
 export function getRandomInt(min, max) { // 隨機整數
+	if (!isInt(min) || !isInt(max)) { // 如果 min 或 max 不是整數, 回傳 NaN
+		throwErr("getRandomInt", 'Param "min" & "max" must be a integer.');
+		return NaN;
+	}
+	
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -47,6 +71,11 @@ export class Prime { // 質數
 	static prime = [2];
 	
 	static getNth(n) { // 取得第 n 個質數
+		if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
+			throwErr("Prime.getNth", 'Param "n" must be a integer.');
+			return NaN;
+		}
+		
 		if (n < 0) return NaN;
 		if (n <= Prime.prime.length - 1) return Prime.prime[n]; // 質數快取
 		
@@ -58,6 +87,11 @@ export class Prime { // 質數
 	}
 	
 	static isPrime(n) { // 是否是質數
+		if (!isInt(n)) { // 如果 n 不是整數, 回傳 false
+			throwErr("Prime.isPrime", 'Param "n" must be a integer.');
+			return false;
+		}
+		
 		if (n <= 1) return false;
 		for (let i = 0, p = 2; p*p <= n; p = Prime.getNth(++i)) if (n % p === 0) return false;
 		return true;
@@ -846,7 +880,7 @@ export function isStrInt(str) { // [棄用] 某個字串是否為整數
 	return /^-?\d+$/.test(str);
 }
 
-export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [重構] 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
 	if (nonZero) { // 若 nonZero 為 true, 且生成的 latex 字串的數值為 0, 會回傳空字串而不是 "+0"
 		let s_latex = mlTerm(coef, base, pow);
 		return s_latex === "+0" ? "" : s_latex;
@@ -888,7 +922,7 @@ export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // �
 	return s_coefLatex + s_varLatex;
 }
 
-export function mlMultipleTerm(latexArr) { // 用於組合多個 latex, 會偵測並以 "+" 連接多個 latex; 當整個式子為 0, 會回傳 0
+export function mlMultiTerm(latexArr) { // 用於組合多個 latex, 會偵測並以 "+" 連接多個 latex; 當整個式子為 0, 會回傳 0
 	// 採用 +0 合併, 去頭0
 }
 
@@ -915,8 +949,8 @@ export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMo
 }
 // 字串處理
 
-// 錯誤處理
+// 錯誤訊息
 function throwErr(methodName, errMessage) {
 	console.error(`[RanMath][${methodName}] ${errMessage}`);
 }
-// 錯誤處理
+// 錯誤訊息
