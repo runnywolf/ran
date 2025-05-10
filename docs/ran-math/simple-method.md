@@ -11,8 +11,8 @@ head:
 
 | Function | Description |
 | :- | :- |
-| [`isNum`](#isint) | 檢查 $n$ 是不是數字，與 `typeof n === "number"` 相同 |
-| [`isInt`](#isint) | 檢查 $n$ 是不是整數，與 `Number.isInteger(n)` 相同 |
+| [`isNum`](#isint) | 檢查 $n$ 是否為數字，與 `typeof n === "number"` 等價 |
+| [`isInt`](#isint) | 檢查 $n$ 是否為整數，與 `Number.isInteger(n)` 等價 |
 | [`gcd`](#gcd) | 回傳兩數的最大公因數 ( Greatest Common Divisor ) |
 | [`lcm`](#lcm) | 回傳兩數的最小公倍數 ( Least Common Multiple ) |
 | [`getFactors`](#getfactors) | 回傳 $n$ 的所有正因數 ( 升序排列 ) |
@@ -20,7 +20,7 @@ head:
 | [`getRandomInt`](#getrandomint) | 回傳範圍 `[min, max]` 內的隨機整數 |
 
 ## `isNum`
-檢查是不是數字，與 `typeof n === "number"` 相同。
+檢查參數 `n` 是否為數字，與 `typeof n === "number"` 等價。
 
 ```js
 isNum(n: any): boolean
@@ -40,7 +40,7 @@ isNum(new Number(5)) // false
 ```
 
 ## `isInt`
-檢查是不是整數，與 `Number.isInteger(n)` 相同。
+檢查參數 `n` 是否為整數，與 `Number.isInteger(n)` 等價。
 
 ```js
 isInt(n: any): boolean

@@ -5,6 +5,10 @@ outline: [2, 3] # 顯示 h2, h3
 # <類別>
 <類別說明>
 
+| Property | Type | Description |
+| :- | :- | :- |
+| [`exampleProp`](#) | <property type> | <property 描述> |
+
 | Function | Description |
 | :- | :- |
 | [`exampleFunc`](#) | <function 描述> |

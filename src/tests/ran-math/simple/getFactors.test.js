@@ -34,8 +34,8 @@ const testArr = [ // 測資
 			227106, 302808, 454212, 908424
 		]
 	},
-	{ n: NaN, output: NaN, error: '[RanMath][getFactors] Param "n" must be a integer.' },
-	{ n: {}, output: NaN, error: '[RanMath][getFactors] Param "n" must be a integer.' },
+	{ n: NaN, output: [], error: '[RanMath][getFactors] Param "n" must be a integer.' },
+	{ n: {}, output: [], error: '[RanMath][getFactors] Param "n" must be a integer.' },
 ];
 
 test.each(testArr)(

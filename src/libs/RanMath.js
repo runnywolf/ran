@@ -30,9 +30,9 @@ export function lcm(a, b) { // 最小公倍數; lcm(0, 0) = 0
 }
 
 export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
-	if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
+	if (!isInt(n)) { // 如果 n 不是整數, 回傳 []
 		throwErr("getFactors", 'Param "n" must be a integer.');
-		return NaN;
+		return [];
 	}
 	
 	n = Math.abs(n); // 將負數 n 轉正
@@ -99,6 +99,10 @@ export class Prime { // 質數
 }
 
 export class Frac { // 分數
+	static isFrac(value) { // 是否是分數
+		return value instanceof Frac;
+	}
+	
 	static fromStr(str) { // 將字串轉為分數
 		if (typeof str !== "string") return new Frac(0); // 若 str 不是字串, 回傳 0
 		
@@ -113,10 +117,6 @@ export class Frac { // 分數
 		}
 		
 		return new Frac(0); // 若輸入非整數或分數, 回傳 0
-	}
-	
-	static isFrac(frac) { // 是否是分數
-		return frac instanceof Frac;
 	}
 	
 	static sum(fracArr) { // 加總
@@ -164,6 +164,14 @@ export class Frac { // 分數
 		}
 	}
 	
+	isZero() { // 是否為 0
+		return this.n === 0;
+	}
+	
+	isInt() { // 是否是整數
+		return this.d === 1;
+	}
+	
 	toStr() { // 轉為 debug 字串
 		if (this.isInt()) return `${this.n}`;
 		return `${this.n}/${this.d}`;
@@ -178,18 +186,10 @@ export class Frac { // 分數
 		return this.n / this.d;
 	}
 	
-	isZero() { // 是否為 0
-		return this.n === 0;
-	}
-	
-	isInt() { // 是否是整數
-		return this.d === 1;
-	}
-	
 	_makeOp(fn, opName, op) { // 批量製作算子
 		if (isInt(fn)) fn = new Frac(fn); // 將 int 轉為 Frac
 		
-		if (!Frac.isFrac(fn)) { // 如果參數不是 Frac / int, 回傳 null
+		if (!Frac.isFrac(fn)) { // 如果參數不是 Frac / int, 不執行這個運算
 			throwErr(`Frac.${opName}`, "Param is not a Frac / int.");
 			return null;
 		}

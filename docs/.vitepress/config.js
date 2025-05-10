@@ -47,6 +47,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "介紹", link: "/ran-math/intro" },
 					{ text: "簡單數學運算", link: "/ran-math/simple-method" },
 					{ text: "Prime - 質數", link: "/ran-math/prime" },
+					{ text: "Frac - 分數", link: "/ran-math/frac" },
 				]
 			},
 		],
