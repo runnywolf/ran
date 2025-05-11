@@ -39,6 +39,9 @@ import { F } from "ran-math"; // new Frac 的工廠函數
 | [`.copy`](#copy) | 回傳一個相同值的新實例 |
 | [`.isZero`](#iszero) | 是否等於 0 |
 | [`.isInt`](#isint) | 是否為整數 |
+| [`.toStr`](#tostr) | 轉為字串 |
+| [`.toLatex`](#tolatex) | 轉為 LaTex 語法 |
+| [`.toFloat`](#tofloat) | 轉為浮點數 |
 
 ## `Frac.isFrac`
 檢查參數 `value` 是否為 `Frac` 的實例，與 `value instanceof Frac` 等價。
@@ -194,4 +197,49 @@ Frac.prototype.isInt(): boolean
 F(6, -9).isInt() // false
 F(0, 5).isInt()  // true
 F(15, 5).isInt() // true
+```
+
+## `.toStr`
+將分數轉為字串。
+
+```js
+Frac.prototype.toStr(): string
+```
+
+範例：
+```js
+F(2).toStr()     // "2"
+F(-9, 3).toStr() // "-3"
+F(2, 3).toStr()  // "2/3"
+F(-7, 3).toStr() // "-7/3"
+```
+
+## `.toLatex`
+將分數轉為 LaTex 語法。
+
+```js
+Frac.prototype.toLatex(): string
+```
+
+範例：
+```js
+F(2).toLatex()     // "2"
+F(-9, 3).toLatex() // "-3"
+F(2, 3).toLatex()  // "\frac{2}{3}"
+F(-7, 3).toLatex() // "\frac{-7}{3}"
+```
+
+## `.toFloat`
+將分數轉為浮點數。
+
+```js
+Frac.prototype.toFloat(): number
+```
+
+範例：
+```js
+F(2).toFloat()     // 2
+F(-9, 3).toFloat() // -3
+F(2, 3).toFloat()  // 0.6666666666666666
+F(3, 5).toFloat()  // 0.6
 ```

@@ -153,4 +153,61 @@ describe(".isInt", () => {
 		}
 	);
 });
+
+const testArr_toStr = [ // 測資
+	{ frac: F(2), output: "2" },
+	{ frac: F(-9, 3), output: "-3" },
+	{ frac: F(2, 3), output: "2/3" },
+	{ frac: F(-1, 3), output: "-1/3" },
+	{ frac: F(0, 1), output: "0" },
+];
+describe(".toStr", () => {
+	test.each(testArr_toStr)(
+		"($frac.n/$frac.d).toStr() = $output",
+		({ frac, output, error }) => {
+			expect(frac.toStr()).toBe(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_toLatex = [ // 測資
+	{ frac: F(2), output: "2" },
+	{ frac: F(-9, 3), output: "-3" },
+	{ frac: F(2, 3), output: "\\frac{2}{3}" },
+	{ frac: F(-1, 3), output: "\\frac{-1}{3}" },
+	{ frac: F(0, 1), output: "0" },
+];
+describe(".toLatex", () => {
+	test.each(testArr_toLatex)(
+		"($frac.n/$frac.d).toLatex() = $output",
+		({ frac, output, error }) => {
+			expect(frac.toLatex()).toBe(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_toFloat = [ // 測資
+	{ frac: F(2), output: 2 },
+	{ frac: F(-9, 3), output: -3 },
+	{ frac: F(2, 3), output: 2/3 },
+	{ frac: F(3, 5), output: 0.6 },
+	{ frac: F(0, 1), output: 0 },
+];
+describe(".toFloat", () => {
+	test.each(testArr_toFloat)(
+		"($frac.n/$frac.d).toFloat() = $output",
+		({ frac, output, error }) => {
+			expect(frac.toFloat()).toBe(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
 // ---------- test area ----------

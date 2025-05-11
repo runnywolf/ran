@@ -164,14 +164,14 @@ export class Frac { // 分數
 		return this.d === 1;
 	}
 	
-	toStr() { // 轉為 debug 字串
-		if (this.isInt()) return `${this.n}`;
-		return `${this.n}/${this.d}`;
+	toStr() { // 轉為字串
+		if (this.isInt()) return `${this.n}`; // 整數形式
+		return `${this.n}/${this.d}`; // 分數形式
 	}
 	
 	toLatex() { // 轉為 latex 字串
-		if (this.isInt()) return `${this.n}`;
-		return `\\frac{${this.n}}{${this.d}}`;
+		if (this.isInt()) return `${this.n}`; // 整數形式
+		return `\\frac{${this.n}}{${this.d}}`; // 分數形式
 	}
 	
 	toFloat() { // 轉為浮點數
