@@ -98,4 +98,22 @@ describe("constructor", () => {
 		}
 	);
 });
+
+const testArr_copy = [ // 測資
+	{ frac: F(2), output: [2, 1] },
+	{ frac: F(2, 3), output: [2, 3] },
+	{ frac: F(6, -9), output: [-2, 3] },
+];
+describe(".copy", () => {
+	test.each(testArr_copy)(
+		"($frac.n/$frac.d).copy() = $output.0/$output.1",
+		({ frac, output, error }) => {
+			const frac_ = frac.copy();
+			expect([frac_.n, frac_.d]).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
 // ---------- test area ----------

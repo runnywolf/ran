@@ -13,7 +13,13 @@ head:
 > 目前沒有任何地方依賴 `Prime`。<br>
 > `Prime` 使用試除法計算質數，以後如果用的到再優化。
 
-| Function | Description |
+## Import
+```js
+import { Prime } from "ran-math";
+```
+
+## Methods
+| Method | Description |
 | :- | :- |
 | [`Prime.getNth`](#prime-getnth) | 取得第 n 個質數 ( 第 0 個質數為 2 ) |
 | [`Prime.isPrime`](#prime-isprime) | 檢查 n 是不是質數 |

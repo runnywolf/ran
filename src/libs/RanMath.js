@@ -152,6 +152,10 @@ export class Frac { // 分數
 		// 標準化
 	}
 	
+	copy() { // 複製
+		return new Frac(this.n, this.d);
+	}
+	
 	isZero() { // 是否為 0
 		return this.n === 0;
 	}
@@ -174,12 +178,12 @@ export class Frac { // 分數
 		return this.n / this.d;
 	}
 	
-	_makeOp(fn, opName, op) { // 批量製作算子
+	_makeOp(fn, opName, op) { // 自訂運算子
 		if (isInt(fn)) fn = new Frac(fn); // 將 int 轉為 Frac
 		
 		if (!Frac.isFrac(fn)) { // 如果參數不是 Frac / int, 不執行這個運算
 			throwErr(`Frac.${opName}`, "Param is not a Frac / int.");
-			return null;
+			return this.copy();
 		}
 		
 		return op(this, fn);

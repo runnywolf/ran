@@ -9,6 +9,7 @@ head:
 # 簡單數學運算
 這裡的函數是被 `export function` 直接匯出的。
 
+## Functions
 | Function | Description |
 | :- | :- |
 | [`isNum`](#isint) | 檢查 $n$ 是否為數字，與 `typeof n === "number"` 等價 |

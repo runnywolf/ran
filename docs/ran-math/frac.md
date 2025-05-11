@@ -17,49 +17,27 @@ $n$ 與 $d$ 滿足以下條件：
 - $\gcd(n, d) = 1$
 - $\frac{n}{d}$ 為某個有理數的唯一形式
 
+## Import
+```js
+import { Frac } from "ran-math";
+```
+
+## Properties & Methods
+建構子：[`Frac constructor`](#frac-constructor)
+
 | Property | Type | Description |
 | :- | :- | :- |
 | [`.n`](#n) | `number` ( `int` ) | 分子 $n$ |
 | [`.d`](#d) | `number` ( `int` ) | 分母 $d$ |
 
-| Function | Description |
+| Method | Description |
 | :- | :- |
-| [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例，與 `... instanceof Frac` 等價 |
+| [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例 |
 | [`Frac.fromStr`](#frac-fromstr) | 將字串轉為分數型態 |
 | [`Frac.sum`](#frac-sum) | 求數列的總和 |
-| [`new Frac`](#new-frac) | 建構子 |
-
-## `.n`
-分子 ( Numerator )。
-
-```js
-<Frac>.n: number
-```
-
-範例：
-```js
-const frac = new Frac(6, -9); // 6/-9 = -2/3
-frac.n // -2
-```
-
-> [!CAUTION]
-> 屬性 `n` 為唯讀 ( read only )，修改 `n` 並不會讓 `Frac` 實例執行標準化。
-
-## `.d`
-分母 ( Denominator )。
-
-```js
-<Frac>.d: number
-```
-
-範例：
-```js
-const frac = new Frac(6, -9); // 6/-9 = -2/3
-frac.d // 3
-```
-
-> [!CAUTION]
-> 屬性 `d` 為唯讀 ( read only )，修改 `d` 並不會讓 `Frac` 實例執行標準化。
+| [`.copy`](#copy) | 回傳一個相同值的新實例 |
+| [`.isZero`](#iszero) | 是否等於 0 |
+| [`.isInt`](#isint) | 是否為整數 |
 
 ## `Frac.isFrac`
 檢查參數 `value` 是否為 `Frac` 的實例，與 `value instanceof Frac` 等價。
@@ -118,7 +96,9 @@ Frac.sum([ 5, F(1, 2) ])                // 11/2
 Frac.sum([ 5, F(1, 2), "7", 2.5 ])      // 11/2
 ```
 
-## `new Frac`
+
+
+## `Frac constructor`
 類別 `Frac` 的建構子。
 
 ```js
@@ -145,3 +125,59 @@ F();      // 0/1
 F(17);    // 17/1
 F(6, -9); // -2/3
 ```
+
+
+## `.n`
+分子 ( Numerator )。
+
+```js
+Frac.prototype.n: number
+```
+
+範例：
+```js
+const frac = new Frac(6, -9); // 6/-9 = -2/3
+frac.n // -2
+```
+
+> [!CAUTION]
+> 屬性 `n` 為唯讀 ( read only )，修改 `n` 並不會讓 `Frac` 實例執行標準化。
+
+## `.d`
+分母 ( Denominator )。
+
+```js
+Frac.prototype.d: number
+```
+
+範例：
+```js
+const frac = new Frac(6, -9); // 6/-9 = -2/3
+frac.d // 3
+```
+
+> [!CAUTION]
+> 屬性 `d` 為唯讀 ( read only )，修改 `d` 並不會讓 `Frac` 實例執行標準化。
+
+
+
+## `.copy`
+回傳一個相同值的新實例。
+
+```js
+Frac.prototype.copy(): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `param` | `any` | <參數說明> |
+
+範例：
+```js
+exampleFunc(...) // <return value>
+```
+
+## `.isZero`
+
+## `.isInt`
+
