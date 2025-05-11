@@ -9,12 +9,12 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { Frac } from "RanMath";
+import { Frac, F } from "RanMath";
 
 const testArr_isFrac = [ // 測資
 	{ value: 0, output: false },
-	{ value: new Frac(3), output: true },
-	{ value: new Frac(3, -6), output: true },
+	{ value: F(3), output: true },
+	{ value: F(3, -6), output: true },
 	{ value: true, output: false },
 	{ value: {}, output: false },
 ];
@@ -46,6 +46,30 @@ describe("Frac.fromStr", () => {
 		"Frac.fromStr($str) = $output.0/$output.1",
 		({ str, output, error }) => {
 			const frac = Frac.fromStr(str);
+			expect([frac.n, frac.d]).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_sum = [ // 測資
+	{ arr: [], output: [0, 1] },
+	{ arr: [F(9, 8), F(1), F(1, 3)], output: [59, 24] },
+	{ arr: [F(9, 8), 2.5, "7", F(1), F(1, 3)], output: [59, 24] },
+	{ arr: [5, F(1, 2), 3, F(-2, 3)] , output: [47, 6] },
+	{ arr: [3, F(5, 2), -2, F(-3, 4), 1, F(1, 6), 0], output: [47, 12] },
+	{ arr: [F(1, 2), F(2, 3), F(3, 5), F(4, 7), F(5, 11)], output: [6451, 2310] },
+	{ arr: [F(1, 2), F(2, 3), F(3, 5)], output: [53, 30] },
+	{ arr: F(2, 5), output: [0, 1], error: '[RanMath][Frac.sum] Param "arr" must be an Array.' },
+	{ arr: { key: F(2, 5) }, output: [0, 1], error: '[RanMath][Frac.sum] Param "arr" must be an Array.' },
+];
+describe("Frac.sum", () => {
+	test.each(testArr_sum)(
+		"Frac.sum($arr) = $output.0/$output.1",
+		({ arr, output, error }) => {
+			const frac = Frac.sum(arr);
 			expect([frac.n, frac.d]).toStrictEqual(output);
 			
 			if (error) expect(spy).toHaveBeenCalledWith(error);

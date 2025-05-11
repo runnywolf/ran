@@ -114,15 +114,15 @@ export class Frac { // 分數
 		return new Frac(0); // 若 str 不是整數或分數, 回傳 0
 	}
 	
-	static sum(fracArr) { // 加總
-		if (!Array.isArray(fracArr)) {
-			throwErr("Frac.sum", "Input is not an Array.");
+	static sum(arr) { // 加總
+		if (!Array.isArray(arr)) { // 如果 arr 不是 Array, 回傳 0
+			throwErr("Frac.sum", 'Param "arr" must be an Array.');
 			return new Frac(0);
 		}
 		
 		let frac_sum = new Frac(0);
-		for (const [i, frac] of fracArr.entries()) if (Frac.isFrac(frac)) { // 元素若非 Frac 會自動忽略, 不會報錯
-			frac_sum = frac_sum.add(frac);
+		for (const nf of arr) if (Frac.isFrac(nf) || isInt(nf)) { // 如果元素不是 Frac 或 int, 會自動忽略, 不會報錯
+			frac_sum = frac_sum.add(nf);
 		}
 		return frac_sum;
 	}
@@ -860,6 +860,8 @@ export class SolveCubic { // 解三次方程式
 		return null;
 	}
 }
+
+export function F(n = 0, d = 1) { return new Frac(n, d); } // Frac 工廠
 
 // 字串處理
 export const SCL = "~,\\enspace"; // separate comma latex

@@ -26,7 +26,7 @@ $n$ 與 $d$ 滿足以下條件：
 | :- | :- |
 | [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例，與 `... instanceof Frac` 等價 |
 | [`Frac.fromStr`](#frac-fromstr) | 將字串轉為分數型態 |
-| [`Frac.sum`](#) |  |
+| [`Frac.sum`](#frac-sum) | 求數列的總和 |
 | [`new Frac`](#new-frac) | 建構子 |
 
 ## `.n`
@@ -81,7 +81,7 @@ Frac.isFrac(2/3)  // false
 
 ## `Frac.fromStr`
 將字串轉為分數型態。<br>
-若字串不是分數，回傳 `Frac { n: 0, d: 1 }`。
+若字串不是分數，回傳 `0/1`。
 
 ```js
 Frac.fromStr(str: string): Frac
@@ -93,9 +93,29 @@ Frac.fromStr(str: string): Frac
 
 範例：
 ```js
-Frac.fromStr("-7")        // Frac { n: -7, d: 1 }
-Frac.fromStr("6/-9")      // Frac { n: -2, d: 3 }
-Frac.fromStr(" -12 / 7 ") // Frac { n: -12, d: 7 }
+Frac.fromStr("-7")        // -7/1
+Frac.fromStr("6/-9")      // -2/3
+Frac.fromStr(" -12 / 7 ") // -12/7
+```
+
+## `Frac.sum`
+求數列的總和。
+
+```js
+Frac.sum(arr: Array<any>): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `arr` | `Array<any>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總，<br>其他的元素會被視為 0。 |
+
+範例：
+```js
+import { F } from "ran-math"
+
+Frac.sum([ F(1, 2), F(2, 3), F(3, 5) ]) // 53/30
+Frac.sum([ 5, F(1, 2) ])                // 11/2
+Frac.sum([ 5, F(1, 2), "7", 2.5 ])      // 11/2
 ```
 
 ## `new Frac`
@@ -112,7 +132,16 @@ new Frac(n: number = 0, d: number = 1): Frac
 
 範例：
 ```js
-new Frac();      // Frac { n: 0, d: 1 }  ; 建議還是用 new Frac(0) 宣告分數 0
-new Frac(17);    // Frac { n: 17, d: 1 }
-new Frac(6, -9); // Frac { n: -2, d: 3 } ; 6/-9 = -2/3
+new Frac();      // 0/1  ; 建議還是用 new Frac(0) 宣告分數 0
+new Frac(17);    // 17/1
+new Frac(6, -9); // -2/3
+```
+
+工廠函數：
+```js
+import { F } from "ran-math"
+
+F();      // 0/1
+F(17);    // 17/1
+F(6, -9); // -2/3
 ```
