@@ -20,6 +20,7 @@ $n$ 與 $d$ 滿足以下條件：
 ## Import
 ```js
 import { Frac } from "ran-math";
+import { F } from "ran-math"; // new Frac 的工廠函數
 ```
 
 ## Properties & Methods
@@ -89,14 +90,10 @@ Frac.sum(arr: Array<any>): Frac
 
 範例：
 ```js
-import { F } from "ran-math"
-
 Frac.sum([ F(1, 2), F(2, 3), F(3, 5) ]) // 53/30
 Frac.sum([ 5, F(1, 2) ])                // 11/2
 Frac.sum([ 5, F(1, 2), "7", 2.5 ])      // 11/2
 ```
-
-
 
 ## `Frac constructor`
 類別 `Frac` 的建構子。
@@ -126,7 +123,6 @@ F(17);    // 17/1
 F(6, -9); // -2/3
 ```
 
-
 ## `.n`
 分子 ( Numerator )。
 
@@ -136,7 +132,7 @@ Frac.prototype.n: number
 
 範例：
 ```js
-const frac = new Frac(6, -9); // 6/-9 = -2/3
+const frac = F(6, -9); // 6/-9 = -2/3
 frac.n // -2
 ```
 
@@ -152,14 +148,12 @@ Frac.prototype.d: number
 
 範例：
 ```js
-const frac = new Frac(6, -9); // 6/-9 = -2/3
+const frac = F(6, -9); // 6/-9 = -2/3
 frac.d // 3
 ```
 
 > [!CAUTION]
 > 屬性 `d` 為唯讀 ( read only )，修改 `d` 並不會讓 `Frac` 實例執行標準化。
-
-
 
 ## `.copy`
 回傳一個相同值的新實例。
@@ -168,16 +162,36 @@ frac.d // 3
 Frac.prototype.copy(): Frac
 ```
 
-| Param | Type | Description |
-| :- | :- | :- |
-| `param` | `any` | <參數說明> |
-
 範例：
 ```js
-exampleFunc(...) // <return value>
+const frac = F(6, -9); // 6/-9 = -2/3
+frac.copy()            // -2/3
 ```
 
 ## `.isZero`
+分數是否等於 0。
+
+```js
+Frac.prototype.isZero(): boolean
+```
+
+範例：
+```js
+F(6, -9).isZero() // false
+F(0, 5).isZero()  // true
+F(15, 5).isZero() // false
+```
 
 ## `.isInt`
+是否為整數。
 
+```js
+Frac.prototype.isInt(): boolean
+```
+
+範例：
+```js
+F(6, -9).isInt() // false
+F(0, 5).isInt()  // true
+F(15, 5).isInt() // true
+```

@@ -20,7 +20,7 @@ const testArr_isFrac = [ // 測資
 ];
 describe("Frac.isFrac", () => {
 	test.each(testArr_isFrac)(
-		"$value is Frac instance? $output",
+		"Frac.isFrac($value) = $output",
 		({ value, output, error }) => {
 			expect(Frac.isFrac(value)).toBe(output)
 			
@@ -110,6 +110,43 @@ describe(".copy", () => {
 		({ frac, output, error }) => {
 			const frac_ = frac.copy();
 			expect([frac_.n, frac_.d]).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_isZero = [ // 測資
+	{ frac: F(0), output: true },
+	{ frac: F(2, 3), output: false },
+	{ frac: F(0, -7), output: true },
+];
+describe(".isZero", () => {
+	test.each(testArr_isZero)(
+		"($frac.n/$frac.d).isZero() = $output",
+		({ frac, output, error }) => {
+			expect(frac.isZero()).toBe(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_isInt = [ // 測資
+	{ frac: F(0), output: true },
+	{ frac: F(2, 3), output: false },
+	{ frac: F(0, -7), output: true },
+	{ frac: F(-15, 5), output: true },
+	{ frac: F(4), output: true },
+	{ frac: F(6, -9), output: false },
+];
+describe(".isInt", () => {
+	test.each(testArr_isInt)(
+		"($frac.n/$frac.d).isZero() = $output",
+		({ frac, output, error }) => {
+			expect(frac.isInt()).toBe(output);
 			
 			if (error) expect(spy).toHaveBeenCalledWith(error);
 			else expect(spy).not.toHaveBeenCalled();
