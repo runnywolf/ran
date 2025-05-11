@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { Prime } from "RanMath";
+import { Prime } from "ran-math";
 
 const testArr_getNth = [ // 測資
 	{ n: -5, output: NaN },

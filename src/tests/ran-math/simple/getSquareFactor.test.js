@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { getSquareFactor } from "RanMath";
+import { getSquareFactor } from "ran-math";
 
 const testArr = [ // 測資
 	{ n: 0, output: 1 },      // 0 的最大平方因數定義為 1

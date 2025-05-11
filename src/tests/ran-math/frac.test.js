@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { Frac, F } from "RanMath";
+import { Frac, F } from "ran-math";
 
 const testArr_isFrac = [ // 測資
 	{ value: 0, output: false },

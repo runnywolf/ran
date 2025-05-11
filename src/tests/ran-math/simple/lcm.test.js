@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { lcm } from "RanMath";
+import { lcm } from "ran-math";
 
 const testArr = [ // 測資
 	{ a: 0, b: 0, output: 0 },

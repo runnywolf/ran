@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { getFactors } from "RanMath";
+import { getFactors } from "ran-math";
 
 const testArr = [ // 測資
 	{ n: 0, output: [] },

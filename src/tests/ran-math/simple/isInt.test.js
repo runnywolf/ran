@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 // ---------- test area ----------
-import { isInt } from "RanMath";
+import { isInt } from "ran-math";
 
 const testArr = [ // 測資
 	{ n: 123, output: true },            // 正整數

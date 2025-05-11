@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 // ---------- test area ----------
-import { /* method or class */ } from "RanMath";
+import { /* method or class */ } from "ran-math";
 
 const testArr = [ // 測資
 	{ a: 0, b: 0, output: 0 }, // 不會報錯的測資
