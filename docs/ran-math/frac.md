@@ -24,8 +24,8 @@ $n$ 與 $d$ 滿足以下條件：
 
 | Function | Description |
 | :- | :- |
-| [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例，與 `frac instanceof Frac` 等價 |
-| [`Frac.fromStr`](#) |  |
+| [`Frac.isFrac`](#frac-isfrac) | 檢查輸入值是否為 `Frac` 的實例，與 `... instanceof Frac` 等價 |
+| [`Frac.fromStr`](#frac-fromstr) | 將字串轉為分數型態 |
 | [`Frac.sum`](#) |  |
 | [`new Frac`](#new-frac) | 建構子 |
 
@@ -77,6 +77,25 @@ Frac.isFrac(value: any): boolean
 const frac = new Frac(6, -9);
 Frac.isFrac(frac) // true
 Frac.isFrac(2/3)  // false
+```
+
+## `Frac.fromStr`
+將字串轉為分數型態。<br>
+若字串不是分數，回傳 `Frac { n: 0, d: 1 }`。
+
+```js
+Frac.fromStr(str: string): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `str` | `string` | 分數字串 |
+
+範例：
+```js
+Frac.fromStr("-7")        // Frac { n: -7, d: 1 }
+Frac.fromStr("6/-9")      // Frac { n: -2, d: 3 }
+Frac.fromStr(" -12 / 7 ") // Frac { n: -12, d: 7 }
 ```
 
 ## `new Frac`

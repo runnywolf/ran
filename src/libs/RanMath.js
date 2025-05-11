@@ -106,17 +106,12 @@ export class Frac { // 分數
 	static fromStr(str) { // 將字串轉為分數
 		if (typeof str !== "string") return new Frac(0); // 若 str 不是字串, 回傳 0
 		
-		const arrayFrac = str.split("/");
-		for (const i of arrayFrac) if (!isInt(Number(i))) return new Frac(0); // 若某個部份不是整數, 回傳 0
+		const numArr = str.split("/").map(s => Number(s)); // 將 "/" 符號切分, 並將切割後的數個字串轉為數字
+		if (numArr.some(n => !isInt(n))) return new Frac(0); // 若字串某個部份不是整數, 回傳 0
 		
-		if (arrayFrac.length == 1) { // 輸入整數
-			return new Frac(Number(arrayFrac[0]));
-		}
-		if (arrayFrac.length == 2) { // 輸入分數
-			return new Frac(Number(arrayFrac[0]), Number(arrayFrac[1]));
-		}
-		
-		return new Frac(0); // 若輸入非整數或分數, 回傳 0
+		if (numArr.length === 1) return new Frac(numArr[0]); // 輸入整數 (str 有 0 個 "/", 被切分成 1 個部份)
+		if (numArr.length === 2) return new Frac(numArr[0], numArr[1]); // 輸入分數 (str 有 1 個 "/", 被切分成 2 個部份)
+		return new Frac(0); // 若 str 不是整數或分數, 回傳 0
 	}
 	
 	static sum(fracArr) { // 加總

@@ -30,6 +30,30 @@ describe("Frac.isFrac", () => {
 	);
 });
 
+const testArr_fromStr = [ // 測資
+	{ str: "4", output: [4, 1] },
+	{ str: " -7", output: [-7, 1] },
+	{ str: "6/-9", output: [-2, 3] },
+	{ str: " -12 /   7 ", output: [-12, 7] },
+	{ str: 4, output: [0, 1] }, // str 不是字串
+	{ str: "", output: [0, 1] }, // 空字串
+	{ str: "2.5/1", output: [0, 1] }, // 子字串不是整數
+	{ str: "2/1/3", output: [0, 1] }, // 子字串過多
+	{ str: "2/0", output: [0, 1], error: '[RanMath][Frac.constructor] The denominator cannot be 0.' }, // 分母為 0
+];
+describe("Frac.fromStr", () => {
+	test.each(testArr_fromStr)(
+		"Frac.fromStr($str) = $output.0/$output.1",
+		({ str, output, error }) => {
+			const frac = Frac.fromStr(str);
+			expect([frac.n, frac.d]).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
 const testArr_constructor = [ // 測資
 	{ n: undefined, d: undefined, output: [0, 1] },
 	{ n: 3, d: undefined, output: [3, 1] },
