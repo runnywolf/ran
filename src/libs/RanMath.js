@@ -178,62 +178,56 @@ export class Frac { // 分數
 		return this.n / this.d;
 	}
 	
-	_makeOp(fn, opName, op) { // 自訂運算子
-		if (isInt(fn)) fn = new Frac(fn); // 將 int 轉為 Frac
+	#makeOp(nf, opName, op, errReturn = undefined) { // 自訂運算子
+		if (isInt(nf)) nf = new Frac(nf); // 將 int 轉為 Frac
 		
-		if (!Frac.isFrac(fn)) { // 如果參數不是 Frac / int, 不執行這個運算
-			throwErr(`Frac.${opName}`, "Param is not a Frac / int.");
-			return this.copy();
+		if (!Frac.isFrac(nf)) { // 第二個運算元必須是 Frac / int
+			throwErr(`Frac.${opName}`, 'Param "nf" must be a Frac or int.');
+			
+			if (errReturn === undefined) return this; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
+			return errReturn; // 回傳自訂的 errReturn (equal 或 lt 會回傳 false)
 		}
 		
-		return op(this, fn);
+		return op(this, nf); // 執行運算
 	}
 	
-	add(frac) { // 加法
-		return this._makeOp(frac, "add", (frac1, frac2) => {
-			return new Frac(frac1.n * frac2.d + frac1.d * frac2.n, frac1.d * frac2.d);
-		});
+	add(nf) { // 加法
+		return this.#makeOp(nf, "add", (f1, f2) => new Frac(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d));
 	}
 	
-	sub(frac) { // 減法
-		return this._makeOp(frac, "sub", (frac1, frac2) => {
-			return new Frac(frac1.n * frac2.d - frac1.d * frac2.n, frac1.d * frac2.d);
-		});
+	sub(nf) { // 減法
+		return this.#makeOp(nf, "sub", (f1, f2) => new Frac(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d));
 	}
 	
-	mul(frac) { // 乘法
-		return this._makeOp(frac, "mul", (frac1, frac2) => {
-			return new Frac(frac1.n * frac2.n, frac1.d * frac2.d);
-		});
+	mul(nf) { // 乘法
+		return this.#makeOp(nf, "mul", (f1, f2) => new Frac(f1.n * f2.n, f1.d * f2.d));
 	}
 	
-	div(frac) { // 除法
-		return this._makeOp(frac, "div", (frac1, frac2) => {
-			if (frac2.isZero()) { // 除零錯誤, 回傳 null
+	div(nf) { // 除法
+		return this.#makeOp(nf, "div", (f1, f2) => {
+			if (f2.isZero()) { // f1/f2 發生除零錯誤, 回傳 null
 				throwErr("Frac.div", "Div 0 error.");
-				return null;
+				return f1; // 回傳 this (不執行這個運算)
 			}
-			return new Frac(frac1.n * frac2.d, frac1.d * frac2.n);
+			return new Frac(f1.n * f2.d, f1.d * f2.n);
 		});
 	}
 	
 	pow(i) { // 整數次方
-		if (!isInt(i)) {
+		if (!isInt(i)) { // 次方數必須是整數
 			throwErr("Frac.pow", "Power must be an int.");
-			return null;
+			return this.copy();
 		}
 		if (i >= 0) return new Frac(this.n ** i, this.d ** i);
 		else return new Frac(this.d ** -i, this.n ** -i); // 負數次方 -> 交換分子分母
 	}
 	
-	equal(frac) { // 比較兩個分數是否相同
-		return this._makeOp(frac, "equal", (frac1, frac2) => {
-			return frac1.n === frac2.n && frac1.d === frac2.d;
-		});
+	equal(nf) { // 比較兩個分數是否相同
+		return this.#makeOp(nf, "equal", (f1, f2) => f1.n === f2.n && f1.d === f2.d, false);
 	}
 	
-	lt(frac) { // 小於: this < frac
-		return this._makeOp(frac, "lt", (frac1, frac2) => frac1.n * frac2.d < frac1.d * frac2.n);
+	lt(nf) { // 小於: this < nf
+		return this.#makeOp(nf, "lt", (f1, f2) => f1.n * f2.d < f1.d * f2.n, false);
 	}
 }
 
