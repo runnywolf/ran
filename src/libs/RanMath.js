@@ -149,6 +149,8 @@ export class Frac { // 分數
 		const ndGcd = gcd(this.n, this.d);
 		this.n /= ndGcd; // 約分. (會把 0/? 變成 0/1)
 		this.d /= ndGcd; // 因為 n, d 不可能同時為 0, 所以 gcd(n, d) 不可能為 0
+		
+		if (this.n === 0) this.n = 0; // 去除 -0
 		// 標準化
 	}
 	

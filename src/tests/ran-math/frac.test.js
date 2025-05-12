@@ -210,4 +210,177 @@ describe(".toFloat", () => {
 		}
 	);
 });
+
+const testArr_add = [ // 測資
+	{ frac: F(-3, 4), nf: F(-5, 8), output: F(-11, 8) },
+	{ frac: F(7, 4), nf: F(3, 5), output: F(47, 20) },
+	{ frac: F(0, 3), nf: F(-2, 3), output: F(-2, 3) },
+	{ frac: F(2, 7), nf: F(-3, 5), output: F(-11, 35) },
+	{ frac: F(346, 7835), nf: F(-11307, 5127), output: F(-28938801, 13390015) },
+	{ frac: F(3, 7), nf: -3, output: F(-18, 7) },
+	{ frac: F(-5, 3), nf: 5, output: F(10, 3) },
+	{ frac: F(-5, 37), nf: 17, output: F(624, 37) },
+	{ frac: F(10), nf: -10, output: F(0, 1) },
+	{ frac: F(-500), nf: 500, output: F(0, 1) },
+	{ frac: F(6, 7), nf: 3.5, output: F(6, 7), error: '[RanMath][Frac.add] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: F(8), error: '[RanMath][Frac.add] Param "nf" must be a Frac or int.' },
+];
+describe(".add", () => {
+	test.each(testArr_add)(
+		"($frac.n/$frac.d) + ($nf) = $output.n/$output.d",
+		({ frac, nf, output, error }) => {
+			expect(frac.add(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_sub = [ // 測資
+	{ frac: F(-3, 4), nf: F(-5, 8), output: F(-1, 8) },
+	{ frac: F(7, 4), nf: F(3, 5), output: F(23, 20) },
+	{ frac: F(0, 3), nf: F(-2, 3), output: F(2, 3) },
+	{ frac: F(2, 7), nf: F(-3, 5), output: F(31, 35) },
+	{ frac: F(1346, 7835), nf: F(-11307, 5127), output: F(31830429, 13390015) },
+	{ frac: F(3, 7), nf: -3, output: F(24, 7) },
+	{ frac: F(-5, 3), nf: 5, output: F(-20, 3) },
+	{ frac: F(-5, 37), nf: 17, output: F(-634, 37) },
+	{ frac: F(10), nf: 0, output: F(10, 1) },
+	{ frac: F(-500), nf: -500, output: F(0, 1) },
+	{ frac: F(6, 7), nf: 3.5, output: F(6, 7), error: '[RanMath][Frac.sub] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: F(8), error: '[RanMath][Frac.sub] Param "nf" must be a Frac or int.' },
+];
+describe(".sub", () => {
+	test.each(testArr_sub)(
+		"($frac.n/$frac.d) - ($nf) = $output.n/$output.d",
+		({ frac, nf, output, error }) => {
+			expect(frac.sub(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_mul = [ // 測資
+	{ frac: F(-3, 4), nf: F(-5, 8), output: F(15, 32) },
+	{ frac: F(7, 4), nf: F(3, 5), output: F(21, 20) },
+	{ frac: F(0, 3), nf: F(-2, 3), output: F(0, 1) },
+	{ frac: F(12, 5), nf: F(10, 9), output: F(8, 3) },
+	{ frac: F(1346, 7835), nf: F(-11307, 5127), output: F(-5073074, 13390015) },
+	{ frac: F(3, 7), nf: -3, output: F(-9, 7) },
+	{ frac: F(7, 10), nf: 4, output: F(14, 5) },
+	{ frac: F(-5, 12), nf: 9, output: F(-15, 4) },
+	{ frac: F(-500), nf: -500, output: F(250000, 1) },
+	{ frac: F(2, 3), nf: 0, output: F(0, 1) },
+	{ frac: F(6, 7), nf: 3.5, output: F(6, 7), error: '[RanMath][Frac.mul] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: F(8), error: '[RanMath][Frac.mul] Param "nf" must be a Frac or int.' },
+];
+describe(".mul", () => {
+	test.each(testArr_mul)(
+		"($frac.n/$frac.d) * ($nf) = $output.n/$output.d",
+		({ frac, nf, output, error }) => {
+			expect(frac.mul(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_div = [ // 測資
+	{ frac: F(-3, 4), nf: F(-5, 8), output: F(6, 5) },
+	{ frac: F(7, 4), nf: F(3, 5), output: F(35, 12) },
+	{ frac: F(0, 3), nf: F(-2, 3), output: F(0, 1) },
+	{ frac: F(12, 5), nf: F(10, 9), output: F(54, 25) },
+	{ frac: F(1346, 7835), nf: F(-11307, 5127), output: F(-2300314, 29530115) },
+	{ frac: F(3, 7), nf: -3, output: F(-1, 7) },
+	{ frac: F(7, 10), nf: 4, output: F(7, 40) },
+	{ frac: F(-3, 5), nf: 9, output: F(-1, 15) },
+	{ frac: F(-500), nf: -500, output: F(1, 1) },
+	{ frac: F(2, 3), nf: 0, output: F(2, 3), error: '[RanMath][Frac.div] Div 0 error.' },
+	{ frac: F(6, 7), nf: 3.5, output: F(6, 7), error: '[RanMath][Frac.div] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: F(8), error: '[RanMath][Frac.div] Param "nf" must be a Frac or int.' },
+];
+describe(".div", () => {
+	test.each(testArr_div)(
+		"($frac.n/$frac.d) / ($nf) = $output.n/$output.d",
+		({ frac, nf, output, error }) => {
+			expect(frac.div(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_pow = [ // 測資
+	{ frac: F(2, 3), i: 0, output: F(1) },
+	{ frac: F(0), i: 0, output: F(1) },
+	{ frac: F(0), i: 10000, output: F(0) },
+	{ frac: F(-7, 3), i: -1, output: F(-3, 7) },
+	{ frac: F(12, 5), i: 1, output: F(12, 5) },
+	{ frac: F(3), i: 7, output: F(2187) },
+	{ frac: F(-6, 5), i: -4, output: F(625, 1296) },
+	{ frac: F(-6, 5), i: 2, output: F(36, 25) },
+	{ frac: F(6, 7), i: 3.5, output: F(6, 7), error: '[RanMath][Frac.pow] Power must be an int.' },
+	{ frac: F(-3, 5), i: F(2), output: F(-3, 5), error: '[RanMath][Frac.pow] Power must be an int.' },
+	{ frac: F(8), i: "8", output: F(8), error: '[RanMath][Frac.pow] Power must be an int.' },
+];
+describe(".pow", () => {
+	test.each(testArr_pow)(
+		"($frac.n/$frac.d) ^ ($i) = $output.n/$output.d",
+		({ frac, i, output, error }) => {
+			expect(frac.pow(i)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_equal = [ // 測資
+	{ frac: F(8, 6), nf: F(20, 15), output: true },
+	{ frac: F(7, 4), nf: F(7, 5), output: false },
+	{ frac: F(7, -3), nf: F(-14, 6), output: true },
+	{ frac: F(6, 3), nf: 2, output: true },
+	{ frac: F(7, 10), nf: 7, output: false },
+	{ frac: F(-3, 5), nf: -3, output: false },
+	{ frac: F(6, 7), nf: 3.5, output: false, error: '[RanMath][Frac.equal] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: false, error: '[RanMath][Frac.equal] Param "nf" must be a Frac or int.' },
+];
+describe(".equal", () => {
+	test.each(testArr_equal)(
+		"($frac.n/$frac.d) == ($nf) = $output",
+		({ frac, nf, output, error }) => {
+			expect(frac.equal(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
+
+const testArr_lt = [ // 測資
+	{ frac: F(8, 6), nf: F(20, 15), output: false },
+	{ frac: F(7, 4), nf: F(7, 5), output: false },
+	{ frac: F(-16, 7), nf: F(-3, 5), output: true },
+	{ frac: F(6, 3), nf: 2, output: false },
+	{ frac: F(7, 10), nf: 7, output: true },
+	{ frac: F(-1, 555), nf: 0, output: true },
+	{ frac: F(6, 7), nf: 3.5, output: false, error: '[RanMath][Frac.lt] Param "nf" must be a Frac or int.' },
+	{ frac: F(8), nf: "8", output: false, error: '[RanMath][Frac.lt] Param "nf" must be a Frac or int.' },
+];
+describe(".lt", () => {
+	test.each(testArr_lt)(
+		"($frac.n/$frac.d) < ($nf) = $output",
+		({ frac, nf, output, error }) => {
+			expect(frac.lt(nf)).toStrictEqual(output);
+			
+			if (error) expect(spy).toHaveBeenCalledWith(error);
+			else expect(spy).not.toHaveBeenCalled();
+		}
+	);
+});
 // ---------- test area ----------
