@@ -273,8 +273,9 @@ const checkPowerInput = (inputText) => { // 檢查非齊次的 c n^k b^n 項的 
 	return -1; // -1 會被認為是錯誤的輸入 (會在 nonHomoFunc 建構時被忽略)
 };
 
-watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
-	let coef = [...newInput];
+watch(recurCoefInput, (newRecurCoefInput) => { // 遞迴部分被修改
+	let coef = [...newRecurCoefInput]; // 去除 proxy
+		
 	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數遞迴
 	recurCoef.value = coef;
 	initConst.value = initConstInput.value.slice(0, coef.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
@@ -299,8 +300,8 @@ watch([polyCoefInput, expFuncInput], ([newPolyCoefInput, newExpFuncInput]) => { 
 	nonHomoFunc.value = expFunc;
 }, { immediate: true, deep: true });
 
-watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
-	initConst.value = newInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+watch(initConstInput, (newInitConstInput) => { // 當遞迴的初始條件被修改
+	initConst.value = newInitConstInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 }, { immediate: true, deep: true });
 
 watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newInitConst]) => {

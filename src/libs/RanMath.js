@@ -180,7 +180,7 @@ export class Frac { // 分數
 		return this.n / this.d;
 	}
 	
-	#makeOp(nf, opName, op, errReturn = undefined) { // 自訂運算子
+	_makeOp(nf, opName, op, errReturn = undefined) { // 自訂運算子
 		if (isInt(nf)) nf = F(nf); // 將 int 轉為 Frac
 		
 		if (!Frac.isFrac(nf)) { // 第二個運算元必須是 Frac / int
@@ -193,22 +193,22 @@ export class Frac { // 分數
 		return op(this, nf); // 執行運算
 	}
 	
-	static #ADD_OP = (f1, f2) => F(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
+	static ADD_OP = (f1, f2) => F(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
 	add(nf) { // 加法
-		return this.#makeOp(nf, "add", Frac.#ADD_OP);
+		return this._makeOp(nf, "add", Frac.ADD_OP);
 	}
 	
-	static #SUB_OP = (f1, f2) => F(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
+	static SUB_OP = (f1, f2) => F(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
 	sub(nf) { // 減法
-		return this.#makeOp(nf, "sub", Frac.#SUB_OP);
+		return this._makeOp(nf, "sub", Frac.SUB_OP);
 	}
 	
-	static #MUL_OP = (f1, f2) => F(f1.n * f2.n, f1.d * f2.d);
+	static MUL_OP = (f1, f2) => F(f1.n * f2.n, f1.d * f2.d);
 	mul(nf) { // 乘法
-		return this.#makeOp(nf, "mul", Frac.#MUL_OP);
+		return this._makeOp(nf, "mul", Frac.MUL_OP);
 	}
 	
-	static #DIV_OP = (f1, f2) => {
+	static DIV_OP = (f1, f2) => {
 		if (f2.isZero()) { // f1/f2 發生除零錯誤, 回傳 null
 			throwErr("Frac.div", "Div 0 error.");
 			return f1; // 回傳 this (不執行這個運算)
@@ -216,7 +216,7 @@ export class Frac { // 分數
 		return F(f1.n * f2.d, f1.d * f2.n);
 	};
 	div(nf) { // 除法
-		return this.#makeOp(nf, "div", Frac.#DIV_OP);
+		return this._makeOp(nf, "div", Frac.DIV_OP);
 	}
 	
 	pow(i) { // 整數次方
@@ -228,14 +228,14 @@ export class Frac { // 分數
 		else return F(this.d ** -i, this.n ** -i); // 負數次方 -> 交換分子分母
 	}
 	
-	static #EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
+	static EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
 	equal(nf) { // 比較兩個分數是否相同
-		return this.#makeOp(nf, "equal", Frac.#EQUAL_OP, false);
+		return this._makeOp(nf, "equal", Frac.EQUAL_OP, false);
 	}
 	
-	static #LT_OP = (f1, f2) => f1.n * f2.d < f1.d * f2.n;
+	static LT_OP = (f1, f2) => f1.n * f2.d < f1.d * f2.n;
 	lt(nf) { // 小於: this < nf
-		return this.#makeOp(nf, "lt", Frac.#LT_OP, false);
+		return this._makeOp(nf, "lt", Frac.LT_OP, false);
 	}
 }
 
