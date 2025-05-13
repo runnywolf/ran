@@ -42,6 +42,13 @@ import { F } from "ran-math"; // new Frac 的工廠函數
 | [`.toStr`](#tostr) | 轉為字串 |
 | [`.toLatex`](#tolatex) | 轉為 LaTex 語法 |
 | [`.toFloat`](#tofloat) | 轉為浮點數 |
+| [`.add`](#add) | 加法 |
+| [`.sub`](#sub) | 減法 |
+| [`.mul`](#mul) | 乘法 |
+| [`.div`](#div) | 除法 |
+| [`.pow`](#pow) | 整數次方 |
+| [`.equal`](#equal) | 等於 |
+| [`.lt`](#lt) | 小於 |
 
 ## `Frac.isFrac`
 檢查參數 `value` 是否為 `Frac` 的實例，與 `value instanceof Frac` 等價。
@@ -242,4 +249,140 @@ F(2).toFloat()     // 2
 F(-9, 3).toFloat() // -3
 F(2, 3).toFloat()  // 0.6666666666666666
 F(3, 5).toFloat()  // 0.6
+```
+
+## `.add`
+加上另一個 `Frac` 或 `int number`，回傳新實例。
+
+```js
+Frac.prototype.add(nf: number | Frac): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 加數 |
+
+範例：
+```js
+F(1, 3).add(F(1, 2)) // 5/6
+F(7, 4).add(F(3, 5)) // 47/20
+F(-3, 2).add(2)      // 1/2
+F(-3, 2).add(2.5)    // error, return -3/2
+```
+
+## `.sub`
+減去另一個 `Frac` 或 `int number`，回傳新實例。
+
+```js
+Frac.prototype.sub(nf: number | Frac): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 減數 |
+
+範例：
+```js
+F(1, 3).sub(F(1, 2)) // -1/6
+F(7, 4).sub(F(3, 5)) // 23/20
+F(-3, 2).sub(2)      // -7/2
+F(-3, 2).sub(2.5)    // error, return -3/2
+```
+
+## `.mul`
+乘上另一個 `Frac` 或 `int number`，回傳新實例。
+
+```js
+Frac.prototype.mul(nf: number | Frac): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 乘數 |
+
+範例：
+```js
+F(1, 3).mul(F(1, 2)) // 1/6
+F(7, 4).mul(F(3, 5)) // 21/20
+F(-3, 2).mul(2)      // -3/1
+F(-3, 2).mul(2.5)    // error, return -3/2
+```
+
+## `.div`
+除以另一個 `Frac` 或 `int number`，回傳新實例。
+
+```js
+Frac.prototype.div(nf: number | Frac): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 除數 |
+
+範例：
+```js
+F(1, 3).div(F(1, 2)) // 2/3
+F(7, 4).div(F(3, 5)) // 35/12
+F(-3, 2).div(2)      // -3/4
+F(-3, 2).div(2.5)    // error, return -3/2
+F(-3, 2).div(F(0))   // error, return -3/2
+```
+
+## `.pow`
+整數次方，回傳新實例。
+
+```js
+Frac.prototype.pow(i: number): Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `i` | `number` ( `int` ) | 整數次方 |
+
+範例：
+```js
+F(2, 3).pow(0)       // 1/1
+F(0).pow(0)          // 1/1
+F(0).pow(1)          // 0/1
+F(-6, 5).pow(-2)     // 25/36
+F(4, 9).pow(0.5)     // error, return 4/9
+F(4, 9).pow(F(1, 2)) // error, return 4/9
+```
+
+## `.equal`
+是否等於另一個 `Frac` 或 `int number`。
+
+```js
+Frac.prototype.equal(nf: number | Frac): boolean
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 要比較的另一個數 |
+
+範例：
+```js
+F(1, 3).equal(F(1, 2)) // false
+F(7, 4).equal(F(7, 4)) // true
+F(4, 2).equal(2)       // true
+F(5, 2).equal(2.5)     // error, return false
+```
+
+## `.lt`
+是否小於另一個 `Frac` 或 `int number`。
+
+```js
+Frac.prototype.lt(nf: number | Frac): boolean
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf` | `number \| Frac` | 要比較的另一個數 |
+
+範例：
+```js
+F(1, 3).lt(F(1, 2)) // true
+F(7, 4).lt(F(7, 4)) // false
+F(3, 2).lt(2)       // true
+F(5, 2).lt(3.5)     // error, return false
 ```

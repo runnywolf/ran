@@ -104,23 +104,23 @@ export class Frac { // 分數
 	}
 	
 	static fromStr(str) { // 將字串轉為分數
-		if (typeof str !== "string") return new Frac(0); // 若 str 不是字串, 回傳 0
+		if (typeof str !== "string") return F(0); // 若 str 不是字串, 回傳 0
 		
 		const numArr = str.split("/").map(s => Number(s)); // 將 "/" 符號切分, 並將切割後的數個字串轉為數字
-		if (numArr.some(n => !isInt(n))) return new Frac(0); // 若字串某個部份不是整數, 回傳 0
+		if (numArr.some(n => !isInt(n))) return F(0); // 若字串某個部份不是整數, 回傳 0
 		
-		if (numArr.length === 1) return new Frac(numArr[0]); // 輸入整數 (str 有 0 個 "/", 被切分成 1 個部份)
-		if (numArr.length === 2) return new Frac(numArr[0], numArr[1]); // 輸入分數 (str 有 1 個 "/", 被切分成 2 個部份)
-		return new Frac(0); // 若 str 不是整數或分數, 回傳 0
+		if (numArr.length === 1) return F(numArr[0]); // 輸入整數 (str 有 0 個 "/", 被切分成 1 個部份)
+		if (numArr.length === 2) return F(numArr[0], numArr[1]); // 輸入分數 (str 有 1 個 "/", 被切分成 2 個部份)
+		return F(0); // 若 str 不是整數或分數, 回傳 0
 	}
 	
 	static sum(arr) { // 加總
 		if (!Array.isArray(arr)) { // 如果 arr 不是 Array, 回傳 0
 			throwErr("Frac.sum", 'Param "arr" must be an Array.');
-			return new Frac(0);
+			return F(0);
 		}
 		
-		let frac_sum = new Frac(0);
+		let frac_sum = F(0);
 		for (const nf of arr) if (Frac.isFrac(nf) || isInt(nf)) { // 如果元素不是 Frac 或 int, 會自動忽略, 不會報錯
 			frac_sum = frac_sum.add(nf);
 		}
@@ -128,11 +128,11 @@ export class Frac { // 分數
 	}
 	
 	constructor(n = 0, d = 1) {
-		if (!isInt(n) || !isInt(d)) { // 如果參數 n 或 d 不是整數, 會建構一個 new Frac(0)
+		if (!isInt(n) || !isInt(d)) { // 如果參數 n 或 d 不是整數, 會建構一個 F(0)
 			throwErr("Frac.constructor", 'Param "n" & "d" must be a integer.');
 			n = 0; d = 1;
 		}
-		if (d === 0) { // 分母為 0, 會建構一個 new Frac(0)
+		if (d === 0) { // 分母為 0, 會建構一個 F(0)
 			throwErr("Frac.constructor", "The denominator cannot be 0.");
 			n = 0; d = 1;
 		}
@@ -155,7 +155,7 @@ export class Frac { // 分數
 	}
 	
 	copy() { // 複製
-		return new Frac(this.n, this.d);
+		return F(this.n, this.d);
 	}
 	
 	isZero() { // 是否為 0
@@ -181,7 +181,7 @@ export class Frac { // 分數
 	}
 	
 	#makeOp(nf, opName, op, errReturn = undefined) { // 自訂運算子
-		if (isInt(nf)) nf = new Frac(nf); // 將 int 轉為 Frac
+		if (isInt(nf)) nf = F(nf); // 將 int 轉為 Frac
 		
 		if (!Frac.isFrac(nf)) { // 第二個運算元必須是 Frac / int
 			throwErr(`Frac.${opName}`, 'Param "nf" must be a Frac or int.');
@@ -193,17 +193,17 @@ export class Frac { // 分數
 		return op(this, nf); // 執行運算
 	}
 	
-	static #ADD_OP = (f1, f2) => new Frac(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
+	static #ADD_OP = (f1, f2) => F(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
 	add(nf) { // 加法
 		return this.#makeOp(nf, "add", Frac.#ADD_OP);
 	}
 	
-	static #SUB_OP = (f1, f2) => new Frac(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
+	static #SUB_OP = (f1, f2) => F(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
 	sub(nf) { // 減法
 		return this.#makeOp(nf, "sub", Frac.#SUB_OP);
 	}
 	
-	static #MUL_OP = (f1, f2) => new Frac(f1.n * f2.n, f1.d * f2.d);
+	static #MUL_OP = (f1, f2) => F(f1.n * f2.n, f1.d * f2.d);
 	mul(nf) { // 乘法
 		return this.#makeOp(nf, "mul", Frac.#MUL_OP);
 	}
@@ -213,7 +213,7 @@ export class Frac { // 分數
 			throwErr("Frac.div", "Div 0 error.");
 			return f1; // 回傳 this (不執行這個運算)
 		}
-		return new Frac(f1.n * f2.d, f1.d * f2.n);
+		return F(f1.n * f2.d, f1.d * f2.n);
 	};
 	div(nf) { // 除法
 		return this.#makeOp(nf, "div", Frac.#DIV_OP);
@@ -224,8 +224,8 @@ export class Frac { // 分數
 			throwErr("Frac.pow", "Power must be an int.");
 			return this.copy();
 		}
-		if (i >= 0) return new Frac(this.n ** i, this.d ** i);
-		else return new Frac(this.d ** -i, this.n ** -i); // 負數次方 -> 交換分子分母
+		if (i >= 0) return F(this.n ** i, this.d ** i);
+		else return F(this.d ** -i, this.n ** -i); // 負數次方 -> 交換分子分母
 	}
 	
 	static #EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
