@@ -11,90 +11,104 @@ afterEach(() => {
 // ---------- test area ----------
 import { Hop, F } from "ran-math";
 
-const testArr_isInt = [ // 測資
-	{ nf: 2, output: true },
-	{ nf: F(-6, 2), output: true },
-	{ nf: 2.0, output: true },
-	{ nf: 3.5, output: false },
-	{ nf: F(-1, 2), output: false },
-	{ nf: "3", output: false },
-	{ nf: [], output: false },
-];
-describe("Hop.isInt", () => {
-	test.each(testArr_isInt)(
-		"Hop.isInt($nf) = $output",
-		({ nf, output, error }) => {
-			expect(Hop.isInt(nf)).toBe(output)
-			
-			if (error) expect(spy).toHaveBeenCalledWith(error);
-			else expect(spy).not.toHaveBeenCalled();
-		}
-	);
-});
+const testData = {
+	"Hop.isInt": {
+		testName: "Hop.isInt($input) = $output",
+		testFunc: Hop.isInt,
+		tests: [ // 測資
+			{ input: 2, output: true },
+			{ input: F(-6, 2), output: true },
+			{ input: 2.0, output: true },
+			{ input: 3.5, output: false },
+			{ input: F(-1, 2), output: false },
+			{ input: "3", output: false },
+			{ input: [], output: false },
+		],
+	},
+	"Hop.isPosInt": {
+		testName: "Hop.isPosInt($input) = $output",
+		testFunc: Hop.isPosInt,
+		tests: [ // 測資
+			{ input: -2, output: false },
+			{ input: F(-6, 2), output: false },
+			{ input: 2.0, output: true },
+			{ input: 0, output: false },
+			{ input: 3.5, output: false },
+			{ input: F(-1, 2), output: false },
+			{ input: "3", output: false },
+			{ input: [], output: false },
+		],
+	},
+	"Hop.isNegInt": {
+		testName: "Hop.isNegInt($input) = $output",
+		testFunc: Hop.isNegInt,
+		tests: [ // 測資
+			{ input: -2, output: true },
+			{ input: F(-6, 2), output: true },
+			{ input: 2.0, output: false },
+			{ input: 0, output: false },
+			{ input: -3.5, output: false },
+			{ input: F(-1, 2), output: false },
+			{ input: "3", output: false },
+			{ input: [], output: false },
+		],
+	},
+	"Hop.isRational": {
+		testName: "Hop.isRational($input) = $output",
+		testFunc: Hop.isRational,
+		tests: [ // 測資
+			{ input: -2, output: true },
+			{ input: F(-6, 2), output: true },
+			{ input: 2.0, output: true },
+			{ input: 0, output: true },
+			{ input: -3.5, output: false },
+			{ input: F(-1, 2), output: true },
+			{ input: "3", output: false },
+			{ input: [], output: false },
+		],
+	},
+	"Hop.toStr": {
+		testName: "Hop.toStr($input) = $output",
+		testFunc: input => Hop.toStr(...input),
+		tests: [ // 測資
+			{ input: [ -2 ], output: "-2" },
+			{ input: [ F(-17, 3) ], output: "-17/3" },
+			{ input: [ F(3, 4) ], output: "3/4" },
+			{ input: [ 2.0 ], output: "2" },
+			{ input: [ 0 ], output: "0" },
+			{ input: [ -3.5 ], output: "-3.5000" },
+			{ input: [ -3.511678 ], output: "-3.5117" },
+			{ input: [ 3.5776, 2 ], output: "3.58" },
+			{ input: [ 37.5, 0 ], output: "38" },
+			{ input: [ "3" ], output: "?" },
+			{ input: [ [] ], output: "?" },
+		],
+	},
+	"Hop.toLatex": {
+		testName: "Hop.toLatex($input) = $output",
+		testFunc: input => Hop.toLatex(...input),
+		tests: [ // 測資
+			{ input: [ -2 ], output: "-2" },
+			{ input: [ F(-17, 3) ], output: "\\frac{-17}{3}" },
+			{ input: [ F(3, 4) ], output: "\\frac{3}{4}" },
+			{ input: [ 2.0 ], output: "2" },
+			{ input: [ 0 ], output: "0" },
+			{ input: [ -3.5 ], output: "-3.5000" },
+			{ input: [ -3.511678 ], output: "-3.5117" },
+			{ input: [ 3.5776, 2 ], output: "3.58" },
+			{ input: [ 37.5, 0 ], output: "38" },
+			{ input: [ "3" ], output: "?" },
+			{ input: [ [] ], output: "?" },
+		],
+	},
+};
 
-const testArr_isPosInt = [ // 測資
-	{ nf: -2, output: false },
-	{ nf: F(-6, 2), output: false },
-	{ nf: 2.0, output: true },
-	{ nf: 0, output: false },
-	{ nf: 3.5, output: false },
-	{ nf: F(-1, 2), output: false },
-	{ nf: "3", output: false },
-	{ nf: [], output: false },
-];
-describe("Hop.isPosInt", () => {
-	test.each(testArr_isPosInt)(
-		"Hop.isPosInt($nf) = $output",
-		({ nf, output, error }) => {
-			expect(Hop.isPosInt(nf)).toBe(output)
-			
-			if (error) expect(spy).toHaveBeenCalledWith(error);
-			else expect(spy).not.toHaveBeenCalled();
-		}
-	);
-});
-
-const testArr_isNegInt = [ // 測資
-	{ nf: -2, output: true },
-	{ nf: F(-6, 2), output: true },
-	{ nf: 2.0, output: false },
-	{ nf: 0, output: false },
-	{ nf: -3.5, output: false },
-	{ nf: F(-1, 2), output: false },
-	{ nf: "3", output: false },
-	{ nf: [], output: false },
-];
-describe("Hop.isNegInt", () => {
-	test.each(testArr_isNegInt)(
-		"Hop.isNegInt($nf) = $output",
-		({ nf, output, error }) => {
-			expect(Hop.isNegInt(nf)).toBe(output)
-			
-			if (error) expect(spy).toHaveBeenCalledWith(error);
-			else expect(spy).not.toHaveBeenCalled();
-		}
-	);
-});
-
-const testArr_isRational = [ // 測資
-	{ nf: -2, output: true },
-	{ nf: F(-6, 2), output: true },
-	{ nf: 2.0, output: true },
-	{ nf: 0, output: true },
-	{ nf: -3.5, output: false },
-	{ nf: F(-1, 2), output: true },
-	{ nf: "3", output: false },
-	{ nf: [], output: false },
-];
-describe("Hop.isRational", () => {
-	test.each(testArr_isRational)(
-		"Hop.isRational($nf) = $output",
-		({ nf, output, error }) => {
-			expect(Hop.isRational(nf)).toBe(output)
-			
-			if (error) expect(spy).toHaveBeenCalledWith(error);
-			else expect(spy).not.toHaveBeenCalled();
-		}
-	);
+for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
+	test.each(testInfo.tests)(testInfo.testName, ({ input, output, error }) => {
+		expect(testInfo.testFunc(input)).toStrictEqual(output);
+		
+		if (error) expect(spy).toHaveBeenCalledWith(error);
+		else expect(spy).not.toHaveBeenCalled();
+	});
 });
 // ---------- test area ----------

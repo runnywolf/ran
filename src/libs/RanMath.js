@@ -287,12 +287,15 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPerator
 		return Hop.uop(nf, Hop.Q_FRAC_OP, Hop.FALSE_OP, false);
 	}
 	
+	static STR_FRAC_OP = frac => frac.toStr();
+	static STR_FLOAT_OP = p => (n => n.toFixed(p));
 	static toStr(fn, p = 4) { // 轉 debug 字串. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.uop(fn, frac => frac.toStr(), n => n.toFixed(p), "?"); // debug 字串
+		return Hop.uop(fn, Hop.STR_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
 	}
 	
+	static LATEX_FRAC_OP = frac => frac.toLatex();
 	static toLatex(fn, p = 4) { // 轉 latex 語法. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.uop(fn, frac => frac.toLatex(), n => n.toFixed(p), "?");
+		return Hop.uop(fn, Hop.LATEX_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
 	}
 	
 	static add(fn1, fn2) { // 加法

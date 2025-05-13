@@ -67,7 +67,7 @@ const testData = {
 	},
 	".copy": {
 		testName: "($input.n/$input.d).copy() = $output.n/$output.d",
-		testFunc: (input) => input.copy(),
+		testFunc: input => input.copy(),
 		tests: [ // 測資
 			{ input: F(2), output: F(2, 1) },
 			{ input: F(2, 3), output: F(2, 3) },
@@ -76,7 +76,7 @@ const testData = {
 	},
 	".isZero": {
 		testName: "($input.n/$input.d).isZero() = $output",
-		testFunc: (input) => input.isZero(),
+		testFunc: input => input.isZero(),
 		tests: [ // 測資
 			{ input: F(0), output: true },
 			{ input: F(2, 3), output: false },
@@ -85,7 +85,7 @@ const testData = {
 	},
 	".isInt": {
 		testName: "($input.n/$input.d).isInt() = $output",
-		testFunc: (input) => input.isInt(),
+		testFunc: input => input.isInt(),
 		tests: [ // 測資
 			{ input: F(0), output: true },
 			{ input: F(2, 3), output: false },
@@ -97,7 +97,7 @@ const testData = {
 	},
 	".toStr": {
 		testName: "($input.n/$input.d).toStr() = $output",
-		testFunc: (input) => input.toStr(),
+		testFunc: input => input.toStr(),
 		tests: [ // 測資
 			{ input: F(2), output: "2" },
 			{ input: F(-9, 3), output: "-3" },
@@ -108,7 +108,7 @@ const testData = {
 	},
 	".toLatex": {
 		testName: "($input.n/$input.d).toLatex() = $output",
-		testFunc: (input) => input.toLatex(),
+		testFunc: input => input.toLatex(),
 		tests: [ // 測資
 			{ input: F(2), output: "2" },
 			{ input: F(-9, 3), output: "-3" },
@@ -119,7 +119,7 @@ const testData = {
 	},
 	".toFloat": {
 		testName: "($input.n/$input.d).toFloat() = $output",
-		testFunc: (input) => input.toFloat(),
+		testFunc: input => input.toFloat(),
 		tests: [ // 測資
 			{ input: F(2), output: 2 },
 			{ input: F(-9, 3), output: -3 },
@@ -130,7 +130,7 @@ const testData = {
 	},
 	".add": {
 		testName: "($input.0.n/$input.0.d) + ($input.1) = $output.n/$output.d",
-		testFunc: (input) => input[0].add(input[1]),
+		testFunc: input => input[0].add(input[1]),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-11, 8) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(47, 20) },
@@ -148,7 +148,7 @@ const testData = {
 	},
 	".sub": {
 		testName: "($input.0.n/$input.0.d) - ($input.1) = $output.n/$output.d",
-		testFunc: (input) => input[0].sub(input[1]),
+		testFunc: input => input[0].sub(input[1]),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-1, 8) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(23, 20) },
@@ -166,7 +166,7 @@ const testData = {
 	},
 	".mul": {
 		testName: "($input.0.n/$input.0.d) * ($input.1) = $output.n/$output.d",
-		testFunc: (input) => input[0].mul(input[1]),
+		testFunc: input => input[0].mul(input[1]),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(15, 32) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(21, 20) },
@@ -184,7 +184,7 @@ const testData = {
 	},
 	".div": {
 		testName: "($input.0.n/$input.0.d) / ($input.1) = $output.n/$output.d",
-		testFunc: (input) => input[0].div(input[1]),
+		testFunc: input => input[0].div(input[1]),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(6, 5) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(35, 12) },
@@ -202,7 +202,7 @@ const testData = {
 	},
 	".pow": {
 		testName: "($input.0.n/$input.0.d) ^ ($input.1) = $output.n/$output.d",
-		testFunc: (input) => input[0].pow(input[1]),
+		testFunc: input => input[0].pow(input[1]),
 		tests: [ // 測資
 			{ input: [ F(2, 3), 0 ], output: F(1) },
 			{ input: [ F(0), 0 ], output: F(1) },
@@ -219,7 +219,7 @@ const testData = {
 	},
 	".equal": {
 		testName: "($input.0.n/$input.0.d) == ($input.1) = $output",
-		testFunc: (input) => input[0].equal(input[1]),
+		testFunc: input => input[0].equal(input[1]),
 		tests: [ // 測資
 			{ input: [ F(8, 6), F(20, 15) ], output: true },
 			{ input: [ F(7, 4), F(7, 5) ], output: false },
@@ -233,7 +233,7 @@ const testData = {
 	},
 	".lt": {
 		testName: "($input.0.n/$input.0.d) < ($input.1) = $output",
-		testFunc: (input) => input[0].lt(input[1]),
+		testFunc: input => input[0].lt(input[1]),
 		tests: [ // 測資
 			{ input: [ F(8, 6), F(20, 15) ], output: false },
 			{ input: [ F(7, 4), F(7, 5) ], output: false },
@@ -255,3 +255,4 @@ for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
 		else expect(spy).not.toHaveBeenCalled();
 	});
 });
+// ---------- test area ----------
