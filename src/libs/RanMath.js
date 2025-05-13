@@ -67,7 +67,7 @@ export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export class Prime { // 質數
+export class Prime { // 質數 (prime number)
 	static prime = [2];
 	
 	static getNth(n) { // 取得第 n 個質數
@@ -98,7 +98,7 @@ export class Prime { // 質數
 	}
 }
 
-export class Frac { // 分數
+export class Frac { // 分數 (fraction)
 	static isFrac(value) { // 是否是分數
 		return value instanceof Frac;
 	}
@@ -239,71 +239,76 @@ export class Frac { // 分數
 	}
 }
 
-export class Hop { // Frac 和 number (int, float) 混合運算
-	static ops(fn, fracOp, numOp, undefinedReturn = NaN) { // 定義 Frac 和 number 的混合算子 (單參數)
-		if (isInt(fn)) fn = new Frac(fn); // int -> Frac, 這樣只需處理 Frac, float, other
-		if (Frac.isFrac(fn)) return fracOp(fn); // Frac 用分數運算
-		if (isNum(fn)) return numOp(fn); // 目前只剩 float, other ; 所以 number 必為 float
-		return undefinedReturn; // other (未定義)
+export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPerator)
+	static uop(nf, fracOp, floatOp, errReturn = NaN) { // 定義 Frac 和 number 的混合算子 (Unary OPerator)
+		if (isInt(nf)) nf = new Frac(nf); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (Frac.isFrac(nf)) return fracOp(nf); // Frac 用分數運算
+		if (isNum(nf)) return floatOp(nf); // 目前只剩 float, other ; 所以 number 必為 float
+		return errReturn; // other (未定義)
 	}
 	
-	static op(fn1, fn2, fracOp, numOp, undefinedReturn = NaN) { // 定義 Frac 和 number 的混合算子 (雙參數)
-		if (isInt(fn1)) fn1 = new Frac(fn1); // int -> Frac, 這樣只需處理 Frac, float, other
-		if (isInt(fn2)) fn2 = new Frac(fn2);
-		if (Frac.isFrac(fn1) && Frac.isFrac(fn2)) return fracOp(fn1, fn2); // 必須兩個數都為 Frac 才可以進行分數運算
+	static bop(nf1, nf2, fracOp, floatOp, errReturn = NaN) { // 定義 Frac 和 number 的混合算子 (Binary OPerator)
+		if (isInt(nf1)) nf1 = new Frac(nf1); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (isInt(nf2)) nf2 = new Frac(nf2);
+		if (Frac.isFrac(nf1) && Frac.isFrac(nf2)) return fracOp(nf1, nf2); // 必須兩個數都為 Frac 才可以進行分數運算
 		
-		if (Frac.isFrac(fn1)) fn1 = fn1.toFloat(); // 如果其中一個數為 number, 降級為 number 運算, 目前只剩 float, other
-		if (Frac.isFrac(fn2)) fn2 = fn2.toFloat();
-		if (isNum(fn1) && isNum(fn2)) return numOp(fn1, fn2);
-		return undefinedReturn; // other (未定義)
-	}
-	
-	static toStr(fn, p = 4) { // 轉 debug 字串. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.ops(fn, frac => frac.toStr(), n => n.toFixed(p), "?"); // debug 字串
-	}
-	
-	static toLatex(fn, p = 4) { // 轉 latex 語法. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.ops(fn, frac => frac.toLatex(), n => n.toFixed(p), "?");
+		if (Frac.isFrac(nf1)) nf1 = nf1.toFloat(); // 如果其中一個數為 number, 降級為 number 運算, 目前只剩 float, other
+		if (Frac.isFrac(nf2)) nf2 = nf2.toFloat();
+		if (isNum(nf1) && isNum(nf2)) return floatOp(nf1, nf2);
+		return errReturn; // other (未定義)
 	}
 	
 	// 對於 isNegInt, isPosInt, isInt, isRational :
-	// 若 fn 為 int number, 會自動轉為 Frac
-	// 若 fn 為 number 且沒有被轉為 Frac
-	// => fn 為 float number (op 回傳 numOp(fn))
-	// => fn 不是整數
-	// => fn 必不為 isNegInt, isPosInt, isInt, isRational
+	// 若 nf 為 int number, 會自動轉為 Frac
+	// 若 nf 為 number 且沒有被轉為 Frac
+	// => nf 為 float number (bop 回傳 numOp(nf))
+	// => nf 不是整數
+	// => nf 必不為 isNegInt, isPosInt, isInt, isRational
 	// 因此以下四個 func 的 numOp 都回傳 false
 	
-	static isInt(fn) { // 是否為整數 (Z). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => frac.isInt(), n => false, false);
+	static FALSE_OP = () => false;
+	static Z_FRAC_OP = frac => frac.isInt();
+	static isInt(nf) { // 是否為整數 (Z). 如果 nf 不是 Frac/number 會回傳 false
+		return Hop.uop(nf, Hop.Z_FRAC_OP, Hop.FALSE_OP, false);
 	}
 	
-	static isPosInt(fn) { // 是否為正整數 1, 2, ... (Z+). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => frac.isInt() && F(0).lt(frac), n => false, false); // int & (0 < n)
+	static ZP_FRAC_OP = frac => frac.isInt() && F(0).lt(frac); // int & (0 < n)
+	static isPosInt(nf) { // 是否為正整數 1, 2, ... (Z+). 如果 nf 不是 Frac/number 會回傳 false
+		return Hop.uop(nf, Hop.ZP_FRAC_OP, Hop.FALSE_OP, false);
 	}
 	
-	static isNegInt(fn) { // 是否為負整數 1, 2, ... (Z-). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => frac.isInt() && frac.lt(0), n => false, false); // int & (n < 0)
+	static ZN_FRAC_OP = frac => frac.isInt() && frac.lt(0) // int & (n < 0)
+	static isNegInt(nf) { // 是否為負整數 1, 2, ... (Z-). 如果 nf 不是 Frac/number 會回傳 false
+		return Hop.uop(nf, Hop.ZN_FRAC_OP, Hop.FALSE_OP, false);
 	}
 	
-	static isRational(fn) { // 是否為有理數 (Q). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => true, n => false, false); // int number 會自動轉為 Frac, 而 Frac 必為有理數. (不考慮浮點有理數)
+	static Q_FRAC_OP = frac => true; // int number 會自動轉為 Frac, 而 Frac 必為有理數. (不考慮浮點有理數)
+	static isRational(nf) { // 是否為有理數 (Q). 如果 nf 不是 Frac/number 會回傳 false
+		return Hop.uop(nf, Hop.Q_FRAC_OP, Hop.FALSE_OP, false);
+	}
+	
+	static toStr(fn, p = 4) { // 轉 debug 字串. 如果 fn 不是 Frac/number 會回傳 "?"
+		return Hop.uop(fn, frac => frac.toStr(), n => n.toFixed(p), "?"); // debug 字串
+	}
+	
+	static toLatex(fn, p = 4) { // 轉 latex 語法. 如果 fn 不是 Frac/number 會回傳 "?"
+		return Hop.uop(fn, frac => frac.toLatex(), n => n.toFixed(p), "?");
 	}
 	
 	static add(fn1, fn2) { // 加法
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.add(frac2), (n1, n2) => n1 + n2);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.add(frac2), (n1, n2) => n1 + n2);
 	}
 	
 	static sub(fn1, fn2) { // 加法
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.sub(frac2), (n1, n2) => n1 - n2);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.sub(frac2), (n1, n2) => n1 - n2);
 	}
 	
 	static mul(fn1, fn2) { // 乘法
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.mul(frac2), (n1, n2) => n1 * n2);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.mul(frac2), (n1, n2) => n1 * n2);
 	}
 	
 	static div(fn1, fn2) { // 除法
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.div(frac2), (n1, n2) => n1 / n2);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.div(frac2), (n1, n2) => n1 / n2);
 	}
 	
 	static pow(fn1, fn2) { // 次方: fn1 ** fn2
@@ -313,11 +318,11 @@ export class Hop { // Frac 和 number (int, float) 混合運算
 	}
 	
 	static equal(fn1, fn2) { // 等於. 如果 fn1, fn2 其中一個不是數字會回傳 false
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
 	}
 	
 	static lt(fn1, fn2) { // 小於. 如果 fn1, fn2 其中一個不是數字會回傳 false
-		return Hop.op(fn1, fn2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
+		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
 	}
 }
 
