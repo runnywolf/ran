@@ -266,24 +266,24 @@ export class Hop { // Frac 和 number (int, float) 混合運算
 		return Hop.ops(fn, frac => frac.toLatex(), n => n.toFixed(p), "?");
 	}
 	
-	// 對於 isNatural, isPosInt, isInt, isRational :
+	// 對於 isNegInt, isPosInt, isInt, isRational :
 	// 若 fn 為 int number, 會自動轉為 Frac
 	// 若 fn 為 number 且沒有被轉為 Frac
 	// => fn 為 float number (op 回傳 numOp(fn))
 	// => fn 不是整數
-	// => fn 必不為 isNatural, isPosInt, isInt, isRational
+	// => fn 必不為 isNegInt, isPosInt, isInt, isRational
 	// 因此以下四個 func 的 numOp 都回傳 false
-	
-	static isPosInt(fn) { // 是否為正整數 1, 2, ... (Z+). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => frac.isInt() && new Frac(0).lt(frac), n => false, false); // int & (0 < n)
-	}
-	
-	static isNatural(fn) { // 是否為自然數 0, 1, 2, ... (N). 如果 fn 不是 Frac/number 會回傳 false
-		return Hop.ops(fn, frac => frac.isInt() && !(frac.lt(0)), n => false, false); // !(n < 0) = (n >= 0) = (0 <= n)
-	}
 	
 	static isInt(fn) { // 是否為整數 (Z). 如果 fn 不是 Frac/number 會回傳 false
 		return Hop.ops(fn, frac => frac.isInt(), n => false, false);
+	}
+	
+	static isPosInt(fn) { // 是否為正整數 1, 2, ... (Z+). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => frac.isInt() && F(0).lt(frac), n => false, false); // int & (0 < n)
+	}
+	
+	static isNegInt(fn) { // 是否為負整數 1, 2, ... (Z-). 如果 fn 不是 Frac/number 會回傳 false
+		return Hop.ops(fn, frac => frac.isInt() && frac.lt(0), n => false, false); // int & (n < 0)
 	}
 	
 	static isRational(fn) { // 是否為有理數 (Q). 如果 fn 不是 Frac/number 會回傳 false

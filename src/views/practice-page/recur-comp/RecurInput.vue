@@ -119,7 +119,7 @@
 					<span
 						contenteditable
 						class="number-input"
-						:class="(!Hop.isNatural(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
+						:class="(Hop.isNegInt(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
 						@input="expFuncInput[i-1][2] = checkPowerInput($event.target.innerText)"
 					>0</span>
 					<vl v-if="i != expFuncNum" exp="+" />
@@ -269,7 +269,7 @@ const checkFracInput = (inputText) => { // 檢查分數輸入
 
 const checkPowerInput = (inputText) => { // 檢查非齊次的 c n^k b^n 項的 k 的輸入, 是否在正常範圍
 	const power = Number(inputText);
-	if (Hop.isNatural(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
+	if (!Hop.isNegInt(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
 	return -1; // -1 會被認為是錯誤的輸入 (會在 nonHomoFunc 建構時被忽略)
 };
 
@@ -293,7 +293,7 @@ watch([polyCoefInput, expFuncInput], ([newPolyCoefInput, newExpFuncInput]) => { 
 	
 	for (const [i, coef] of newPolyCoefInput.entries()) addTerm(coef, i, new Frac(1)); // 讀取多項式部分輸入
 	
-	for (const [frac_c, frac_b, k] of newExpFuncInput) if (Hop.isNatural(k)) addTerm(frac_c, k, frac_b); // 讀取指數部分的輸入
+	for (const [frac_c, frac_b, k] of newExpFuncInput) if (!Hop.isNegInt(k)) addTerm(frac_c, k, frac_b); // 讀取指數部分的輸入
 	
 	for (const [key, frac_c] of Object.entries(expFunc)) if (frac_c.isZero()) delete expFunc[key]; // 刪除係數為 0 的項
 	
