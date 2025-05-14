@@ -201,20 +201,34 @@ const testData = {
 		]
 	},
 	".pow": {
-		testName: "($input.0.n/$input.0.d) ^ ($input.1) = $output.n/$output.d",
+		testName: "($input.0.n/$input.0.d) ^ ($input.1) = $output",
 		testFunc: input => input[0].pow(input[1]),
 		tests: [ // 測資
-			{ input: [ F(2, 3), 0 ], output: F(1) },
-			{ input: [ F(0), 0 ], output: F(1) },
-			{ input: [ F(0), 10000 ], output: F(0) },
-			{ input: [ F(-7, 3), -1 ], output: F(-3, 7) },
-			{ input: [ F(12, 5), 1 ], output: F(12, 5) },
-			{ input: [ F(3), 7 ], output: F(2187) },
-			{ input: [ F(-6, 5), -4 ], output: F(625, 1296) },
-			{ input: [ F(-6, 5), 2 ], output: F(36, 25) },
-			{ input: [ F(6, 7), 3.5 ], output: F(6, 7), error: '[RanMath][Frac.pow] Power must be an int.' },
-			{ input: [ F(-3, 5), F(2) ], output: F(-3, 5), error: '[RanMath][Frac.pow] Power must be an int.' },
-			{ input: [ F(8), "8" ], output: F(8), error: '[RanMath][Frac.pow] Power must be an int.' },
+			{ input: [ F(2, 3), 0 ], output: F(1) }, // f^0 = 1
+			{ input: [ F(0), 0 ], output: F(1) }, // 0^0 = 1
+			{ input: [ F(0), 10000 ], output: F(0) }, // 0^i = 0
+			{ input: [ F(0), -2 ], output: F(0), error: "[RanMath][Frac.pow] 0^-n is undefined." }, // 0^-i = 0 (error)
+			{ input: [ F(-7, 3), -1 ], output: F(-3, 7) }, // f^-1 = 1/f
+			{ input: [ F(12, 5), 1 ], output: F(12, 5) }, // f^1 = f
+			{ input: [ F(3), 7 ], output: F(2187) }, // i^i
+			{ input: [ F(-6, 5), -4 ], output: F(625, 1296) }, // f^-i
+			{ input: [ F(-6, 5), 3 ], output: F(-216, 125) }, // f^i
+			
+			{ input: [ F(2, 3), F(0) ], output: F(1) }, // f^0 = 1
+			{ input: [ F(0), F(0) ], output: F(1) }, // 0^0 = 1
+			{ input: [ F(0), F(10000) ], output: F(0) }, // 0^i = 0
+			{ input: [ F(0), F(-2) ], output: F(0), error: "[RanMath][Frac.pow] 0^-n is undefined." }, // 0^-i = 0 (error)
+			{ input: [ F(-7, 3), F(-1) ], output: F(-3, 7) }, // f^-1 = 1/f
+			{ input: [ F(12, 5), F(1) ], output: F(12, 5) }, // f^1 = f
+			{ input: [ F(4, 25), F(1, 2) ], output: F(2, 5) }, // f^f = f
+			{ input: [ F(232630513987207, 762939453125), F(11, 17) ], output: F(1977326743, 48828125) }, // f^f = f
+			{ input: [ F(232630513987208, 762939453125), F(11, 17) ], output: 40.49565169664012 }, // f^f = f
+			{ input: [ F(2), F(1, 2) ], output: 1.4142135623730951 },
+			{ input: [ F(216, 125), F(-2, 3) ], output: F(25, 36) }, // f^-f = f
+			{ input: [ F(-8, 1), F(1, 3) ], output: NaN }, // -f^f = NaN
+			
+			{ input: [ F(6, 7), 3.5 ], output: F(6, 7), error: '[RanMath][Frac.pow] Param "nf" must be a Frac or int.' },
+			{ input: [ F(8), "8" ], output: F(8), error: '[RanMath][Frac.pow] Param "nf" must be a Frac or int.' },
 		]
 	},
 	".equal": {
@@ -248,7 +262,7 @@ const testData = {
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
-	test.each(testInfo.tests)(testInfo.testName, ({ input, output, error }) => {
+	test.each(testInfo.tests)(testInfo.testName + " ; error: $error", ({ input, output, error }) => {
 		expect(testInfo.testFunc(input)).toStrictEqual(output);
 		
 		if (error) expect(spy).toHaveBeenCalledWith(error);

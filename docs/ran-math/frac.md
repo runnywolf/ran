@@ -46,7 +46,7 @@ import { F } from "ran-math"; // new Frac 的工廠函數
 | [`.sub`](#sub) | 減法 |
 | [`.mul`](#mul) | 乘法 |
 | [`.div`](#div) | 除法 |
-| [`.pow`](#pow) | 整數次方 |
+| [`.pow`](#pow) | 次方 |
 | [`.equal`](#equal) | 等於 |
 | [`.lt`](#lt) | 小於 |
 
@@ -329,24 +329,31 @@ F(-3, 2).div(F(0))   // error, return -3/2
 ```
 
 ## `.pow`
-整數次方，回傳新實例。
+次方運算，回傳新實例。
+
+> [!WARNING]
+> - `this` 不可以是 0，$0^{-n}$ 沒有定義。
+> - 分數次方的結果若不是有理數，會回傳 `number`。
+> - ${(\frac{-8}{27})}^{1/3}$，會回傳 `NaN`，因為 `**` 運算子無法處理 `-8 ** (1/3)`。
 
 ```js
-Frac.prototype.pow(i: number): Frac
+Frac.prototype.pow(nf: Frac): Frac | number
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `i` | `number` ( `int` ) | 整數次方 |
+| `nf` | `Frac` | 次方 |
 
 範例：
 ```js
-F(2, 3).pow(0)       // 1/1
-F(0).pow(0)          // 1/1
-F(0).pow(1)          // 0/1
-F(-6, 5).pow(-2)     // 25/36
-F(4, 9).pow(0.5)     // error, return 4/9
-F(4, 9).pow(F(1, 2)) // error, return 4/9
+F(2, 3).pow(0)          // 1/1
+F(0).pow(0)             // 1/1
+F(0).pow(1)             // 0/1
+F(-6, 5).pow(-2)        // 25/36
+F(36, 25).pow(F(1, 2))  // 6/5
+F(36, 25).pow(F(-1, 2)) // 5/6
+F(2).pow(F(1, 2))       // 1.4142135623730951
+F(-8).pow(F(1, 3))      // NaN -> 目前沒實作
 ```
 
 ## `.equal`

@@ -209,7 +209,7 @@ export class Frac { // 分數 (fraction)
 	}
 	
 	static DIV_OP = (f1, f2) => {
-		if (f2.isZero()) { // f1/f2 發生除零錯誤, 回傳 null
+		if (f2.isZero()) { // f1/f2 發生除零錯誤
 			throwErr("Frac.div", "Div 0 error.");
 			return f1; // 回傳 this (不執行這個運算)
 		}
@@ -219,13 +219,23 @@ export class Frac { // 分數 (fraction)
 		return this._makeOp(nf, "div", Frac.DIV_OP);
 	}
 	
-	pow(i) { // 整數次方
-		if (!isInt(i)) { // 次方數必須是整數
-			throwErr("Frac.pow", "Power must be an int.");
-			return this.copy();
+	static POW_OP = (f1, f2) => {
+		const rootOfF1n = Math.round(f1.n ** (1 / f2.d)); // 先計算 (f1.n/f1.d) ^ (1/f2.d)
+		const rootOfF1d = Math.round(f1.d ** (1 / f2.d));
+		if (rootOfF1n ** f2.d !== f1.n || rootOfF1d ** f2.d !== f1.d) { // 驗證 f1 ^ (1/f2.d) 是否仍是有理數
+			return f1.toFloat() ** f2.toFloat(); // 如果不是, 回傳浮點數結果
 		}
-		if (i >= 0) return F(this.n ** i, this.d ** i);
-		else return F(this.d ** -i, this.n ** -i); // 負數次方 -> 交換分子分母
+		
+		if (f2.n >= 0) return F(rootOfF1n ** f2.n, rootOfF1d ** f2.n); // 正數次方
+		
+		if (f1.isZero()) { // error: 0 ^ 負數
+			throwErr("Frac.pow", "0^-n is undefined.");
+			return f1; // 回傳 this (不執行這個運算)
+		}
+		return F(rootOfF1d ** -f2.n, rootOfF1n ** -f2.n); // 負數次方 -> 交換分子分母
+	};
+	pow(nf) { // 次方
+		return this._makeOp(nf, "pow", Frac.POW_OP);
 	}
 	
 	static EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
@@ -314,8 +324,12 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 		return Hop.bop(nf1, nf2, Hop.DIV_FRAC_OP, Hop.DIV_FLOAT_OP);
 	}
 	
+	static POW_FRAC_OP = (frac1, frac2) => {
+		
+	};
+	static POW_FLOAT_OP = (n1, n2) => n1 ** n2;
 	static pow(nf1, nf2) { // 次方: nf1 ** nf2
-		if (Frac.isFrac(nf2)) nf2 = nf2.toFloat(); // 次方轉 int or float
+		if (Frac.isFrac(nf2)) nf2 = nf2.toFloat(); // 分數次方轉 int/float
 		if (Frac.isFrac(nf1) && isInt(nf2)) return nf1.pow(nf2); // 整數次方
 		return nf1 ** nf2; // 浮點次方
 	}
@@ -496,7 +510,7 @@ export class EF { // 擴張體運算 (a + b√s)
 	}
 }
 
-export class BEF { // binary extension field
+export class BEF { // binary extension field (test)
 	// k(a1 + √s1)(a2 + √s2)...
 }
 
