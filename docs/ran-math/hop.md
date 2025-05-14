@@ -253,9 +253,167 @@ Hop.toLatex("45")        // "?"
 ```
 
 ## `Hop.add`
+加法運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `NaN`。
+
+```js
+Hop.add(nf1: number | Frac, nf2: number | Frac): number | Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 被加數 |
+| `nf2` | `number \| Frac` | 加數 |
+
+範例：
+```js
+Hop.add(F(-3, 4), F(-5, 8)) // -11/8
+Hop.add(17, F(-5, 37))      // 624/37
+Hop.add(-9, 10.0)           // 1/1
+Hop.add(0.4, F(3, 5))       // 1
+Hop.add(F(3, 7), 2.6)       // 3.0285714285714285
+Hop.add(F(3, 7), "3")       // NaN
+```
+
 ## `Hop.sub`
+減法運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `NaN`。
+
+```js
+Hop.sub(nf1: number | Frac, nf2: number | Frac): number | Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 被減數 |
+| `nf2` | `number \| Frac` | 減數 |
+
+範例：
+```js
+Hop.sub(F(-3, 4), F(-5, 8)) // -1/8
+Hop.sub(17, F(-5, 37))      // 634/37
+Hop.sub(-9, 10.0)           // -19/1
+Hop.sub(0.4, F(3, 5))       // -0.2
+Hop.sub(F(6, 7), 3.5)       // -2.642857142857143
+Hop.sub(F(3, 7), "3")       // NaN
+```
+
 ## `Hop.mul`
+乘法運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `NaN`。
+
+```js
+Hop.mul(nf1: number | Frac, nf2: number | Frac): number | Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 被乘數 |
+| `nf2` | `number \| Frac` | 乘數 |
+
+範例：
+```js
+Hop.mul(F(-3, 4), F(-5, 8)) // 15/32
+Hop.mul(4, F(7, 10))        // 14/5
+Hop.mul(-9, 10.0)           // -90/1
+Hop.mul(2.5, F(2, 5))       // 1
+Hop.mul(F(6, 7), 3.5)       // 3
+Hop.mul(F(3, 7), "3")       // NaN
+```
+
 ## `Hop.div`
+除法運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `NaN`。
+
+```js
+Hop.div(nf1: number | Frac, nf2: number | Frac): number | Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 被除數 |
+| `nf2` | `number \| Frac` | 除數 |
+
+範例：
+```js
+Hop.div(F(-3, 4), F(-5, 8)) // 6/5
+Hop.div(F(3, 7), -3)        // -1/7
+Hop.div(-9, 10.0)           // -9/10
+Hop.div(2.5, F(5, 2))       // 1
+Hop.div(F(6, 7), 3.5)       // 0.2448979591836734693
+Hop.div(F(3, 7), "3")       // NaN
+```
+
 ## `Hop.pow`
+次方運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `NaN`。
+
+```js
+Hop.pow(nf1: number | Frac, nf2: number | Frac): number | Frac
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 被除數 |
+| `nf2` | `number \| Frac` | 除數 |
+
+範例：
+```js
+Hop.pow(8, F(1, 3))            // 2/1
+Hop.pow(2, 3)                  // 8/1
+Hop.pow(F(-6, 5), -2)          // 25/36
+Hop.pow(F(216, 125), F(-2, 3)) // 25/36
+Hop.pow(1.6, F(2, 3))          // 1.3679807573413576
+Hop.div(F(3, 7), "3")          // NaN
+```
+
 ## `Hop.equal`
+相等運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `false`。
+
+```js
+Hop.equal(nf1: number | Frac, nf2: number | Frac): boolean
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 第 1 個數 |
+| `nf2` | `number \| Frac` | 第 2 個數 |
+
+範例：
+```js
+Hop.equal(F(-3, 4), F(-5, 8)) // false
+Hop.equal(F(-3, 4), F(-3, 4)) // true
+Hop.equal(4, F(4))            // true
+Hop.equal(0.1+0.2, 0.3)       // false
+Hop.equal(3, "3")             // false
+```
+
 ## `Hop.lt`
+相等運算。
+
+若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `false`。
+
+```js
+Hop.lt(nf1: number | Frac, nf2: number | Frac): boolean
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `nf1` | `number \| Frac` | 第 1 個數 |
+| `nf2` | `number \| Frac` | 第 2 個數 |
+
+範例：
+```js
+Hop.lt(F(-3, 4), F(-5, 8)) // true
+Hop.lt(F(-3, 4), F(-3, 4)) // false
+Hop.lt(4, F(4))            // false
+Hop.lt(0.3, 0.1+0.2)       // true
+Hop.lt(3, "3")             // false
+```
