@@ -290,34 +290,42 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 		return Hop.uop(nf, Hop.LATEX_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
 	}
 	
-	static add(fn1, fn2) { // 加法
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.add(frac2), (n1, n2) => n1 + n2);
+	static ADD_FRAC_OP = (frac1, frac2) => frac1.add(frac2);
+	static ADD_FLOAT_OP = (n1, n2) => n1 + n2;
+	static add(nf1, nf2) { // 加法
+		return Hop.bop(nf1, nf2, Hop.ADD_FRAC_OP, Hop.ADD_FLOAT_OP);
 	}
 	
-	static sub(fn1, fn2) { // 加法
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.sub(frac2), (n1, n2) => n1 - n2);
+	static SUB_FRAC_OP = (frac1, frac2) => frac1.sub(frac2);
+	static SUB_FLOAT_OP = (n1, n2) => n1 - n2;
+	static sub(nf1, nf2) { // 加法
+		return Hop.bop(nf1, nf2, Hop.SUB_FRAC_OP, Hop.SUB_FLOAT_OP);
 	}
 	
-	static mul(fn1, fn2) { // 乘法
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.mul(frac2), (n1, n2) => n1 * n2);
+	static MUL_FRAC_OP = (frac1, frac2) => frac1.mul(frac2);
+	static MUL_FLOAT_OP = (n1, n2) => n1 * n2;
+	static mul(nf1, nf2) { // 乘法
+		return Hop.bop(nf1, nf2, Hop.MUL_FRAC_OP, Hop.MUL_FLOAT_OP);
 	}
 	
-	static div(fn1, fn2) { // 除法
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.div(frac2), (n1, n2) => n1 / n2);
+	static DIV_FRAC_OP = (frac1, frac2) => frac1.div(frac2);
+	static DIV_FLOAT_OP = (n1, n2) => n1 / n2;
+	static div(nf1, nf2) { // 除法, float 沒有 /0 檢測
+		return Hop.bop(nf1, nf2, Hop.DIV_FRAC_OP, Hop.DIV_FLOAT_OP);
 	}
 	
-	static pow(fn1, fn2) { // 次方: fn1 ** fn2
-		if (Frac.isFrac(fn2)) fn2 = fn2.toFloat(); // 次方轉 int or float
-		if (Frac.isFrac(fn1) && isInt(fn2)) return fn1.pow(fn2); // 整數次方
-		return fn1 ** fn2; // 浮點次方
+	static pow(nf1, nf2) { // 次方: nf1 ** nf2
+		if (Frac.isFrac(nf2)) nf2 = nf2.toFloat(); // 次方轉 int or float
+		if (Frac.isFrac(nf1) && isInt(nf2)) return nf1.pow(nf2); // 整數次方
+		return nf1 ** nf2; // 浮點次方
 	}
 	
-	static equal(fn1, fn2) { // 等於. 如果 fn1, fn2 其中一個不是數字會回傳 false
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
+	static equal(nf1, nf2) { // 等於. 如果 nf1, nf2 其中一個不是數字會回傳 false
+		return Hop.bop(nf1, nf2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
 	}
 	
-	static lt(fn1, fn2) { // 小於. 如果 fn1, fn2 其中一個不是數字會回傳 false
-		return Hop.bop(fn1, fn2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
+	static lt(nf1, nf2) { // 小於. 如果 nf1, nf2 其中一個不是數字會回傳 false
+		return Hop.bop(nf1, nf2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
 	}
 }
 

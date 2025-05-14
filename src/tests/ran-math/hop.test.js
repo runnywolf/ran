@@ -101,6 +101,64 @@ const testData = {
 			{ input: [ [] ], output: "?" },
 		],
 	},
+	"Hop.add": {
+		testName: "Hop.add($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.add(nf1, nf2),
+		tests: [
+			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-11, 8) },
+			{ input: [ F(2, 7), F(-3, 5) ], output: F(-11, 35) },
+			{ input: [ F(3, 7), -3 ], output: F(-18, 7) },
+			{ input: [ 17, F(-5, 37) ], output: F(624, 37) },
+			{ input: [ 9.0, -10.0 ], output: F(-1, 1) },
+			{ input: [ 0.4, F(3, 5) ], output: 1 },
+			{ input: [ 10, -0.7 ], output: 9.3 },
+			{ input: [ F(3, 7), 2.6 ], output: 3.0285714285714285 },
+			{ input: [ F(3, 7), "2" ], output: NaN },
+		]
+	},
+	"Hop.sub": {
+		testName: "Hop.sub($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.sub(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-1, 8) },
+			{ input: [ F(2, 7), F(-3, 5) ], output: F(31, 35) },
+			{ input: [ F(3, 7), -3 ], output: F(24, 7) },
+			{ input: [ 17, F(-5, 37) ], output: F(634, 37) },
+			{ input: [ 10, 0 ], output: F(10, 1) },
+			{ input: [ F(-500), -500 ], output: F(0, 1) },
+			{ input: [ F(6, 7), 3.5 ], output: -2.642857142857143 },
+			{ input: [ F(8), "8" ], output: NaN },
+		]
+	},
+	"Hop.mul": {
+		testName: "Hop.mul($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.mul(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(-3, 4), F(-5, 8) ], output: F(15, 32) },
+			{ input: [ F(7, 4), F(3, 5) ], output: F(21, 20) },
+			{ input: [ F(3, 7), -3 ], output: F(-9, 7) },
+			{ input: [ 4, F(7, 10) ], output: F(14, 5) },
+			{ input: [ F(-5, 12), 9 ], output: F(-15, 4) },
+			{ input: [ -500, -500 ], output: F(250000, 1) },
+			{ input: [ F(6, 7), 3.5 ], output: 3 },
+			{ input: [ 2.5, F(2, 5) ], output: 1 },
+			{ input: [ "8", F(8) ], output: NaN },
+		]
+	},
+	"Hop.div": {
+		testName: "Hop.div($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.div(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(-3, 4), F(-5, 8) ], output: F(6, 5) },
+			{ input: [ F(7, 4), F(3, 5) ], output: F(35, 12) },
+			{ input: [ F(3, 7), -3 ], output: F(-1, 7) },
+			{ input: [ 4, F(7, 10) ], output: F(40, 7) },
+			{ input: [ F(-500), -500 ], output: F(1, 1) },
+			{ input: [ F(6, 7), 3.5 ], output: 0.2448979591836734693 },
+			{ input: [ 2.5, F(5, 2) ], output: 1 },
+			{ input: [ "8", F(8) ], output: NaN },
+		]
+	},
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
