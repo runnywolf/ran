@@ -239,7 +239,7 @@ export class Frac { // 分數 (fraction)
 	}
 }
 
-export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPerator)
+export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeration)
 	static uop(nf, fracOp, floatOp, errReturn = NaN) { // 定義 Frac 和 number 的混合算子 (Unary OPerator)
 		if (isInt(nf)) nf = new Frac(nf); // int -> Frac, 這樣只需處理 Frac, float, other
 		if (Frac.isFrac(nf)) return fracOp(nf); // Frac 用分數運算
@@ -258,15 +258,7 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPerator
 		return errReturn; // other (未定義)
 	}
 	
-	// 對於 isNegInt, isPosInt, isInt, isRational :
-	// 若 nf 為 int number, 會自動轉為 Frac
-	// 若 nf 為 number 且沒有被轉為 Frac
-	// => nf 為 float number (bop 回傳 numOp(nf))
-	// => nf 不是整數
-	// => nf 必不為 isNegInt, isPosInt, isInt, isRational
-	// 因此以下四個 func 的 numOp 都回傳 false
-	
-	static FALSE_OP = () => false;
+	static FALSE_OP = () => false; // 浮點數必不為 Z, Z+, Z-, Q
 	static Z_FRAC_OP = frac => frac.isInt();
 	static isInt(nf) { // 是否為整數 (Z). 如果 nf 不是 Frac/number 會回傳 false
 		return Hop.uop(nf, Hop.Z_FRAC_OP, Hop.FALSE_OP, false);
@@ -289,13 +281,13 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPerator
 	
 	static STR_FRAC_OP = frac => frac.toStr();
 	static STR_FLOAT_OP = p => (n => n.toFixed(p));
-	static toStr(fn, p = 4) { // 轉 debug 字串. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.uop(fn, Hop.STR_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
+	static toStr(nf, p = 4) { // 轉 debug 字串. 如果 nf 不是 Frac/number 會回傳 "?"
+		return Hop.uop(nf, Hop.STR_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
 	}
 	
 	static LATEX_FRAC_OP = frac => frac.toLatex();
-	static toLatex(fn, p = 4) { // 轉 latex 語法. 如果 fn 不是 Frac/number 會回傳 "?"
-		return Hop.uop(fn, Hop.LATEX_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
+	static toLatex(nf, p = 4) { // 轉 latex 語法. 如果 nf 不是 Frac/number 會回傳 "?"
+		return Hop.uop(nf, Hop.LATEX_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
 	}
 	
 	static add(fn1, fn2) { // 加法
