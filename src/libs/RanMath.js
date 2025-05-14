@@ -320,26 +320,30 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 	
 	static DIV_FRAC_OP = (frac1, frac2) => frac1.div(frac2);
 	static DIV_FLOAT_OP = (n1, n2) => n1 / n2;
-	static div(nf1, nf2) { // 除法, float 沒有 /0 檢測
+	static div(nf1, nf2) { // 除法
+		if (Hop.equal(nf2, 0)) {
+			throwErr("Hop.div", "Div 0 error.");
+			return NaN;
+		}
 		return Hop.bop(nf1, nf2, Hop.DIV_FRAC_OP, Hop.DIV_FLOAT_OP);
 	}
 	
-	static POW_FRAC_OP = (frac1, frac2) => {
-		
-	};
+	static POW_FRAC_OP = (frac1, frac2) => frac1.pow(frac2);
 	static POW_FLOAT_OP = (n1, n2) => n1 ** n2;
-	static pow(nf1, nf2) { // 次方: nf1 ** nf2
-		if (Frac.isFrac(nf2)) nf2 = nf2.toFloat(); // 分數次方轉 int/float
-		if (Frac.isFrac(nf1) && isInt(nf2)) return nf1.pow(nf2); // 整數次方
-		return nf1 ** nf2; // 浮點次方
+	static pow(nf1, nf2) { // 次方
+		return Hop.bop(nf1, nf2, Hop.POW_FRAC_OP, Hop.POW_FLOAT_OP);
 	}
 	
+	static EQUAL_FRAC_OP = (frac1, frac2) => frac1.equal(frac2);
+	static EQUAL_FLOAT_OP = (n1, n2) => n1 === n2;
 	static equal(nf1, nf2) { // 等於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, (frac1, frac2) => frac1.equal(frac2), (n1, n2) => n1 === n2, false);
+		return Hop.bop(nf1, nf2, Hop.EQUAL_FRAC_OP, Hop.EQUAL_FLOAT_OP, false);
 	}
 	
+	static LT_FRAC_OP = (frac1, frac2) => frac1.lt(frac2);
+	static LT_FLOAT_OP = (n1, n2) => n1 < n2;
 	static lt(nf1, nf2) { // 小於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, (frac1, frac2) => frac1.lt(frac2), (n1, n2) => n1 < n2, false);
+		return Hop.bop(nf1, nf2, Hop.LT_FRAC_OP, Hop.LT_FLOAT_OP, false);
 	}
 }
 

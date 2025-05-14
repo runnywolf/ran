@@ -157,12 +157,57 @@ const testData = {
 			{ input: [ F(6, 7), 3.5 ], output: 0.2448979591836734693 },
 			{ input: [ 2.5, F(5, 2) ], output: 1 },
 			{ input: [ "8", F(8) ], output: NaN },
+			{ input: [ 8, F(0) ], output: NaN, error: "[RanMath][Hop.div] Div 0 error." },
+		]
+	},
+	"Hop.pow": {
+		testName: "Hop.pow($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.pow(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(2, 3), 0 ], output: F(1) }, // f^0 = 1
+			{ input: [ F(0), F(0) ], output: F(1) }, // 0^0 = 1
+			{ input: [ 0, F(10000) ], output: F(0) }, // 0^i = 0
+			{ input: [ F(0), F(-2) ], output: F(0), error: "[RanMath][Frac.pow] 0^-n is undefined." }, // 0^-i = 0 (error)
+			{ input: [ F(-7, 3), -1 ], output: F(-3, 7) }, // f^-1 = 1/f
+			{ input: [ F(12, 5), F(1) ], output: F(12, 5) }, // f^1 = f
+			{ input: [ F(4, 25), F(1, 2) ], output: F(2, 5) }, // f^f = f
+			{ input: [ 2, F(1, 2) ], output: 1.4142135623730951 },
+			{ input: [ F(216, 125), F(-2, 3) ], output: F(25, 36) }, // f^-f = f
+			{ input: [ F(-8, 1), F(1, 3) ], output: NaN }, // -f^f = NaN
+			{ input: [ F(2, 3), 1.6 ], output: 0.52270178778874381003 },
+			{ input: [ 1.6, F(2, 3) ], output: 1.36798075734135759148 },
+			{ input: [ F(-7, 3), "3" ], output: NaN },
+		]
+	},
+	"Hop.equal": {
+		testName: "Hop.equal($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.equal(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(-3, 4), F(-5, 8) ], output: false },
+			{ input: [ F(-7, 4), F(7, -4) ], output: true },
+			{ input: [ F(4), 4 ], output: true },
+			{ input: [ 0.0, F(0) ], output: true },
+			{ input: [ 1.0, 1 ], output: true },
+			{ input: [ 0.1+0.2, 0.3 ], output: false },
+			{ input: [ "7", F(7) ], output: false },
+		]
+	},
+	"Hop.lt": {
+		testName: "Hop.lt($input.0, $input.1) = $output",
+		testFunc: ([ nf1, nf2 ]) => Hop.lt(nf1, nf2),
+		tests: [ // 測資
+			{ input: [ F(8, 6), F(20, 15) ], output: false },
+			{ input: [ F(-16, 7), F(-3, 5) ], output: true },
+			{ input: [ F(6, 3), 2 ], output: false },
+			{ input: [ 7, F(7, 10) ], output: false },
+			{ input: [ 7.2, 9 ], output: true },
+			{ input: [ "-7", F(7) ], output: false },
 		]
 	},
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
-	test.each(testInfo.tests)(testInfo.testName, ({ input, output, error }) => {
+	test.each(testInfo.tests)(testInfo.testName + " ; error = $error", ({ input, output, error }) => {
 		expect(testInfo.testFunc(input)).toStrictEqual(output);
 		
 		if (error) expect(spy).toHaveBeenCalledWith(error);
