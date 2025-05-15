@@ -251,15 +251,15 @@ export class Frac { // 分數 (fraction)
 
 export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeration)
 	static uop(nf, fracOp, floatOp, errReturn = NaN) { // 定義 Frac 和 number 的混合算子 (Unary OPerator)
-		if (isInt(nf)) nf = new Frac(nf); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (isInt(nf)) nf = F(nf); // int -> Frac, 這樣只需處理 Frac, float, other
 		if (Frac.isFrac(nf)) return fracOp(nf); // Frac 用分數運算
 		if (isNum(nf)) return floatOp(nf); // 目前只剩 float, other ; 所以 number 必為 float
 		return errReturn; // other (未定義)
 	}
 	
 	static bop(nf1, nf2, fracOp, floatOp, errReturn = NaN) { // 定義 Frac 和 number 的混合算子 (Binary OPerator)
-		if (isInt(nf1)) nf1 = new Frac(nf1); // int -> Frac, 這樣只需處理 Frac, float, other
-		if (isInt(nf2)) nf2 = new Frac(nf2);
+		if (isInt(nf1)) nf1 = F(nf1); // int -> Frac, 這樣只需處理 Frac, float, other
+		if (isInt(nf2)) nf2 = F(nf2);
 		if (Frac.isFrac(nf1) && Frac.isFrac(nf2)) return fracOp(nf1, nf2); // 必須兩個數都為 Frac 才可以進行分數運算
 		
 		if (Frac.isFrac(nf1)) nf1 = nf1.toFloat(); // 如果其中一個數為 number, 降級為 number 運算, 目前只剩 float, other

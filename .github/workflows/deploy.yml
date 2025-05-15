@@ -1,8 +1,8 @@
 name: Deploy
 
-on: # push main branch 會觸發部署
+on: # push deploy branch 會觸發部署
   push:
-    branches: main
+    branches: deploy
 
 permissions:
   contents: read
