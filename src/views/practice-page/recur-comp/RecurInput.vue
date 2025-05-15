@@ -10,9 +10,9 @@
 			<!-- 常數範圍 -->
 			<div class="ts-select is-solid">
 				<select v-model="randomRange">
-					<option value="3">± 3&nbsp;&nbsp;以內</option>
-					<option value="6">± 6&nbsp;&nbsp;以內</option>
-					<option value="10">± 10&nbsp;&nbsp;以內</option>
+					<option :value="3">± 3&nbsp;&nbsp;以內</option>
+					<option :value="6">± 6&nbsp;&nbsp;以內</option>
+					<option :value="10">± 10&nbsp;&nbsp;以內</option>
 				</select>
 			</div>
 			
@@ -119,7 +119,7 @@
 					<span
 						contenteditable
 						class="number-input"
-						:class="(!Hop.isNatural(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
+						:class="(Hop.isNegInt(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
 						@input="expFuncInput[i-1][2] = checkPowerInput($event.target.innerText)"
 					>0</span>
 					<vl v-if="i != expFuncNum" exp="+" />
@@ -269,12 +269,13 @@ const checkFracInput = (inputText) => { // 檢查分數輸入
 
 const checkPowerInput = (inputText) => { // 檢查非齊次的 c n^k b^n 項的 k 的輸入, 是否在正常範圍
 	const power = Number(inputText);
-	if (Hop.isNatural(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
+	if (!Hop.isNegInt(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
 	return -1; // -1 會被認為是錯誤的輸入 (會在 nonHomoFunc 建構時被忽略)
 };
 
-watch(recurCoefInput, (newInput) => { // 遞迴部分被修改
-	let coef = [...newInput];
+watch(recurCoefInput, (newRecurCoefInput) => { // 遞迴部分被修改
+	let coef = [...newRecurCoefInput]; // 去除 proxy
+		
 	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數遞迴
 	recurCoef.value = coef;
 	initConst.value = initConstInput.value.slice(0, coef.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
@@ -292,15 +293,15 @@ watch([polyCoefInput, expFuncInput], ([newPolyCoefInput, newExpFuncInput]) => { 
 	
 	for (const [i, coef] of newPolyCoefInput.entries()) addTerm(coef, i, new Frac(1)); // 讀取多項式部分輸入
 	
-	for (const [frac_c, frac_b, k] of newExpFuncInput) if (Hop.isNatural(k)) addTerm(frac_c, k, frac_b); // 讀取指數部分的輸入
+	for (const [frac_c, frac_b, k] of newExpFuncInput) if (!Hop.isNegInt(k)) addTerm(frac_c, k, frac_b); // 讀取指數部分的輸入
 	
 	for (const [key, frac_c] of Object.entries(expFunc)) if (frac_c.isZero()) delete expFunc[key]; // 刪除係數為 0 的項
 	
 	nonHomoFunc.value = expFunc;
 }, { immediate: true, deep: true });
 
-watch(initConstInput, (newInput) => { // 當遞迴的初始條件被修改
-	initConst.value = newInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+watch(initConstInput, (newInitConstInput) => { // 當遞迴的初始條件被修改
+	initConst.value = newInitConstInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
 }, { immediate: true, deep: true });
 
 watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newInitConst]) => {

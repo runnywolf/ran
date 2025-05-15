@@ -54,5 +54,5 @@ outline: [2, 3] # 顯示 h2, h3
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `optionNames` | `Array<String>` | `[]` | 每個選項的編號 ( 會出現在括號內 ) |
+| `optionNames` | `Array<string>` | `[]` | 每個選項的編號 ( 會出現在括號內 ) |
 | `optionAnswers` | `Array<Boolean>` | `[]` | 每個選項的答案 (`true` or `false`)<br>若不為 `Boolean` 會隱藏 icon |

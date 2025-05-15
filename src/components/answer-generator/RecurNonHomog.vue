@@ -236,9 +236,8 @@ const recur = ref(null); // 遞迴非齊次部分的計算結果
 const PjBuffer = ref({}); // p_j 緩存. 接收多個 RecurNonHomogExp.vue 回傳的未知係數 p_j
 
 watch( // 遞迴式更新時, 重新計算非齊次部分
-	() => [props.recurCoef, props.nonHomoFunc, props.cubic],
-	([newRecurCoef, newNonHomoFunc, newCubic]) => {
-		recur.value = new SolveNonHomog(newRecurCoef, newNonHomoFunc, newCubic);
+	() => [props.recurCoef, props.nonHomoFunc, props.cubic], ([newRC, newNHF, newC]) => {
+		recur.value = new SolveNonHomog(newRC, newNHF, newC);
 		PjBuffer.value = {}; // 清空來自多個子組件計算完成的 p_j
 	},
 	{ immediate: true, deep: true }

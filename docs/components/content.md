@@ -30,9 +30,9 @@ outline: [2, 3] # 顯示 h2, h3
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `borderColor` | `String` | `#aaa` | 邊框顏色，記得要加 `#` |
-| `bgColor` | `String` | `#eee` | 背景顏色，記得要加 `#` |
-| `colorStyle` | `String` | `null` | 顏色風格，若傳入的風格存在<br>會覆蓋掉 `borderColor` 和 `bgColor` |
+| `borderColor` | `string` | `#aaa` | 邊框顏色，記得要加 `#` |
+| `bgColor` | `string` | `#eee` | 背景顏色，記得要加 `#` |
+| `colorStyle` | `string` | `null` | 顏色風格，若傳入的風格存在<br>會覆蓋掉 `borderColor` 和 `bgColor` |
 | `collapsed` | `Boolean` | `false` | 若為 `true`，<br>內容區塊的 `div` 的大小會隨著內部元素改變 |
 
 ### `colorStyle`

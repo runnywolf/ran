@@ -57,8 +57,8 @@ $$
 
 | 參數 | 值 | 說明 |
 | :- | :- | :- |
-| `<k>` | `String` | 多項式部分 $n^k$ <br> 目前只允許 `0 ~ 3` |
-| `<bn>` 和 `<bd>` | `String` | 指數部分 $(b_n / b_d)^n$ <br> 可以透過 `Frac.fromStr("<bn>/<bd>")` 轉為 `Frac` |
+| `<k>` | `string` | 多項式部分 $n^k$ <br> 目前只允許 `0 ~ 3` |
+| `<bn>` 和 `<bd>` | `string` | 指數部分 $(b_n / b_d)^n$ <br> 可以透過 `Frac.fromStr("<bn>/<bd>")` 轉為 `Frac` |
 | `c` | `Frac` | 係數 $c$ |
 
 > example<br>
@@ -98,10 +98,10 @@ $$
 
 | method | return | 說明 |
 | :- | :- | :- |
-| `makeCharLatex` | `String` | 特徵值 ( latex ) |
+| `makeCharLatex` | `string` | 特徵值 ( latex ) |
 | `showNoRationalRoot` | `Boolean` | 特徵方程式的解 |
-| `makeMultiRootHomogLatex` | `String` | `cubic` 的最大重根數 |
-| `makeHomogFormLatex` | `String` |  `cubic` 的重根 |
+| `makeMultiRootHomogLatex` | `string` | `cubic` 的最大重根數 |
+| `makeHomogFormLatex` | `string` |  `cubic` 的重根 |
 
 ### `cubic`
 特徵方程式的解會保存在 `cubic`。<br>

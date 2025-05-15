@@ -35,7 +35,7 @@ $$
 | `recurCoef` | `Array<Frac>` | 齊次部分的係數 |
 | `nonHomoFunc` | `{ key: Frac }` | 非齊次部分的常數 |
 | `cubic` | `SolveCubic` | 來自 Recur.vue 的特徵方程式的解 |
-| `recurNonHomogLatex` | `String` | link 待補 |
+| `recurNonHomogLatex` | `string` | link 待補 |
 
 ### `recurCoef`
 同 [Recur - recurCoef](./recur#recurcoef)。
@@ -178,26 +178,26 @@ homogRootConflictNum = { "1/1": 1, "-2/1": 2 };
 | `_initCombineExp` | `void` | 計算 `combinedExpFunc` |
 | `_initNumberTheUnknownPj` | `void` | 計算 `varPjIndex` 和 `PjNum` |
 | `_initConflictRoot` | `void` | 計算 `homogRootConflictNum` |
-| `_mlExpTerm` | `String` | 生成 " $(* + *n + *n^2 + \cdots) b^n$ "<br>( LaTeX ) |
-| `mlCombinedExp` | `String` | 合併後的齊次部分 ( LaTeX ) |
-| `mlParticularForm` | `String` | 假設的特解形式 ( LaTeX ) |
-| `mlExistHomogExp` | `String` | 齊次部分之中的相同指數項 ${b_i}^n$<br>( LaTeX ) |
-| `mlExistParticularExp` | `String` | 特解形式之中的相同指數項 ${b_i}^n$<br>( LaTeX ) |
-| `mlChangeExpList` | `Array<[String, String]>` | 特解乘上 $n^k$ 的前後變化 ( LaTeX ) |
-| `mlNewParticularForm` | `String` | 新的特解形式 ( LaTeX ) |
-| `mlParticularIntoRecur` | `String` | $a_n^{(p)}$ 填入原遞迴關係 ( LaTeX ) |
-| `mlParticularIntoRecurTrans` | `String` | `mlParticularIntoRecur`<br>移項後的結果 ( LaTeX ) |
-| `mlParticularIntoRecurWhere` | `String` | 再顯示一次 `mlNewParticularForm`<br>與 `mlCombinedExp` ( LaTeX ) |
-| `mlParticular` | `String` | 計算完成的特解 ( LaTeX ) |
+| `_mlExpTerm` | `string` | 生成 " $(* + *n + *n^2 + \cdots) b^n$ "<br>( LaTeX ) |
+| `mlCombinedExp` | `string` | 合併後的齊次部分 ( LaTeX ) |
+| `mlParticularForm` | `string` | 假設的特解形式 ( LaTeX ) |
+| `mlExistHomogExp` | `string` | 齊次部分之中的相同指數項 ${b_i}^n$<br>( LaTeX ) |
+| `mlExistParticularExp` | `string` | 特解形式之中的相同指數項 ${b_i}^n$<br>( LaTeX ) |
+| `mlChangeExpList` | `Array<[string, string]>` | 特解乘上 $n^k$ 的前後變化 ( LaTeX ) |
+| `mlNewParticularForm` | `string` | 新的特解形式 ( LaTeX ) |
+| `mlParticularIntoRecur` | `string` | $a_n^{(p)}$ 填入原遞迴關係 ( LaTeX ) |
+| `mlParticularIntoRecurTrans` | `string` | `mlParticularIntoRecur`<br>移項後的結果 ( LaTeX ) |
+| `mlParticularIntoRecurWhere` | `string` | 再顯示一次 `mlNewParticularForm`<br>與 `mlCombinedExp` ( LaTeX ) |
+| `mlParticular` | `string` | 計算完成的特解 ( LaTeX ) |
 | `getParticular` | `{ key: Array<Frac> }` | 生成特解的資訊，<br>用於 `emit` 至 `Recur.vue` |
 
 ### `_mlExpTerm`
-`_mlExpTerm(s_frac_b, isUnknownCoef, extraNPow = 0) -> String`<br>
+`_mlExpTerm(s_frac_b, isUnknownCoef, extraNPow = 0) -> string`<br>
 生成 " $(* + *n + *n^2 + \cdots) b^n$ " 形式的 latex 語法。
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `s_frac_b` | `String` | $b^n$ 的底數 $b$，會透過 `Frac.fromStr` 轉為 `Frac` |
+| `s_frac_b` | `string` | $b^n$ 的底數 $b$，會透過 `Frac.fromStr` 轉為 `Frac` |
 | `isUnknownCoef` | `boolean` | `isUnknownCoef == true` 生成 " $(p_s + p_{s+1}n + \cdots) b^n$ " ( 特解 )<br>其中 $p_j$ 為未知係數<br>`isUnknownCoef == false` 生成 " $(c_s + c_{s+1}n + \cdots) b^n$ " ( 非齊次 )<br>其中 $c_j$ 為已知係數 |
 | `extraNPow` | `number` | 將生成結果乘上 $n^k$<br>可以參考 [`homogRootConflictNum`](#homogrootconflictnum)
 
@@ -253,7 +253,7 @@ $$F(n) = \sum\limits_{i} f_i(n) {b_i}^n = \text{recur.mlCombinedExp()}$$
 | :-- | :-- | :-- |
 | `recur` | [`SolveNonHomog`](#solvenonhomog-的變數) | 特解的未知係數 $p_j$ 的計算過程 |
 | `PjBuffer` | `{ key: Array<Frac> }` | 用於暫存多個 [`RecurNonHomogExp.vue`](./recur-non-homog-exp) 回傳的 $p_j$ |
-| `particularLatex` | `String` | 計算完成的特解 ( LaTeX ) |
+| `particularLatex` | `string` | 計算完成的特解 ( LaTeX ) |
 
 ### `recur`
 特解的未知係數 $p_j$ 的計算過程，計算所需的變數和方法都封裝在內。
