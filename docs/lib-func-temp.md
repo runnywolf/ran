@@ -19,14 +19,14 @@ import { Class } from "ran-math";
 
 | Property | Type | Description |
 | :- | :- | :- |
-| [`exampleProp`](#) | <property type> | <property 描述> |
+| [`exampleProp`](#) | `property type` | property 描述 |
 
 | Method | Description |
 | :- | :- |
-| [`exampleFunc`](#) | <function 描述> |
+| [`exampleFunc`](#) | function 描述 |
 
 ## `exampleFunc`
-<詳細的 function 描述>
+詳細的 function 描述
 
 ```js
 exampleFunc(param: any): any
@@ -34,9 +34,9 @@ exampleFunc(param: any): any
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `param` | `any` | <參數說明> |
+| `param` | `any` | 參數說明 |
 
 範例：
 ```js
-exampleFunc(...) // <return value>
+exampleFunc(...) // return value
 ```
