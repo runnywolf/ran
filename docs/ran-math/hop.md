@@ -14,7 +14,7 @@ head:
 import { Hop } from "ran-math";
 ```
 
-## Properties & Methods
+## Methods
 | Method | Description |
 | :- | :- |
 | [`Hop.uop`](#hop-uop) | 自訂義一元運算子 |
