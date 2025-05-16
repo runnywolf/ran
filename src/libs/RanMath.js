@@ -67,11 +67,11 @@ export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const _ADD_OP = (n1, n2) => n1 + n2;
-export function sum(arr, setDef = isNum, addOp = _ADD_OP) { // 加總
+const _NUM_ADD_OP = (n1, n2) => n1 + n2;
+export function sum(arr, setDef = isNum, addOp = _NUM_ADD_OP) { // 加總
 	if (typeof addOp !== "function") {
 		// err
-		addOp = _ADD_OP;
+		addOp = _NUM_ADD_OP;
 	}
 }
 
@@ -308,50 +308,43 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 		return Hop.uop(nf, Hop._LATEX_FRAC_OP, Hop._STR_FLOAT_OP(p), "?");
 	}
 	
-	static _ADD_FRAC_OP = (frac1, frac2) => frac1.add(frac2);
 	static _ADD_FLOAT_OP = (n1, n2) => n1 + n2;
 	static add(nf1, nf2) { // 加法
-		return Hop.bop(nf1, nf2, Hop._ADD_FRAC_OP, Hop._ADD_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Frac._ADD_OP, Hop._ADD_FLOAT_OP); // Frac._*_OP 已定義 7 個運算子, 不須重新宣告 (v0.3.3-dev.2 優化)
 	}
 	
-	static _SUB_FRAC_OP = (frac1, frac2) => frac1.sub(frac2);
-	static SUB_FLOAT_OP = (n1, n2) => n1 - n2;
+	static _SUB_FLOAT_OP = (n1, n2) => n1 - n2;
 	static sub(nf1, nf2) { // 加法
-		return Hop.bop(nf1, nf2, Hop._SUB_FRAC_OP, Hop.SUB_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Frac._SUB_OP, Hop._SUB_FLOAT_OP);
 	}
 	
-	static _MUL_FRAC_OP = (frac1, frac2) => frac1.mul(frac2);
 	static _MUL_FLOAT_OP = (n1, n2) => n1 * n2;
 	static mul(nf1, nf2) { // 乘法
-		return Hop.bop(nf1, nf2, Hop._MUL_FRAC_OP, Hop._MUL_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Frac._MUL_OP, Hop._MUL_FLOAT_OP);
 	}
 	
-	static _DIV_FRAC_OP = (frac1, frac2) => frac1.div(frac2);
 	static _DIV_FLOAT_OP = (n1, n2) => n1 / n2;
 	static div(nf1, nf2) { // 除法
 		if (Hop.equal(nf2, 0)) {
 			throwErr("Hop.div", "Div 0 error.");
 			return NaN;
 		}
-		return Hop.bop(nf1, nf2, Hop._DIV_FRAC_OP, Hop._DIV_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Frac._DIV_OP, Hop._DIV_FLOAT_OP);
 	}
 	
-	static _POW_FRAC_OP = (frac1, frac2) => frac1.pow(frac2);
 	static _POW_FLOAT_OP = (n1, n2) => n1 ** n2;
 	static pow(nf1, nf2) { // 次方
-		return Hop.bop(nf1, nf2, Hop._POW_FRAC_OP, Hop._POW_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Frac._POW_OP, Hop._POW_FLOAT_OP);
 	}
 	
-	static _EQUAL_FRAC_OP = (frac1, frac2) => frac1.equal(frac2);
 	static _EQUAL_FLOAT_OP = (n1, n2) => n1 === n2;
 	static equal(nf1, nf2) { // 等於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, Hop._EQUAL_FRAC_OP, Hop._EQUAL_FLOAT_OP, false);
+		return Hop.bop(nf1, nf2, Frac._EQUAL_OP, Hop._EQUAL_FLOAT_OP, false);
 	}
 	
-	static _LT_FRAC_OP = (frac1, frac2) => frac1.lt(frac2);
 	static _LT_FLOAT_OP = (n1, n2) => n1 < n2;
 	static lt(nf1, nf2) { // 小於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, Hop._LT_FRAC_OP, Hop._LT_FLOAT_OP, false);
+		return Hop.bop(nf1, nf2, Frac._LT_OP, Hop._LT_FLOAT_OP, false);
 	}
 }
 
