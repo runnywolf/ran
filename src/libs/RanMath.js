@@ -67,6 +67,14 @@ export function getRandomInt(min, max) { // 隨機整數
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const _ADD_OP = (n1, n2) => n1 + n2;
+export function sum(arr, setDef = isNum, addOp = _ADD_OP) { // 加總
+	if (typeof addOp !== "function") {
+		// err
+		addOp = _ADD_OP;
+	}
+}
+
 export class Prime { // 質數 (prime number)
 	static prime = [2];
 	
@@ -193,22 +201,22 @@ export class Frac { // 分數 (fraction)
 		return op(this, nf); // 執行運算
 	}
 	
-	static ADD_OP = (f1, f2) => F(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
+	static _ADD_OP = (f1, f2) => F(f1.n * f2.d + f1.d * f2.n, f1.d * f2.d);
 	add(nf) { // 加法
-		return this._makeOp(nf, "add", Frac.ADD_OP);
+		return this._makeOp(nf, "add", Frac._ADD_OP);
 	}
 	
-	static SUB_OP = (f1, f2) => F(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
+	static _SUB_OP = (f1, f2) => F(f1.n * f2.d - f1.d * f2.n, f1.d * f2.d);
 	sub(nf) { // 減法
-		return this._makeOp(nf, "sub", Frac.SUB_OP);
+		return this._makeOp(nf, "sub", Frac._SUB_OP);
 	}
 	
-	static MUL_OP = (f1, f2) => F(f1.n * f2.n, f1.d * f2.d);
+	static _MUL_OP = (f1, f2) => F(f1.n * f2.n, f1.d * f2.d);
 	mul(nf) { // 乘法
-		return this._makeOp(nf, "mul", Frac.MUL_OP);
+		return this._makeOp(nf, "mul", Frac._MUL_OP);
 	}
 	
-	static DIV_OP = (f1, f2) => {
+	static _DIV_OP = (f1, f2) => {
 		if (f2.isZero()) { // f1/f2 發生除零錯誤
 			throwErr("Frac.div", "Div 0 error.");
 			return f1; // 回傳 this (不執行這個運算)
@@ -216,10 +224,10 @@ export class Frac { // 分數 (fraction)
 		return F(f1.n * f2.d, f1.d * f2.n);
 	};
 	div(nf) { // 除法
-		return this._makeOp(nf, "div", Frac.DIV_OP);
+		return this._makeOp(nf, "div", Frac._DIV_OP);
 	}
 	
-	static POW_OP = (f1, f2) => {
+	static _POW_OP = (f1, f2) => {
 		const rootOfF1n = Math.round(f1.n ** (1 / f2.d)); // 先計算 (f1.n/f1.d) ^ (1/f2.d)
 		const rootOfF1d = Math.round(f1.d ** (1 / f2.d));
 		if (rootOfF1n ** f2.d !== f1.n || rootOfF1d ** f2.d !== f1.d) { // 驗證 f1 ^ (1/f2.d) 是否仍是有理數
@@ -235,17 +243,17 @@ export class Frac { // 分數 (fraction)
 		return F(rootOfF1d ** -f2.n, rootOfF1n ** -f2.n); // 負數次方 -> 交換分子分母
 	};
 	pow(nf) { // 次方
-		return this._makeOp(nf, "pow", Frac.POW_OP);
+		return this._makeOp(nf, "pow", Frac._POW_OP);
 	}
 	
-	static EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
+	static _EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
 	equal(nf) { // 比較兩個分數是否相同
-		return this._makeOp(nf, "equal", Frac.EQUAL_OP, false);
+		return this._makeOp(nf, "equal", Frac._EQUAL_OP, false);
 	}
 	
-	static LT_OP = (f1, f2) => f1.n * f2.d < f1.d * f2.n;
+	static _LT_OP = (f1, f2) => f1.n * f2.d < f1.d * f2.n;
 	lt(nf) { // 小於: this < nf
-		return this._makeOp(nf, "lt", Frac.LT_OP, false);
+		return this._makeOp(nf, "lt", Frac._LT_OP, false);
 	}
 }
 
@@ -268,83 +276,94 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 		return errReturn; // other (未定義)
 	}
 	
-	static FALSE_OP = () => false; // 浮點數必不為 Z, Z+, Z-, Q
-	static Z_FRAC_OP = frac => frac.isInt();
+	static _Z_FRAC_OP = frac => frac.isInt();
+	static _FALSE_OP = () => false; // 浮點數必不為 Z, Z+, Z-, Q
 	static isInt(nf) { // 是否為整數 (Z). 如果 nf 不是 Frac/number 會回傳 false
-		return Hop.uop(nf, Hop.Z_FRAC_OP, Hop.FALSE_OP, false);
+		return Hop.uop(nf, Hop._Z_FRAC_OP, Hop._FALSE_OP, false);
 	}
 	
-	static ZP_FRAC_OP = frac => frac.isInt() && F(0).lt(frac); // int & (0 < n)
+	static _ZP_FRAC_OP = frac => frac.isInt() && F(0).lt(frac); // int & (0 < n)
 	static isPosInt(nf) { // 是否為正整數 1, 2, ... (Z+). 如果 nf 不是 Frac/number 會回傳 false
-		return Hop.uop(nf, Hop.ZP_FRAC_OP, Hop.FALSE_OP, false);
+		return Hop.uop(nf, Hop._ZP_FRAC_OP, Hop._FALSE_OP, false);
 	}
 	
-	static ZN_FRAC_OP = frac => frac.isInt() && frac.lt(0) // int & (n < 0)
+	static _ZN_FRAC_OP = frac => frac.isInt() && frac.lt(0) // int & (n < 0)
 	static isNegInt(nf) { // 是否為負整數 1, 2, ... (Z-). 如果 nf 不是 Frac/number 會回傳 false
-		return Hop.uop(nf, Hop.ZN_FRAC_OP, Hop.FALSE_OP, false);
+		return Hop.uop(nf, Hop._ZN_FRAC_OP, Hop._FALSE_OP, false);
 	}
 	
-	static Q_FRAC_OP = frac => true; // int number 會自動轉為 Frac, 而 Frac 必為有理數. (不考慮浮點有理數)
+	static _Q_FRAC_OP = frac => true; // int number 會自動轉為 Frac, 而 Frac 必為有理數. (不考慮浮點有理數)
 	static isRational(nf) { // 是否為有理數 (Q). 如果 nf 不是 Frac/number 會回傳 false
-		return Hop.uop(nf, Hop.Q_FRAC_OP, Hop.FALSE_OP, false);
+		return Hop.uop(nf, Hop._Q_FRAC_OP, Hop._FALSE_OP, false);
 	}
 	
-	static STR_FRAC_OP = frac => frac.toStr();
-	static STR_FLOAT_OP = p => (n => n.toFixed(p));
+	static _STR_FRAC_OP = frac => frac.toStr();
+	static _STR_FLOAT_OP = p => (n => n.toFixed(p));
 	static toStr(nf, p = 4) { // 轉 debug 字串. 如果 nf 不是 Frac/number 會回傳 "?"
-		return Hop.uop(nf, Hop.STR_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
+		return Hop.uop(nf, Hop._STR_FRAC_OP, Hop._STR_FLOAT_OP(p), "?");
 	}
 	
-	static LATEX_FRAC_OP = frac => frac.toLatex();
+	static _LATEX_FRAC_OP = frac => frac.toLatex();
 	static toLatex(nf, p = 4) { // 轉 latex 語法. 如果 nf 不是 Frac/number 會回傳 "?"
-		return Hop.uop(nf, Hop.LATEX_FRAC_OP, Hop.STR_FLOAT_OP(p), "?");
+		return Hop.uop(nf, Hop._LATEX_FRAC_OP, Hop._STR_FLOAT_OP(p), "?");
 	}
 	
-	static ADD_FRAC_OP = (frac1, frac2) => frac1.add(frac2);
-	static ADD_FLOAT_OP = (n1, n2) => n1 + n2;
+	static _ADD_FRAC_OP = (frac1, frac2) => frac1.add(frac2);
+	static _ADD_FLOAT_OP = (n1, n2) => n1 + n2;
 	static add(nf1, nf2) { // 加法
-		return Hop.bop(nf1, nf2, Hop.ADD_FRAC_OP, Hop.ADD_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Hop._ADD_FRAC_OP, Hop._ADD_FLOAT_OP);
 	}
 	
-	static SUB_FRAC_OP = (frac1, frac2) => frac1.sub(frac2);
+	static _SUB_FRAC_OP = (frac1, frac2) => frac1.sub(frac2);
 	static SUB_FLOAT_OP = (n1, n2) => n1 - n2;
 	static sub(nf1, nf2) { // 加法
-		return Hop.bop(nf1, nf2, Hop.SUB_FRAC_OP, Hop.SUB_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Hop._SUB_FRAC_OP, Hop.SUB_FLOAT_OP);
 	}
 	
-	static MUL_FRAC_OP = (frac1, frac2) => frac1.mul(frac2);
-	static MUL_FLOAT_OP = (n1, n2) => n1 * n2;
+	static _MUL_FRAC_OP = (frac1, frac2) => frac1.mul(frac2);
+	static _MUL_FLOAT_OP = (n1, n2) => n1 * n2;
 	static mul(nf1, nf2) { // 乘法
-		return Hop.bop(nf1, nf2, Hop.MUL_FRAC_OP, Hop.MUL_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Hop._MUL_FRAC_OP, Hop._MUL_FLOAT_OP);
 	}
 	
-	static DIV_FRAC_OP = (frac1, frac2) => frac1.div(frac2);
-	static DIV_FLOAT_OP = (n1, n2) => n1 / n2;
+	static _DIV_FRAC_OP = (frac1, frac2) => frac1.div(frac2);
+	static _DIV_FLOAT_OP = (n1, n2) => n1 / n2;
 	static div(nf1, nf2) { // 除法
 		if (Hop.equal(nf2, 0)) {
 			throwErr("Hop.div", "Div 0 error.");
 			return NaN;
 		}
-		return Hop.bop(nf1, nf2, Hop.DIV_FRAC_OP, Hop.DIV_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Hop._DIV_FRAC_OP, Hop._DIV_FLOAT_OP);
 	}
 	
-	static POW_FRAC_OP = (frac1, frac2) => frac1.pow(frac2);
-	static POW_FLOAT_OP = (n1, n2) => n1 ** n2;
+	static _POW_FRAC_OP = (frac1, frac2) => frac1.pow(frac2);
+	static _POW_FLOAT_OP = (n1, n2) => n1 ** n2;
 	static pow(nf1, nf2) { // 次方
-		return Hop.bop(nf1, nf2, Hop.POW_FRAC_OP, Hop.POW_FLOAT_OP);
+		return Hop.bop(nf1, nf2, Hop._POW_FRAC_OP, Hop._POW_FLOAT_OP);
 	}
 	
-	static EQUAL_FRAC_OP = (frac1, frac2) => frac1.equal(frac2);
-	static EQUAL_FLOAT_OP = (n1, n2) => n1 === n2;
+	static _EQUAL_FRAC_OP = (frac1, frac2) => frac1.equal(frac2);
+	static _EQUAL_FLOAT_OP = (n1, n2) => n1 === n2;
 	static equal(nf1, nf2) { // 等於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, Hop.EQUAL_FRAC_OP, Hop.EQUAL_FLOAT_OP, false);
+		return Hop.bop(nf1, nf2, Hop._EQUAL_FRAC_OP, Hop._EQUAL_FLOAT_OP, false);
 	}
 	
-	static LT_FRAC_OP = (frac1, frac2) => frac1.lt(frac2);
-	static LT_FLOAT_OP = (n1, n2) => n1 < n2;
+	static _LT_FRAC_OP = (frac1, frac2) => frac1.lt(frac2);
+	static _LT_FLOAT_OP = (n1, n2) => n1 < n2;
 	static lt(nf1, nf2) { // 小於. 如果 nf1, nf2 其中一個不是數字會回傳 false
-		return Hop.bop(nf1, nf2, Hop.LT_FRAC_OP, Hop.LT_FLOAT_OP, false);
+		return Hop.bop(nf1, nf2, Hop._LT_FRAC_OP, Hop._LT_FLOAT_OP, false);
 	}
+}
+
+export class _EF { // extension field
+	static isEF(ef) {
+		return ef instanceof EF;
+	}
+	
+	// static constructor1: input 
+	// constructor2: input 
+	
+	// k(a1 + √p1)(a2 + √p2)... ; k, ai in Q ; pi in prime number or -1
 }
 
 export class EF { // 擴張體運算 (a + b√s)
@@ -512,10 +531,6 @@ export class EF { // 擴張體運算 (a + b√s)
 		if (b === null) return false; // ef 型態錯誤或 √s 不一致會判定為 false
 		return b;
 	}
-}
-
-export class BEF { // binary extension field (test)
-	// k(a1 + √s1)(a2 + √s2)...
 }
 
 export class Matrix { // 矩陣
