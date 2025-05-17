@@ -86,22 +86,18 @@ export function makeSum(arr, isInSet, zero, addOp, funcName) { // 自定義加�
 	}
 	if (typeof funcName !== "string") funcName = "?"; // 報錯用, 不影響計算
 	
-	let sumOfArr = zero;
-	for (const element of arr) {
-		let newSum;
-		if (Array.isArray(element)) { // 對巢狀 array 遞迴加總. (因為要實作 ...args , 所以這個功能算是副產物)
-			newSum = addOp(sumOfArr, makeSum(element, isInSet, zero, addOp, funcName)); // 遞迴
-		} else if (!isInSet(element)) { // 如果 arr 內的元素不在集合內
+	return arr.flat(Infinity).reduce((acc, element) => { // 扁平化至 1 層 array
+		if (!isInSet(element)) { // 如果元素不在集合內, 忽略這個元素
 			throwErr(funcName, `Array element (${element}) is not in set.`);
-			continue;
-		} else { // 對集合內的元素加總
-			newSum = addOp(sumOfArr, element);
+			return acc;
 		}
-		
-		if (isInSet(newSum)) sumOfArr = newSum; // 如果加法運算有封閉性, 賦值給 sumOfArr
-		else throwErr(funcName, `(Sum + ${element}) is not in set, check the addOp return value.`); // 加法運算沒有封閉性, 不賦值給 sumOfArr
-	}
-	return sumOfArr;
+		const newAcc = addOp(acc, element);
+		if (!isInSet(newAcc)) { // 如果加法運算沒有封閉性, 忽略這個元素
+			throwErr(funcName, `(Sum + ${element}) is not in set, check the addOp return value.`);
+			return acc;
+		}
+		return newAcc; // 如果加法運算有封閉性, 累計這個元素
+	}, zero);
 }
 
 export class Prime { // 質數 (prime number)

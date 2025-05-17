@@ -19,6 +19,7 @@ head:
 | [`getFactors`](#getfactors) | 回傳 $n$ 的所有正因數 ( 升序排列 ) |
 | [`getSquareFactor`](#getsquarefactor) | 若 $k^2$ 為 $n$ 的最大平方因數，回傳 $k$ |
 | [`getRandomInt`](#getrandomint) | 回傳範圍 `[min, max]` 內的隨機整數 |
+| [`sum`](#sum) | 總和 |
 
 ## `isNum`
 檢查參數 `n` 是否為數字，與 `typeof n === "number"` 等價。
@@ -170,3 +171,26 @@ getRandomInt(min: number, max: number): number
 getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
 ```
 
+## `sum`
+將輸入的所有參數加總。<br>
+若參數出現巢狀 `Array`，會將內部所有 `number` 加總。
+
+如果有元素不為 `number`，會跳過並報錯。
+
+```js
+sum(...arr: Array<number|Array>): number
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `...arr` | `Array<number\|Array>` | 要求和的數列，只有 `number` 會被加總，<br>其他的元素會被視為 0。 |
+
+範例：
+```js
+import { sum } from "ran-math";
+
+sum()                      // 0
+sum(2, -4, 7.2)            // 5.2
+sum([2, -4, 7.2])          // 5.2
+sum([2, 3.2], [[-4], 7.2]) // 8.4
+```
