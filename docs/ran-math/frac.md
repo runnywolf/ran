@@ -96,7 +96,7 @@ Frac.sum(arr: Array<any>): Frac
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `arr` | `Array<any>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總，<br>其他的元素會被視為 0。 |
+| `arr` | `Array<Number\|Frac>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總，<br>其他的元素會被視為 0。 |
 
 範例：
 ```js

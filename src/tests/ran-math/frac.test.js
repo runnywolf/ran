@@ -40,17 +40,22 @@ const testData = {
 	},
 	"Frac.sum": {
 		testName: "Frac.sum($input) = $output.n/$output.d",
-		testFunc: Frac.sum,
+		testFunc: (input) => Frac.sum(...input), // 測試 ...args 和巢狀 list 加總
 		tests: [ // 測資
 			{ input: [], output: F(0, 1) },
-			{ input: [F(9, 8), F(1), F(1, 3)], output: F(59, 24) },
-			{ input: [F(9, 8), 2.5, "7", F(1), F(1, 3)], output: F(59, 24) },
-			{ input: [5, F(1, 2), 3, F(-2, 3)] , output: F(47, 6) },
-			{ input: [3, F(5, 2), -2, F(-3, 4), 1, F(1, 6), 0], output: F(47, 12) },
-			{ input: [F(1, 2), F(2, 3), F(3, 5), F(4, 7), F(5, 11)], output: F(6451, 2310) },
-			{ input: [F(1, 2), F(2, 3), F(3, 5)], output: F(53, 30) },
-			{ input: F(2, 5), output: F(0, 1), error: '[RanMath][Frac.sum] Param "arr" must be an Array.' },
-			{ input: { key: F(2, 5) }, output: F(0, 1), error: '[RanMath][Frac.sum] Param "arr" must be an Array.' },
+			{ input: [ F(9, 8), F(1), F(1, 3) ], output: F(59, 24) },
+			{ input: [ 3, F(5, 2), -2, F(-3, 4), 1, F(1, 6), 0 ], output: F(47, 12) },
+			{ input: [ F(1, 2), F(2, 3), F(3, 5), F(4, 7), F(5, 11) ], output: F(6451, 2310) },
+			{ input: [ F(1, 2), F(2, 3), F(3, 5) ], output: F(53, 30) },
+			{ input: [ 5, F(1, 2), 3, F(-2, 3) ] , output: F(47, 6) }, // Frac.sum(5, F(1, 2), 3, F(-2, 3))
+			{ input: [ [5, F(1, 2), 3, F(-2, 3)] ] , output: F(47, 6) }, // Frac.sum([5, F(1, 2), 3, F(-2, 3)])
+			{ input: [ 5, F(1, 2), [3, F(-2, 3)] ] , output: F(47, 6) }, // Frac.sum(5, F(1, 2), [3, F(-2, 3)])
+			{ input: [ [5, [F(1, 2), 3]], [F(-2, 3)] ] , output: F(47, 6) }, // Frac.sum([5, [F(1, 2), 3]], [F(-2, 3)])
+			{
+				input: [ F(9, 8), "7", F(1), F(1, 3) ],
+				output: F(59, 24),
+				error: "[RanMath][Frac.sum] Array element (7) is not in set."
+			},
 		],
 	},
 	"constructor": {
