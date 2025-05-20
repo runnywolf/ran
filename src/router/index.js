@@ -24,7 +24,7 @@ const routes = [
 		]
 	},
 	{ path: "/other", name: "Other", component: () => import("@/views/OtherView.vue") },
-	{ path: "/test", name: "Test", component: () => import("@/views/TestView.vue") /* , redirect: "/" */ },
+	{ path: "/test", name: "Test", component: () => import("@/tests/TestView.vue") /* , redirect: "/" */ }, // 測試用
 	{ path: "/:pathMatch(.*)", redirect: "/" },
 ];
 

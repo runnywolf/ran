@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# vitepress
+# vitepress build cache
 docs/.vitepress/cache
 
-# vitest
+# vitest test result
 coverage
