@@ -131,7 +131,7 @@ export class Prime { // 質數 (prime number)
 	}
 }
 
-export class Frac { // 分數 (fraction)
+export class Frac { // 分數 (Fraction)
 	static isFrac(value) { // 是否是分數
 		return value instanceof Frac;
 	}
@@ -366,15 +366,23 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 	}
 }
 
-export class _EF { // extension field
+export class _EF { // Extension Field
 	static isEF(ef) {
-		return ef instanceof EF;
+		return ef instanceof _EF;
 	}
 	
-	// static constructor1: input 
-	// constructor2: input 
+	static unitI() { // 回傳 1i
+		return new _EF([1, -1]);
+	}
 	
-	// k(a1 + √p1)(a2 + √p2)... ; k, ai in Q ; pi in prime number or -1
+	constructor(...terms) {
+		
+	}
+	
+	// constructor: a1√s1 + a2√s2 + a3√s3 + ... ; a, s in hop
+	// [a1, s1], [a2, s2], ...
+	
+	// Hop.isNumOrFrac()
 }
 
 export class EF { // 擴張體運算 (a + b√s)
