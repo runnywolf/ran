@@ -13,11 +13,6 @@
 	line-height: 1.2em; /* 行距 (倍) */
 }
 
-.katex { /* latex 文字的 override style */
-	white-space: nowrap; /* 禁止換行 */
-	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
-}
-
 .upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
 	margin-top: 0;
 	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
