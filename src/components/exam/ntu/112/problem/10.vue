@@ -2,9 +2,7 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			<span class="problem-score">(5%)</span>
-			Let
-			<vl exp="A \in M_{n \times n}" />,
-			which of the following statements are true?
+			Let <vl exp="A \in M_{n \times n}" />, which of the following statements are true?
 		</div>
 		<ul class="upper-alpha-list">
 			<li>

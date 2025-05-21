@@ -2,25 +2,12 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			<span class="problem-score">(10%)</span>
-			Let
-			<vl exp="T" />
-			be a self-adjoint operator on a finite-dimensional inner product space
-			<vl exp="V" />
-			with distinct eigenvalues
+			Let <vl exp="T" /> be a self-adjoint operator on a finite-dimensional inner product space
+			<vl exp="V" /> with distinct eigenvalues
 			<vl exp="\lambda_1, \lambda_2, \,\cdots , \lambda_k" />.
-			Let
-			<vl exp="E_i" />
-			be the eigenspace of
-			<vl exp="T" />
-			corresponding to
-			<vl exp="\lambda_i" />,
-			and let
-			<vl exp="T_i" />
-			be the orthogonal projection of
-			<vl exp="V" />
-			on
-			<vl exp="E_i" />,
-			<vl exp="1 \leq i \leq k" />.
+			Let <vl exp="E_i" /> be the eigenspace of <vl exp="T" /> corresponding to
+			<vl exp="\lambda_i" />, and let <vl exp="T_i" /> be the orthogonal projection of
+			<vl exp="V" /> on <vl exp="E_i" />, <vl exp="1 \leq i \leq k" />.
 		</div>
 		<ul class="upper-alpha-list">
 			<li>

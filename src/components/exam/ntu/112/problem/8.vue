@@ -2,9 +2,7 @@
 	<div class="ts-grid is-stacked is-compact">
 		<div class="column">
 			<span class="problem-score">(10%)</span>
-			Assume that A, B, and C are
-			<vl exp="n \times n" />
-			matrices.
+			Assume that A, B, and C are <vl exp="n \times n" /> matrices.
 		</div>
 		<ul class="upper-alpha-list">
 			<li>

@@ -11,11 +11,6 @@
 		a^n    & a^{n-1} & a^{n-2} & \cdots  & a      & 1
 		\end{bmatrix}\!
 	" />,
-	where
-	<vl exp="a \in R" />
-	and
-	<vl exp="n" />
-	is a positive integer. Find the product of all the eigenvalues of
-	<vl exp="A" />
-	in the simplest form.
+	where <vl exp="a \in R" /> and <vl exp="n" /> is a positive integer.
+	Find the product of all the eigenvalues of <vl exp="A" /> in the simplest form.
 </template>
