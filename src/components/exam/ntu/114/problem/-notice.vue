@@ -1,12 +1,12 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
-		<div style="font-family: DFKai-sb; font-weight: bold;">
+		<div class="biaukai-bold">
 			請先在試卷第一頁繪製以下表格，然後將答案填入。
 		</div>
-		<span>
+		<div>
 			Please draw the following table on the first page of the answer sheets and
 			fill in the answers accordingly.
-		</span>
+		</div>
 		<table class="native-table" style="text-align: center;">
 			<tbody>
 				<tr>

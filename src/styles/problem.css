@@ -13,6 +13,11 @@
 	line-height: 1.2em; /* 行距 (倍) */
 }
 
+.biaukai-bold { /* 標楷粗體, 用於考卷的說明文字 */
+	font-family: DFKai-sb;
+	font-weight: bold;
+}
+
 .upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
 	margin-top: 0;
 	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
