@@ -107,12 +107,6 @@ const getOlStyle = (s_sectionId) => { // 獲取某一題的題號樣式 (ui 由 
 </script>
 
 <style scoped>
-.exam > ol {
-	padding-left: 20px; /* 題目編號與 box 左側邊緣的距離 */
-}
-.exam > ol > li {
-	padding-left: 4px; /* 題目編號與題目的距離 */
-}
 .exam-cover { /* 覆蓋於模糊的題目之上的 ui */
 	position: absolute; /* 絕對定位 */
 	top: 100px; /* 與考卷頂部的距離 */
