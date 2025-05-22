@@ -27,7 +27,7 @@
 # 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
 - [Vue Router](https://router.vuejs.org/) - 路由管理
-- [VitePress](https://vitepress.dev/) - 文檔
+- [VitePress](https://vitepress.dev/) - docs
 - [Vitest](https://vitest.dev/) - 測試
 - [VaTex](https://github.com/Shimada666/VaTex) - Vue3 可用的 KaTex 封裝
 - [Tocas UI](https://github.com/teacat/tocas) - 好用又好看的 CSS 框架
