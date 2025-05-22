@@ -181,9 +181,10 @@ src/
 ### Step 4-3：編寫題目
 因為是使用 Vue 撰寫題目，雖然比較靈活，但沒有 markdown 簡潔。
 
-介紹幾個在 Ran 內部封裝的全域 Vue 組件：
-| 組件 ( link 待補 ) | 說明 |
+介紹幾個全域 Vue 組件：
+| 組件 | 說明 |
 | :- | :- |
+| [`MakeProblem`](../components/make-problem) | 題目模板 |
 | [`vl`](../components/vl) | 顯示 LaTex 語法 |
 | [`MultiOption`](../components/multi-option) | 多選題的折疊選項 |
 | [`Content`](../components/content) | 顏色背景的 UI 區塊 |
