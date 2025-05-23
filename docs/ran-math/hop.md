@@ -17,8 +17,8 @@ import { Hop } from "ran-math";
 ## Methods
 | Method | Description |
 | :- | :- |
-| [`Hop.uop`](#hop-uop) | 自訂義一元運算子 |
-| [`Hop.bop`](#hop-bop) | 自訂義二元運算子 |
+| [`Hop.uop`](#hop-uop) | 自訂一元運算子 |
+| [`Hop.bop`](#hop-bop) | 自訂二元運算子 |
 | [`Hop.isInt`](#hop-isint) | 是否為整數 |
 | [`Hop.isPosInt`](#hop-isposint) | 是否為正整數 |
 | [`Hop.isNegInt`](#hop-isnegint) | 是否為負整數 |
@@ -34,7 +34,7 @@ import { Hop } from "ran-math";
 | [`Hop.lt`](#hop-lt) | 小於 |
 
 ## `Hop.uop`
-自訂義一元運算子 ( unary operator )。
+自訂一元運算子 ( unary operator )。
 
 若運算元不為 `Frac` 或 `number`，回傳 `errReturn` ( 預設為 `NaN` )。
 
@@ -71,7 +71,7 @@ const is0 = (nf) => Hop.uop(nf, ISZERO_FRAC_OP, ISZERO_FLOAT_OP, false);
 |  | `fracOp(nf)` | `fracOp(nf)` | `floatOp(nf)` | `errReturn` |
 
 ## `Hop.bop`
-自訂義二元運算子 ( binary operator )。
+自訂二元運算子 ( binary operator )。
 
 若運算元不為 `Frac` 或 `number`，回傳 `errReturn` ( 預設為 `NaN` )。
 

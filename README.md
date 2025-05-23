@@ -9,7 +9,7 @@
 一款用於準備資工所數學的網頁 App。
 
 開始使用 → [Ran](https://runnywolf.github.io/ran/#/exam)<br>
-文檔 → [Ran Docs](https://runnywolf.github.io/ran/docs/exam-page/create-exam)
+說明文件 → [Ran Docs](https://runnywolf.github.io/ran/docs/exam-page/create-exam)
 
 > [!WARNING]  
 > 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
@@ -27,7 +27,7 @@
 # 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
 - [Vue Router](https://router.vuejs.org/) - 路由管理
-- [VitePress](https://vitepress.dev/) - 文檔
+- [VitePress](https://vitepress.dev/) - docs
 - [Vitest](https://vitest.dev/) - 測試
 - [VaTex](https://github.com/Shimada666/VaTex) - Vue3 可用的 KaTex 封裝
 - [Tocas UI](https://github.com/teacat/tocas) - 好用又好看的 CSS 框架

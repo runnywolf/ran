@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 import markdownItKatex from "markdown-it-katex"; // katex 語法支援
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
-	base: "/ran/docs/", // 文檔路徑位於 /ran/docs/
+	base: "/ran/docs/", // 說明文件的路徑位於 /ran/docs/
 	cleanUrls: true, // 跳轉到某個頁面時, 不要在網址尾端加上 .html (有點醜)
 	title: "Ran Docs", // 網頁分頁籤的標題
 	description: "-",

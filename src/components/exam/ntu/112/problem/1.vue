@@ -21,7 +21,8 @@
 </template>
 
 <style scoped>
-.opt > img {
+.opt > img { /* 選項圖片 */
 	width: 100px;
+	align-self: center; /* 只有圖片垂直置中 */
 }
 </style>

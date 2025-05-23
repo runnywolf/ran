@@ -71,7 +71,7 @@ export function sum(...arr) { // 將 type number 加總
 	return makeSum(arr, isNum, 0, (n1, n2) => n1 + n2, "sum");
 }
 
-export function makeSum(arr, isInSet, zero, addOp, funcName) { // 自定義加總
+export function makeSum(arr, isInSet, zero, addOp, funcName) { // 自訂加總
 	if (typeof isInSet !== "function") { // 集合定義必須是一個 func
 		throwErr(funcName, 'Param "isInSet" (set definition) is not a function.');
 		return zero;
