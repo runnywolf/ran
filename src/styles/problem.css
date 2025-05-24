@@ -1,3 +1,7 @@
+.ran-no-break { /* 不要換行 */
+	white-space: nowrap;
+}
+
 .problem-font { /* 題目的字體 */
 	font-family: "Times New Roman", Times, serif;
 	font-size: 18px; /* 字體大小 */

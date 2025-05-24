@@ -1,7 +1,7 @@
 <template>
-	<MakeProblem scoreText="(? points)">
+	<MakeProblem scoreText="(10 points)">
 		<template #problem>
-			[第 3 題的題目]
+			Calculate Euler’s phi function (also called totient function) <vl exp="\Phi(90)" />: _____.
 		</template>
 	</MakeProblem>
 </template>
