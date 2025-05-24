@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
 		<template #problem>
 			Which ones of the following sets are linearly independent?
 			Points will be counted only if all the answers are correct.

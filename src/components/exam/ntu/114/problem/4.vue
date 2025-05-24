@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10">
+	<MakeProblem scoreText="(10%)">
 		<template #problem>
 			Derive the solution for <vl exp="a_n" /> that satisfies the recurrence equation
 			<vl exp="a_n = -3a_{n-1} + 10a_{n-2}" />

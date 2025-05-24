@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			The number of non-negative integer solutions of
 			<vl exp="x_1 + x_2 + \cdots + x_4 \le 7" /> equals

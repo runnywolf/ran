@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Which solves <vl exp="a_n = a_{n-1} + 6a_{n-2}" /> for <vl exp="a_n" />
 			in terms of <vl exp="a_0 = A" /> and <vl exp="a_1 = B" />:

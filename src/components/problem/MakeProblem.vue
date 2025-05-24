@@ -3,7 +3,7 @@
 		
 		<!-- 預設的題目區塊 (會包含配分) -->
 		<div class="column">
-			<span v-if="score > 0" class="problem-score">({{ score }}%)</span>
+			<span v-if="scoreText" class="problem-score">{{ scoreText }}</span>
 			<span>
 				<slot name="problem"></slot>
 			</span>
@@ -36,7 +36,7 @@
 
 <script setup>
 const props = defineProps({
-	score: { type: Number, default: 0 }, // 配分, > 0 才會顯示配分
+	scoreText: { type: String, default: "" }, // 配分字串
 	extraProblemSlotNames: { type: Array, default: [] }, // 額外的題目區塊名 (會顯示在預設題目區塊下, 選項之上)
 	optionSlotNames: { type: Array, default: [] }, // 選項插槽名稱
 	useUlToListOptions: { type: Boolean, default: false }, // 如果為 true, 會使用 ul 來排版選項

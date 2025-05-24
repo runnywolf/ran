@@ -17,7 +17,7 @@ outline: [2, 3] # 顯示 h2, h3
 ## 範例 1
 ```html
 <MakeProblem
-	:score="5"
+	scoreText="(5%)"
 	:extraProblemSlotNames="[ 'prob-2', 'prob-3' ]"
 	:optionSlotNames="[ 'A', 'B', 'C', 'D', 'E' ]"
 >
@@ -42,7 +42,7 @@ outline: [2, 3] # 顯示 h2, h3
 ## 範例 2
 ```html
 <MakeProblem
-	:score="5"
+	scoreText="(5%)"
 	:optionSlotNames="[ 'A', 'B', 'C' ]"
 	useUlToListOptions
 >
@@ -59,7 +59,7 @@ outline: [2, 3] # 顯示 h2, h3
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `score` | `Number` | `0` | 題目的配分 ( 大於 0 才會顯示配分 ) |
+| `scoreText` | `String` | `""` | 題目的配分字串 |
 | `extraProblemSlotNames` | `Array<string>` | `[]` | 額外的題目區塊名 |
 | `optionSlotNames` | `Array<string>` | `[]` | 選項的編號 |
 | `useUlToListOptions` | `boolean` | `false` | 是否要以 `ul` 標籤顯示選項 |

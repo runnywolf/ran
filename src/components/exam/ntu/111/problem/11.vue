@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Given <vl exp="A = \!\begin{bmatrix} 2 & 1 \\ 3 & 4 \end{bmatrix}\!" />.
 			Assume that <vl exp="B^3 = A" /> and <vl exp="B" /> has real eigenvalues.

@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="0">
+	<MakeProblem scoreText="(? points)">
 		<template #problem>
 			[第 9 題的題目]
 		</template>

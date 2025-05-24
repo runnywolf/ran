@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
 		<template #problem>
 			Let <vl exp="T" /> be a self-adjoint operator on a finite-dimensional inner product space
 			<vl exp="V" /> with distinct eigenvalues

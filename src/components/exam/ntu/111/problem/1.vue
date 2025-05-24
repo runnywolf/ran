@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :extraProblemSlotNames="['img-options']">
+	<MakeProblem scoreText="(10%)" :extraProblemSlotNames="['img-options']">
 		<template #problem>
 			Which one of the following graphs has an Eulerian cycle?
 		</template>

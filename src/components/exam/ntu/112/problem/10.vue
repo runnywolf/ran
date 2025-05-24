@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="5" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
+	<MakeProblem scoreText="(5%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
 		<template #problem>
 			Let <vl exp="A \in M_{n \times n}" />, which of the following statements are true?
 		</template>

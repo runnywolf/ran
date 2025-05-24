@@ -1,6 +1,6 @@
 <template>
 	<MakeProblem
-		:score="5"
+		scoreText="(5%)"
 		:extraProblemSlotNames="['list']"
 		:optionSlotNames="['A', 'B', 'C', 'D', 'E']"
 	>

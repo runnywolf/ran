@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Let
 			<vl exp="U = \text{span} \{ (1, 3, -2, 2, 3), (1, 4, -3, 4, 2), (2, 3, -1, -2, 9), (2, 4, -2, 0, 8) \}" />

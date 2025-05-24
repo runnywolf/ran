@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="5" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(5%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Let <vl exp="S, D," /> and <vl exp="Q \in M_n(R)" />
 			represent a symmetric matrix, a diagonal matrix, and an orthogonal matrix.

@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			The generating function in partial fraction decomposition for the recurrence equation
 			<vl exp="a_n = a_{n-1} + 6a_{n-2}" /> for <vl exp="a_n" /> in terms of

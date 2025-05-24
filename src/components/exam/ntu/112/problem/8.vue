@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']" useUlToListOptions>
 		<template #problem>
 			Assume that A, B, and C are <vl exp="n \times n" /> matrices.
 		</template>

@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			<vl exp="\, R" /> is a non-symmetric relation on <vl exp="A" />
 			if there exist <vl exp="x, y \in A" /> such that <vl exp="(x, y) \in R" />

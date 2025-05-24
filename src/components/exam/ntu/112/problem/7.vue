@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Given a linear transformation <vl exp="T: P_2(R) \rightarrow P_2(R)" />
 			defined by <vl c exp="T(f(x)) = f''(x) + 2f'(x) - f(x)"/>

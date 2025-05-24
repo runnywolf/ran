@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			If <vl exp="|A| = 2^4" /> and <vl exp="|B| = 2^3" />, how many functions from
 			<vl exp="A" /> to <vl exp="B" /> are there?

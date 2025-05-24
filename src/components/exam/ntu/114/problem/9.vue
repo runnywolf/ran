@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="10">
+	<MakeProblem scoreText="(10%)">
 		<template #problem>
 			<vl exp="
 				\, A =

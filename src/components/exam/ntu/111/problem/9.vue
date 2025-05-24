@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem :score="5" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+	<MakeProblem scoreText="(5%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 		<template #problem>
 			Given a basis <vl exp="S = \{ (t - 1)^3 , (t - 1)^2 , (t - 1) , 1 \}" /> of a vector space
 			<vl exp="P_3(t)" /> of polynomials of degree <vl exp="\leq 3" />. If the coordinate of
