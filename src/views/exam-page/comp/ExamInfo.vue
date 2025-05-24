@@ -29,7 +29,10 @@
 				</td>
 				<td>
 					<span>{{ subjectId ?? "-" }}</span>
-					<span class="ts-icon is-circle-question-icon is-start-spaced" data-tooltip="科目代號"></span>
+					<span
+						class="ts-icon is-circle-question-icon is-start-spaced"
+						data-tooltip="每個科目在當年度的唯一編號"
+					></span>
 				</td>
 			</tr>
 			

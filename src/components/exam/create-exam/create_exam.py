@@ -41,7 +41,7 @@ def main() -> None:
 	}
 	exam_config["problem"] = dict.fromkeys(
 		(s for s in exam_config["section"] if s[0] != "-"),
-		{ "answerLatex": "", "content": [ "--REPLACE_ANSWER_CONTENT--" ] }
+		{ "answerLatex": "?", "content": [ "--REPLACE_ANSWER_CONTENT--" ] }
 	) # 因為不想要自動換行, 會在 get_exam_config_json_str 內取代
 	
 	print()
@@ -91,7 +91,7 @@ def make_exam_dirs_and_config(uni: str, year: str, exam_config: dict) -> None: #
 			f.write(problem_temp_str.replace("--PROBLEM_NAME--", problem_name))
 		
 		if problem_name[0] == "-": continue # 說明區塊沒有解答 vue 檔
-		with open(EXAM_DIR_PATH/"content"/f"{problem_name}.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
+		with open(EXAM_DIR_PATH/"content"/f"{problem_name}-ans.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
 			f.write(answer_temp_str.replace("--PROBLEM_NAME--", problem_name))
 
 def make_exam_config(exam_dir_path: Path, exam_config: dict) -> None: # 生成題本設定檔

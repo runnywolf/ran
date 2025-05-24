@@ -1,6 +1,6 @@
 <template>
 	<div class="ts-grid is-stacked is-compact">
-		<div class="biaukai-bold">
+		<div class="ran-biaukai ran-bold">
 			請先在試卷第一頁繪製以下表格，然後將答案填入。
 		</div>
 		<div>
