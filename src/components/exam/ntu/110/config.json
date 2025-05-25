@@ -1,0 +1,69 @@
+{
+	"id": "398",
+	"subject": "數學",
+	"link": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/110/398.pdf",
+	"linkTip": "國立臺灣大學圖書館 考古題",
+	"section": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "-before-9", "9", "10" ],
+	"problem": {
+		"1": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "?",
+			"content": [
+				{ "type": "answer", "id": "10-ans" }
+			]
+		}
+	}
+}

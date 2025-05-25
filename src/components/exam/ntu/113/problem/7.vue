@@ -16,23 +16,25 @@
 			<span class="ran-no-break"><vl exp="R" /> (respectively, <vl exp="\! S \!" />)</span>,
 			then the subspace <vl exp="U" /> of the rational quadruples satisfying the following two conditions
 			<table class="condition-table">
-				<tr>
-					<td>
-						<vl exp="W = U \oplus V" /> 
-					</td>
-					<td>
-						(i.e., <vl exp="W" /> is the direct sum of <vl exp="U" /> and <vl exp="V" />)
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<vl exp="U \perp V" />
-					</td>
-					<td>
-						(i.e., <vl exp="U" /> is orthogonal to <vl exp="V" />
-						with respect to the standard inner-product of <vl exp="\mathbb{Q}" />)
-					</td>
-				</tr>
+				<tbody>
+					<tr>
+						<td>
+							<vl exp="W = U \oplus V" /> 
+						</td>
+						<td>
+							(i.e., <vl exp="W" /> is the direct sum of <vl exp="U" /> and <vl exp="V" />)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<vl exp="U \perp V" />
+						</td>
+						<td>
+							(i.e., <vl exp="U" /> is orthogonal to <vl exp="V" />
+							with respect to the standard inner-product of <vl exp="\mathbb{Q}" />)
+						</td>
+					</tr>
+				</tbody>
 			</table>
 			is _______.
 		</template>

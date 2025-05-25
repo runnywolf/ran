@@ -33,7 +33,7 @@ def main() -> None:
 		config["uni"][uni] = { "name": uniName, "shortName": uniShortName, "yearList": [year] }
 	
 	exam_config = {
-		"id": input("> 題本的科目代號 (非必填): "),
+		"id": input("> 題本編號 (非必填): "),
 		"subject": input("> 題本的科目，長度建議為 6 個全形字元內 (非必填): "),
 		"link": input("> 題本來源的網址 (非必填): "),
 		"linkTip": input("> 題本來源的網址的附註 (非必填): "),
