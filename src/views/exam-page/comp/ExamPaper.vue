@@ -100,8 +100,8 @@ const emit = defineEmits([
 
 const getOlStyle = (s_sectionId) => { // 獲取某一題的題號樣式 (ui 由 <ol> 顯示)
 	if (Hop.isPosInt(Number(s_sectionId))) { // 如果題號是整數, 顯示題號
-		return { "padding-left": `${11 + 9 * s_sectionId.length}px`, "list-style": "decimal" }; // 因為 ol 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
-	}
+		return { "padding-left": `${11 + 9 * s_sectionId.length}px`, "list-style": "decimal" };
+	} // 因為 ol 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
 	return { "padding-left": "0px", "list-style": "none" };	// 如果題號不是整數, 隱藏題號
 };
 </script>

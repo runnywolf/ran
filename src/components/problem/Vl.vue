@@ -14,6 +14,6 @@ const props = defineProps({
 <style scoped>
 .vue-latex:deep(.katex) { /* latex 文字的 override style */
 	white-space: nowrap; /* 禁止換行 */
-	margin: 0 4px; /* 讓 latex 標籤與內文的間距再大一點 */
+	margin: 0 3px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
 </style>

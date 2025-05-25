@@ -1,6 +1,6 @@
 <template>
 	可以根據<RanLink to="#/exam/ntu-114/4" newTab>上一題</RanLink>
-	<span>的一般式，繼續推導出生成函數的部分分式分解，其中</span>
+	<span>的一般項，繼續推導出生成函數的部分分式分解，其中</span>
 	<vl exp="\sum\limits_{n=0}^{\infty} (kx)^n = \frac{1}{1-kx}" />：<br>
 	<vl c exp="
 		\begin{split}

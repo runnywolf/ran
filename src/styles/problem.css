@@ -24,40 +24,34 @@
 	font-weight: bold;
 }
 
-ul.upper-alpha-list { /* 編號為 (A), (B), (C), ... 的 ul 清單 */
-	margin-top: 0;
-	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
-	list-style-type: upper-alpha;
+.ran-order-list { /* 編號為 (A), (B), (C), ... 的 ul/ol 清單 */
+	padding-left: 1.23em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: decimal;
 	counter-reset: list-counter; /* 重置計數器，從 "A" 開始 */
 }
-ul.upper-alpha-list > li {
-	padding-left: 6px; /* 題目編號與題目的距離 */
+.ran-order-list > li {
+	padding-left: 0.33em; /* 題目編號與題目的距離 */
 	counter-increment: list-counter; /* A, B, C, ... */
 }
-ul.upper-alpha-list > li::marker {
+.ran-order-list > li:not(:first-child) {
+	margin-top: 0.33em; /* 清單項目的間距 */
+}
+.ran-order-list > li::marker {
+	content: "(" counter(list-counter, decimal) ")";
+}
+
+.ran-order-list.is-upper-alpha {
+	padding-left: 1.45em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: upper-alpha;
+}
+.ran-order-list.is-upper-alpha > li::marker {
 	content: "(" counter(list-counter, upper-alpha) ")";
 }
-ul.upper-alpha-list > li:not(:first-child) {
-	margin-top: 6px; /* 清單項目的間距 */
-}
 
-ol.ran-order-list { /* 編號為 (A), (B), (C), ... 的 ol 清單 */
-	margin-top: 0;
-	padding-left: 26px; /* 題目編號與 box 左側邊緣的距離 */
-	list-style-type: var(--type);
-	counter-reset: list-counter; /* 重置計數器，從 "A" 開始 */
+.ran-order-list.is-lower-alpha {
+	padding-left: 1.17em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: lower-alpha;
 }
-ol.ran-order-list > li {
-	padding-left: 6px; /* 題目編號與題目的距離 */
-	counter-increment: list-counter; /* A, B, C, ... */
-}
-ol.ran-order-list > li:not(:first-child) {
-	margin-top: 6px; /* 清單項目的間距 */
-}
-ol.ran-order-list > li::marker {
-	content: var(--prefix);
-}
-
-ol.ran-order-list.is-upper-alpha {
-	--type: upper-alpha;
+.ran-order-list.is-lower-alpha > li::marker {
+	content: "(" counter(list-counter, lower-alpha) ")";
 }

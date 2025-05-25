@@ -6,16 +6,20 @@
 		<template #sub-problems>
 			<div class="ts-list is-unordered" style="--gap: 0.2rem">
 				<div class="item">
-					(4 points) Its chromatic number is _____ (the smallest number of colors needed to color the nodes).
+					<span class="problem-score">(4 points)</span>
+					Its chromatic number is _____ (the smallest number of colors needed to color the nodes).
 				</div>
 				<div class="item">
-					(4 points) The size of the maximum independent set is _____.
+					<span class="problem-score">(4 points)</span>
+					The size of the maximum independent set is _____.
 				</div>
 				<div class="item">
-					(1 point) Is it Eulerian _____ (yes/no)?
+					<span class="problem-score">(1 points)</span>
+					Is it Eulerian _____ (yes/no)?
 				</div>
 				<div class="item">
-					(1 point) Is it Hamiltonian _____ (yes/no)?
+					<span class="problem-score">(1 points)</span>
+					Is it Hamiltonian _____ (yes/no)?
 				</div>
 			</div>
 		</template>

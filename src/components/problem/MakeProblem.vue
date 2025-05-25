@@ -18,7 +18,10 @@
 		
 		<!-- 選項 -->
 		<template v-if="optionSlotNames.length > 0">
-			<ul v-if="useUlToListOptions" class="upper-alpha-list">
+			<ul v-if="useUlToListOptions"
+				class="ran-order-list"
+				:class="[ optionSlotNames[0] === 'A' ? 'is-upper-alpha' : 'is-lower-alpha' ]"
+			>
 				<li v-for="slotName in optionSlotNames">
 					<slot :name="slotName"></slot>
 				</li>

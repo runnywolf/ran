@@ -16,7 +16,7 @@
 			Let
 			<vl c exp="S = \argmin_{x \in \mathbb{C}^3} \| Ax-b \| ." />
 			That is, <vl exp="S" /> consists of the vectors <vl exp="x \in \mathbb{C}^3" />
-			that minimize the standard norm (also known as <span class="ran-no-break">2-norm</span>
+			that minimize the standard norm (also known as 2&#8209;norm
 			or <vl exp="\! \ell^2 \!" />-norm) of the vector <vl exp="Ax-b \in \mathbb{C}^3" />.
 			The square of the minimum standard norm of the vectors in <vl exp="S" /> is _______.
 		</template>
