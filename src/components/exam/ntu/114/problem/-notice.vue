@@ -7,7 +7,7 @@
 			Please draw the following table on the first page of the answer sheets and
 			fill in the answers accordingly.
 		</div>
-		<table class="native-table" style="text-align: center;">
+		<table class="ran-native-table" style="text-align: center;">
 			<tbody>
 				<tr>
 					<td style="width: 32px">1</td>

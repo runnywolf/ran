@@ -2,7 +2,7 @@
 	<div class="ts-wrap is-vertical">
 		
 		<!-- 題目 -->
-		<div class="problem-font" :class="isScoreVisible ? '' : 'hide-problem-score'">
+		<div class="ran-problem-font" :class="isScoreVisible ? '' : 'hide-problem-score'">
 			<component :is="problemAsyncComp"></component>
 		</div>
 		

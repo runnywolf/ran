@@ -2,14 +2,7 @@
 	white-space: nowrap;
 }
 
-.problem-font { /* 題目的字體 */
-	font-family: "Times New Roman", Times, serif;
-	font-size: 18px; /* 字體大小 */
-	letter-spacing: 0.02em; /* 字母之間的距離 */
-	word-spacing: 0.06em; /* 單詞之間空白的距離 */
-	line-height: 1.2em; /* 行距 (倍) */
-}
-.problem-font-marker::marker { /* 題目的字體 */
+.ran-problem-font, .ran-problem-font::marker { /* 題目的字體 */
 	font-family: "Times New Roman", Times, serif;
 	font-size: 18px; /* 字體大小 */
 	letter-spacing: 0.02em; /* 字母之間的距離 */
@@ -25,6 +18,7 @@
 }
 
 .ran-order-list { /* 編號為 (A), (B), (C), ... 的 ul/ol 清單 */
+	margin: 0;
 	padding-left: 1.23em; /* 題目編號與 box 左側邊緣的距離 */
 	list-style-type: decimal;
 	counter-reset: list-counter; /* 重置計數器，從 "A" 開始 */

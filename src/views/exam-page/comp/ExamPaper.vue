@@ -13,7 +13,7 @@
 				:start="s_sectionId"
 				:id="`exam-paper-p${s_sectionId}` /* 用於滾動至某一題 */"
 			>
-				<li class="problem-font-marker">
+				<li class="ran-problem-font">
 					<Problem
 						:uni="uni" :year="year" :no="s_sectionId"
 						:problemConfig="examConfig.problem[s_sectionId]"

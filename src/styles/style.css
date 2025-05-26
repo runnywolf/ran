@@ -1,11 +1,11 @@
-.native-table { /* html 原生的表格樣式 */
+.ran-native-table { /* html 原生的表格樣式 */
 	border-collapse: collapse; border-spacing: 0;
 }
-.native-table td {
+.ran-native-table td {
 	border: 1px #000 solid;
 }
 
-span.neko::before { /* 貓咪 */
+span.ran-neko::before { /* 貓咪 */
 	content: "ฅ^⦁⩊⦁^ฅ ੭";
 }
 

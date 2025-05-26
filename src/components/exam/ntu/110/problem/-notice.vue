@@ -4,7 +4,7 @@
 			Please draw a following table on the first page of the answer sheets and
 			fill in the answers accordingly.
 		</div>
-		<table class="native-table exam-answer-table" style="">
+		<table class="ran-native-table exam-answer-table" style="">
 			<tbody>
 				<tr>
 					<td>1</td>
