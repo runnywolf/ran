@@ -62,12 +62,12 @@ const testData = {
 		testName: "new Frac($input.n, $input.d) = $output.n/$output.d",
 		testFunc: (input) => new Frac(input.n, input.d),
 		tests: [ // 測資
-			{ input:{ n: undefined, d: undefined }, output: F(0, 1) },
-			{ input:{ n: 3, d: undefined }, output: F(3, 1) },
-			{ input:{ n: 6, d: -9 }, output: F(-2, 3) },
-			{ input:{ n: NaN, d: 7 }, output: F(0, 1), error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input:{ n: -2, d: "3" }, output: F(0, 1), error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input:{ n: 5, d: 0 }, output: F(0, 1), error: '[RanMath][Frac.constructor] The denominator cannot be 0.' },
+			{ input: { n: undefined, d: undefined }, output: F(0, 1) },
+			{ input: { n: 3, d: undefined }, output: F(3, 1) },
+			{ input: { n: 6, d: -9 }, output: F(-2, 3) },
+			{ input: { n: NaN, d: 7 }, output: F(0, 1), error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
+			{ input: { n: -2, d: "3" }, output: F(0, 1), error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
+			{ input: { n: 5, d: 0 }, output: F(0, 1), error: '[RanMath][Frac.constructor] The denominator cannot be 0.' },
 		]
 	},
 	".copy": {

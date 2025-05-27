@@ -366,23 +366,50 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 	}
 }
 
-export class _EF { // Extension Field
-	static isEF(ef) {
-		return ef instanceof _EF;
+export class _EF { // Extension Field (a + b√s)
+	static isEF(value) {
+		return value instanceof _EF;
 	}
 	
 	static unitI() { // 回傳 1i
-		return new _EF([1, -1]);
+		return new _EF(0, 1, -1);
 	}
 	
-	constructor(...terms) {
+	constructor(nf_a = 0, nf_b = 0, nf_s = 0) { // a + b√s
+		if (!Frac.isFrac(nf_a) && !isNum(nf_a)) { // 參數必須為 Frac 或 number
+			throwErr("EF.constructor", 'Param "nf_a" must be a Frac or int.');
+			nf_a = 0;
+		}
+		if (!Frac.isFrac(nf_b) && !isNum(nf_b)) {
+			throwErr("EF.constructor", 'Param "nf_b" must be a Frac or int.');
+			nf_b = 0;
+		}
+		if (!Frac.isFrac(nf_s) && !isNum(nf_s)) {
+			throwErr("EF.constructor", 'Param "nf_s" must be a Frac or int.');
+			nf_s = 0;
+		}
 		
+		let int_s; [nf_b, int_s] = Hop.bop(nf_b, nf_s, // 賦值後的 [nf_b, nf_s] 型態為 [number|Frac, int]
+			(frac_b, frac_s) => [frac_b.div(frac_s.d), frac_s.n * frac_s.d], // b√s = b√(n/d) = (b/d)*√(nd) , 使 √ 內為整數
+			(num_b, num_s) => [num_b * Math.sqrt(Math.abs(num_s)), num_s > 0 ? 1 : -1] // 如果 b, s 其中一個是 float, b√s = (b√|s|)*√(±1)
+		); // errReturn 可忽略, 因為參數必為 number|Frac
+		
+		const k = getSquareFactor(int_s); // 將 b√s 內的 s 提出 k^2
+		[nf_b, int_s] = [Hop.mul(nf_b, k), int_s / (k * k)]; // b 乘 k, s 除 k^2
+		
+		if (int_s === 1) [nf_a, nf_b] = [Hop.add(nf_a, nf_b), F(0)]; // a + b√1 = (a+b) + 0√1
+		
+		if (Hop.equal(nf_b, 0)) int_s = 0; // a + 0√s = a + 0√0
+		if (int_s === 0) nf_b = F(0); // a + b√0 = a + 0√0
+		
+		this.nf_a = nf_a;
+		this.nf_b = nf_b;
+		this.s = int_s;
 	}
 	
-	// constructor: a1√s1 + a2√s2 + a3√s3 + ... ; a, s in hop
-	// [a1, s1], [a2, s2], ...
-	
-	// Hop.isNumOrFrac()
+	toStr() { // 轉 debug 字串
+		return `${Hop.toStr(this.nf_a)} + ${Hop.toStr(this.nf_b)} √ ${this.s}`;
+	}
 }
 
 export class EF { // 擴張體運算 (a + b√s)
