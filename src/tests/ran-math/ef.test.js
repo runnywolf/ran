@@ -87,6 +87,69 @@ const testData = {
 			{ input: new EF(1, 2, 3), output: new EF(1, 2, 3) },
 		],
 	},
+	".toLatex": {
+		testName: (input, output) => `(${toStr(input)}).toLatex() = ${toStr(output)}`,
+		testFunc: (input) => input.toLatex(),
+		tests: [ // 測資
+			{ input: new EF(0, 17, 2), output: "17\\sqrt{2}" }, // s > 0 ; a = 0
+			{ input: new EF(0, 2, 2), output: "2\\sqrt{2}" },
+			{ input: new EF(0, 1, 2), output: "\\sqrt{2}" },
+			{ input: new EF(0, -1, 2), output: "-\\sqrt{2}" },
+			{ input: new EF(0, -2, 2), output: "-2\\sqrt{2}" },
+			{ input: new EF(0, -12, 2), output: "-12\\sqrt{2}" },
+			
+			{ input: new EF(12, 17, 2), output: "12+17\\sqrt{2}" }, // s > 0 ; a != 0
+			{ input: new EF(-1, 2, 2), output: "-1+2\\sqrt{2}" },
+			{ input: new EF(-3, 1, 2), output: "-3+\\sqrt{2}" },
+			{ input: new EF(7, -1, 2), output: "7-\\sqrt{2}" },
+			{ input: new EF(-1, -2, 2), output: "-1-2\\sqrt{2}" },
+			{ input: new EF(-13, -12, 2), output: "-13-12\\sqrt{2}" },
+			
+			{ input: new EF(F(4, 7), F(5, 6), 2), output: "\\frac{24+35\\sqrt{2}}{42}" }, // s > 0 ; d > 1
+			{ input: new EF(2, F(-5, 6), 2), output: "\\frac{12-5\\sqrt{2}}{6}" },
+			{ input: new EF(F(-4, 7), 2, 2), output: "\\frac{-4+14\\sqrt{2}}{7}" },
+			{ input: new EF(F(-4, 7), F(-5, 6), 2), output: "\\frac{-24-35\\sqrt{2}}{42}" },
+			{ input: new EF(1, F(-1, 3), 2), output: "\\frac{3-\\sqrt{2}}{3}" },
+			{ input: new EF(1, F(1, 3), 2), output: "\\frac{3+\\sqrt{2}}{3}" },
+			{ input: new EF(0, F(-1, 3), 2), output: "\\frac{-\\sqrt{2}}{3}" }, // a = 0
+			{ input: new EF(0, F(1, 3), 2), output: "\\frac{\\sqrt{2}}{3}" },
+			
+			{ input: new EF(F(-1, 3)), output: "\\frac{-1}{3}" }, // s = 0
+			{ input: new EF(F(1, 3)), output: "\\frac{1}{3}" },
+			{ input: new EF(0), output: "0" },
+			{ input: new EF(-7), output: "-7" },
+			{ input: new EF(3.14), output: "3.1400" },
+			{ input: new EF(-3.1415926), output: "-3.1416" },
+			
+			{ input: new EF(0, -7.62, -1), output: "-7.6200i" }, // s < 0, a is float
+			{ input: new EF(5.56, -7.62, -1), output: "5.5600-7.6200i" },
+			{ input: new EF(0, 7.62, -1), output: "7.6200i" },
+			{ input: new EF(-5.56, 7.62, -1), output: "-5.5600+7.6200i" },
+			
+			{ input: new EF(0, 17, -1), output: "17i" }, // s < 0 ; a = 0
+			{ input: new EF(0, 2, -1), output: "2i" },
+			{ input: new EF(0, 1, -1), output: "i" },
+			{ input: new EF(0, -1, -1), output: "-i" },
+			{ input: new EF(0, -2, -1), output: "-2i" },
+			{ input: new EF(0, -12, -1), output: "-12i" },
+			
+			{ input: new EF(12, 17, -2), output: "12+17\\sqrt{2}i" }, // s < 0 ; a != 0
+			{ input: new EF(-1, 2, -2), output: "-1+2\\sqrt{2}i" },
+			{ input: new EF(-3, 1, -2), output: "-3+\\sqrt{2}i" },
+			{ input: new EF(7, -1, -2), output: "7-\\sqrt{2}i" },
+			{ input: new EF(-1, -2, -2), output: "-1-2\\sqrt{2}i" },
+			{ input: new EF(-13, -12, -2), output: "-13-12\\sqrt{2}i" },
+			
+			{ input: new EF(F(4, 7), F(5, 6), -1), output: "\\frac{4}{7}+\\frac{5}{6}i" }, // s > 0 ; d > 1
+			{ input: new EF(2, F(-5, 6), -2), output: "2+\\frac{-5\\sqrt{2}}{6}i" },
+			{ input: new EF(F(-4, 7), 2, -2), output: "\\frac{-4}{7}+2\\sqrt{2}i" },
+			{ input: new EF(F(-4, 7), F(-5, 6), -1), output: "\\frac{-4}{7}+\\frac{-5}{6}i" },
+			{ input: new EF(1, F(-1, 3), -1), output: "1+\\frac{-1}{3}i" },
+			{ input: new EF(1, F(1, 3), -2), output: "1+\\frac{\\sqrt{2}}{3}i" },
+			{ input: new EF(0, F(-1, 3), -2), output: "\\frac{-\\sqrt{2}}{3}i" }, // a = 0
+			{ input: new EF(0, F(1, 3), -1), output: "\\frac{1}{3}i" },
+		],
+	},
 	".conjugate": {
 		testName: (input, output) => `(${toStr(input)}).conjugate() = (${toStr(output)})`,
 		testFunc: (input) => input.conjugate(),

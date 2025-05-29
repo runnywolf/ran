@@ -406,7 +406,32 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	toLatex() { // 轉 latex 語法
-		// todo
+		if (this.s > 0) { // s > 0, a b 必為 Frac, 化成 (n + m√s) / d 形式
+			let n = this.nf_a.n * this.nf_b.d;
+			let m = this.nf_b.n * this.nf_a.d;
+			let d = this.nf_a.d * this.nf_b.d;
+			const nmd_gcd = gcd(gcd(n, m), d); // 約分
+			[n, m, d] = [n / nmd_gcd, m / nmd_gcd, d / nmd_gcd];
+			
+			let s_latex = mlTerm(m, `\\sqrt{${this.s}}`, 1); // m√s
+			if (n !== 0) s_latex = `${n}${s_latex}`; // 若 n 不為 0 -> n ± m√s
+			if (d !== 1) s_latex = `\\frac{${removePrefix(s_latex, "+")}}{${d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
+			return removePrefix(s_latex, "+");
+		}
+		if (this.s === 0) return Hop.toLatex(this.nf_a); // a + 0√0 -> a (可能為 Frac 或 float)
+		
+		if (!Frac.isFrac(this.nf_a)) { // s < 0, 浮點複數
+			let s_latex = mlTerm(`${this.nf_b.toFixed(4)}`, "i", 1); // 浮點複數, b 必不為 0
+			if (this.nf_a !== 0) s_latex = `${this.nf_a.toFixed(4)}${s_latex}`;
+			return removePrefix(s_latex, "+");
+		}
+		
+		let s_latex = `${this.nf_b.n}`; // s < 0, 有理複數
+		if (this.s !== -1) s_latex = mlTerm(s_latex, `\\sqrt{${-this.s}}`, 1, false); // 若 s 不為 -1, 顯示根號
+		if (this.nf_b.d !== 1) s_latex = `\\frac{${s_latex}}{${this.nf_b.d}}`; // 若 d 不為 1, 顯示分數 (分母不能有 +)
+		s_latex = mlTerm(s_latex, "i", 1); // ± im i
+		if (!this.nf_a.isZero()) s_latex = `${this.nf_a.toLatex()}${s_latex}`; // 若實部不為 0, 變成 re ± im i
+		return removePrefix(s_latex, "+"); // re ± im i
 	}
 	
 	conjugate() { // 共軛: (a + b√s) -> (a + (-b)√s)
@@ -525,8 +550,8 @@ export class EF { // 擴張體運算 (a + b√s)
 			fn_s = new Frac(0);
 		}
 		
-		this.a = fn_a; // 經過 std 後, a b 為 Frac / float
-		this.b = fn_b;
+		this.nf_a = fn_a; // 經過 std 後, a b 為 Frac / float
+		this.nf_b = fn_b;
 		this.s = fn_s; // 經過 std 後, s 必為 Frac
 		this.std();
 	}
