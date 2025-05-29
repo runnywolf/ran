@@ -87,9 +87,9 @@ const testData = {
 			{ input: new EF(1, 2, 3), output: new EF(1, 2, 3) },
 		],
 	},
-	".conj": {
-		testName: (input, output) => `(${toStr(input)}).conj() = (${toStr(output)})`,
-		testFunc: (input) => input.conj(),
+	".conjugate": {
+		testName: (input, output) => `(${toStr(input)}).conjugate() = (${toStr(output)})`,
+		testFunc: (input) => input.conjugate(),
 		tests: [ // 測資
 			{ input: new EF(1, 2, 3), output: new EF(1, -2, 3) },
 			{ input: new EF(1, F(-2, 3), -7), output: new EF(1, F(2, 3), -7) },
@@ -115,11 +115,13 @@ const testData = {
 		testFunc: (input) => input[0].add(input[1]),
 		tests: [ // 測資
 			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(-2, F(3, 4), 5)], output: new EF(F(-3, 2), F(3, 2), 5) }, // EF + EF
-			{ input: [new EF(F(1, 2), 0, 0), new EF(-2, F(3, 4), 5)], output: new EF(F(-3, 2), F(3, 4), 5) }, // EF + EF
-			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(-2, 1.79, 5)], output: new EF(4.1796126628494665, 0, 0) }, // EF + EF(float)
+			{ input: [new EF(F(1, 2)), new EF(-2, F(3, 4), 5)], output: new EF(F(-3, 2), F(3, 4), 5) }, // EF(a+0√0) + EF
+			{ input: [new EF(0, F(3, 4), 5), new EF(0, F(-1, 7), 5)], output: new EF(0, F(17, 28), 5) }, // EF(0+b√s) + EF(0+b√s)
+			{ input: [new EF(-2, F(3, 4), 5), new EF(2, F(-3, 4), 5)], output: new EF(0) }, // EF(0+b√s) + EF(0-b√s)
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(-2, 1.79, 5)], output: new EF(4.1796126628494665) }, // EF + EF(float)
 			{ input: [new EF(F(1, 2), F(3, 4), 5), F(-1, 2)], output: new EF(0, F(3, 4), 5) }, // EF + Frac
 			{ input: [new EF(F(1, 2), F(3, 4), 5), 7], output: new EF(F(15, 2), F(3, 4), 5) }, // EF + int
-			{ input: [new EF(F(1, 2), F(3, 4), 5), 1.79], output: new EF(3.96705098312484227, 0, 0) }, // EF + float
+			{ input: [new EF(F(1, 2), F(3, 4), 5), 1.79], output: new EF(3.96705098312484227) }, // EF + float
 			{
 				input: [new EF(F(1, 2), F(3, 4), 5), "2"],
 				output: new EF(F(1, 2), F(3, 4), 5),
@@ -129,6 +131,94 @@ const testData = {
 				input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), 7)],
 				output: new EF(F(1, 2), F(3, 4), 5),
 				error: '[RanMath][EF.add] Bases of extension fields differ.'
+			}, // base differ error
+		],
+	},
+	".sub": {
+		testName: (input, output) => `(${toStr(input[0])}).sub(${toStr(input[1])}) = (${toStr(output)})`,
+		testFunc: (input) => input[0].sub(input[1]),
+		tests: [ // 測資
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(-2, F(3, 4), 5)], output: new EF(F(5, 2), 0, 5) }, // EF - EF
+			{ input: [new EF(F(1, 2), 0, 0), new EF(-2, F(3, 4), 5)], output: new EF(F(5, 2), F(-3, 4), 5) }, // EF - EF
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(-2, 1.79, 5)], output: new EF(0.17448930340021818, 0, 0) }, // EF - EF(float): (real: 0.1744893034002187)
+			{ input: [new EF(F(1, 2), F(3, 4), 5), F(-1, 2)], output: new EF(1, F(3, 4), 5) }, // EF - Frac
+			{ input: [new EF(F(1, 2), F(3, 4), 5), 7], output: new EF(F(-13, 2), F(3, 4), 5) }, // EF - int
+			{ input: [new EF(F(1, 2), F(3, 4), 5), 1.79], output: new EF(0.3870509831248423, 0, 0) }, // EF - float
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), "2"],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.sub] Param "nfe" must be a number | Frac | EF .'
+			}, // EF - string
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), 7)],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.sub] Bases of extension fields differ.'
+			}, // base differ error
+		],
+	},
+	".mul": {
+		testName: (input, output) => `(${toStr(input[0])}).mul(${toStr(input[1])}) = (${toStr(output)})`,
+		testFunc: (input) => input[0].mul(input[1]),
+		tests: [ // 測資
+			{ input: [new EF(F(1, 2), -1, 5), new EF(-2, F(7, 3), 5)], output: new EF(F(-38, 3), F(19, 6), 5) }, // EF * EF
+			{ input: [new EF(F(1, 2), -1, -2), new EF(-2, F(7, 3), -2)], output: new EF(F(11, 3), F(19, 6), -2) }, // EF * EF
+			{ input: [new EF(F(1, 2)), new EF(-2, F(7, 3), 5)], output: new EF(-1, F(7, 6), 5) }, // EF(a+0√0) * EF
+			{ input: [new EF(F(1, 2), -1, 5), new EF(0, F(7, 3), 5)], output: new EF(F(-35, 3), F(7, 6), 5) }, // EF * EF(0+b√s)
+			{ input: [new EF(0, -1, 5), new EF(0, F(7, 3), 5)], output: new EF(F(-35, 3)) }, // EF(0+b√s) * EF(0+b√s)
+			{ input: [new EF(F(1, 2)), new EF(0, F(7, 3), 5)], output: new EF(0, F(7, 6), 5) }, // EF(a+0√0) * EF(0+b√s)
+			{ input: [new EF(0), new EF(-2, F(7, 3), 5)], output: new EF(0) }, // EF(0) * EF(a+b√s)
+			{ input: [new EF(0), new EF(0)], output: new EF(0) }, // EF(0) * EF(0)
+			
+			{ input: [new EF(1.75), new EF(-2, F(7, 3), 5)], output: new EF(5.630610908124144) }, // EF * EF (real: 5.630610908124141)
+			{ input: [new EF(F(1, 2), -1, -1), new EF(-2.1, 4.43, -1)], output: new EF(3.38, 4.3149999999999995, -1) }, // EF * EF (real: 4.315i)
+			{ input: [new EF(F(1, 2)), new EF(-2.1, 4.43, -1)], output: new EF(-1.05, 2.215, -1) }, // EF(a+0√0) * EF
+			{ input: [new EF(F(1, 2), -1, -1), new EF(0, -3.44, -1)], output: new EF(-3.44, -1.72, -1) }, // EF * EF(0+b√s)
+			{ input: [new EF(0, -3.44, -1), new EF(0, F(7, 3), -1)], output: new EF(8.02666666666666666666) }, // EF(0+b√s) * EF(0+b√s)
+			{ input: [new EF(5.56), new EF(0, 7.62, -1)], output: new EF(0, 42.3672, -1) }, // EF(a+0√0) * EF(0+b√s)
+			{ input: [new EF(0), new EF(0, 7.62, -1)], output: new EF(0) }, // EF(0) * EF(a+b√s)
+			
+			{ input: [new EF(-2, F(7, 3), 5), F(1, 2)], output: new EF(-1, F(7, 6), 5) }, // EF * Frac
+			{ input: [new EF(0, F(7, 3), 5), -3], output: new EF(0, -7, 5) }, // EF * int
+			{ input: [new EF(0, F(7, 3), 5), -3.772], output: new EF(-19.680379625968149047995) }, // EF * float
+			
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), "2"],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.mul] Param "nfe" must be a number | Frac | EF .'
+			}, // EF * string
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), 7)],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.mul] Bases of extension fields differ.'
+			}, // base differ error
+		],
+	},
+	".div": {
+		testName: (input, output) => `(${toStr(input[0])}).div(${toStr(input[1])}) = (${toStr(output)})`,
+		testFunc: (input) => input[0].div(input[1]),
+		tests: [ // 測資
+			{ input: [new EF(F(1, 2), -1, 5), new EF(-2, F(7, 3), 5)], output: new EF(F(-96, 209), F(-15, 418), 5) }, // EF / EF
+			{ input: [new EF(1.75), new EF(-2, F(7, 3), 5)], output: new EF(0.5439019051345325) }, // (real: 0.5439019051345324)
+			{ input: [new EF(F(1, 2), -1, -1), new EF(-2.1, 4.43, -1)], output: new EF(-0.228001780743835, -0.004784708902470981, -1) }, // (real: -0.00478470890247099)
+			
+			{ input: [new EF(-2, F(7, 3), 5), F(1, 2)], output: new EF(-4, F(14, 3), 5) }, // EF / Frac
+			{ input: [new EF(-2, F(7, 3), 5), -3], output: new EF(F(2, 3), F(-7, 9), 5) }, // EF / int
+			{ input: [new EF(-2, F(7, 3), 5), -3.772], output: new EF(-0.8529936234092019) }, // EF / float (-0.8529936234092018)
+			
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), 0],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.div] Div 0 error.'
+			}, // EF / string
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), "2"],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.div] Param "nfe" must be a number | Frac | EF .'
+			}, // EF / string
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), 7)],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.div] Bases of extension fields differ.'
 			}, // base differ error
 		],
 	},

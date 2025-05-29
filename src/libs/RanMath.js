@@ -386,8 +386,8 @@ export class EF { // Extension Field (a + b√s)
 				
 				const k = getSquareFactor(int_s); // 將 b√s 內的 s 提出整數 k^2
 				return [frac_a, frac_b.mul(k), int_s / (k * k)]; // b 乘 k, s 除 k^2
-			}, // 如果 a, b, s 其中一個是 float, 使用浮點模式: b√s = (b√|s|)*√(±1)
-			(num_a, num_b, num_s) => [num_a, num_b * Math.sqrt(Math.abs(num_s)), num_s > 0 ? 1 : -1]
+			}, // 如果 a, b, s 其中一個是 float, 使用浮點模式
+			(num_a, num_b, num_s) => [num_a, num_b * Math.sqrt(Math.abs(num_s)), num_s > 0 ? 1 : -1] // b√s = (b√|s|)*√(±1)
 		); // errReturn 可忽略, 因為參數必為 number|Frac
 		
 		if (this.s === 1) [this.nf_a, this.nf_b] = [Hop.add(this.nf_a, this.nf_b), F(0)]; // a + b√1 = (a+b) + 0√1
@@ -409,7 +409,7 @@ export class EF { // Extension Field (a + b√s)
 		// todo
 	}
 	
-	conj() { // 共軛: (a + b√s) -> (a + (-b)√s)
+	conjugate() { // 共軛: (a + b√s) -> (a + (-b)√s)
 		return new EF(this.nf_a, Hop.sub(0, this.nf_b), this.s, true); // b -> -b
 	}
 	
@@ -433,11 +433,45 @@ export class EF { // Extension Field (a + b√s)
 		return op(this, nfe, newS);
 	}
 	
-	static _ADD_OP = (ef1, ef2, newS) => {
-		return new EF(Hop.add(ef1.nf_a, ef2.nf_a), Hop.add(ef1.nf_b, ef2.nf_b), newS)
-	};
+	static _ADD_OP = (ef1, ef2, newS) => new EF( // (A + B√s) + (a + b√s) = (A+a) + (B+b) √s
+		Hop.add(ef1.nf_a, ef2.nf_a),
+		Hop.add(ef1.nf_b, ef2.nf_b),
+		newS, true
+	);
 	add(nfe) { // 加法: (A + B√s) + (a + b√s)
 		return this._makeOp(nfe, "add", EF._ADD_OP);
+	}
+	
+	static _SUB_OP = (ef1, ef2, newS) => new EF( // (A + B√s) - (a + b√s) = (A-a) + (B-b) √s
+		Hop.sub(ef1.nf_a, ef2.nf_a),
+		Hop.sub(ef1.nf_b, ef2.nf_b),
+		newS, true
+	);
+	sub(nfe) { // 減法: (A + B√s) - (a + b√s)
+		return this._makeOp(nfe, "sub", EF._SUB_OP);
+	}
+	
+	static _MUL_OP = (ef1, ef2, newS) => new EF( // (A + B√s) * (a + b√s) = (Aa+Bbs) + (Ab+Ba) √s
+		Hop.add(Hop.mul(ef1.nf_a, ef2.nf_a), Hop.mul(Hop.mul(ef1.nf_b, ef2.nf_b), newS)),
+		Hop.add(Hop.mul(ef1.nf_a, ef2.nf_b), Hop.mul(ef1.nf_b, ef2.nf_a)),
+		newS, true
+	);
+	mul(nfe) { // 乘法: (A + B√s) * (a + b√s)
+		return this._makeOp(nfe, "mul", EF._MUL_OP);
+	}
+	
+	static _DIV_OP = (ef1, ef2, newS) => { // (A + B√s) / (a + b√s) = (A + B√s)*(a - b√s) / (a^2 - b^2 s)
+		const norm = ef2.normSquare(); // (a^2 - b^2 s)
+		if (Hop.equal(norm, 0)) { // 除 0 錯誤
+			throwErr("EF.div", "Div 0 error.");
+			return ef1; // 回傳 this (不執行這個運算)
+		}
+		
+		let ef_div = ef1.mul(ef2.conjugate()); // (A + B√s)*(a - b√s)
+		return new EF(Hop.div(ef_div.nf_a, norm), Hop.div(ef_div.nf_b, norm), newS, true); // a, b 同除 norm^2
+	};
+	div(nfe) { // 除法: (A + B√s) / (a + b√s)
+		return this._makeOp(nfe, "div", EF._DIV_OP);
 	}
 }
 
