@@ -212,11 +212,11 @@ class SolveRecur { // 解非齊次遞迴
 		const type = sc.solutionType(); // 特徵方程式的解形式
 		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式包含根號或複數, 需要轉為 EF 型態 (因為 Matrix 不支援 EF)
 			const ef = new EF(hiAns[0], hiAns[1], sc.quad.s); // FRAC_QUAD 跟 TYPE_REAL_IM 會化簡 (h1 + h2√s)(a + b√s)^n + (h1 - h2√s)(a - b√s)^n + h3 c^n, 所以聯立會比較特別
-			[hiAns[0], hiAns[1]] = [ef, ef.conj()];
+			[hiAns[0], hiAns[1]] = [ef, ef.conjugate()];
 		}
 		else if (type === SolveCubic.TYPE_REAL_IM) {
 			const ef = new EF(hiAns[0], hiAns[1], -1);
-			[hiAns[0], hiAns[1]] = [ef, ef.conj()];
+			[hiAns[0], hiAns[1]] = [ef, ef.conjugate()];
 		}
 		
 		this.HiAnswer = hiAns;
@@ -232,7 +232,7 @@ class SolveRecur { // 解非齊次遞迴
 		const ef_base = this.ef_base; // FRAC_QUAD 跟 TYPE_REAL_IM 產生的 alpha + beta√s 形式的特徵根
 		this.ef_alpha = new EF(ef_base.a); // 取出 alpha
 		this.ef_beta = new EF(0, ef_base.b, Hop.mul(ef_base.s, -1)); // 取出 beta. 因為要去除 i, 所以要將 s 乘 -1
-		this.ef_norm = new EF(0, 1, ef_base.norm()); // 特徵根的範數. 注意 ef.norm() 實際上會回傳範數的平方
+		this.ef_norm = new EF(0, 1, ef_base.normSquare()); // 特徵根的範數平方
 		
 		if (Hop.equal(this.ef_alpha.a, 0)) { // 如果 alpha 為 0, 那 tan^-1(beta / 0) = 1/2 pi
 			this.fn_tanToPi = new Frac(1, 2);
@@ -323,7 +323,7 @@ class SolveRecur { // 解非齊次遞迴
 		}
 		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
 			let s_latex = mlTerm(coef[0], `\\left( ${this.ef_base.toLatex()} \\right)`, "n", true, true);
-			s_latex += mlTerm(coef[1], `\\left( ${this.ef_base.conj().toLatex()} \\right)`, "n", true, true);
+			s_latex += mlTerm(coef[1], `\\left( ${this.ef_base.conjugate().toLatex()} \\right)`, "n", true, true);
 			s_latex += mlTerm(coef[2], sc.frac_r1, "n", true, true); // 剩餘根 (如果為 0 會不顯示)
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
@@ -335,7 +335,7 @@ class SolveRecur { // 解非齊次遞迴
 		}
 		if (type === SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
 			let s_latex = mlTerm(coef[0], `(${this.ef_base.toLatex()})`, "n", true, true);
-			s_latex += mlTerm(coef[1], `(${this.ef_base.conj().toLatex()})`, "n", true, true);
+			s_latex += mlTerm(coef[1], `(${this.ef_base.conjugate().toLatex()})`, "n", true, true);
 			s_latex += mlTerm(coef[2], sc.r1.toFixed(4), "n", true, true); // 剩餘根
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
@@ -493,7 +493,7 @@ class SolveRecur { // 解非齊次遞迴
 				);
 				s_homogLatex += mlTerm(
 					this.HiAnswer[1].toLatex(),
-					`\\left( ${this.ef_base.conj().toLatex()} \\right)`,
+					`\\left( ${this.ef_base.conjugate().toLatex()} \\right)`,
 					"n", true, true
 				);
 			}

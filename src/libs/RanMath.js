@@ -434,11 +434,21 @@ export class EF { // Extension Field (a + b√s)
 		return removePrefix(s_latex, "+"); // re ± im i
 	}
 	
+	real() { // 取出實部
+		if (this.s >= 0) return this.copy(); // 純實數
+		return new EF(this.nf_a); // s < 0, 回傳實部
+	}
+	
+	imag() { // 取出虛部: if s < 0, (a + b√s) -> (0 + b√-s)
+		if (this.s >= 0) return new EF(0); // 純實數沒有虛部
+		return new EF(0, this.nf_b, -this.s, true); // 將 s 乘 -1 即可取出虛部
+	}
+	
 	conjugate() { // 共軛: (a + b√s) -> (a + (-b)√s)
 		return new EF(this.nf_a, Hop.sub(0, this.nf_b), this.s, true); // b -> -b
 	}
 	
-	normSquare() { // 範數的平方: (a + b√s) -> (a^2 - b^2 s)
+	normSquare() { // 範數的平方 (回傳 number|Frac): (a + b√s) -> (a^2 - b^2 s)
 		return Hop.sub(Hop.mul(this.nf_a, this.nf_a), Hop.mul(Hop.mul(this.nf_b, this.nf_b), this.s));
 	}
 	
@@ -529,175 +539,6 @@ export class EF { // Extension Field (a + b√s)
 		return true;
 	}
 }
-
-/*
-export class EF { // 擴張體運算 (a + b√s)
-	static isEF(ef) {
-		return ef instanceof EF;
-	}
-	
-	constructor(fn_a = 0, fn_b = 0, fn_s = 0) {
-		if (!Frac.isFrac(fn_a) && !isNum(fn_a)) { // 參數必須為 Frac 或 number
-			throwErr("EF.constructor", "fn_a is not Frac or number.");
-			fn_a = new Frac(0);
-		}
-		if (!Frac.isFrac(fn_b) && !isNum(fn_b)) {
-			throwErr("EF.constructor", "fn_b is not Frac or number.");
-			fn_b = new Frac(0);
-		}
-		if (!Frac.isFrac(fn_s) && !isNum(fn_s)) {
-			throwErr("EF.constructor", "fn_s is not Frac or number.");
-			fn_s = new Frac(0);
-		}
-		
-		this.nf_a = fn_a; // 經過 std 後, a b 為 Frac / float
-		this.nf_b = fn_b;
-		this.s = fn_s; // 經過 std 後, s 必為 Frac
-		this.std();
-	}
-	
-	std() { // 標準化, 待優化
-		if (isInt(this.a)) this.a = new Frac(this.a);
-		if (isInt(this.b)) this.b = new Frac(this.b);
-		if (isInt(this.s)) this.s = new Frac(this.s); // 執行此步後 a, b, s 只剩 Frac 和 number (float)
-		
-		if (Frac.isFrac(this.a) && Frac.isFrac(this.b) && Frac.isFrac(this.s)) { // 化簡根號
-			this.b = Hop.div(this.b, this.s.d); // a + b√(n/d) -> a + (b/d)√(nd)
-			this.s = Hop.mul(this.s.n, this.s.d);
-			
-			const k = getSquareFactor(this.s); // 將 √s 內的 s 提出 k^2
-			this.s = Hop.div(this.s, k*k); // s 除 k^2
-			this.b = Hop.mul(this.b, k); // b 乘 k
-		} else { // 其中一個參數為 float, a + b√s = a + b*√|s| √(s/|s|)
-			if (Frac.isFrac(this.a)) this.a = this.a.toFloat();
-			if (Frac.isFrac(this.b)) this.b = this.b.toFloat();
-			if (Frac.isFrac(this.s)) this.s = this.s.toFloat();
-			
-			this.b *= Math.sqrt(Math.abs(this.s));
-			this.s = new Frac(this.s > 0 ? 1 : -1);
-		} // 經過此步後, s 必為 Frac
-		
-		if (Hop.equal(this.s, 1)) { // a + b√1 = (a+b) + 0√1
-			this.a = Hop.add(this.a, this.b);
-			this.b = new Frac(0);
-		}
-		
-		if (Hop.equal(this.b, 0)) this.s = new Frac(0); // a + 0√s = a + 0√0
-		if (Hop.equal(this.s, 0)) this.b = new Frac(0); // a + b√0 = a + 0√0
-	}
-	
-	toStr() { // 轉 debug 字串
-		return `${Hop.toStr(this.a)} + ${Hop.toStr(this.b)} √ ${Hop.toStr(this.s)}`;
-	}
-	
-	toLatex() { // 轉 latex 語法, 待優化, 因為我直接 copy quad 內的東西 :)
-		if (this.s.isZero()) return Hop.toLatex(this.a); // a + 0√0 -> a
-		if (new Frac(0).lt(this.s)) { // s > 0, a b 必為 Frac, 化成 (n + m√s) / d 形式
-			let [n, m, d] = [this.a.n * this.b.d, this.b.n * this.a.d, this.a.d * this.b.d];
-			const nmd_gcd = gcd(gcd(n, m), d);
-			[n, m, d] = [n / nmd_gcd, m / nmd_gcd, d / nmd_gcd];
-			
-			let s_latex = mlTerm(m, `\\sqrt{${this.s.n}}`, 1); // m√s
-			if (n !== 0) s_latex = `${n} ${s_latex}`; // 若 n 不為 0 -> n ± m√s
-			if (d != 1) s_latex = `\\frac{${removePrefix(s_latex, "+")}}{${d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
-			return removePrefix(s_latex, "+");
-		}
-		// s < 0
-		if (!Frac.isFrac(this.a)) { // 浮點複數
-			let s_latex = mlTerm(`${this.b.toFixed(4)}`, "i", 1);
-			if (this.a !== 0) s_latex = `${this.a.toFixed(4)} ${s_latex}`;
-			return removePrefix(s_latex, "+");
-		}
-		
-		let s_latex = `${this.b.n}`;
-		if (this.s.n != -1) s_latex = mlTerm(s_latex, `\\sqrt{${-this.s.n}}`, 1, false); // 若 s 不為 -1, 顯示根號
-		if (this.b.d != 1) s_latex = `\\frac{${s_latex}}{${this.b.d}}`; // 若 d 不為 1, 顯示分數 (分母不能有 +)
-		s_latex = mlTerm(s_latex, "i", 1); // ± im i
-		if (!this.a.isZero()) s_latex = `${this.a.toLatex()} ${s_latex}`; // 若實部不為 0, 變成 re ± im i
-		return removePrefix(s_latex, "+"); // re ± im i
-	}
-	
-	_makeOp(ef, opName, op, err = true) { // 批量製作算子, 因為重複的部分太多了
-		if (Frac.isFrac(ef) || isNum(ef)) ef = new EF(ef); // 將 Frac 和 number 轉為 EF
-		
-		if (!EF.isEF(ef)) { // 如果參數不是 EF / Frac / number, 回傳 null
-			if (err) throwErr(`EF.${opName}`, "Param ef is not a EF / Frac / number.");
-			return null;
-		}
-		if (!Hop.equal(this.s, ef.s) && !Hop.equal(this.s, 0) && !Hop.equal(ef.s, 0)) { // 如果兩個 fleid 的 √s 不一致, 無法運算 (忽略 s 為 0 的情況)
-			if (err) throwErr(`EF.${opName}`, "Bases of extension fields differ.");
-			return null;
-		}
-		
-		const newS = Hop.equal(this.s, 0) ? ef.s : this.s; // 若兩個 √s 其一不為 0, 運算結果的 √s 必須不為 0
-		
-		return op(this, ef, newS);
-	}
-	
-	conj() { // 共軛: (a + b√s) -> (a + (-b)√s)
-		return new EF(this.a, Hop.sub(0, this.b), this.s);
-	}
-	
-	norm() { // 範數平方: (a + b√s) -> (a^2 - b^2 s)
-		return Hop.sub(Hop.mul(this.a, this.a), Hop.mul(Hop.mul(this.b, this.b), this.s));
-	}
-	
-	add(ef) { // 加法: (A + B√s) + (a + b√s)
-		return this._makeOp(ef, "add", (ef1, ef2, newS) => {
-			return new EF(Hop.add(ef1.a, ef2.a), Hop.add(ef1.b, ef2.b), newS); // (A + B√s) + (a + b√s) = (A+a) + (B+b)√s
-		});
-	}
-	
-	sub(ef) { // 減法: (A + B√s) - (a + b√s)
-		return this._makeOp(ef, "sub", (ef1, ef2, newS) => {
-			return new EF(Hop.sub(ef1.a, ef2.a), Hop.sub(ef1.b, ef2.b), newS); // (A + B√s) - (a + b√s) = (A-a) + (B-b)√s
-		});
-	}
-	
-	mul(ef) { // 乘法: (A + B√s) * (a + b√s)
-		return this._makeOp(ef, "mul", (ef1, ef2, newS) => {
-			return new EF( // (A + B√s) * (a + b√s) = (Aa+Bbs) + (Ab+Ba)√s
-				Hop.add(Hop.mul(ef1.a, ef2.a), Hop.mul(Hop.mul(ef1.b, ef2.b), newS)),
-				Hop.add(Hop.mul(ef1.a, ef2.b), Hop.mul(ef1.b, ef2.a)),
-				newS
-			);
-		});
-	}
-	
-	div(ef) { // 除法: (A + B√s) / (a + b√s)
-		return this._makeOp(ef, "div", (ef1, ef2) => {
-			const norm = ef2.norm();
-			if (Hop.equal(norm, 0)) { // 除零錯誤, 回傳 null
-				throwErr("EF.div", "Div 0 error.");
-				return null;
-			}
-			
-			let ef_div = ef1.mul(ef2.conj()); // (A + B√s) / (a + b√s) = (A + B√s)*(a - b√s) / norm
-			ef_div.a = Hop.div(ef_div.a, norm);
-			ef_div.b = Hop.div(ef_div.b, norm);
-			return ef_div;
-		});
-	}
-	
-	pow(i) { // 整數次方: (a + b√s)^i
-		if (!isInt(i)) {
-			throwErr("EF.pow", "Power must be an int.");
-			return null;
-		}
-		if (i == 0) return new EF(1);
-		if (i > 0) return this.pow(i-1).mul(this); // 很糟的實作方法, 不過已滿足需求
-		return this.pow(i+1).div(this);
-	}
-	
-	equal(ef) { // 相等
-		const b = this._makeOp(ef, "equal", (ef1, ef2) => {
-			return Hop.equal(ef1.a, ef2.a) && Hop.equal(ef1.b, ef2.b);
-		}, false);
-		if (b === null) return false; // ef 型態錯誤或 √s 不一致會判定為 false
-		return b;
-	}
-}
-*/
 
 export class _Matrix { // 矩陣
 	// 列運算

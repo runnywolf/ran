@@ -150,6 +150,30 @@ const testData = {
 			{ input: new EF(0, F(1, 3), -1), output: "\\frac{1}{3}i" },
 		],
 	},
+	".real": {
+		testName: (input, output) => `(${toStr(input)}).real() = (${toStr(output)})`,
+		testFunc: (input) => input.real(),
+		tests: [ // 測資
+			{ input: new EF(F(2, 3), F(-2, 5), 3), output: new EF(F(2, 3), F(-2, 5), 3) },
+			{ input: new EF(F(2, 3)), output: new EF(F(2, 3)) },
+			{ input: new EF(F(2, 3), F(-2, 5), -1), output: new EF(F(2, 3)) },
+			{ input: new EF(0, F(-2, 5), -3), output: new EF(0) },
+			{ input: new EF(2.718, 1.618, -1), output: new EF(2.718) },
+			{ input: new EF(3.14), output: new EF(3.14) },
+		],
+	},
+	".imag": {
+		testName: (input, output) => `(${toStr(input)}).imag() = (${toStr(output)})`,
+		testFunc: (input) => input.imag(),
+		tests: [ // 測資
+			{ input: new EF(F(2, 3), F(-2, 5), 3), output: new EF(0) },
+			{ input: new EF(F(2, 3)), output: new EF(0) },
+			{ input: new EF(F(2, 3), F(-2, 5), -1), output: new EF(F(-2, 5)) },
+			{ input: new EF(0, F(-2, 5), -3), output: new EF(0, F(-2, 5), 3) },
+			{ input: new EF(2.718, 1.618, -1), output: new EF(1.618) },
+			{ input: new EF(3.14), output: new EF(0) },
+		],
+	},
 	".conjugate": {
 		testName: (input, output) => `(${toStr(input)}).conjugate() = (${toStr(output)})`,
 		testFunc: (input) => input.conjugate(),
