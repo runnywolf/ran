@@ -222,6 +222,45 @@ const testData = {
 			}, // base differ error
 		],
 	},
+	".pow": {
+		testName: (input, output) => `(${toStr(input[0])}).pow(${toStr(input[1])}) = (${toStr(output)})`,
+		testFunc: (input) => input[0].pow(input[1]),
+		tests: [ // 測資
+			{ input: [new EF(-2, F(1, 2), 3), 7], output: new EF(F(-25453, 32), F(58603, 128), 3) },
+			{ input: [new EF(F(2, 5), -3, -2), 2], output: new EF(F(-446, 25), F(-12, 5), -2) },
+			{ input: [new EF(F(1, 2), F(3, 4), 5), 1], output: new EF(F(1, 2), F(3, 4), 5) },
+			{ input: [new EF(F(1, 2), F(3, 4), 5), 0], output: new EF(1) },
+			{ input: [new EF(F(1, 2), F(3, 4), -5), -1], output: new EF(F(8, 49), F(-12, 49), -5) },
+			
+			{
+				input: [new EF(F(1, 2), F(3, 4), 5), 0.5],
+				output: new EF(F(1, 2), F(3, 4), 5),
+				error: '[RanMath][EF.pow] Power must be an int number.'
+			}, // power type error
+			{
+				input: [new EF(0), -1],
+				output: new EF(0),
+				error: '[RanMath][EF.pow] 0^-i is undefined.'
+			}, // 0^-i error
+		],
+	},
+	".equal": {
+		testName: (input, output) => `(${toStr(input[0])}).equal(${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: (input) => input[0].equal(input[1]),
+		tests: [ // 測資
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), 5)], output: true }, // EF == EF
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(3, 4), -5)], output: false }, // EF == EF
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(1, 2), F(-3, 4), 5)], output: false }, // EF == EF
+			{ input: [new EF(F(1, 2), F(3, 4), 5), new EF(F(-1, 2), F(3, 4), 5)], output: false }, // EF == EF
+			{ input: [new EF(F(1, 2)), F(1, 2)], output: true }, // EF == Frac
+			{ input: [new EF(F(1, 2), F(3, 4), 5), F(1, 2)], output: false }, // EF == Frac
+			{ input: [new EF(3), 3], output: true }, // EF == int
+			{ input: [new EF(3, F(3, 4), 5), 3], output: false }, // EF == int
+			{ input: [new EF(3.2667), 3.2667], output: true }, // EF == int
+			{ input: [new EF(3), "3"], output: false }, // EF == other
+			{ input: [new EF(3), [3]], output: false }, // EF == other
+		],
+	},
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {

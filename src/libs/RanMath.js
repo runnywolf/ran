@@ -417,16 +417,16 @@ export class EF { // Extension Field (a + b√s)
 		return Hop.sub(Hop.mul(this.nf_a, this.nf_a), Hop.mul(Hop.mul(this.nf_b, this.nf_b), this.s));
 	}
 	
-	_makeOp(nfe, opName, op, errReturn = undefined) { // 自訂運算子
+	_makeOp(nfe, opName, op) { // 自訂運算子
 		if (isNum(nfe) || Frac.isFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
 		
 		if (!EF.isEF(nfe)) { // 第二個運算元必須是 number / Frac / EF
 			throwErr(`EF.${opName}`, 'Param "nfe" must be a number | Frac | EF .');
-			return (errReturn === undefined) ? this : errReturn; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
+			return this; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
 		}
 		if (this.s !== 0 && nfe.s !== 0 && this.s !== nfe.s) { // 如果兩個 fleid 的 √s 不一致, 無法運算 (忽略 s 為 0 的情況)
 			throwErr(`EF.${opName}`, "Bases of extension fields differ.");
-			return (errReturn === undefined) ? this : errReturn; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
+			return this; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
 		}
 		
 		const newS = (this.s === 0 ? nfe.s : this.s); // 若兩個 √s 其一不為 0, 運算結果的 √s 必須不為 0
@@ -472,6 +472,36 @@ export class EF { // Extension Field (a + b√s)
 	};
 	div(nfe) { // 除法: (A + B√s) / (a + b√s)
 		return this._makeOp(nfe, "div", EF._DIV_OP);
+	}
+	
+	pow(i) { // 整數次方: (a + b√s) ^ i
+		if (!isInt(i)) { // error: 非整數次方
+			throwErr("EF.pow", "Power must be an int number.");
+			return this; // 回傳 this (不執行這個運算)
+		}
+		
+		if (i >= 1) { // (a + b√s)^i = (a + b√s)^(i/2)^2 * (a + b√s)^(i%2)
+			const ef_halfPow = this.pow(i >> 1);
+			return ef_halfPow.mul(ef_halfPow).mul(i % 2 ? this : 1);
+		}
+		if (i === 0) return new EF(1); // (a + b√s)^0 = 1
+		
+		// i <= -1
+		if (Hop.equal(this.normSquare(), 0)) { // error: 0 ^ 負數
+			throwErr("EF.pow", "0^-i is undefined.");
+			return this; // 回傳 this (不執行這個運算)
+		}
+		return new EF(1).div(this.pow(-i)); // (a + b√s)^(-i) = 1/[(a + b√s)^i]
+	}
+	
+	equal(nfe) { // 等於
+		if (isNum(nfe) || Frac.isFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
+		
+		if (!EF.isEF(nfe)) return false; // 第二個運算元必須是 number / Frac / EF, 否則回傳 false
+		if (!Hop.equal(this.nf_a, nfe.nf_a)) return false;
+		if (!Hop.equal(this.nf_b, nfe.nf_b)) return false;
+		if (this.s !== nfe.s) return false;
+		return true;
 	}
 }
 
