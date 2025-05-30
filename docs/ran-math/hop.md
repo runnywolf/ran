@@ -7,7 +7,10 @@ head:
 ---
 
 # Hop - 混合運算
-將型態為 `number` 或 `Frac` 的參數自動轉型，並完成運算。
+將型態為 `number` 或 `Frac` 的運算元自動轉型，並完成運算。
+
+若有 1 ~ 2 個數可能為 `number` 或 `Frac` 時，就可以直接使用 `Hop` 進行運算，<br>
+而不需要考慮型態問題。
 
 ## Import
 ```js
@@ -17,8 +20,8 @@ import { Hop } from "ran-math";
 ## Methods
 | Method | Description |
 | :- | :- |
-| [`Hop.uop`](#hop-uop) | 自訂一元運算子 |
-| [`Hop.bop`](#hop-bop) | 自訂二元運算子 |
+| [`Hop.isNumOrFrac`](#hop-isnumorfrac) | 檢查輸入值是否為 `number` 或 `Frac` |
+| [`Hop._makeOp`](#hop-makeop) | 自訂運算子 |
 | [`Hop.isInt`](#hop-isint) | 是否為整數 |
 | [`Hop.isPosInt`](#hop-isposint) | 是否為正整數 |
 | [`Hop.isNegInt`](#hop-isnegint) | 是否為負整數 |
@@ -33,52 +36,34 @@ import { Hop } from "ran-math";
 | [`Hop.equal`](#hop-equal) | 等於 |
 | [`Hop.lt`](#hop-lt) | 小於 |
 
-## `Hop.uop`
-自訂一元運算子 ( unary operator )。
+## `Hop.isNumOrFrac`
+檢查參數 `value` 是否為 `number` 或 `Frac`，<br>
+與 `isNum(value) || Frac.isFrac(value)` 等價。
 
-若運算元不為 `Frac` 或 `number`，回傳 `errReturn` ( 預設為 `NaN` )。
+若為 `true`，可以保證任何的 `Hop` 運算都不會回傳 `errReturn`。
 
 ```js
-Hop.uop(
-	nf: number | Frac,
-	fracOp: (frac: Frac) => any,
-	floatOp: (n: number) => any,
-	errReturn: any = NaN
-): any
+Hop.isNumOrFrac(value: any): boolean
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `nf` | `number \| Frac` | 第一個運算元 |
-| `fracOp` | `(frac: Frac) => any` | 分數運算子 |
-| `floatOp` | `(n: number) => any` | 浮點數運算子 |
-| `errReturn` | `any` | 若運算元不為 `Frac` 或 `number`，<br>回傳此值 ( 預設為 `NaN` ) |
+| `value` | `any` | 要檢查的值 |
 
 範例：
 ```js
-const ISZERO_FRAC_OP = frac => frac.isZero();
-const ISZERO_FLOAT_OP = n => n === 0;
-const is0 = (nf) => Hop.uop(nf, ISZERO_FRAC_OP, ISZERO_FLOAT_OP, false);
+Hop.isNumOrFrac(F(1, 2)) // true
+Hop.isNumOrFrac(1)       // true
+Hop.isNumOrFrac(1.77)    // true
+Hop.isNumOrFrac("2")     // false
 ```
 
-### 回傳值
-1. 如果 `nf` 是 `Frac` 或 `int`，轉型為 `Frac`，回傳 `fracOp(nf)`。
-2. 如果 `nf` 是 `float`，回傳 `floatOp(nf)`。
-3. 如果 `nf` 不滿足 (1)(2)，回傳 `errReturn`。
-
-| `nf` | `Frac` | `int` | `float` | `other` |
-| :-: | :-: | :-: | :-: | :-: |
-|  | `fracOp(nf)` | `fracOp(nf)` | `floatOp(nf)` | `errReturn` |
-
-## `Hop.bop`
-自訂二元運算子 ( binary operator )。
-
-若運算元不為 `Frac` 或 `number`，回傳 `errReturn` ( 預設為 `NaN` )。
+## `Hop._makeOp`
+自訂運算子。
 
 ```js
-Hop.bop(
-	nf1: number | Frac,
-	nf2: number | Frac,
+Hop._makeOp(
+	arr_nf: Array<number|Frac>,
 	fracOp: (frac: Frac) => any,
 	floatOp: (n: number) => any,
 	errReturn: any = NaN
@@ -87,24 +72,26 @@ Hop.bop(
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `nf1` | `number \| Frac` | 第一個運算元 |
-| `nf2` | `number \| Frac` | 第二個運算元 |
-| `fracOp` | `(frac: Frac) => any` | 分數運算子 |
-| `floatOp` | `(n: number) => any` | 浮點數運算子 |
-| `errReturn` | `any` | 若運算元不為 `Frac` 或 `number`，<br>回傳此值 ( 預設為 `NaN` ) |
+| `arr_nf` | `Array<number\|Frac>` | n 個運算元 |
+| `fracOp` | `(frac1: Frac, ...) => any` | 分數運算子 |
+| `floatOp` | `(n1: number, ...) => any` | 浮點數運算子 |
+| `errReturn` | `any` | 若存在運算元不為 `Frac` 或 `number`，<br>回傳此值 ( 預設為 `NaN` ) |
 
 範例：
 ```js
 const ADD_FRAC_OP = (frac1, frac2) => frac1.add(frac2);
 const ADD_FLOAT_OP = (n1, n2) => n1 + n2;
-const add = (nf1, nf2) => Hop.bop(nf1, nf2, ADD_FRAC_OP, ADD_FLOAT_OP);
+const add = (nf1, nf2) => Hop._makeOp([nf1, nf2], ADD_FRAC_OP, ADD_FLOAT_OP);
 ```
 
-### 回傳值
-1. 如果 `nf1` `nf2` 都是 `Frac` 或 `int`，轉型為 `Frac`，回傳 `fracOp(nf1, nf2)`。
-2. 如果 `nf1` `nf2` 不滿足 (1)，但都是 `Frac` 或 `number`，<br>轉型為 `float`，回傳 `floatOp(nf1, nf2)`。
-3. 如果 `nf1` `nf2` 不滿足 (1)(2)，回傳 `errReturn`。
+#### 回傳值
+1. 如果 n 個參數之中存在至少一個非 `number|Frac` 型態的參數，回傳 `errReturn`。 ( 未定義 )
+2. 如果不滿足 (1)，且 n 個參數之中存在至少一個 `float number` 型態的參數，<br>
+將 `arr_nf` 的元素都轉為 `number`，回傳 `floatOp(...arr_nf)`。
+3. 如果 n 個參數都為 `int number` 或 `Frac` ( 有理數 )，<br>
+將 `int` 轉為 `Frac`，回傳 `fracOp(...arr_nf)`。
 
+以下是 2 個運算元的情況：
 | `nf1` \ `nf2` | `Frac` | `int` | `float` | `other` |
 | :-: | :-: | :-: | :-: | :-: |
 | `Frac` | `fracOp(*, *)` | `fracOp(*, *)` | `floatOp(*, *)` | `errReturn` |

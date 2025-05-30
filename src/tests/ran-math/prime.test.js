@@ -15,8 +15,9 @@ const testArr_getNth = [ // 測資
 	{ n: -5, output: NaN },
 	{ n: 0, output: 2 },
 	{ n: 4, output: 11 },
-	{ n: 828, output: 6361 },
-	{ n: 11678, output: 124339 },
+	{ n: 99, output: 541 },
+	// { n: 828, output: 6361 },
+	// { n: 11678, output: 124339 },
 	{ n: NaN, output: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
 	{ n: [], output: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
 ];

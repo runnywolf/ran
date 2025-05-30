@@ -48,7 +48,8 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "簡單數學運算", link: "/ran-math/simple-method" },
 					{ text: "Prime - 質數", link: "/ran-math/prime" },
 					{ text: "Frac - 分數", link: "/ran-math/frac" },
-					{ text: "Hop - 混合運算", link: "/ran-math/hop" }
+					{ text: "Hop - 混合運算", link: "/ran-math/hop" },
+					{ text: "EF - 擴張體", link: "/ran-math/ef" },
 				]
 			},
 		],

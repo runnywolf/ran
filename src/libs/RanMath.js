@@ -359,10 +359,6 @@ export class EF { // Extension Field (a + b√s)
 		return value instanceof EF;
 	}
 	
-	static unitI() { // 回傳 1i
-		return new EF(0, 1, -1);
-	}
-	
 	constructor(nf_a = 0, nf_b = 0, nf_s = 0, _skipGetFactor = false) { // a + b√s
 		if (!Hop.isNumOrFrac(nf_a)) { // 參數必須為 Frac 或 number
 			throwErr("EF.constructor", 'Param "nf_a" must be a Frac or int.');

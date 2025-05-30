@@ -33,13 +33,6 @@ const testData = {
 			{ input: {}, output: false },
 		],
 	},
-	"EF.unitI": {
-		testName: (input, output) => `EF.unitI() = (${toStr(output)})`,
-		testFunc: (input) => EF.unitI(),
-		tests: [ // 測資
-			{ output: new EF(0, 1, -1) },
-		],
-	},
 	"constructor & .toStr": {
 		testName: (input, output) => `new EF(${input.map(p => toStr(p)).join(", ")}).toStr() = ${toStr(output)}`,
 		testFunc: (input) => new EF(...input).toStr(),
