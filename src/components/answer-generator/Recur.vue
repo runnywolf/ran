@@ -157,7 +157,7 @@ class SolveRecur { // 解非齊次遞迴
 			ef_base = new EF(new Frac(sc.quad.n, sc.quad.d), new Frac(sc.quad.m, sc.quad.d), sc.quad.s); // a + b√s
 			this.HiLinearEquation = Array.from({ length: this.recurLevel }, (_, n) => {
 				const ef_pow = ef_base.pow(n);
-				const [frac_a, frac_b] = [ef_pow.a.mul(2), ef_pow.b.mul(2*sc.quad.s)];
+				const [frac_a, frac_b] = [ef_pow.nf_a.mul(2), ef_pow.nf_b.mul(2*sc.quad.s)];
 				if (this.recurLevel == 2) return [frac_a, frac_b];
 				if (this.recurLevel == 3) return [frac_a, frac_b, sc.frac_r1.pow(n)];
 			});
@@ -169,7 +169,7 @@ class SolveRecur { // 解非齊次遞迴
 			ef_base = new EF(sc.cRe, sc.cIm, -1); // cRe + cIm i
 			this.HiLinearEquation = Array.from({ length: 3 }, (_, n) => {
 				const ef_pow = ef_base.pow(n);
-				return [Hop.mul(ef_pow.a, 2), Hop.mul(ef_pow.b, -2), sc.r1**n];
+				return [Hop.mul(ef_pow.nf_a, 2), Hop.mul(ef_pow.nf_b, -2), sc.r1**n];
 			});
 		}
 		
@@ -226,15 +226,15 @@ class SolveRecur { // 解非齊次遞迴
 		if (!this.isAnswerHaveIm()) return; // 若遞迴一般項包含複數才需要計算
 		
 		const ef_h1 = this.HiAnswer[0]; // h1 = a + b√s i ; h1 的共軛為 h2
-		this.ef_cosCoef = new EF(Hop.mul(ef_h1.a, 2)); // (h1 + h2) = 2a
-		this.ef_sinCoef = new EF(0, Hop.mul(ef_h1.b, -2), Hop.mul(ef_h1.s, -1)); // (h1 - h2) i = 2b√s ii = -2b√s
+		this.ef_cosCoef = new EF(Hop.mul(ef_h1.nf_a, 2)); // (h1 + h2) = 2a
+		this.ef_sinCoef = new EF(0, Hop.mul(ef_h1.nf_b, -2), Hop.mul(ef_h1.s, -1)); // (h1 - h2) i = 2b√s ii = -2b√s
 		
 		const ef_base = this.ef_base; // FRAC_QUAD 跟 TYPE_REAL_IM 產生的 alpha + beta√s 形式的特徵根
-		this.ef_alpha = new EF(ef_base.a); // 取出 alpha
-		this.ef_beta = new EF(0, ef_base.b, Hop.mul(ef_base.s, -1)); // 取出 beta. 因為要去除 i, 所以要將 s 乘 -1
+		this.ef_alpha = new EF(ef_base.nf_a); // 取出 alpha
+		this.ef_beta = new EF(0, ef_base.nf_b, Hop.mul(ef_base.s, -1)); // 取出 beta. 因為要去除 i, 所以要將 s 乘 -1
 		this.ef_norm = new EF(0, 1, ef_base.normSquare()); // 特徵根的範數平方
 		
-		if (Hop.equal(this.ef_alpha.a, 0)) { // 如果 alpha 為 0, 那 tan^-1(beta / 0) = 1/2 pi
+		if (Hop.equal(this.ef_alpha.nf_a, 0)) { // 如果 alpha 為 0, 那 tan^-1(beta / 0) = 1/2 pi
 			this.fn_tanToPi = new Frac(1, 2);
 			return;
 		}
@@ -253,8 +253,8 @@ class SolveRecur { // 解非齊次遞迴
 			break;
 		}
 		
-		if (!Frac.isFrac(this.ef_bDivA.a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
-			this.fn_tanToPi = Math.atan(this.ef_bDivA.a) / Math.PI;
+		if (!Frac.isFrac(this.ef_bDivA.nf_a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
+			this.fn_tanToPi = Math.atan(this.ef_bDivA.nf_a) / Math.PI;
 		}
 	}
 	
@@ -413,7 +413,7 @@ class SolveRecur { // 解非齊次遞迴
 	mlClosedForm() { // 遞迴的一般項, 無複數 (latex)
 		const HiAnswerOnlyEfIsLatex = this.HiAnswer.map(effn_hi => {
 			if (EF.isEF(effn_hi)) { // 先將 EF 轉為 latex, 因為 mlTerm 不處理 EF
-				if (Hop.equal(effn_hi.a, 0) || Hop.equal(effn_hi.b, 0)) return effn_hi.toLatex();
+				if (Hop.equal(effn_hi.nf_a, 0) || Hop.equal(effn_hi.nf_b, 0)) return effn_hi.toLatex();
 				return `\\left( ${effn_hi.toLatex()} \\right)`;
 			}
 			if (typeof effn_hi === "number") return effn_hi.toFixed(4); // 浮點數顯示小數四位
