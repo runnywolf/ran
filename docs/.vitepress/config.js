@@ -52,6 +52,10 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "EF - 擴張體", link: "/ran-math/ef" },
 				]
 			},
+			{
+				text: "RanMath.js 實作細節",
+				items: []
+			},
 		],
 		socialLinks: [
 			{ icon: "github", link: "https://github.com/runnywolf/ran" } // github link

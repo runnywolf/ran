@@ -39,8 +39,8 @@ import { F } from "ran-math"; // new Frac 的工廠函數
 | [`.copy`](#copy) | 回傳一個相同值的新實例 |
 | [`.isZero`](#iszero) | 是否等於 0 |
 | [`.isInt`](#isint) | 是否為整數 |
-| [`.toStr`](#tostr) | 轉為字串 |
-| [`.toLatex`](#tolatex) | 轉為 LaTex 語法 |
+| [`.toStr`](#tostr) | 轉字串 |
+| [`.toLatex`](#tolatex) | 轉 LaTex 語法 |
 | [`.toFloat`](#tofloat) | 轉為浮點數 |
 | [`.add`](#add) | 加法 |
 | [`.sub`](#sub) | 減法 |
