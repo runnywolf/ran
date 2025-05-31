@@ -1,18 +1,29 @@
 <template>
-	<VueLatex :expression="exp" :displayMode="c" class="vue-latex" />
+	<div v-if="c" v-html="renderedExpHtml" class="vl"></div>
+	<span v-else v-html="renderedExpHtml" class="vl"></span>
 </template>
 
-<script setup> // 壓縮 vatex 標籤字符數的組件
-import { VueLatex } from "vatex";
+<script setup>
+import { computed } from "vue";
+import katex from "katex"; // Tex lib
+import "katex/dist/katex.min.css"; // KaTex css
 
 const props = defineProps({
 	exp: { type: String, default: "?" }, // latex 表達式
 	c: { type: Boolean, default: false } // 是否置中
 });
+
+const renderedExpHtml = computed( // 渲染 KaTex 語法
+	() => katex.renderToString(props.exp, { displayMode: props.c, throwOnError: false })
+);
+
 </script>
 
 <style scoped>
-.vue-latex:deep(.katex) { /* latex 文字的 override style */
+.vl {
+	font-size: 16px;
+}
+span.vl {
 	white-space: nowrap; /* 禁止換行 */
 	margin: 0 3px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
