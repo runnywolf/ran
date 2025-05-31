@@ -1,6 +1,5 @@
 <template>
-	<div v-if="c" v-html="renderedExpHtml" class="vl"></div>
-	<span v-else v-html="renderedExpHtml" class="vl"></span>
+	<component :is="c ? 'div' : 'span'" v-html="renderedExpHtml" class="vl"></component>
 </template>
 
 <script setup>
