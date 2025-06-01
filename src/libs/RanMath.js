@@ -68,35 +68,16 @@ export function getRandomInt(min, max) { // 隨機整數
 }
 
 export function sum(...arr) { // 將 type number 加總
-	return makeSum(arr, isNum, 0, (n1, n2) => n1 + n2, "sum");
+	return _makeSum(arr, isNum, 0, (n1, n2) => n1 + n2, "sum");
 }
 
-export function makeSum(arr, isInSet, zero, addOp, funcName) { // 自訂加總
-	if (typeof isInSet !== "function") { // 集合定義必須是一個 func
-		throwErr(funcName, 'Param "isInSet" (set definition) is not a function.');
-		return zero;
-	}
-	if (!isInSet(zero)) { // 零元素不在集合內
-		throwErr(funcName, "Zero element is not in set.");
-		return zero;
-	}
-	if (typeof addOp !== "function") { // 加法運算子必須是一個 func
-		throwErr(funcName, 'Param "addOp" (add operator) is not a function');
-		return zero;
-	}
-	if (typeof funcName !== "string") funcName = "?"; // 報錯用, 不影響計算
-	
+export function _makeSum(arr, isInSet, zero, addOp, funcName) { // 自訂加總
 	return arr.flat(Infinity).reduce((acc, element) => { // 扁平化至 1 層 array
 		if (!isInSet(element)) { // 如果元素不在集合內, 忽略這個元素
 			throwErr(funcName, `Array element (${element}) is not in set.`);
 			return acc;
 		}
-		const newAcc = addOp(acc, element);
-		if (!isInSet(newAcc)) { // 如果加法運算沒有封閉性, 忽略這個元素
-			throwErr(funcName, `(Sum + ${element}) is not in set, check the addOp return value.`);
-			return acc;
-		}
-		return newAcc; // 如果加法運算有封閉性, 累計這個元素
+		return addOp(acc, element); // 如果加法運算有封閉性, 累計這個元素
 	}, zero);
 }
 
@@ -150,7 +131,7 @@ export class Frac { // 分數 (Fraction)
 	static sum(...arr) { // 加總
 		const setDef = (nf) => Frac.isFrac(nf) || isInt(nf); // arr 內的元素只能是 Frac 或 int number (集合定義)
 		const addOp = (frac, nf) => frac.add(nf); // 加法運算子
-		return makeSum(arr, setDef, F(0), addOp, "Frac.sum");
+		return _makeSum(arr, setDef, F(0), addOp, "Frac.sum");
 	}
 	
 	constructor(n = 0, d = 1) {
