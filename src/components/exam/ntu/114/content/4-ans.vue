@@ -1,9 +1,8 @@
 <template>
-	<Recur :recurCoef="[new Frac(-3), new Frac(10)]" :initConst="[new Frac(3), new Frac(2)]">
-	</Recur>
+	<Recur :recurCoef="[F(-3), F(10)]" :initConst="[F(3), F(2)]"></Recur>
 </template>
 
 <script setup>
-import { Frac } from "@/libs/RanMath.js";
+import { F } from "ran-math";
 import Recur from "@/components/answer-generator/Recur.vue"; // 遞迴解答產生器
 </script>

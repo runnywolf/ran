@@ -6,33 +6,36 @@
 	"section": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ],
 	"problem": {
 		"1": {
-			"answerLatex": "?",
+			"answerLatex": "2",
 			"content": [
 				{ "type": "answer", "id": "1-ans" }
 			]
 		},
 		"2": {
-			"answerLatex": "?",
+			"answerLatex": "4",
 			"content": [
 				{ "type": "answer", "id": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "?",
+			"answerLatex": "24",
 			"content": [
 				{ "type": "answer", "id": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "?",
+			"answerLatex": "2 \\cdot 3^n + (-4)^n",
 			"content": [
 				{ "type": "answer", "id": "4-ans" }
 			]
 		},
 		"5": {
-			"answerLatex": "?",
+			"answerLatex": "4 ~~;~~ 4 ~~;~~ \\text{no} ~~;~~ \\text{yes}",
 			"content": [
-				{ "type": "answer", "id": "5-ans" }
+				{ "type": "answer", "id": "5-ans-1", "suffix": "(Chromatic number)" },
+				{ "type": "answer", "id": "5-ans-2", "suffix": "(Maximum independent set)" },
+				{ "type": "answer", "id": "5-ans-3", "suffix": "(Eulerian)" },
+				{ "type": "answer", "id": "5-ans-4", "suffix": "(Hamiltonian)" }
 			]
 		},
 		"6": {

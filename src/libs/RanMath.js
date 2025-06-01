@@ -553,7 +553,7 @@ export class Matrix { // 矩陣
 		return true;
 	}
 	
-	static create(n, m, element = null) { // 生成一個元素全為 element 的 n*m 矩陣, 不傳入 element 會將元素設為 Frac(0)
+	static create(n, m, element = null) { // [改 createO] 生成一個元素全為 element 的 n*m 矩陣, 不傳入 element 會將元素設為 Frac(0)
 		if (!(Number.isInteger(n) && n >= 1 && Number.isInteger(m) && m >= 1)) { // n, m 必須是正整數
 			throwErr("Matrix.create", "Matrix size n & m must be a positive integer.")
 			return new Matrix(null);
@@ -896,7 +896,9 @@ export class SolveCubic { // 解三次方程式
 	}
 }
 
-export function F(n = 0, d = 1) { return new Frac(n, d); } // Frac 工廠
+export function F(n = 0, d = 1) { // Frac 工廠
+	return new Frac(n, d);
+}
 
 // 字串處理
 export const SCL = "~,\\enspace"; // separate comma latex
