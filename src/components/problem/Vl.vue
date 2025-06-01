@@ -15,7 +15,6 @@ const props = defineProps({
 const renderedExpHtml = computed( // 渲染 KaTex 語法
 	() => katex.renderToString(props.exp, { displayMode: props.c, throwOnError: false })
 );
-
 </script>
 
 <style scoped>

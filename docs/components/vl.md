@@ -9,7 +9,6 @@ head:
 # vl - 數學公式
 用於顯示 LaTex 語法。
 
-`vl` 為 [VaTex](https://github.com/Shimada666/VaTex) 在 Ran 內的封裝。<br>
 語法請參照：[KaTex - Support Functions](https://katex.org/docs/supported.html)
 
 > [!TIP]
