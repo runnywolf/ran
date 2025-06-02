@@ -383,7 +383,7 @@ Hop.equal(3, "3")             // false
 ```
 
 ## `Hop.lt`
-相等運算。
+小於運算。
 
 若 `nf1` `nf2` 不為 `Frac` 或 `number`，回傳 `false`。
 
