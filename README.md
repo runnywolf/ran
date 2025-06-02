@@ -1,4 +1,4 @@
-# Ran 0.3.4
+# 🦊 Ran 0.3.4
 ![](https://img.shields.io/badge/Ran-v0.3.4-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v1.4.0-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
@@ -15,7 +15,7 @@
 > [!WARNING]  
 > 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
 
-## 功能
+## ✨ 功能
 歷屆試題頁面：
 - 查詢特定學校和年份的數學考卷
 - 每一題都盡量提供詳細的解答
@@ -25,10 +25,10 @@
 模擬室頁面 ( 解答生成器 )：
 - 齊次 / 非齊次遞迴
 
-## 已收錄題本
+## 📄 已收錄題本
 - 台大 114~110 (111, 110 無解答)
 
-## 感謝
+## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
 - [Vue Router](https://router.vuejs.org/) - 路由管理
 - [VitePress](https://vitepress.dev/) - docs
