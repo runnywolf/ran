@@ -460,37 +460,36 @@ export class Matrix { // 矩陣
 		return value instanceof Matrix;
 	}
 	
-	static isNullMatrix(value) { // 某個 Matrix 實例是否為無效矩陣 (計算失敗的產物)
-		if (!Matrix.isMatrix(value)) return false;
-		return value.arr === null;
-	}
-	
-	static create0(n, m) { // 生成零矩陣
-		
-	}
-	
 	static createI(n) { // 生成單位矩陣
-		
-	}
-	
-	static createNull() { // 生成無效矩陣
-		
+		if (!Hop.isPosInt(n)) { // 矩陣的列數必須是正整數
+			throwErr("Matrix.createI", 'Row number (Param "n") must be a positive integer.');
+		}
+		return new Matrix(n, n, (i, j) => (i === j ? 1 : 0));
 	}
 	
 	constructor(n, m, initFunc) {
-		let isParamVaild = true;
-		if (!(isInt(n) && n >= 1)) {
+		if (!Hop.isPosInt(n)) { // 矩陣的列數必須是正整數
 			throwErr("Matrix.constructor", 'Row number (Param "n") must be a positive integer.');
-			isParamVaild = false;
 		}
-		if (!(isInt(m) && m >= 1)) {
+		if (!Hop.isPosInt(m)) { // 矩陣的行數必須是正整數
 			throwErr("Matrix.constructor", 'Column number (Param "m") must be a positive integer.');
-			isParamVaild = false;
 		}
-		if (typeof initFunc !== "function") {
+		if (typeof initFunc !== "function") { // 用於初始化矩陣元素的 function
 			throwErr("Matrix.constructor", 'Element generator (Param "initFunc") must be a function.');
-			isParamVaild = false;
 		}
+		
+		this.n = n;
+		this.m = m;
+		this.arr = Array.from({ length: n }, (_, i) => {
+			return Array.from({ length: m }, (_, j) => {
+				let element = initFunc(i, j); // 矩陣的元素
+				if (Hop.isNumOrFrac(element)) element = EF(element); // 將 number 和 Frac 轉為 EF, 此時 element 的型態為 EF 或 other
+				if (!EF.isEF(element)) { // initFunc 必須要回傳 number | Frac | EF
+					throwErr("Matrix.constructor", "Return value of initFunc must be a number | Frac | EF .");
+				}
+				return element;
+			});
+		});
 	}
 	
 	toStr() { // 轉 debug 字串
