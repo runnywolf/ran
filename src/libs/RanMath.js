@@ -9,10 +9,7 @@ export function isInt(n) { // 是否為整數
 }
 
 export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
-	if (!isInt(a) || !isInt(b)) { // 如果 a, b 不是整數, 回傳 NaN
-		throwErr("gcd", 'Param "a" & "b" must be a integer.');
-		return NaN;
-	}
+	if (!isInt(a) || !isInt(b)) throwErr("gcd", 'Param "a" & "b" must be a integer.'); // 如果 a, b 不是整數
 	
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
@@ -20,20 +17,14 @@ export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
 }
 
 export function lcm(a, b) { // 最小公倍數; lcm(0, 0) = 0
-	if (!isInt(a) || !isInt(b)) { // 如果 a, b 不是整數, 回傳 NaN
-		throwErr("lcm", 'Param "a" & "b" must be a integer.');
-		return NaN;
-	}
+	if (!isInt(a) || !isInt(b)) throwErr("lcm", 'Param "a" & "b" must be a integer.'); // 如果 a, b 不是整數
 	
 	if (a === 0 || b === 0) return 0;
 	return Math.abs(a * b) / gcd(a, b);
 }
 
 export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
-	if (!isInt(n)) { // 如果 n 不是整數, 回傳 []
-		throwErr("getFactors", 'Param "n" must be a integer.');
-		return [];
-	}
+	if (!isInt(n)) throwErr("getFactors", 'Param "n" must be a integer.'); // 如果 n 不是整數
 	
 	n = Math.abs(n); // 將負數 n 轉正
 	let factors1 = []; // n 的因數 ( <= √n )
@@ -46,10 +37,7 @@ export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 }
 
 export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回傳 k
-	if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
-		throwErr("getSquareFactor", 'Param "n" must be a integer.');
-		return NaN;
-	}
+	if (!isInt(n)) throwErr("getSquareFactor", 'Param "n" must be a integer.'); // 如果 n 不是整數
 	
 	n = Math.abs(n); // 將負數 n 轉正
 	for (let i = Math.floor(Math.sqrt(n)); i >= 1; i--) {
@@ -59,9 +47,8 @@ export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回
 }
 
 export function getRandomInt(min, max) { // 隨機整數
-	if (!isInt(min) || !isInt(max)) { // 如果 min 或 max 不是整數, 回傳 NaN
-		throwErr("getRandomInt", 'Param "min" & "max" must be a integer.');
-		return NaN;
+	if (!isInt(min) || !isInt(max)) {
+		throwErr("getRandomInt", 'Param "min" & "max" must be a integer.'); // 如果 min 或 max 不是整數
 	}
 	
 	return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -73,10 +60,7 @@ export function sum(...arr) { // 將 type number 加總
 
 export function _makeSum(arr, isInSet, zero, addOp, funcName) { // 自訂加總
 	return arr.flat(Infinity).reduce((acc, element) => { // 扁平化至 1 層 array
-		if (!isInSet(element)) { // 如果元素不在集合內, 忽略這個元素
-			throwErr(funcName, `Array element (${element}) is not in set.`);
-			return acc;
-		}
+		if (!isInSet(element)) throwErr(funcName, `Array element (${element}) is not in set.`); // 如果元素不在集合內
 		return addOp(acc, element); // 如果加法運算有封閉性, 累計這個元素
 	}, zero);
 }
@@ -85,12 +69,10 @@ export class Prime { // 質數 (prime number)
 	static prime = [2];
 	
 	static getNth(n) { // 取得第 n 個質數
-		if (!isInt(n)) { // 如果 n 不是整數, 回傳 NaN
-			throwErr("Prime.getNth", 'Param "n" must be a integer.');
-			return NaN;
+		if (!(isInt(n) && n >= 0)) { // 如果 n 不是非負整數
+			throwErr("Prime.getNth", 'Param "n" must be a nonnegative integer.');
 		}
 		
-		if (n < 0) return NaN;
 		if (n <= Prime.prime.length - 1) return Prime.prime[n]; // 質數快取
 		
 		const lastPrime = Prime.prime[Prime.prime.length - 1]; // 最後一個質數
@@ -101,10 +83,7 @@ export class Prime { // 質數 (prime number)
 	}
 	
 	static isPrime(n) { // 是否是質數
-		if (!isInt(n)) { // 如果 n 不是整數, 回傳 false
-			throwErr("Prime.isPrime", 'Param "n" must be a integer.');
-			return false;
-		}
+		if (!isInt(n)) throwErr("Prime.isPrime", 'Param "n" must be a integer.'); // 如果 n 不是整數
 		
 		if (n <= 1) return false;
 		for (let i = 0, p = 2; p*p <= n; p = Prime.getNth(++i)) if (n % p === 0) return false;
@@ -135,14 +114,8 @@ export class Frac { // 分數 (Fraction)
 	}
 	
 	constructor(n = 0, d = 1) {
-		if (!isInt(n) || !isInt(d)) { // 如果參數 n 或 d 不是整數, 會建構一個 F(0)
-			throwErr("Frac.constructor", 'Param "n" & "d" must be a integer.');
-			n = 0; d = 1;
-		}
-		if (d === 0) { // 分母為 0, 會建構一個 F(0)
-			throwErr("Frac.constructor", "The denominator cannot be 0.");
-			n = 0; d = 1;
-		}
+		if (!isInt(n) || !isInt(d)) throwErr("Frac.constructor", 'Param "n" & "d" must be a integer.'); // 如果參數 n 或 d 不是整數
+		if (d === 0) throwErr("Frac.constructor", "The denominator cannot be 0."); // 分母為 0
 		
 		// 標準化
 		if (d < 0) [n, d] = [-n, -d]; // 若分母為負數, 將 n 和 d 同乘 -1, 保證 d ∈ Z+
@@ -183,14 +156,9 @@ export class Frac { // 分數 (Fraction)
 		return this.n / this.d;
 	}
 	
-	_makeOp(nf, opName, op, errReturn = undefined) { // 自訂運算子
+	_makeOp(nf, opName, op) { // 自訂運算子
 		if (isInt(nf)) nf = F(nf); // 將 int 轉為 Frac
-		
-		if (!Frac.isFrac(nf)) { // 第二個運算元必須是 Frac / int
-			throwErr(`Frac.${opName}`, 'Param "nf" must be a Frac or int.');
-			return (errReturn === undefined) ? this : errReturn; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
-		}
-		
+		if (!Frac.isFrac(nf)) throwErr(`Frac.${opName}`, 'Param "nf" must be a Frac or int.'); // 第二個運算元必須是 Frac / int
 		return op(this, nf); // 執行運算
 	}
 	
@@ -210,10 +178,7 @@ export class Frac { // 分數 (Fraction)
 	}
 	
 	static _DIV_OP = (f1, f2) => {
-		if (f2.isZero()) { // f1/f2 發生除零錯誤
-			throwErr("Frac.div", "Div 0 error.");
-			return f1; // 回傳 this (不執行這個運算)
-		}
+		if (f2.isZero()) throwErr("Frac.div", "Div 0 error."); // f1/f2 發生除零錯誤
 		return F(f1.n * f2.d, f1.d * f2.n);
 	};
 	div(nf) { // 除法
@@ -229,10 +194,7 @@ export class Frac { // 分數 (Fraction)
 		
 		if (f2.n >= 0) return F(rootOfF1n ** f2.n, rootOfF1d ** f2.n); // 正數次方
 		
-		if (f1.isZero()) { // error: 0 ^ 負數
-			throwErr("Frac.pow", "0^-n is undefined.");
-			return f1; // 回傳 this (不執行這個運算)
-		}
+		if (f1.isZero()) throwErr("Frac.pow", "0^-n is undefined."); // error: 0 ^ 負數
 		return F(rootOfF1d ** -f2.n, rootOfF1n ** -f2.n); // 負數次方 -> 交換分子分母
 	};
 	pow(nf) { // 次方
@@ -241,12 +203,12 @@ export class Frac { // 分數 (Fraction)
 	
 	static _EQUAL_OP = (f1, f2) => f1.n === f2.n && f1.d === f2.d;
 	equal(nf) { // 比較兩個分數是否相同
-		return this._makeOp(nf, "equal", Frac._EQUAL_OP, false);
+		return this._makeOp(nf, "equal", Frac._EQUAL_OP);
 	}
 	
 	static _LT_OP = (f1, f2) => f1.n * f2.d < f1.d * f2.n;
 	lt(nf) { // 小於: this < nf
-		return this._makeOp(nf, "lt", Frac._LT_OP, false);
+		return this._makeOp(nf, "lt", Frac._LT_OP);
 	}
 }
 
@@ -312,10 +274,7 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 	
 	static _DIV_FLOAT_OP = (n1, n2) => n1 / n2;
 	static div(nf1, nf2) { // 除法
-		if (Hop.equal(nf2, 0)) {
-			throwErr("Hop.div", "Div 0 error.");
-			return NaN;
-		}
+		if (Hop.equal(nf2, 0)) throwErr("Hop.div", "Div 0 error.");
 		return Hop._makeOp([nf1, nf2], Frac._DIV_OP, Hop._DIV_FLOAT_OP);
 	}
 	
@@ -341,17 +300,9 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	constructor(nf_a = 0, nf_b = 0, nf_s = 0, _skipGetFactor = false) { // a + b√s
-		if (!Hop.isNumOrFrac(nf_a)) { // 參數必須為 Frac 或 number
-			throwErr("EF.constructor", 'Param "nf_a" must be a Frac or int.');
-			nf_a = 0;
-		}
-		if (!Hop.isNumOrFrac(nf_b)) {
-			throwErr("EF.constructor", 'Param "nf_b" must be a Frac or int.');
-			nf_b = 0;
-		}
-		if (!Hop.isNumOrFrac(nf_s)) {
-			throwErr("EF.constructor", 'Param "nf_s" must be a Frac or int.');
-			nf_s = 0;
+		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_s, "nf_s"]];
+		for (const [param, paramName] of check) if (!Hop.isNumOrFrac(param)) {
+			throwErr("EF.constructor", `Param "${paramName}" must be a Frac or int.`); // 參數必須為 Frac 或 number
 		}
 		
 		// 標準化
@@ -432,13 +383,9 @@ export class EF { // Extension Field (a + b√s)
 	_makeOp(nfe, opName, op) { // 自訂運算子
 		if (isNum(nfe) || Frac.isFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
 		
-		if (!EF.isEF(nfe)) { // 第二個運算元必須是 number / Frac / EF
-			throwErr(`EF.${opName}`, 'Param "nfe" must be a number | Frac | EF .');
-			return this; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
-		}
+		if (!EF.isEF(nfe)) throwErr(`EF.${opName}`, 'Param "nfe" must be a number | Frac | EF .'); // 第二個運算元必須是 number / Frac / EF
 		if (this.s !== 0 && nfe.s !== 0 && this.s !== nfe.s) { // 如果兩個 fleid 的 √s 不一致, 無法運算 (忽略 s 為 0 的情況)
 			throwErr(`EF.${opName}`, "Bases of extension fields differ.");
-			return this; // 如果 errReturn 沒有傳值, 回傳 this (不執行這個運算)
 		}
 		
 		const newS = (this.s === 0 ? nfe.s : this.s); // 若兩個 √s 其一不為 0, 運算結果的 √s 必須不為 0
@@ -474,10 +421,7 @@ export class EF { // Extension Field (a + b√s)
 	
 	static _DIV_OP = (ef1, ef2, newS) => { // (A + B√s) / (a + b√s) = (A + B√s)*(a - b√s) / (a^2 - b^2 s)
 		const norm = ef2.normSquare(); // (a^2 - b^2 s)
-		if (Hop.equal(norm, 0)) { // 除 0 錯誤
-			throwErr("EF.div", "Div 0 error.");
-			return ef1; // 回傳 this (不執行這個運算)
-		}
+		if (Hop.equal(norm, 0)) throwErr("EF.div", "Div 0 error."); // 除 0 錯誤
 		
 		let ef_div = ef1.mul(ef2.conjugate()); // (A + B√s)*(a - b√s)
 		return new EF(Hop.div(ef_div.nf_a, norm), Hop.div(ef_div.nf_b, norm), newS, true); // a, b 同除 norm^2
@@ -487,10 +431,7 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	pow(i) { // 整數次方: (a + b√s) ^ i
-		if (!isInt(i)) { // error: 非整數次方
-			throwErr("EF.pow", "Power must be an int number.");
-			return this; // 回傳 this (不執行這個運算)
-		}
+		if (!isInt(i)) throwErr("EF.pow", "Power must be an int number."); // error: 非整數次方
 		
 		if (i >= 1) { // (a + b√s)^i = (a + b√s)^(i/2)^2 * (a + b√s)^(i%2)
 			const ef_halfPow = this.pow(i >> 1);
@@ -499,10 +440,7 @@ export class EF { // Extension Field (a + b√s)
 		if (i === 0) return new EF(1); // (a + b√s)^0 = 1
 		
 		// i <= -1
-		if (Hop.equal(this.normSquare(), 0)) { // error: 0 ^ 負數
-			throwErr("EF.pow", "0^-i is undefined.");
-			return this; // 回傳 this (不執行這個運算)
-		}
+		if (Hop.equal(this.normSquare(), 0)) throwErr("EF.pow", "0^-i is undefined."); // error: 0 ^ 負數
 		return new EF(1).div(this.pow(-i)); // (a + b√s)^(-i) = 1/[(a + b√s)^i]
 	}
 	
