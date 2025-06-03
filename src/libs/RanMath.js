@@ -517,25 +517,92 @@ export class EF { // Extension Field (a + b√s)
 	}
 }
 
-export class _Matrix { // 矩陣
-	// 列運算
+export class Matrix { // 矩陣
+	static isMatrix(value) {
+		return value instanceof Matrix;
+	}
+	
+	static isNullMatrix(value) { // 某個 Matrix 實例是否為無效矩陣 (計算失敗的產物)
+		if (!Matrix.isMatrix(value)) return false;
+		return value.arr === null;
+	}
+	
+	static create0(n, m) { // 生成零矩陣
+		
+	}
+	
+	static createI(n) { // 生成單位矩陣
+		
+	}
+	
+	static createNull() { // 生成無效矩陣
+		
+	}
+	
+	constructor(n, m, initFunc) {
+		let isParamVaild = true;
+		if (!(isInt(n) && n >= 1)) {
+			throwErr("Matrix.constructor", 'Row number (Param "n") must be a positive integer.');
+			isParamVaild = false;
+		}
+		if (!(isInt(m) && m >= 1)) {
+			throwErr("Matrix.constructor", 'Column number (Param "m") must be a positive integer.');
+			isParamVaild = false;
+		}
+		if (typeof initFunc !== "function") {
+			throwErr("Matrix.constructor", 'Element generator (Param "initFunc") must be a function.');
+			isParamVaild = false;
+		}
+	}
+	
+	toStr() { // 轉 debug 字串
+		// 做對齊機制
+	}
+	
+	swapRow(i, j) { // 矩陣列運算 - 交換兩列
+		
+	}
+	
+	scaleRow(i, s) { // 矩陣列運算 - 列乘常數
+		
+	}
+	
+	addRow(i, j, s) { // 矩陣列運算 - 列乘常數加到另一列
+		
+	}
+	
+	add(value) { // 加上一個純量單位矩陣或另一個矩陣
+		
+	}
+	
+	mul(value) { // 乘上常數或另一個矩陣
+		
+	}
+	
+	trans() { // 轉置
+		
+	}
+	
+	inverse() { // 反矩陣
+		
+	}
 }
 
-export class Matrix { // 矩陣
+export class _Matrix { // 矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
 		if (!Array.isArray(arr)) { // 如果 A 不是 Array
-			if (err) throwErr("Matrix.isMatrix", "Variable arr is not an Array.");
+			if (err) throwErr("_Matrix.isMatrix", "Variable arr is not an Array.");
 			return false;
 		}
 		
 		for (const [i, rowI] of arr.entries()) { // 檢查矩陣內是否存在非 Frac 或 Number 的元素
 			if (!Array.isArray(rowI)) { // 如果 row 不是 Array
-				if (err) throwErr("Matrix.isMatrix", `Element arr[${i}] is not an Array.`);
+				if (err) throwErr("_Matrix.isMatrix", `Element arr[${i}] is not an Array.`);
 				return false;
 			}
 			for (const [j, Aij] of rowI.entries()) {
 				if (!Frac.isFrac(Aij) && !isNum(Aij)) {
-					if (err) throwErr("Matrix.isMatrix", `Element arr[${i}][${j}] = ${Aij} is not a number.`);
+					if (err) throwErr("_Matrix.isMatrix", `Element arr[${i}][${j}] = ${Aij} is not a number.`);
 					return false;
 				}
 			}
@@ -543,11 +610,11 @@ export class Matrix { // 矩陣
 		
 		const rowsLength = arr.map(rowI => rowI.length); // 每個 row 的元素個數
 		if (!rowsLength.every(rowL => rowL === rowsLength[0])) { // 若存在兩個 row 的元素個數不相同
-			if (err) throwErr("Matrix.isMatrix", "The rows in the arr have inconsistent lengths.");
+			if (err) throwErr("_Matrix.isMatrix", "The rows in the arr have inconsistent lengths.");
 			return false;
 		}
 		if (rowsLength.length === 0 || rowsLength[0] === 0) { // arr 不可以是 ?*0 矩陣
-			if (err) throwErr("Matrix.isMatrix", "arr is a ?*0 matrix.");
+			if (err) throwErr("_Matrix.isMatrix", "arr is a ?*0 matrix.");
 			return false;
 		}
 		return true;
@@ -555,8 +622,8 @@ export class Matrix { // 矩陣
 	
 	static create(n, m, element = null) { // [改 createO] 生成一個元素全為 element 的 n*m 矩陣, 不傳入 element 會將元素設為 Frac(0)
 		if (!(Number.isInteger(n) && n >= 1 && Number.isInteger(m) && m >= 1)) { // n, m 必須是正整數
-			throwErr("Matrix.create", "Matrix size n & m must be a positive integer.")
-			return new Matrix(null);
+			throwErr("_Matrix.create", "_Matrix size n & m must be a positive integer.")
+			return new _Matrix(null);
 		}
 		
 		const arr = Array.from({ length: n }, () => Array.from({ length: m }, () => {
@@ -564,25 +631,25 @@ export class Matrix { // 矩陣
 			if (typeof element === "number") return element; // 如果元素是 Number
 			return new Frac(0); // 元素的預設值為 Frac(0)
 		}));
-		return new Matrix(arr);
+		return new _Matrix(arr);
 	}
 	
 	static createI(n) { // 生成單位矩陣
 		if (!(Number.isInteger(n) && n >= 1)) { // n 必須是正整數
-			throwErr("Matrix.create", "Matrix size n must be a positive integer.")
-			return new Matrix(null);
+			throwErr("_Matrix.create", "_Matrix size n must be a positive integer.")
+			return new _Matrix(null);
 		}
 		
 		const arr = Array.from(
 			{ length: n },
 			(_, i) => Array.from({ length: n }, (_, j) => new Frac(i == j ? 1 : 0))
 		);
-		return new Matrix(arr);
+		return new _Matrix(arr);
 	}
 	
 	constructor(arr, copy = false) {
 		this.A = arr;
-		if (!Matrix.isMatrix(arr, true)) this.A = null; // null 代表非矩陣
+		if (!_Matrix.isMatrix(arr, true)) this.A = null; // null 代表非矩陣
 		else if (copy) { // deep copy
 			this.A = arr.map(row => row.map(Aij => Frac.isFrac(Aij) ? new Frac(Aij.n, Aij.d) : Aij));
 		}
@@ -596,13 +663,13 @@ export class Matrix { // 矩陣
 	}
 	
 	mul(M) { // 矩陣乘法
-		if (!this.A || !Matrix.isMatrix(M?.A)) { // 自身或參數不為 Matrix 或 null Matrix
-			throwErr("Matrix.mul", "Input or self is not a vaild Matrix.");
-			return new Matrix(null);
+		if (!this.A || !_Matrix.isMatrix(M?.A)) { // 自身或參數不為 _Matrix 或 null _Matrix
+			throwErr("_Matrix.mul", "Input or self is not a vaild _Matrix.");
+			return new _Matrix(null);
 		}
 		if (this.m !== M.n) { // 只有 n*m 跟 m*p 矩陣才能相乘
-			throwErr("Matrix.mul", "Only an n*m matrix can be multiplied by an m*p matrix.");
-			return new Matrix(null);
+			throwErr("_Matrix.mul", "Only an n*m matrix can be multiplied by an m*p matrix.");
+			return new _Matrix(null);
 		}
 		
 		let arr = Array.from({ length: this.n }, (_, i) => Array.from({ length: M.m }, (_, j) => {
@@ -610,11 +677,11 @@ export class Matrix { // 矩陣
 			for (let k = 0; k < this.m; k++) fn_sum = Hop.add(fn_sum, Hop.mul(this.A[i][k], M.A[k][j]));
 			return fn_sum;
 		}));
-		return new Matrix(arr);
+		return new _Matrix(arr);
 	}
 	
 	trans() { // 轉置
-		let matrix_trans = Matrix.create(this.m, this.n);
+		let matrix_trans = _Matrix.create(this.m, this.n);
 		for (let i = 0; i < this.n; i++) for (let j = 0; j < this.m; j++) {
 			matrix_trans.A[j][i] = this.A[i][j];
 		}
@@ -623,18 +690,18 @@ export class Matrix { // 矩陣
 	
 	inverse() { // 反矩陣
 		if (this.n !== this.m) { // 只有方陣才有反矩陣
-			throwErr("Matrix.inverse", "Only square matrices have an inverse.");
-			return new Matrix(null);
+			throwErr("_Matrix.inverse", "Only square matrices have an inverse.");
+			return new _Matrix(null);
 		}
 		
 		const n = this.n; // 矩陣邊長
-		let m_simplify = new Matrix(this.A, true); // 執行簡化列運算的矩陣
-		let m_inverse = Matrix.createI(n); // 建構反矩陣
+		let m_simplify = new _Matrix(this.A, true); // 執行簡化列運算的矩陣
+		let m_inverse = _Matrix.createI(n); // 建構反矩陣
 		for (let i = 0; i < n; i++) { // 消去原矩陣的下三角部分
 			let swapI = i;
 			while (Hop.equal(m_simplify.A[swapI][i], 0)) {
 				swapI++; // 若對角線元素為 0, 交換兩行使對角線元素不為 0
-				if (swapI >= n) return new Matrix(null); // 矩陣為奇異矩陣, 不可逆
+				if (swapI >= n) return new _Matrix(null); // 矩陣為奇異矩陣, 不可逆
 			}
 			
 			[m_simplify.A[i], m_simplify.A[swapI]] = [m_simplify.A[swapI], m_simplify.A[i]]; // 交換兩行使對角線元素不為 0

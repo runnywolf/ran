@@ -83,7 +83,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, EF, SolveCubic, Hop, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { Frac, EF, SolveCubic, Hop, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomog from "./RecurNonHomog.vue"; // 計算並顯示非齊次部分的組件
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
@@ -205,12 +205,12 @@ class SolveRecur { // 解非齊次遞迴
 	_solveHi() { // 解聯立求 h_i
 		if (this.anSubAnp.length === 0) return;
 		
-		const matrix_anSubAnp = new Matrix([this.anSubAnp]).trans();
-		let hiAns = new Matrix(this.HiLinearEquation).inverse().mul(matrix_anSubAnp).trans().A[0]; // 解 h_i 的聯立 Ax = b ; x 會等於 A^-1 b
+		const matrix_anSubAnp = new _Matrix([this.anSubAnp]).trans();
+		let hiAns = new _Matrix(this.HiLinearEquation).inverse().mul(matrix_anSubAnp).trans().A[0]; // 解 h_i 的聯立 Ax = b ; x 會等於 A^-1 b
 		
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 特徵方程式的解形式
-		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式包含根號或複數, 需要轉為 EF 型態 (因為 Matrix 不支援 EF)
+		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式包含根號或複數, 需要轉為 EF 型態 (因為 _Matrix 不支援 EF)
 			const ef = new EF(hiAns[0], hiAns[1], sc.quad.s); // FRAC_QUAD 跟 TYPE_REAL_IM 會化簡 (h1 + h2√s)(a + b√s)^n + (h1 - h2√s)(a - b√s)^n + h3 c^n, 所以聯立會比較特別
 			[hiAns[0], hiAns[1]] = [ef, ef.conjugate()];
 		}

@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { Frac, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 
 const props = defineProps({
@@ -65,18 +65,18 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	
 	_initPjEquationSystem() { // 生成 p_j 的聯立方程式
 		const l = this.recurLevel; // 遞迴階數
-		const matrix_PLE = Matrix.create(this.PjNum, l + this.PjNum); // a_n^(p) 的線性組合
+		const matrix_PLE = _Matrix.create(this.PjNum, l + this.PjNum); // a_n^(p) 的線性組合
 		for (let n = 0; n < this.PjNum; n++) { // 將 a_n^(p) 以 p_j 表示的線性關係, 轉為矩陣
 			matrix_PLE.A[n][n+l] = new Frac(1);
 			for (const [i, frac_coef] of this.recurCoef.entries()) {
 				matrix_PLE.A[n][n+(l-1)-i] = frac_coef.mul(-1);
 			}
 		}
-		this.matrix_solvePj = matrix_PLE.mul(new Matrix(this.PjLinearEquation)); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
+		this.matrix_solvePj = matrix_PLE.mul(new _Matrix(this.PjLinearEquation)); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
 	}
 	
 	_initSolvePj() { // 解聯立求 p_j
-		const matrix_F = new Matrix([this.nonHomogFn]).trans();
+		const matrix_F = new _Matrix([this.nonHomogFn]).trans();
 		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_F).trans().A[0]; // 解 p_j 的聯立 Ax = b ; x 會等於 A^-1 b
 	}
 	
