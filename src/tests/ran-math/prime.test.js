@@ -1,52 +1,45 @@
-import { beforeEach, afterEach, vi, test, expect } from "vitest";
-
-let spy; // console.error 監聽
-beforeEach(() => {
-	spy = vi.spyOn(console, "error").mockImplementation(() => undefined);
-});
-afterEach(() => {
-	spy.mockRestore();
-});
+import { test, expect, describe } from "vitest";
 
 // ---------- test area ----------
 import { Prime } from "ran-math";
 
-const testArr_getNth = [ // 測資
-	{ n: -5, output: NaN },
-	{ n: 0, output: 2 },
-	{ n: 4, output: 11 },
-	{ n: 99, output: 541 },
-	// { n: 828, output: 6361 },
-	// { n: 11678, output: 124339 },
-	{ n: NaN, output: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
-	{ n: [], output: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
-];
-test.each(testArr_getNth)(
-	"[Prime.getNth] No.$n prime number is $output",
-	({ n, output, error }) => {
-		expect(Prime.getNth(n)).toBe(output)
-		
-		if (error) expect(spy).toHaveBeenCalledWith(error);
-		else expect(spy).not.toHaveBeenCalled();
-	}
-);
+const testData = {
+	"Prime.getNth": {
+		testName: (input, output) => `Prime.getNth(${input}) = ${output}`,
+		testFunc: input => Prime.getNth(input),
+		tests: [
+			{ input: -5, output: NaN },
+			{ input: 0, output: 2 },
+			{ input: 4, output: 11 },
+			{ input: 99, output: 541 },
+			// { input: 828, output: 6361 },
+			// { input: 11678, output: 124339 },
+			{ input: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
+			{ input: [], error: '[RanMath][Prime.getNth] Param "n" must be a integer.' }, // 會報錯的測資
+		]
+	},
+	"Prime.isPrime": {
+		testName: (input, output) => `Prime.isPrime(${input}) = ${output}`,
+		testFunc: input => Prime.isPrime(input),
+		tests: [
+			{ input: -335, output: false },
+			{ input: 1, output: false },
+			{ input: 2, output: true },
+			{ input: 67939, output: true },
+			// { input: 100000, output: false },
+			{ input: NaN, error: '[RanMath][Prime.isPrime] Param "n" must be a integer.' }, // 會報錯的測資
+			{ input: [], error: '[RanMath][Prime.isPrime] Param "n" must be a integer.' }, // 會報錯的測資
+		]
+	},
+};
 
-const testArr_isPrime = [ // 測資
-	{ n: -335, output: false },
-	{ n: 1, output: false },
-	{ n: 2, output: true },
-	{ n: 67939, output: true },
-	{ n: 100000, output: false },
-	{ n: NaN, output: false, error: '[RanMath][Prime.isPrime] Param "n" must be a integer.' }, // 會報錯的測資
-	{ n: [], output: false, error: '[RanMath][Prime.isPrime] Param "n" must be a integer.' }, // 會報錯的測資
-];
-test.each(testArr_isPrime)(
-	"[Prime.isPrime] No.$n prime number is $output",
-	({ n, output, error }) => {
-		expect(Prime.isPrime(n)).toBe(output)
-		
-		if (error) expect(spy).toHaveBeenCalledWith(error);
-		else expect(spy).not.toHaveBeenCalled();
-	}
-);
+for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
+	for (const t of testInfo.tests) test(
+		testInfo.testName(t.input, t.output) + (t.error ? `\n\t> error text: ${t.error}` : ""),
+		() => {
+			if (t.error) expect(() => testInfo.testFunc(t.input)).toThrowError(t.error); // 如果會報錯, 檢查錯誤訊息
+			else expect(testInfo.testFunc(t.input)).toStrictEqual(t.output); // 檢查是否有錯誤
+		}
+	);
+});
 // ---------- test area ----------

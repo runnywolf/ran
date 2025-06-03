@@ -1045,6 +1045,6 @@ export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMo
 
 // 錯誤訊息
 function throwErr(methodName, errMessage) {
-	console.error(`[RanMath][${methodName}] ${errMessage}`);
+	throw new Error(`[RanMath][${methodName}] ${errMessage}`);
 }
 // 錯誤訊息

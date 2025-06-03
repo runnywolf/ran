@@ -1,20 +1,20 @@
-import { beforeEach, afterEach, vi, test, expect, describe } from "vitest";
-
-let spy; // console.error 監聽
-beforeEach(() => {
-	spy = vi.spyOn(console, "error").mockImplementation(() => undefined);
-});
-afterEach(() => {
-	spy.mockRestore();
-});
+import { test, expect, describe } from "vitest";
 
 // ---------- test area ----------
-import { Hop, F } from "ran-math";
+import { Hop, F, Frac, isInt } from "ran-math";
+
+const toStr = (value) => {
+	if (value instanceof Frac) return `${value.n}/${value.d}`;
+	if (typeof value === "string") return `"${value}"`;
+	if (isInt(value)) return `${value}`;
+	if (typeof value === "number") return value.toFixed(4);
+	return value;
+};
 
 const testData = {
 	"Hop.isInt": {
-		testName: "Hop.isInt($input) = $output",
-		testFunc: Hop.isInt,
+		testName: (input, output) => `Hop.isInt(${toStr(input)}) = ${toStr(output)}`,
+		testFunc: input => Hop.isInt(input),
 		tests: [ // 測資
 			{ input: 2, output: true },
 			{ input: F(-6, 2), output: true },
@@ -26,8 +26,8 @@ const testData = {
 		],
 	},
 	"Hop.isPosInt": {
-		testName: "Hop.isPosInt($input) = $output",
-		testFunc: Hop.isPosInt,
+		testName: (input, output) => `Hop.isPosInt(${toStr(input)}) = ${toStr(output)}`,
+		testFunc: input => Hop.isPosInt(input),
 		tests: [ // 測資
 			{ input: -2, output: false },
 			{ input: F(-6, 2), output: false },
@@ -40,8 +40,8 @@ const testData = {
 		],
 	},
 	"Hop.isNegInt": {
-		testName: "Hop.isNegInt($input) = $output",
-		testFunc: Hop.isNegInt,
+		testName: (input, output) => `Hop.isNegInt(${toStr(input)}) = ${toStr(output)}`,
+		testFunc: input => Hop.isNegInt(input),
 		tests: [ // 測資
 			{ input: -2, output: true },
 			{ input: F(-6, 2), output: true },
@@ -54,8 +54,8 @@ const testData = {
 		],
 	},
 	"Hop.isRational": {
-		testName: "Hop.isRational($input) = $output",
-		testFunc: Hop.isRational,
+		testName: (input, output) => `Hop.isRational(${toStr(input)}) = ${toStr(output)}`,
+		testFunc: input => Hop.isRational(input),
 		tests: [ // 測資
 			{ input: -2, output: true },
 			{ input: F(-6, 2), output: true },
@@ -68,7 +68,7 @@ const testData = {
 		],
 	},
 	"Hop.toStr": {
-		testName: "Hop.toStr($input) = $output",
+		testName: (input, output) => `Hop.toStr(${input.map(p => toStr(p)).join(", ")}) = ${toStr(output)}`,
 		testFunc: input => Hop.toStr(...input),
 		tests: [ // 測資
 			{ input: [ -2 ], output: "-2" },
@@ -85,7 +85,7 @@ const testData = {
 		],
 	},
 	"Hop.toLatex": {
-		testName: "Hop.toLatex($input) = $output",
+		testName: (input, output) => `Hop.toLatex(${input.map(p => toStr(p)).join(", ")}) = ${toStr(output)}`,
 		testFunc: input => Hop.toLatex(...input),
 		tests: [ // 測資
 			{ input: [ -2 ], output: "-2" },
@@ -102,8 +102,8 @@ const testData = {
 		],
 	},
 	"Hop.add": {
-		testName: "Hop.add($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.add(nf1, nf2),
+		testName: (input, output) => `Hop.add(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.add(...input),
 		tests: [
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-11, 8) },
 			{ input: [ F(2, 7), F(-3, 5) ], output: F(-11, 35) },
@@ -117,8 +117,8 @@ const testData = {
 		]
 	},
 	"Hop.sub": {
-		testName: "Hop.sub($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.sub(nf1, nf2),
+		testName: (input, output) => `Hop.sub(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.sub(...input),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-1, 8) },
 			{ input: [ F(2, 7), F(-3, 5) ], output: F(31, 35) },
@@ -131,8 +131,8 @@ const testData = {
 		]
 	},
 	"Hop.mul": {
-		testName: "Hop.mul($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.mul(nf1, nf2),
+		testName: (input, output) => `Hop.mul(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.mul(...input),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(15, 32) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(21, 20) },
@@ -146,8 +146,8 @@ const testData = {
 		]
 	},
 	"Hop.div": {
-		testName: "Hop.div($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.div(nf1, nf2),
+		testName: (input, output) => `Hop.div(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.div(...input),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(6, 5) },
 			{ input: [ F(7, 4), F(3, 5) ], output: F(35, 12) },
@@ -157,17 +157,17 @@ const testData = {
 			{ input: [ F(6, 7), 3.5 ], output: 0.2448979591836734693 },
 			{ input: [ 2.5, F(5, 2) ], output: 1 },
 			{ input: [ "8", F(8) ], output: NaN },
-			{ input: [ 8, F(0) ], output: NaN, error: "[RanMath][Hop.div] Div 0 error." },
+			{ input: [ 8, F(0) ], error: "[RanMath][Hop.div] Div 0 error." },
 		]
 	},
 	"Hop.pow": {
-		testName: "Hop.pow($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.pow(nf1, nf2),
+		testName: (input, output) => `Hop.pow(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.pow(...input),
 		tests: [ // 測資
 			{ input: [ F(2, 3), 0 ], output: F(1) }, // f^0 = 1
 			{ input: [ F(0), F(0) ], output: F(1) }, // 0^0 = 1
 			{ input: [ 0, F(10000) ], output: F(0) }, // 0^i = 0
-			{ input: [ F(0), F(-2) ], output: F(0), error: "[RanMath][Frac.pow] 0^-n is undefined." }, // 0^-i = 0 (error)
+			{ input: [ F(0), F(-2) ], error: "[RanMath][Frac.pow] 0^-n is undefined." }, // 0^-i = 0 (error)
 			{ input: [ F(-7, 3), -1 ], output: F(-3, 7) }, // f^-1 = 1/f
 			{ input: [ F(12, 5), F(1) ], output: F(12, 5) }, // f^1 = f
 			{ input: [ F(4, 25), F(1, 2) ], output: F(2, 5) }, // f^f = f
@@ -180,8 +180,8 @@ const testData = {
 		]
 	},
 	"Hop.equal": {
-		testName: "Hop.equal($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.equal(nf1, nf2),
+		testName: (input, output) => `Hop.equal(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.equal(...input),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: false },
 			{ input: [ F(-7, 4), F(7, -4) ], output: true },
@@ -193,8 +193,8 @@ const testData = {
 		]
 	},
 	"Hop.lt": {
-		testName: "Hop.lt($input.0, $input.1) = $output",
-		testFunc: ([ nf1, nf2 ]) => Hop.lt(nf1, nf2),
+		testName: (input, output) => `Hop.lt(${toStr(input[0])}, ${toStr(input[1])}) = ${toStr(output)}`,
+		testFunc: input => Hop.lt(...input),
 		tests: [ // 測資
 			{ input: [ F(8, 6), F(20, 15) ], output: false },
 			{ input: [ F(-16, 7), F(-3, 5) ], output: true },
@@ -207,11 +207,12 @@ const testData = {
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {
-	test.each(testInfo.tests)(testInfo.testName + " ; error = $error", ({ input, output, error }) => {
-		expect(testInfo.testFunc(input)).toStrictEqual(output);
-		
-		if (error) expect(spy).toHaveBeenCalledWith(error);
-		else expect(spy).not.toHaveBeenCalled();
-	});
+	for (const t of testInfo.tests) test(
+		testInfo.testName(t.input, t.output) + (t.error ? `\n\t> error text: ${t.error}` : ""),
+		() => {
+			if (t.error) expect(() => testInfo.testFunc(t.input)).toThrowError(t.error); // 如果會報錯, 檢查錯誤訊息
+			else expect(testInfo.testFunc(t.input)).toStrictEqual(t.output); // 檢查是否有錯誤
+		}
+	);
 });
 // ---------- test area ----------
