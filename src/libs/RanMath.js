@@ -483,7 +483,7 @@ export class Matrix { // 矩陣
 		this.arr = Array.from({ length: n }, (_, i) => {
 			return Array.from({ length: m }, (_, j) => {
 				let element = initFunc(i, j); // 矩陣的元素
-				if (Hop.isNumOrFrac(element)) element = EF(element); // 將 number 和 Frac 轉為 EF, 此時 element 的型態為 EF 或 other
+				if (Hop.isNumOrFrac(element)) element = new EF(element); // 將 number 和 Frac 轉為 EF, 此時 element 的型態為 EF 或 other
 				if (!EF.isEF(element)) { // initFunc 必須要回傳 number | Frac | EF
 					throwErr("Matrix.constructor", "Return value of initFunc must be a number | Frac | EF .");
 				}
@@ -492,8 +492,21 @@ export class Matrix { // 矩陣
 		});
 	}
 	
+	static _efToStr = (ef) => { // 專用於 Matrix 的 EF.toStr
+		if (Hop.equal(ef.nf_b, 0)) return Hop.toStr(ef.nf_a); // 如果 (a + b√s) 的 b 為 0, 顯示 a 就好
+		if (Hop.equal(ef.nf_a, 0)) return `${Hop.toStr(ef.nf_b)} √ ${ef.s}`; // 如果 (a + b√s) 的 a 為 0, 顯示 b√s 就好
+		return ef.toStr(); // a 跟 b 都不是 0, 回傳 EF 的預設 toStr
+	};
 	toStr() { // 轉 debug 字串
-		// 做對齊機制
+		let rowStrArr = Array(this.n).fill("| "); // 每一列的顯示字串
+		for (let j = 0; j < this.m; j++) {
+			for (let i = 0; i < this.n; i++) rowStrArr[i] += Matrix._efToStr(this.arr[i][j]);
+			const maxRowStrLength = Math.max(...rowStrArr.map(rowStr => rowStr.length));
+			rowStrArr.forEach((rowStr, i, arr) => {
+				arr[i] = rowStr.padEnd(maxRowStrLength) + (j === this.m-1 ? " |\n" : " | ");
+			});
+		}
+		return rowStrArr.join("");
 	}
 	
 	swapRow(i, j) { // 矩陣列運算 - 交換兩列
