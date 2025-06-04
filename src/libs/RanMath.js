@@ -605,7 +605,7 @@ export class Matrix { // 矩陣
 	}
 }
 
-export class _Matrix { // 矩陣
+export class _Matrix { // [棄用] 舊矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
 		if (!Array.isArray(arr)) { // 如果 A 不是 Array
 			if (err) throwErr("_Matrix.isMatrix", "Variable arr is not an Array.");

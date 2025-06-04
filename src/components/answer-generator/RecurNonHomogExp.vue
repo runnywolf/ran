@@ -51,7 +51,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		const l = this.recurLevel; // 遞迴階數
 		const pjn = this.PjNum; // 未知係數的數量
 		const coef = (n, i) => F(n**(i + this.extraNPow)).mul(this.frac_b.pow(n)); // 回傳 a_n^{(p)} 內 p_{startPj + i} 的係數 n^(i+k) b^n
-		this.matrix_PjLinearEquation = new Matrix(pjn+l, pjn, (n, i) => coef(n, i)); // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式
+		this.matrix_PjLE = new Matrix(pjn+l, pjn, (n, i) => coef(n, i)); // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式
 	}
 	
 	_initNonHomogFn() { // 將常數代入非齊次部分 F(n) 得到的值
@@ -70,7 +70,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 			if (i+l === j) return 1;
 			return 0;
 		});
-		this.matrix_solvePj = matrix_PLE.mul(this.matrix_PjLinearEquation); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
+		this.matrix_solvePj = matrix_PLE.mul(this.matrix_PjLE); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
 	}
 	
 	_initSolvePj() { // 解聯立求 p_j
@@ -113,7 +113,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		return mlEquationSystem(
 			this.recurLevel + this.PjNum,
 			this.PjNum,
-			(n, j) => this.matrix_PjLinearEquation.arr[n][j].nf_a,
+			(n, j) => this.matrix_PjLE.arr[n][j].nf_a,
 			(n, j) => `p_{${this.startPj + j}}`,
 			(n) => `a_{${n}}^{(p)}`,
 			"left"
