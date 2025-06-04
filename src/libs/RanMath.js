@@ -299,6 +299,12 @@ export class EF { // Extension Field (a + b√s)
 		return value instanceof EF;
 	}
 	
+	static sum(...arr) { // 加總
+		const setDef = (value) => Hop.isNumOrFrac(value) || EF.isEF(value); // arr 內的元素只能是 number | Frac | EF . (集合定義)
+		const addOp = (ef, nfe) => ef.add(nfe); // 加法運算子
+		return _makeSum(arr, setDef, new EF(0), addOp, "EF.sum");
+	}
+	
 	constructor(nf_a = 0, nf_b = 0, nf_s = 0, _skipGetFactor = false) { // a + b√s
 		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_s, "nf_s"]];
 		for (const [param, paramName] of check) if (!Hop.isNumOrFrac(param)) {
@@ -553,19 +559,24 @@ export class Matrix { // 矩陣
 	}
 	
 	mul(matrix) { // 乘上另一個矩陣
-		
+		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.mul", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (this.m !== matrix.n) throwErr("Matrix.mul", "Only n*m and m*p matrices can be multiplied."); // 只有 n*m 跟 m*p 矩陣才能相乘
+		return new Matrix(this.n, matrix.m, (i, j) => {
+			return EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])));
+		});
 	}
 	
 	muls(s) { // 乘上純量
-		
+		this._checkScalar("muls", s);
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].mul(s));
 	}
 	
 	trans() { // 轉置
-		
+		return new Matrix(this.m, this.n, (i, j) => this.arr[j][i]);
 	}
 	
 	inverse() { // 反矩陣
-		
+		// 方陣檢測
 	}
 }
 

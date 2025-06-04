@@ -212,6 +212,99 @@ const testData = {
 			},
 		]
 	},
+	".mul": {
+		testName: (input, output) => `test-matrix.mul() = test-output`,
+		testFunc: input => input.a.mul(input.b),
+		tests: [
+			{
+				input: {
+					a: (() => {
+						const arr = [
+							[ef(5), ef(-2), ef(3)],
+							[ef(1), ef(2), ef(-7)],
+							[ef(0), ef(-6), ef(2)],
+							[ef(1), ef(-2), ef(5)],
+						]
+						return new Matrix(4, 3, (i, j) => arr[i][j]);
+					})(),
+					b: (() => {
+						const arr = [
+							[ef(3), ef(4), ef(5)],
+							[ef(2), ef(0), ef(6)],
+							[ef(9), ef(8), ef(7)]
+						]
+						return new Matrix(3, 3, (i, j) => arr[i][j])
+					})(),
+				},
+				output: (() => {
+					const arr = [
+						[ef(38), ef(44), ef(34)],
+						[ef(-56), ef(-52), ef(-32)],
+						[ef(6), ef(16), ef(-22)],
+						[ef(44), ef(44), ef(28)]
+					]
+					return new Matrix(4, 3, (i, j) => arr[i][j])
+				})(),
+			},
+			{
+				input: {
+					a: new Matrix(3, 3, (i, j) => i + j),
+					b: new Matrix(3, 3, (i, j) => i + j),
+				},
+				output: new Matrix(3, 3, (i, j) => 5+3*(i+j+i*j))
+			},
+			{
+				input: {
+					a: new Matrix(3, 3, (i, j) => i + j),
+					b: "???",
+				},
+				error: '[RanMath][Matrix.mul] Param "matrix" must be a Matrix.'
+			},
+			{
+				input: {
+					a: new Matrix(3, 3, (i, j) => i + j),
+					b: new Matrix(4, 3, (i, j) => i + j),
+				},
+				error: '[RanMath][Matrix.mul] Only n*m and m*p matrices can be multiplied.'
+			},
+		]
+	},
+	".muls": {
+		testName: (input, output) => `matrix.muls(matrix) = matrix`,
+		testFunc: input => input.a.muls(input.s),
+		tests: [
+			{
+				input: { a: new Matrix(3, 3, (i, j) => i + j), s: -1.6},
+				output: new Matrix(3, 3, (i, j) => (i + j) * -1.6)
+			},
+			{
+				input: { a: new Matrix(3, 3, (i, j) => i + j), s: F(89, 64)},
+				output: new Matrix(3, 3, (i, j) => F(i + j).mul(F(89, 64)))
+			},
+			{
+				input: { a: new Matrix(3, 3, (i, j) => ef(4-i, F(i*(j+2)+3, j+4))), s: ef(89, 64, F(2, 3))},
+				output: new Matrix(3, 3, (i, j) => ef(4-i, F(i*(j+2)+3, j+4)).mul(ef(89, 64, F(2, 3))))
+			},
+			{
+				input: { a: new Matrix(3, 3, (i, j) => i + j), s: "198964" },
+				error: '[RanMath][Matrix.muls] Scalar must be a number | Frac | EF .'
+			},
+		]
+	},
+	".trans": {
+		testName: (input, output) => `matrix.trans(matrix) = matrix`,
+		testFunc: input => input.trans(),
+		tests: [
+			{
+				input: new Matrix(3, 3, (i, j) => i + j),
+				output: new Matrix(3, 3, (i, j) => i + j),
+			},
+			{
+				input: new Matrix(3, 5, (i, j) => i + 6*j),
+				output: new Matrix(5, 3, (i, j) => 6*i + j),
+			},
+		]
+	},
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {

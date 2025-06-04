@@ -25,6 +25,17 @@ const testData = {
 			{ input: {}, output: false },
 		],
 	},
+	"EF.sum": {
+		testName: (input, output) => `EF.sum(${input}) = ${toStr(output)}`,
+		testFunc: input => EF.sum(...input),
+		tests: [ // 測資
+			{ input: [ [5, [F(1, 2), 3]], [new EF(F(-2, 3))] ] , output: new EF(F(47, 6)) }, // Frac.sum([5, [F(1, 2), 3]], [F(-2, 3)])
+			{
+				input: [ F(9, 8), "7", F(1), new EF(F(1, 3)) ],
+				error: "[RanMath][EF.sum] Array element (7) is not in set."
+			},
+		],
+	},
 	"constructor & .toStr": {
 		testName: (input, output) => `new EF(${input.map(p => toStr(p)).join(", ")}).toStr() = ${toStr(output)}`,
 		testFunc: input => new EF(...input).toStr(),
