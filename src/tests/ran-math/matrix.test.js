@@ -292,7 +292,7 @@ const testData = {
 		]
 	},
 	".trans": {
-		testName: (input, output) => `matrix.trans(matrix) = matrix`,
+		testName: (input, output) => `matrix.trans() = matrix`,
 		testFunc: input => input.trans(),
 		tests: [
 			{
@@ -302,6 +302,63 @@ const testData = {
 			{
 				input: new Matrix(3, 5, (i, j) => i + 6*j),
 				output: new Matrix(5, 3, (i, j) => 6*i + j),
+			},
+		]
+	},
+	".inverse": {
+		testName: (input, output) => `matrix.inverse() = matrix`,
+		testFunc: input => new Matrix(input.length, input[0].length, (i, j) => input[i][j]).inverse().arr,
+		tests: [
+			{
+				input: [
+					[5, -2, 3],
+					[1, 2, -7],
+					[0, -6, 2],
+				],
+				output: [
+					[ef(F(19, 102)), ef(F(7, 102)), ef(F(-2, 51))],
+					[ef(F(1, 102)), ef(F(-5, 102)), ef(F(-19, 102))],
+					[ef(F(1, 34)), ef(F(-5, 34)), ef(F(-1, 17))],
+				],
+			},
+			{
+				input: [
+					[5, -2, 3],
+					[1, 0, -7],
+					[7, -6, 2],
+				],
+				output: [
+					[ef(F(1, 3)), ef(F(1, 9)), ef(F(-1, 9))],
+					[ef(F(17, 42)), ef(F(11, 126)), ef(F(-19, 63))],
+					[ef(F(1, 21)), ef(F(-8, 63)), ef(F(-1, 63))],
+				],
+			},
+			{
+				input: [
+					[ef(5, 1, 2), -2, 3],
+					[1, 2, -7],
+					[0, -6, 2],
+				],
+				output: [
+					[ef(F(1938, 9682), F(-361, 9682), 2), ef(F(714, 9682), F(-133, 9682), 2), ef(F(-408, 9682), F(76, 9682), 2)],
+					[ef(F(102, 9682), F(-19, 9682), 2), ef(F(-472, 9682), F(-7, 9682), 2), ef(F(-1805, 9682), F(4, 9682), 2)],
+					[ef(F(306, 9682), F(-57, 9682), 2), ef(F(-1416, 9682), F(-21, 9682), 2), ef(F(-574, 9682), F(12, 9682), 2)],
+				],
+			},
+			{
+				input: [
+					[5, -2, 3],
+					[1, 2, -7],
+				],
+				error: "[RanMath][Matrix.inverse] Only square matrix have inverse."
+			},
+			{
+				input: [
+					[5, -2, 4],
+					[1, 2, -4],
+					[0, -6, 12],
+				],
+				error: "[RanMath][Matrix.inverse] Matrix is not invertible."
 			},
 		]
 	},

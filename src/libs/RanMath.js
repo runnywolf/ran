@@ -576,7 +576,32 @@ export class Matrix { // 矩陣
 	}
 	
 	inverse() { // 反矩陣
-		// 方陣檢測
+		if (this.n !== this.m) throwErr("Matrix.inverse", "Only square matrix have inverse."); // 只有方陣才有反矩陣
+		
+		const n = this.n; // n*n 方陣
+		let m_simplify = this.copy(); // 執行簡化列運算的矩陣
+		let m_inverse = Matrix.createI(n); // 反矩陣的計算結果, 初始化為 I (Gauss-Jordan Elimination)
+		for (let i = 0; i < n; i++) { // 消去原矩陣的下三角部分
+			let swapI = i;
+			while (m_simplify.arr[swapI][i].equal(0)) { // 若對角線元素為 0, 尋找適合交換的列編號
+				swapI++;
+				if (swapI >= n) throwErr("Matrix.inverse", "Matrix is not invertible."); // 若找不到適合交換的列, 矩陣為奇異矩陣, 不可逆
+			}
+			m_simplify.swapRow(i, swapI); // 交換兩列, 使對角線元素不為 0
+			m_inverse.swapRow(i, swapI);
+			
+			for (let j = i+1; j < n; j++) {
+				const ef_s = m_simplify.arr[j][i].div(m_simplify.arr[i][i]).mul(-1); // 列 i 乘 -s 倍加到列 j, 逐漸消去原矩陣的下三角部分
+				m_simplify.addRow(i, j, ef_s);
+				m_inverse.addRow(i, j, ef_s);
+			}
+		}
+		for (let i = n-1; i >= 0; i--) for (let j = i-1; j >= 0; j--) { // 消去原矩陣的上三角部分
+			const ef_s = m_simplify.arr[j][i].div(m_simplify.arr[i][i]).mul(-1); // 列 i 乘 -s 倍加到列 j, 逐漸消去原矩陣的上三角部分
+			m_inverse.addRow(i, j, ef_s);
+		}
+		for (let i = 0; i < n; i++) m_inverse.scaleRow(i, new EF(1).div(m_simplify.arr[i][i])); // 同除對角線
+		return m_inverse;
 	}
 }
 
