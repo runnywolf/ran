@@ -550,27 +550,6 @@ export class Matrix { // 矩陣
 		this.arr[j].forEach((ef, k, rowJ) => { rowJ[k] = ef.add(this.arr[i][k].mul(s)) });
 	}
 	
-	add(matrix) { // 加上另一個矩陣
-		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.add", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
-		if (!(matrix.n === this.n && matrix.m === this.m)) { // 兩個矩陣的維度必須相同才能相加
-			throwErr("Matrix.add", "Cannot add matrices: dimensions do not match.");
-		}
-		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].add(matrix.arr[i][j]));
-	}
-	
-	mul(matrix) { // 乘上另一個矩陣
-		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.mul", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
-		if (this.m !== matrix.n) throwErr("Matrix.mul", "Only n*m and m*p matrices can be multiplied."); // 只有 n*m 跟 m*p 矩陣才能相乘
-		return new Matrix(this.n, matrix.m, (i, j) => {
-			return EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])));
-		});
-	}
-	
-	muls(s) { // 乘上純量
-		this._checkScalar("muls", s);
-		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].mul(s));
-	}
-	
 	trans() { // 轉置
 		return new Matrix(this.m, this.n, (i, j) => this.arr[j][i]);
 	}
@@ -602,6 +581,27 @@ export class Matrix { // 矩陣
 		}
 		for (let i = 0; i < n; i++) m_inverse.scaleRow(i, new EF(1).div(m_simplify.arr[i][i])); // 同除對角線
 		return m_inverse;
+	}
+	
+	add(matrix) { // 加上另一個矩陣
+		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.add", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (!(matrix.n === this.n && matrix.m === this.m)) { // 兩個矩陣的維度必須相同才能相加
+			throwErr("Matrix.add", "Cannot add matrices: dimensions do not match.");
+		}
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].add(matrix.arr[i][j]));
+	}
+	
+	mul(matrix) { // 乘上另一個矩陣
+		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.mul", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (this.m !== matrix.n) throwErr("Matrix.mul", "Only n*m and m*p matrices can be multiplied."); // 只有 n*m 跟 m*p 矩陣才能相乘
+		return new Matrix(this.n, matrix.m, (i, j) => {
+			return EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])));
+		});
+	}
+	
+	muls(s) { // 乘上純量
+		this._checkScalar("muls", s);
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].mul(s));
 	}
 }
 

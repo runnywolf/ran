@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { F, Frac, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 
 const props = defineProps({
@@ -48,36 +48,34 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	_initPjLinearEquation() { // a_n^(p) 以 p_j 表示的線性關係
-		const coef = (n, i) => new Frac(n**(i+this.extraNPow)).mul(this.frac_b.pow(n)); // 回傳 a_n^{(p)} 內 p_{startPj + i} 的係數 n^(i+k) b^n
-		this.PjLinearEquation = Array.from( // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式
-			{ length: this.recurLevel + this.PjNum },
-			(_, n) => Array.from({ length: this.PjNum }, (_, i) => coef(n, i))
-		); // arr[i][j] 為 a_i^{(p)} 內的未知數 p_{startPj + j} 的常係數
+		const l = this.recurLevel; // 遞迴階數
+		const pjn = this.PjNum; // 未知係數的數量
+		const coef = (n, i) => F(n**(i + this.extraNPow)).mul(this.frac_b.pow(n)); // 回傳 a_n^{(p)} 內 p_{startPj + i} 的係數 n^(i+k) b^n
+		this.matrix_PjLinearEquation = new Matrix(pjn+l, pjn, (n, i) => coef(n, i)); // a_n^(p) 代入自然數 n 產生 用於求特解未知數 p_j 所需的足量線性方程式
 	}
 	
 	_initNonHomogFn() { // 將常數代入非齊次部分 F(n) 得到的值
 		const F = (n) => { // 非齊次部分 F(n) 代入 n 的結果
-			const fracArr = this.polyCoef.map((frac_c, i) => frac_c.mul(new Frac(n**i))); // 代入 n 得到的常數 c0 , c1 n , c2 n^2 , ...
+			const fracArr = this.polyCoef.map((frac_c, i) => frac_c.mul(n**i)); // 代入 n 得到的常數 c0 , c1 n , c2 n^2 , ...
 			return Frac.sum(fracArr).mul(this.frac_b.pow(n)) // (c0 + c1 n + c2 n^2 + ...) b^n
 		};
-		this.nonHomogFn = Array.from({ length: this.PjNum }, (_, n) => F(n + this.recurLevel)); // 將常數代入非齊次部分 F(n) 得到的值
+		this.matrix_nonHomogFn = new Matrix(this.PjNum, 1, n => F(n + this.recurLevel)); // 將常數代入非齊次部分 F(n) 得到的值
 	}
 	
 	_initPjEquationSystem() { // 生成 p_j 的聯立方程式
 		const l = this.recurLevel; // 遞迴階數
-		const matrix_PLE = _Matrix.create(this.PjNum, l + this.PjNum); // a_n^(p) 的線性組合
-		for (let n = 0; n < this.PjNum; n++) { // 將 a_n^(p) 以 p_j 表示的線性關係, 轉為矩陣
-			matrix_PLE.A[n][n+l] = new Frac(1);
-			for (const [i, frac_coef] of this.recurCoef.entries()) {
-				matrix_PLE.A[n][n+(l-1)-i] = frac_coef.mul(-1);
-			}
-		}
-		this.matrix_solvePj = matrix_PLE.mul(new _Matrix(this.PjLinearEquation)); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
+		const pjn = this.PjNum; // 未知係數的數量
+		const matrix_PLE = new Matrix(pjn, pjn+l, (i, j) => {
+			for (const [k, frac_coef] of this.recurCoef.entries()) if (i+k === j) return frac_coef.mul(-1);
+			if (i+l === j) return 1;
+			return 0;
+		});
+		this.matrix_solvePj = matrix_PLE.mul(this.matrix_PjLinearEquation); // 與有很多 p_j 的聯立方程式相乘就會得到一個 n*n 方陣 (解 p_j 的聯立方程式)
 	}
 	
 	_initSolvePj() { // 解聯立求 p_j
-		const matrix_F = new _Matrix([this.nonHomogFn]).trans();
-		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_F).trans().A[0]; // 解 p_j 的聯立 Ax = b ; x 會等於 A^-1 b
+		const matrix_F = this.matrix_nonHomogFn;
+		this.PjAnswer = this.matrix_solvePj.inverse().mul(matrix_F).arr.map(row => row[0].nf_a);
 	}
 	
 	mlExp() { // 計算 a_n^(p) 之中, 指數項 "{b_i}^n" ... (latex)
@@ -115,7 +113,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		return mlEquationSystem(
 			this.recurLevel + this.PjNum,
 			this.PjNum,
-			(n, j) => this.PjLinearEquation[n][j],
+			(n, j) => this.matrix_PjLinearEquation.arr[n][j].nf_a,
 			(n, j) => `p_{${this.startPj + j}}`,
 			(n) => `a_{${n}}^{(p)}`,
 			"left"
@@ -126,9 +124,9 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		return mlEquationSystem(
 			this.PjNum,
 			this.PjNum,
-			(i, j) => this.matrix_solvePj.A[i][j],
+			(i, j) => this.matrix_solvePj.arr[i][j].nf_a,
 			(i, j) => `p_{${j+1}}`,
-			(i) => `${this.nonHomogFn[i].toLatex()}`,
+			(i) => `${this.matrix_nonHomogFn.arr[i][0].nf_a.toLatex()}`,
 			"right"
 		);
 	}
