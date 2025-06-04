@@ -461,17 +461,17 @@ export class Matrix { // 矩陣
 	}
 	
 	static createI(n) { // 生成單位矩陣
-		if (!Hop.isPosInt(n)) { // 矩陣的列數必須是正整數
+		if (!(isInt(n) && n >= 1)) { // 矩陣的列數必須是正整數
 			throwErr("Matrix.createI", 'Row number (Param "n") must be a positive integer.');
 		}
 		return new Matrix(n, n, (i, j) => (i === j ? 1 : 0));
 	}
 	
 	constructor(n, m, initFunc) {
-		if (!Hop.isPosInt(n)) { // 矩陣的列數必須是正整數
+		if (!(isInt(n) && n >= 1)) { // 矩陣的列數必須是正整數
 			throwErr("Matrix.constructor", 'Row number (Param "n") must be a positive integer.');
 		}
-		if (!Hop.isPosInt(m)) { // 矩陣的行數必須是正整數
+		if (!(isInt(m) && m >= 1)) { // 矩陣的行數必須是正整數
 			throwErr("Matrix.constructor", 'Column number (Param "m") must be a positive integer.');
 		}
 		if (typeof initFunc !== "function") { // 用於初始化矩陣元素的 function
@@ -492,6 +492,22 @@ export class Matrix { // 矩陣
 		});
 	}
 	
+	_checkRowIndex(methodName, i) { // 檢查列編號是否存在
+		if (!(isInt(i) && 0 <= i && i <= this.n-1)) {
+			throwErr(`Matrix.${methodName}`, "Row index out of range or not a integer.");
+		}
+	}
+	
+	_checkScalar(methodName, s) { // 檢查純量是否為 number | Frac | EF
+		if (!(Hop.isNumOrFrac(s) || EF.isEF(s))) {
+			throwErr(`Matrix.${methodName}`, "Scalar must be a number | Frac | EF .");
+		}
+	}
+	
+	copy() { // 回傳一個相同值的 Matrix 實例
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j]);
+	}
+	
 	static _efToStr = (ef) => { // 專用於 Matrix 的 EF.toStr
 		if (Hop.equal(ef.nf_b, 0)) return Hop.toStr(ef.nf_a); // 如果 (a + b√s) 的 b 為 0, 顯示 a 就好
 		if (Hop.equal(ef.nf_a, 0)) return `${Hop.toStr(ef.nf_b)} √ ${ef.s}`; // 如果 (a + b√s) 的 a 為 0, 顯示 b√s 就好
@@ -499,33 +515,48 @@ export class Matrix { // 矩陣
 	};
 	toStr() { // 轉 debug 字串
 		let rowStrArr = Array(this.n).fill("| "); // 每一列的顯示字串
-		for (let j = 0; j < this.m; j++) {
-			for (let i = 0; i < this.n; i++) rowStrArr[i] += Matrix._efToStr(this.arr[i][j]);
-			const maxRowStrLength = Math.max(...rowStrArr.map(rowStr => rowStr.length));
+		for (let j = 0; j < this.m; j++) { // 依序對每一行的元素進行對齊
+			for (let i = 0; i < this.n; i++) rowStrArr[i] += Matrix._efToStr(this.arr[i][j]); // 插入矩陣元素的字串
+			const maxRowStrLength = Math.max(...rowStrArr.map(rowStr => rowStr.length)); // 取得列字串的最大長度, 用於對齊
 			rowStrArr.forEach((rowStr, i, arr) => {
-				arr[i] = rowStr.padEnd(maxRowStrLength) + (j === this.m-1 ? " |\n" : " | ");
+				arr[i] = rowStr.padEnd(maxRowStrLength) + (j === this.m-1 ? " |\n" : " | "); // 插入空白對齊後, 加入分隔線
 			});
 		}
 		return rowStrArr.join("");
 	}
 	
-	swapRow(i, j) { // 矩陣列運算 - 交換兩列
+	swapRow(i, j) { // 矩陣列運算 - 交換 i, j 兩列 (不回傳新矩陣)
+		this._checkRowIndex("swapRow", i);
+		this._checkRowIndex("swapRow", j);
+		[this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
+	}
+	
+	scaleRow(i, s) { // 矩陣列運算 - 列 i 乘常數 s (不回傳新矩陣)
+		this._checkRowIndex("scaleRow", i);
+		this._checkScalar("scaleRow", s);
+		this.arr[i].forEach((ef, j, rowI) => { rowI[j] = ef.mul(s); });
+	}
+	
+	addRow(i, j, s) { // 矩陣列運算 - 列 i 乘常數 s 加到列 j (不回傳新矩陣)
+		this._checkRowIndex("addRow", i);
+		this._checkRowIndex("addRow", j);
+		this._checkScalar("addRow", s);
+		this.arr[j].forEach((ef, k, rowJ) => { rowJ[k] = ef.add(this.arr[i][k].mul(s)) });
+	}
+	
+	add(matrix) { // 加上另一個矩陣
+		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.add", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (!(matrix.n === this.n && matrix.m === this.m)) { // 兩個矩陣的維度必須相同才能相加
+			throwErr("Matrix.add", "Cannot add matrices: dimensions do not match.");
+		}
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].add(matrix.arr[i][j]));
+	}
+	
+	mul(matrix) { // 乘上另一個矩陣
 		
 	}
 	
-	scaleRow(i, s) { // 矩陣列運算 - 列乘常數
-		
-	}
-	
-	addRow(i, j, s) { // 矩陣列運算 - 列乘常數加到另一列
-		
-	}
-	
-	add(value) { // 加上一個純量單位矩陣或另一個矩陣
-		
-	}
-	
-	mul(value) { // 乘上常數或另一個矩陣
+	muls(s) { // 乘上純量
 		
 	}
 	
