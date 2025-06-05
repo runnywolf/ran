@@ -175,7 +175,7 @@ getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
 將輸入的所有參數加總。<br>
 若參數出現巢狀 `Array`，會將內部所有 `number` 加總。
 
-如果有元素不為 `number`，會跳過並報錯。
+如果有元素不為 `number`，會報錯。
 
 ```js
 sum(...arr: Array<number|Array>): number
@@ -183,7 +183,7 @@ sum(...arr: Array<number|Array>): number
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `...arr` | `Array<number\|Array>` | 要求和的數列，只有 `number` 會被加總，<br>其他的元素會被視為 0。 |
+| `...arr` | `Array<number\|Array>` | 要求和的數列，只有 `number` 會被加總。 |
 
 範例：
 ```js

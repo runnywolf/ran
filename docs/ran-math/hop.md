@@ -64,8 +64,8 @@ Hop.isNumOrFrac("2")     // false
 ```js
 Hop._makeOp(
 	arr_nf: Array<number|Frac>,
-	fracOp: (frac: Frac) => any,
-	floatOp: (n: number) => any,
+	fracOp: (frac1: Frac, ...) => any,
+	floatOp: (n1: number, ...) => any,
 	errReturn: any = NaN
 ): any
 ```

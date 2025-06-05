@@ -31,9 +31,9 @@ import { EF } from "ran-math";
 
 | Property | Type | Description |
 | :- | :- | :- |
-| [`nf_a`](#properties) | `number \| Frac` | $a$ |
-| [`nf_b`](#properties) | `number \| Frac` | $b$ |
-| [`s`](#properties) | `number` ( `int` ) | $s$ |
+| [`.nf_a`](#nf-a-nf-b-s) | `number \| Frac` | $a$ |
+| [`.nf_b`](#nf-a-nf-b-s) | `number \| Frac` | $b$ |
+| [`.s`](#nf-a-nf-b-s) | `number` ( `int` ) | $s$ |
 
 | Method | Description |
 | :- | :- |
@@ -70,6 +70,27 @@ EF.isEF(new EF(0))        // true
 EF.isEF(2)                // false
 ```
 
+## `EF.sum`
+求數列的總和。
+
+如果有元素不為 `number \| Frac \| EF`，會報錯。
+
+```js
+EF.sum(...arr: Array<number|Frac|EF|Array>): EF
+```
+
+| Param | Type | Description |
+| :- | :- | :- |
+| `...arr` | `Array<number\|Frac\|EF\|Array>` | 要求和的數列，只有 `number \| Frac \| EF` 會被加總。 |
+
+範例：
+```js
+EF.sum([ F(1, 2), F(2, 3), new EF(3, 5) ])   // 53/30 + 0 √ 0
+EF.sum(F(1, 2), F(2, 3), F(3, 5))            // 53/30 + 0 √ 0 (不一定要傳入 Array)
+EF.sum(F(1, 2), [ [ F(2, 3), 1 ], F(3, 5) ]) // 83/30 + 0 √ 0 (巢狀加總)
+EF.sum([ 5, F(1, 2), "7", 2.5 ])             // error
+```
+
 ## `EF constructor`
 類別 `EF` 的建構子。
 
@@ -100,7 +121,7 @@ new EF(0.4, F(3, 2), 2)      // (2.5213 + 0 √ 0) ; 參數含有 float, 使用 
 new EF(-1, F(3, 2), -0.4)    // (-1 + 0.9487 √ -1)
 ```
 
-## `Properties`
+## `.nf_a .nf_b .s`
 $$a + b \sqrt{s}$$
 
 ```js

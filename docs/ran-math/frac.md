@@ -90,13 +90,15 @@ Frac.fromStr(" -12 / 7 ") // -12/7
 ## `Frac.sum`
 求數列的總和。
 
+如果有元素不為 `Frac` 和 `int number`，會報錯。
+
 ```js
 Frac.sum(...arr: Array<number|Frac|Array>): Frac
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `...arr` | `Array<number\|Frac\|Array>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總，<br>其他的元素會被視為 0。 |
+| `...arr` | `Array<number\|Frac\|Array>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總。 |
 
 範例：
 ```js
