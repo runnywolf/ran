@@ -71,17 +71,18 @@ EF.isEF(2)                // false
 ```
 
 ## `EF.sum`
-求數列的總和。
+將輸入的所有參數加總。<br>
+若參數出現巢狀 `Array`，會將內部所有 `number | Frac | EF` 加總。
 
-如果有元素不為 `number \| Frac \| EF`，會報錯。
+如果有元素不為 `number | Frac | EF`，會報錯。
 
 ```js
-EF.sum(...arr: Array<number|Frac|EF|Array>): EF
+sum(...arr: Array<number|Frac|EF|Array>): number
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `...arr` | `Array<number\|Frac\|EF\|Array>` | 要求和的數列，只有 `number \| Frac \| EF` 會被加總。 |
+| `...arr` | `Array<number\|Frac\|EF\|Array>` | 要求和的數列。 |
 
 範例：
 ```js

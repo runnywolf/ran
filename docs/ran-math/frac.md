@@ -70,7 +70,7 @@ Frac.isFrac(2/3)  // false
 
 ## `Frac.fromStr`
 將字串轉為分數型態。<br>
-若字串不是分數，回傳 `0/1`。
+若字串不是分數，回傳 `0/1`，不報錯。
 
 ```js
 Frac.fromStr(str: string): Frac
@@ -88,17 +88,18 @@ Frac.fromStr(" -12 / 7 ") // -12/7
 ```
 
 ## `Frac.sum`
-求數列的總和。
+將輸入的所有參數加總。<br>
+若參數出現巢狀 `Array`，會將內部所有 `number (int) | Frac` 加總。
 
-如果有元素不為 `Frac` 和 `int number`，會報錯。
+如果有元素不為 `number (int) | Frac`，會報錯。
 
 ```js
-Frac.sum(...arr: Array<number|Frac|Array>): Frac
+sum(...arr: Array<number|Frac|Array>): number
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `...arr` | `Array<number\|Frac\|Array>` | 要求和的數列，只有 `Frac` 和 `int number` 會被加總。 |
+| `...arr` | `Array<number\|Frac\|Array>` | 要求和的數列。 |
 
 範例：
 ```js
@@ -106,7 +107,7 @@ Frac.sum([ F(1, 2), F(2, 3), F(3, 5) ])        // 53/30
 Frac.sum(F(1, 2), F(2, 3), F(3, 5))            // 53/30 (不一定要傳入 Array)
 Frac.sum(F(1, 2), [ [ F(2, 3), 1 ], F(3, 5) ]) // 83/30 (巢狀加總)
 Frac.sum(5, F(1, 2))                           // 11/2 (可以傳入 int number)
-Frac.sum([ 5, F(1, 2), "7", 2.5 ])             // 11/2 ; error
+Frac.sum([ 5, F(1, 2), "7", 2.5 ])             // error
 ```
 
 ## `Frac constructor`
@@ -271,7 +272,7 @@ Frac.prototype.add(nf: number | Frac): Frac
 F(1, 3).add(F(1, 2)) // 5/6
 F(7, 4).add(F(3, 5)) // 47/20
 F(-3, 2).add(2)      // 1/2
-F(-3, 2).add(2.5)    // error, return -3/2
+F(-3, 2).add(2.5)    // error
 ```
 
 ## `.sub`
@@ -290,7 +291,7 @@ Frac.prototype.sub(nf: number | Frac): Frac
 F(1, 3).sub(F(1, 2)) // -1/6
 F(7, 4).sub(F(3, 5)) // 23/20
 F(-3, 2).sub(2)      // -7/2
-F(-3, 2).sub(2.5)    // error, return -3/2
+F(-3, 2).sub(2.5)    // error
 ```
 
 ## `.mul`
@@ -309,7 +310,7 @@ Frac.prototype.mul(nf: number | Frac): Frac
 F(1, 3).mul(F(1, 2)) // 1/6
 F(7, 4).mul(F(3, 5)) // 21/20
 F(-3, 2).mul(2)      // -3/1
-F(-3, 2).mul(2.5)    // error, return -3/2
+F(-3, 2).mul(2.5)    // error
 ```
 
 ## `.div`
@@ -328,8 +329,8 @@ Frac.prototype.div(nf: number | Frac): Frac
 F(1, 3).div(F(1, 2)) // 2/3
 F(7, 4).div(F(3, 5)) // 35/12
 F(-3, 2).div(2)      // -3/4
-F(-3, 2).div(2.5)    // error, return -3/2
-F(-3, 2).div(F(0))   // error, return -3/2
+F(-3, 2).div(2.5)    // error
+F(-3, 2).div(F(0))   // div 0 error
 ```
 
 ## `.pow`
@@ -376,7 +377,7 @@ Frac.prototype.equal(nf: number | Frac): boolean
 F(1, 3).equal(F(1, 2)) // false
 F(7, 4).equal(F(7, 4)) // true
 F(4, 2).equal(2)       // true
-F(5, 2).equal(2.5)     // error, return false
+F(5, 2).equal(2.5)     // error
 ```
 
 ## `.lt`
@@ -395,5 +396,5 @@ Frac.prototype.lt(nf: number | Frac): boolean
 F(1, 3).lt(F(1, 2)) // true
 F(7, 4).lt(F(7, 4)) // false
 F(3, 2).lt(2)       // true
-F(5, 2).lt(3.5)     // error, return false
+F(5, 2).lt(3.5)     // error
 ```

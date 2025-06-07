@@ -594,9 +594,9 @@ export class Matrix { // 矩陣
 	mul(matrix) { // 乘上另一個矩陣
 		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.mul", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
 		if (this.m !== matrix.n) throwErr("Matrix.mul", "Only n*m and m*p matrices can be multiplied."); // 只有 n*m 跟 m*p 矩陣才能相乘
-		return new Matrix(this.n, matrix.m, (i, j) => {
-			return EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])));
-		});
+		return new Matrix(this.n, matrix.m,
+			(i, j) => EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])))
+		);
 	}
 	
 	muls(s) { // 乘上純量

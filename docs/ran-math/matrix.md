@@ -113,12 +113,15 @@ const testArr = [
 let matrix_test = new Matrix(2, 3, (i, j) => testArr[i][j]);
 ```
 
-## `.n .m .arr`
+## `.n` `.m` `.arr`
 ```js
 Matrix.prototype.n: number             // 矩陣的列數
 Matrix.prototype.m: number             // 矩陣的行數
 Matrix.prototype.arr: Array<Array<EF>> // 矩陣, 元素為 EF 型態
 ```
+
+> [!CAUTION]
+> 屬性 `n` `m` `arr` 為唯讀 ( read only )。
 
 ## `.copy`
 回傳一個相同值的新實例。
@@ -236,7 +239,7 @@ new Matrix(3, 3, (i, j) => testArr[i][j]).trans()
 ```
 
 ## `.inverse`
-反矩陣。
+反矩陣，利用 [Gauss-Jordan Elimination](https://en.wikipedia.org/wiki/Gaussian_elimination#Finding_the_inverse_of_a_matrix)。
 $$A^{-1} \quad;\quad \det(A) \neq 0 $$
 
 ```js

@@ -37,7 +37,6 @@ Prime.getNth(n: number): number
 
 範例：
 ```js
-Prime.getNth(-5)    // NaN
 Prime.getNth(0)     // 2
 Prime.getNth(4)     // 11
 Prime.getNth(11678) // 124339

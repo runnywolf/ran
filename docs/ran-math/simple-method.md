@@ -183,7 +183,7 @@ sum(...arr: Array<number|Array>): number
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `...arr` | `Array<number\|Array>` | 要求和的數列，只有 `number` 會被加總。 |
+| `...arr` | `Array<number\|Array>` | 要求和的數列。 |
 
 範例：
 ```js
