@@ -6,11 +6,11 @@
 	(D) <vl exp="A + \frac{2}{5}B" />
 	(E) <vl exp="A - \frac{2}{5}B" /><br>
 	<br>
-	<vl exp="\Rightarrow" /> (A) 或 (C) 正確
+	<vl exp="\Rightarrow" /> (A) 或 (C) 可能正確
 	代入 <vl exp="n = 1" /> 到選項 (A) (C)，求 <vl exp="a_1" />：<br>
 	(A) <vl exp="B" />
 	(C) <vl exp="B" /><br>
-	<vl exp="\Rightarrow" /> (A) 或 (C) 正確<br>
+	<vl exp="\Rightarrow" /> (A) 或 (C) 可能正確<br>
 	<br>
 	由於
 	<vl c exp="a_2 = -a_1 + 6a_0 = 6A - B" />

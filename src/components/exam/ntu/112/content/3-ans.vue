@@ -20,7 +20,7 @@
 	<br>
 	由於
 	<vl c exp="G(0) = a_0 + a_1 0^1 + a_2 0^2 + \cdots = a_0 = A" />
-	將 <vl exp="x = 0" /> 代入到選項 (A) (B) (C)，求各選項的 <vl exp="G(0)" />：<br>
+	，所以將 <vl exp="x = 0" /> 代入到選項 (A) (B) (C)，求各選項的 <vl exp="G(0)" />：<br>
 	(A) <vl exp="A" />
 	(B) <vl exp="A + \frac{2}{5}B" />
 	(C) <vl exp="A - \frac{2}{5}B" /><br>
