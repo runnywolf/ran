@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="multi-option">
 		<template v-for="(optionName, i) in optionNames">
 			
 			<!-- 摺疊的選項詳解 -->
@@ -25,7 +25,7 @@
 			</details>
 			
 			<!-- 選項間的分隔線 -->
-			<div v-if="i !== optionNames.length - 1" class="ts-divider divider-margin"></div>
+			<div v-if="i !== optionNames.length - 1" class="ts-divider"></div>
 			
 		</template>
 	</div>
@@ -39,6 +39,9 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.multi-option > details {
+	margin: 4px 0;
+}
 .false-option { /* 錯誤選項的顏色(紅) */
 	margin-top: 3px;
 	margin-left: 2px;
@@ -49,8 +52,5 @@ const props = defineProps({
 	margin-left: 5px;
 	margin-top: 3px;
 	color: #0e0;
-}
-.divider-margin { /* 分隔線的間距 */
-	margin: 6px 0;
 }
 </style>

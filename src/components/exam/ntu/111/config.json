@@ -36,43 +36,43 @@
 			]
 		},
 		"6": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{E}",
 			"content": [
 				{ "type": "answer", "id": "6-ans" }
 			]
 		},
 		"7": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{D}",
 			"content": [
 				{ "type": "answer", "id": "7-ans" }
 			]
 		},
 		"8": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{B}",
 			"content": [
 				{ "type": "answer", "id": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{C}",
 			"content": [
 				{ "type": "answer", "id": "9-ans" }
 			]
 		},
 		"10": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{B}",
 			"content": [
 				{ "type": "answer", "id": "10-ans" }
 			]
 		},
 		"11": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{C}",
 			"content": [
 				{ "type": "answer", "id": "11-ans" }
 			]
 		},
 		"12": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{B}",
 			"content": [
 				{ "type": "answer", "id": "12-ans" }
 			]
