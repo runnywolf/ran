@@ -40,23 +40,23 @@ const testData = {
 		testName: (input, output) => `new EF(${input.map(p => toStr(p)).join(", ")}).toStr() = ${toStr(output)}`,
 		testFunc: input => new EF(...input).toStr(),
 		tests: [ // 測資
-			{ input: [], output: "0 + 0 √ 0" }, // zero param test (7)
-			{ input: [ 3 ], output: "3 + 0 √ 0" },
-			{ input: [ 0, F(3, 4) ], output: "0 + 0 √ 0" },
-			{ input: [ F(-2, 3), 5 ], output: "-2/3 + 0 √ 0" },
-			{ input: [ 0, 0, F(1, 2) ], output: "0 + 0 √ 0" },
-			{ input: [ F(4, 3), 0, 4 ], output: "4/3 + 0 √ 0" },
-			{ input: [ 0, F(1, 3), -360 ], output: "0 + 2 √ -10" },
+			{ input: [], output: "0" }, // zero param test (7)
+			{ input: [ 3 ], output: "3" },
+			{ input: [ 0, F(3, 4) ], output: "0" },
+			{ input: [ F(-2, 3), 5 ], output: "-2/3" },
+			{ input: [ 0, 0, F(1, 2) ], output: "0" },
+			{ input: [ F(4, 3), 0, 4 ], output: "4/3" },
+			{ input: [ 0, F(1, 3), -360 ], output: "2 √ -10" },
 			
-			{ input: [ -1, 3, F(4, 9) ], output: "1 + 0 √ 0" },
+			{ input: [ -1, 3, F(4, 9) ], output: "1" },
 			{ input: [ -1, 3, F(-4, 9) ], output: "-1 + 2 √ -1" },
 			{ input: [ -1, 3, F(2, 5) ], output: "-1 + 3/5 √ 10" },
 			
-			{ input: [ 0.4, F(3, 2), 2 ], output: "2.5213 + 0 √ 0" }, // float + Frac test (6)
+			{ input: [ 0.4, F(3, 2), 2 ], output: "2.5213" }, // float + Frac test (6)
 			{ input: [ 0.4, F(3, 2), -2 ], output: "0.4000 + 2.1213 √ -1" },
-			{ input: [ -1, 0.4, 2 ], output: "-0.4343 + 0 √ 0" },
+			{ input: [ -1, 0.4, 2 ], output: "-0.4343" },
 			{ input: [ -1, 0.4, -2 ], output: "-1 + 0.5657 √ -1" },
-			{ input: [ -1, F(3, 2), 0.4 ], output: "-0.0513 + 0 √ 0" },
+			{ input: [ -1, F(3, 2), 0.4 ], output: "-0.0513" },
 			{ input: [ -1, F(3, 2), -0.4 ], output: "-1 + 0.9487 √ -1" },
 			
 			{ // param error test (3)

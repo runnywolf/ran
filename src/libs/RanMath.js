@@ -336,7 +336,9 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	toStr() { // 轉 debug 字串
-		return `${Hop.toStr(this.nf_a)} + ${Hop.toStr(this.nf_b)} √ ${this.s}`;
+		if (Hop.equal(this.nf_b, 0)) return Hop.toStr(this.nf_a); // 如果 (a + b√s) 的 b 為 0, 顯示 a 就好
+		if (Hop.equal(this.nf_a, 0)) return `${Hop.toStr(this.nf_b)} √ ${this.s}`; // 如果 (a + b√s) 的 a 為 0, 顯示 b√s 就好
+		return `${Hop.toStr(this.nf_a)} + ${Hop.toStr(this.nf_b)} √ ${this.s}`; // 顯示 (a + b√s)
 	}
 	
 	toLatex() { // 轉 latex 語法
@@ -514,15 +516,10 @@ export class Matrix { // 矩陣
 		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j]);
 	}
 	
-	static _efToStr = (ef) => { // 專用於 Matrix 的 EF.toStr
-		if (Hop.equal(ef.nf_b, 0)) return Hop.toStr(ef.nf_a); // 如果 (a + b√s) 的 b 為 0, 顯示 a 就好
-		if (Hop.equal(ef.nf_a, 0)) return `${Hop.toStr(ef.nf_b)} √ ${ef.s}`; // 如果 (a + b√s) 的 a 為 0, 顯示 b√s 就好
-		return ef.toStr(); // a 跟 b 都不是 0, 回傳 EF 的預設 toStr
-	};
 	toStr() { // 轉 debug 字串
 		let rowStrArr = Array(this.n).fill("| "); // 每一列的顯示字串
 		for (let j = 0; j < this.m; j++) { // 依序對每一行的元素進行對齊
-			for (let i = 0; i < this.n; i++) rowStrArr[i] += Matrix._efToStr(this.arr[i][j]); // 插入矩陣元素的字串
+			for (let i = 0; i < this.n; i++) rowStrArr[i] += this.arr[i][j].toStr(); // 插入矩陣元素的字串
 			const maxRowStrLength = Math.max(...rowStrArr.map(rowStr => rowStr.length)); // 取得列字串的最大長度, 用於對齊
 			rowStrArr.forEach((rowStr, i, arr) => {
 				arr[i] = rowStr.padEnd(maxRowStrLength) + (j === this.m-1 ? " |\n" : " | "); // 插入空白對齊後, 加入分隔線
