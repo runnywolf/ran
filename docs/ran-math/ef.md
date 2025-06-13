@@ -165,7 +165,7 @@ EF.prototype.toStr(): string
 ```js
 new EF(1, 2, 3).toStr()              // "1 + 2 √ 3"
 new EF(F(-4, 7), 3, F(2, 5)).toStr() // "-4/7 + 3/5 √ 10"
-new EF(3.14, -1.618, -1).toStr()     // "3.1400 + -1.6180 √ -1"
+new EF(3.14, -1.618, -1).toStr()     // "3.1400 + -1.6180 i"
 ```
 
 ## `.toLatex`

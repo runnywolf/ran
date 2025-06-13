@@ -1,11 +1,11 @@
 import { removePrefix, removePostfix } from "./StringTool";
 
-export function isNum(n) { // 是否為數字
-	return typeof n === "number";
+export function isNum(value) { // 是否為數字
+	return typeof value === "number";
 }
 
-export function isInt(n) { // 是否為整數
-	return Number.isInteger(n);
+export function isInt(value) { // 是否為整數
+	return Number.isInteger(value);
 }
 
 export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
@@ -295,7 +295,7 @@ export class Hop { // Frac 和 number (int, float) 混合運算 (Hybrid OPeratio
 }
 
 export class EF { // Extension Field (a + b√s)
-	static isEF(value) {
+	static isEF(value) { // 檢查 value 是否為 EF 實例
 		return value instanceof EF;
 	}
 	
@@ -311,24 +311,23 @@ export class EF { // Extension Field (a + b√s)
 			throwErr("EF.constructor", `Param "${paramName}" must be a number or Frac.`); // 參數必須為 Frac 或 number
 		}
 		
-		// 標準化
-		[this.nf_a, this.nf_b, this.s] = Hop._makeOp(
-			[nf_a, nf_b, nf_s],
-			(frac_a, frac_b, frac_s) => { // 如果 a, b, s 都是 int 或 Frac, 使用整數模式
-				if (_skipGetFactor) return [frac_a, frac_b, frac_s.n]; // 某些運算不需要化簡 √s (主要是 getSquareFactor 時間複雜度很糟)
-				
-				const frac_k = F(getSquareFactor(frac_s.n), getSquareFactor(frac_s.d)); // 分別對 s 的分子和分母提出
-				[frac_b, frac_s] = [frac_b.mul(frac_k), frac_s.div(frac_k).div(frac_k)]; // b√(n/d) = b√(k*k * n'/d') = b*k√(n'/d')
-				return [frac_a, frac_b.div(frac_s.d), frac_s.n * frac_s.d]; // b*k√(n'/d') = b*k/d'√(n'd') ; 因為 n', d' 一定互質
-			}, // 如果 a, b, s 其中一個是 float, 使用浮點模式
-			(num_a, num_b, num_s) => [num_a, num_b * Math.sqrt(Math.abs(num_s)), num_s > 0 ? 1 : -1] // b√s = (b√|s|)*√(±1)
-		); // errReturn 可忽略, 因為參數必為 number|Frac
+		// 以下為標準化
+		const efFracOp = (frac_a, frac_b, frac_s) => { // 如果 a, b, s 都是 int 或 Frac, 使用整數模式
+			if (_skipGetFactor) return [frac_a, frac_b, frac_s.n]; // 某些運算不需要化簡 √s (主要是 getSquareFactor 時間複雜度很糟)
+			
+			const frac_k = F(getSquareFactor(frac_s.n), getSquareFactor(frac_s.d)); // 分別對 s 的分子和分母提出
+			[frac_b, frac_s] = [frac_b.mul(frac_k), frac_s.div(frac_k).div(frac_k)]; // b√(n/d) = b√(k*k * n'/d') = b*k√(n'/d')
+			return [frac_a, frac_b.div(frac_s.d), frac_s.n * frac_s.d]; // b*k√(n'/d') = b*k/d'√(n'd') ; 因為 n', d' 一定互質
+		};
+		const efFloatOp = (num_a, num_b, num_s) => { // 如果 a, b, s 其中一個是 float, 使用浮點模式
+			return [num_a, num_b * Math.sqrt(Math.abs(num_s)), num_s > 0 ? 1 : -1]; // b√s = (b√|s|)*√(±1)
+		};
+		[this.nf_a, this.nf_b, this.s] = Hop._makeOp([nf_a, nf_b, nf_s], efFracOp, efFloatOp); // errReturn 可忽略, 因為參數必為 number|Frac
 		
 		if (this.s === 1) [this.nf_a, this.nf_b] = [Hop.add(this.nf_a, this.nf_b), F(0)]; // a + b√1 = (a+b) + 0√1
 		
 		if (Hop.equal(this.nf_b, 0)) this.s = 0; // a + 0√s = a + 0√0
 		if (this.s === 0) this.nf_b = F(0); // a + b√0 = a + 0√0
-		// 標準化
 	}
 	
 	copy() { // 回傳一個相同值的 EF 實例
@@ -467,7 +466,7 @@ export class EF { // Extension Field (a + b√s)
 }
 
 export class Matrix { // 矩陣
-	static isMatrix(value) {
+	static isMatrix(value) { // 檢查 value 是否為 Matrix 實例
 		return value instanceof Matrix;
 	}
 	
@@ -577,7 +576,7 @@ export class Matrix { // 矩陣
 		}
 		for (let i = n-1; i >= 0; i--) for (let j = i-1; j >= 0; j--) { // 消去原矩陣的上三角部分
 			const ef_s = m_simplify.arr[j][i].div(m_simplify.arr[i][i]).mul(-1); // 列 i 乘 -s 倍加到列 j, 逐漸消去原矩陣的上三角部分
-			m_inverse.addRow(i, j, ef_s);
+			m_inverse.addRow(i, j, ef_s); // 此步驟不需要修改原矩陣也能完成運算
 		}
 		for (let i = 0; i < n; i++) m_inverse.scaleRow(i, new EF(1).div(m_simplify.arr[i][i])); // 同除對角線
 		return m_inverse;
@@ -609,8 +608,8 @@ export class SolveQuad { // 解二次方程式
 	static TYPE_2_FRAC = 0;       // [Q mode] 解形式為 2 有理數
 	static TYPE_REAL_SQRT = 1;    // [Q mode] 解形式為 2 實數 (根號): n ± m√s , s > 0
 	static TYPE_COMPLEX_SQRT = 2; // [Q mode] 解形式為 2 複數 (根號): n ± m√s , s < 0
-	static TYPE_2_REAL = 3;       // [R mode] 解形式為 2 實數
-	static TYPE_2_COMPLEX = 4;    // [R mode] 解形式為 2 複數
+	static TYPE_2_REAL = 3;       // [R mode] 解形式為 2 實數 (float number)
+	static TYPE_2_COMPLEX = 4;    // [R mode] 解形式為 2 複數 (float number)
 	
 	constructor(nf_a, nf_b, nf_c) { // 計算二次方程式 ax^2 + bx + c 的解
 		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_c, "nf_c"]];
@@ -621,23 +620,21 @@ export class SolveQuad { // 解二次方程式
 			throwErr("SolveQuad.constructor", "0x^2 + bx + c is not a quadratic equation.");
 		}
 		
-		[this.rootType, ...this.roots] = Hop._makeOp( // .solutions 為方程式 ax^2 + bx + c 的 2 個根, 型態為 [EF, EF]
-			[nf_a, nf_b, nf_c],
-			(frac_a, frac_b, frac_c) => { // 如果 a, b, c 的型態都是 int number 或 Frac, 方程式的解為 [Q mode] (有理數計算)
-				const frac_axis = F(0).sub(frac_b).div(2).div(frac_a); // -b/2a
-				const ef_x1 = new EF(frac_axis, 1, frac_axis.mul(frac_axis).sub(frac_c.div(frac_a)));
-				if (ef_x1.s === 0) { // 解形式為 2 有理數
-					return [SolveQuad.TYPE_2_FRAC, ef_x1, ef_x1.mul(-1).sub(frac_b.div(frac_a))]; // x1+x2=-b/a ==> x2=-x1-b/a (因為 EF 的標準化會丟失共軛資訊)
-				}
-				if (ef_x1.s > 0) return [SolveQuad.TYPE_REAL_SQRT, ef_x1, ef_x1.conjugate()]; // 解形式為 2 實數 (根號): n ± m√s , s > 0
-				if (ef_x1.s < 0) return [SolveQuad.TYPE_COMPLEX_SQRT, ef_x1, ef_x1.conjugate()]; // 解形式為 2 複數 (根號): n ± m√s , s < 0
-			},
-			(num_a, num_b, num_c) => { // 如果 a, b, c 至少存在一個 float number, 方程式的解為 [R mode] (實數計算)
-				const ef_x1 = new EF(-num_b, 1, num_b * num_b - 4 * num_a * num_c).div(2 * num_a); // ( -b + √(b^2 - 4ac) ) / 2a
-				if (ef_x1.s === 0) return [SolveQuad.TYPE_2_REAL, ef_x1, ef_x1.mul(-1).sub(num_b / num_a)]; // 解形式為 2 實數 ; x1+x2=-b/a ==> x2=-x1-b/a
-				if (ef_x1.s < 0) return [SolveQuad.TYPE_2_COMPLEX, ef_x1, ef_x1.conjugate()]; // 解形式為 2 複數
+		const quadFracOp = (frac_a, frac_b, frac_c) => { // 如果 a, b, c 的型態都是 int number 或 Frac, 方程式的解為 [Q mode] (有理數計算)
+			const frac_axis = F(0).sub(frac_b).div(2).div(frac_a); // -b/2a
+			const ef_x1 = new EF(frac_axis, 1, frac_axis.mul(frac_axis).sub(frac_c.div(frac_a)));
+			if (ef_x1.s === 0) { // 解形式為 2 有理數
+				return [SolveQuad.TYPE_2_FRAC, ef_x1, ef_x1.mul(-1).sub(frac_b.div(frac_a))]; // x1+x2=-b/a ==> x2=-x1-b/a (因為 EF 的標準化會丟失共軛資訊)
 			}
-		); // errReturn 可忽略, 因為參數必為 number|Frac
+			if (ef_x1.s > 0) return [SolveQuad.TYPE_REAL_SQRT, ef_x1, ef_x1.conjugate()]; // 解形式為 2 實數 (根號): n ± m√s , s > 0
+			if (ef_x1.s < 0) return [SolveQuad.TYPE_COMPLEX_SQRT, ef_x1, ef_x1.conjugate()]; // 解形式為 2 複數 (根號): n ± m√s , s < 0
+		};
+		const quadFloatOp = (num_a, num_b, num_c) => { // 如果 a, b, c 至少存在一個 float number, 方程式的解為 [R mode] (實數計算)
+			const ef_x1 = new EF(-num_b, 1, num_b * num_b - 4 * num_a * num_c).div(2 * num_a); // ( -b + √(b^2 - 4ac) ) / 2a
+			if (ef_x1.s === 0) return [SolveQuad.TYPE_2_REAL, ef_x1, ef_x1.mul(-1).sub(num_b / num_a)]; // 解形式為 2 實數 ; x1+x2=-b/a ==> x2=-x1-b/a
+			if (ef_x1.s < 0) return [SolveQuad.TYPE_2_COMPLEX, ef_x1, ef_x1.conjugate()]; // 解形式為 2 複數
+		};
+		[this.rootType, ...this.roots] = Hop._makeOp([nf_a, nf_b, nf_c], quadFracOp, quadFloatOp); // .roots 為方程式 ax^2 + bx + c 的 2 個根, 型態為 [EF, EF]
 	}
 	
 	toStr() { // 將方程式的解轉為 debug 字串
