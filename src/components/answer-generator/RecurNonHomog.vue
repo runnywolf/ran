@@ -58,7 +58,7 @@
 
 <script setup>
 import { computed, ref, toRaw, watch } from "vue";
-import { Frac, _SolveCubic, mlTerm, SCL } from "@/libs/RanMath.js";
+import { Frac, SolveCubic, mlTerm, SCL } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomogExp from "./RecurNonHomogExp.vue"; // 計算聯立方程式並顯示未知係數 p_j 的組件
 
@@ -113,8 +113,8 @@ class SolveNonHomog { // 計算遞迴的非齊次部分的解, 並顯示運算�
 		const cs = this.cubic;
 		const type = cs.solutionType(); // 三次函數的解形式
 		let rationalRoots = []; // 齊次解的有理數特徵值
-		if (type === _SolveCubic.TYPE_3FRAC) rationalRoots = [ cs.frac_r1, cs.frac_r2, cs.frac_r3 ];
-		else if (type === _SolveCubic.TYPE_FRAC_QUAD) rationalRoots = [ cs.frac_r1 ]; // 非齊次的 b 必為有理數, 所以只需要檢查這兩種狀態即可
+		if (type === SolveCubic.TYPE_3FRAC) rationalRoots = [ cs.frac_r1, cs.frac_r2, cs.frac_r3 ];
+		else if (type === SolveCubic.TYPE_FRAC_QUAD) rationalRoots = [ cs.frac_r1 ]; // 非齊次的 b 必為有理數, 所以只需要檢查這兩種狀態即可
 		let homogRootConflictNum = {};
 		for (const frac_r of rationalRoots) if (!frac_r.isZero()) { // 檢查齊次解的所有非零 b
 			const key = `${frac_r.n}/${frac_r.d}`;
