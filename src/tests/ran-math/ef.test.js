@@ -46,30 +46,31 @@ const testData = {
 			{ input: [ F(-2, 3), 5 ], output: "-2/3" },
 			{ input: [ 0, 0, F(1, 2) ], output: "0" },
 			{ input: [ F(4, 3), 0, 4 ], output: "4/3" },
-			{ input: [ 0, F(1, 3), -360 ], output: "2 √ -10" },
+			{ input: [ 0, F(1, 3), -360 ], output: "2 √ 10 i" },
 			
 			{ input: [ -1, 3, F(4, 9) ], output: "1" },
-			{ input: [ -1, 3, F(-4, 9) ], output: "-1 + 2 √ -1" },
+			{ input: [ -1, 3, F(-4, 9) ], output: "-1 + 2 i" },
 			{ input: [ -1, 3, F(2, 5) ], output: "-1 + 3/5 √ 10" },
+			{ input: [ 0, 1, -1 ], output: "1 i" },
 			
 			{ input: [ 0.4, F(3, 2), 2 ], output: "2.5213" }, // float + Frac test (6)
-			{ input: [ 0.4, F(3, 2), -2 ], output: "0.4000 + 2.1213 √ -1" },
+			{ input: [ 0.4, F(3, 2), -2 ], output: "0.4000 + 2.1213 i" },
 			{ input: [ -1, 0.4, 2 ], output: "-0.4343" },
-			{ input: [ -1, 0.4, -2 ], output: "-1 + 0.5657 √ -1" },
+			{ input: [ -1, 0.4, -2 ], output: "-1 + 0.5657 i" },
 			{ input: [ -1, F(3, 2), 0.4 ], output: "-0.0513" },
-			{ input: [ -1, F(3, 2), -0.4 ], output: "-1 + 0.9487 √ -1" },
+			{ input: [ -1, F(3, 2), -0.4 ], output: "-1 + 0.9487 i" },
 			
 			{ // param error test (3)
 				input: [ "-1", 3, F(2, 5) ],
-				error: '[RanMath][EF.constructor] Param "nf_a" must be a Frac or int.'
+				error: '[RanMath][EF.constructor] Param "nf_a" must be a number or Frac.'
 			},
 			{
 				input: [ -1, "3", F(2, 5) ],
-				error: '[RanMath][EF.constructor] Param "nf_b" must be a Frac or int.'
+				error: '[RanMath][EF.constructor] Param "nf_b" must be a number or Frac.'
 			},
 			{
 				input: [ -1, 3, {} ],
-				error: '[RanMath][EF.constructor] Param "nf_s" must be a Frac or int.'
+				error: '[RanMath][EF.constructor] Param "nf_s" must be a number or Frac.'
 			},
 		],
 	},
