@@ -83,7 +83,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, EF, SolveCubic, Hop, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { Frac, EF, _SolveCubic, Hop, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomog from "./RecurNonHomog.vue"; // 計算並顯示非齊次部分的組件
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
@@ -110,12 +110,12 @@ class SolveRecur { // 解非齊次遞迴
 	_initCubic() { // 計算齊次解的特徵值
 		let coef = [...this.recurCoef];
 		while (coef.length < 3) coef.push(new Frac(0)); // 0, 1, 2 階遞迴要解三次特徵方程式需要補足係數
-		this.cubic = new SolveCubic(new Frac(1), coef[0].mul(-1), coef[1].mul(-1), coef[2].mul(-1)); // 解方程式 t^3 - r1t^2 - r2t - r3 = 0
+		this.cubic = new _SolveCubic(new Frac(1), coef[0].mul(-1), coef[1].mul(-1), coef[2].mul(-1)); // 解方程式 t^3 - r1t^2 - r2t - r3 = 0
 	}
 	
 	_initHomogForm() { // 生成齊次形式的資訊 (僅三有理根型態). 注: this.homogForm[0] 可以讀取重根資訊
 		const sc = this.cubic;
-		if (sc.solutionType() !== SolveCubic.TYPE_3FRAC) { // 只有三有理根型態才存在重根
+		if (sc.solutionType() !== _SolveCubic.TYPE_3FRAC) { // 只有三有理根型態才存在重根
 			this.homogForm = null;
 			return;
 		}
@@ -143,7 +143,7 @@ class SolveRecur { // 解非齊次遞迴
 		const type = sc.solutionType(); // 特徵方程式的解形式
 		
 		let ef_base; // FRAC_QUAD 跟 TYPE_REAL_IM 產生的 a + b√s 形式的特徵根
-		if (type === SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
+		if (type === _SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
 			const getCoef = []; // getCoef[i](n) 代表 a_n^(h) 代入常數 n 後, 未知數 h_{i+1} 的係數: (n^j r^n) h_{i+1}
 			this.homogForm.map(([frac_r, multiRootNum]) => {
 				for (let j = 0; j < multiRootNum; j++) getCoef.push((n) => frac_r.pow(n).mul(n**j)); // (n^j r^n) h_{i+1}
@@ -153,7 +153,7 @@ class SolveRecur { // 解非齊次遞迴
 				(_, n) => Array.from({ length: this.recurLevel }, (_, i) => getCoef[i](n)) // 去看 getCoef 的註解
 			);
 		}
-		else if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
+		else if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
 			ef_base = new EF(new Frac(sc.quad.n, sc.quad.d), new Frac(sc.quad.m, sc.quad.d), sc.quad.s); // a + b√s
 			this.HiLinearEquation = Array.from({ length: this.recurLevel }, (_, n) => {
 				const ef_pow = ef_base.pow(n);
@@ -162,10 +162,10 @@ class SolveRecur { // 解非齊次遞迴
 				if (this.recurLevel == 3) return [frac_a, frac_b, sc.frac_r1.pow(n)];
 			});
 		}
-		else if (type === SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
+		else if (type === _SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
 			this.HiLinearEquation = Array.from({ length: 3 }, (_, n) => [sc.r1**n, sc.r2**n, sc.r3**n]); // 只有三階遞迴才會出現此形式, 而且三次函數不存在無理重根, 非常簡單
 		}
-		else if (type === SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
+		else if (type === _SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
 			ef_base = new EF(sc.cRe, sc.cIm, -1); // cRe + cIm i
 			this.HiLinearEquation = Array.from({ length: 3 }, (_, n) => {
 				const ef_pow = ef_base.pow(n);
@@ -210,11 +210,11 @@ class SolveRecur { // 解非齊次遞迴
 		
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 特徵方程式的解形式
-		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式包含根號或複數, 需要轉為 EF 型態 (因為 _Matrix 不支援 EF)
+		if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式包含根號或複數, 需要轉為 EF 型態 (因為 _Matrix 不支援 EF)
 			const ef = new EF(hiAns[0], hiAns[1], sc.quad.s); // FRAC_QUAD 跟 TYPE_REAL_IM 會化簡 (h1 + h2√s)(a + b√s)^n + (h1 - h2√s)(a - b√s)^n + h3 c^n, 所以聯立會比較特別
 			[hiAns[0], hiAns[1]] = [ef, ef.conjugate()];
 		}
-		else if (type === SolveCubic.TYPE_REAL_IM) {
+		else if (type === _SolveCubic.TYPE_REAL_IM) {
 			const ef = new EF(hiAns[0], hiAns[1], -1);
 			[hiAns[0], hiAns[1]] = [ef, ef.conjugate()];
 		}
@@ -311,7 +311,7 @@ class SolveRecur { // 解非齊次遞迴
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 三次式的解形式
 		
-		if (type === SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
+		if (type === _SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
 			let i = 0; // h_i 的編號
 			let s_latex = this.homogForm.map(([frac_r, multiRootNum]) => {
 				return Array.from(
@@ -321,19 +321,19 @@ class SolveRecur { // 解非齊次遞迴
 			}).join("");
 			return removePrefix(s_latex, "+");
 		}
-		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
+		if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
 			let s_latex = mlTerm(coef[0], `\\left( ${this.ef_base.toLatex()} \\right)`, "n", true, true);
 			s_latex += mlTerm(coef[1], `\\left( ${this.ef_base.conjugate().toLatex()} \\right)`, "n", true, true);
 			s_latex += mlTerm(coef[2], sc.frac_r1, "n", true, true); // 剩餘根 (如果為 0 會不顯示)
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
-		if (type === SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
+		if (type === _SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
 			let s_latex = [sc.r1, sc.r2, sc.r3].map(
 				(r, i) => mlTerm(coef[i], r.toFixed(4), "n", true, true)
 			).join("");
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
-		if (type === SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
+		if (type === _SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
 			let s_latex = mlTerm(coef[0], `(${this.ef_base.toLatex()})`, "n", true, true);
 			s_latex += mlTerm(coef[1], `(${this.ef_base.conjugate().toLatex()})`, "n", true, true);
 			s_latex += mlTerm(coef[2], sc.r1.toFixed(4), "n", true, true); // 剩餘根
@@ -367,19 +367,19 @@ class SolveRecur { // 解非齊次遞迴
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 特徵方程式的解形式
 		const coefFunc = (n, j) => {
-			if (type === SolveCubic.TYPE_3FRAC) return this.HiLinearEquation[n][j];
-			if (type === SolveCubic.TYPE_FRAC_QUAD) {
+			if (type === _SolveCubic.TYPE_3FRAC) return this.HiLinearEquation[n][j];
+			if (type === _SolveCubic.TYPE_FRAC_QUAD) {
 				const quadLatex = sc.quad.toLatex();
 				const posRoot = removePrefix(quadLatex.replace("\\pm", "+"), "+"); // +√s 根若開頭為 "+" 要去除
 				if (j == 0) return mlTerm(1, `\\left( ${posRoot} \\right)`, n, false);
 				if (j == 1) return mlTerm(1, `\\left( ${quadLatex.replace("\\pm", "-")} \\right)`, n, false);
 				if (j == 2) return sc.frac_r1.toLatex(); // 另一個有理根
 			}
-			if (type === SolveCubic.TYPE_3REAL) {
+			if (type === _SolveCubic.TYPE_3REAL) {
 				if (n == 0) return "1";
 				return this.HiLinearEquation[n][j].toFixed(4);
 			}
-			if (type === SolveCubic.TYPE_REAL_IM) {
+			if (type === _SolveCubic.TYPE_REAL_IM) {
 				if (j == 0) return mlTerm(1, `(${sc.cRe.toFixed(4)} + ${sc.cIm.toFixed(4)} i)`, n, false);
 				if (j == 1) return mlTerm(1, `(${sc.cRe.toFixed(4)} - ${sc.cIm.toFixed(4)} i)`, n, false);
 				if (j == 2) return mlTerm(1, sc.r1.toFixed(4), n, false);
@@ -437,9 +437,9 @@ class SolveRecur { // 解非齊次遞迴
 		
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 特徵方程式的解形式
-		if (type === SolveCubic.TYPE_FRAC_QUAD) { // 處理共軛複根之外的剩餘根
+		if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 處理共軛複根之外的剩餘根
 			s_latex += mlTerm(this.HiAnswer[2], sc.frac_r1, "n", true, true);
-		} else if (type === SolveCubic.TYPE_REAL_IM) {
+		} else if (type === _SolveCubic.TYPE_REAL_IM) {
 			s_latex += mlTerm(Hop.toLatex(this.HiAnswer[2]), sc.r1.toFixed(4), "n", true, true);
 		}
 		
@@ -474,14 +474,14 @@ class SolveRecur { // 解非齊次遞迴
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 三次式的解形式
 		
-		if (type === SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
+		if (type === _SolveCubic.TYPE_3FRAC) { // 解形式為: frac_r1 , frac_r2 , frac_r3
 			let i = 0; // h_i 的編號
 			for (const [frac_r, multiRootNum] of this.homogForm) { // 例: 將 [h1, h2, h3] 和 [[b1, 2], [b2, 1]] 轉為 { b1: [h1, h2], b2: [h3] } ; 為了與特解資訊做合併
 				const s_frac_r = `${frac_r.n}/${frac_r.d}`;
 				homogExpFunc[s_frac_r] = Array.from({ length: multiRootNum }, (_, j) => this.HiAnswer[i++]);
 			} // 因為三有理根, 所以 s_homogLatex 為空
 		}
-		else if (type === SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
+		else if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
 			if (this.isAnswerHaveIm()) { // 答案有複數: s < 0
 				s_homogLatex = mlTerm(this.ef_cosCoef.toLatex(), "\\cos(n \\theta) r^n", 1, true, true); // cos 部分
 				s_homogLatex += mlTerm(this.ef_sinCoef.toLatex(), "\\sin(n \\theta) r^n", 1, true, true); // sin 部分
@@ -503,10 +503,10 @@ class SolveRecur { // 解非齊次遞迴
 				homogExpFunc[s_frac_r] = [this.HiAnswer[2]]; // 剩餘的一個有理根, 因為在運算時會把有理根的未知係數放在 h3, 所以要讀取 [2]
 			}
 		}
-		else if (type === SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
+		else if (type === _SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
 			s_homogLatex = this.mlClosedForm(); // 同實數齊次部分; 因為不存在有理根, 所以 homogExpFunc 為空
 		}
-		else if (type === SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
+		else if (type === _SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
 			s_homogLatex = this.mlClosedFormIm(); // 同複數 cos/sin 形式; 因為不存在有理根, 所以 homogExpFunc 為空
 		}
 		
