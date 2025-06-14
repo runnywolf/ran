@@ -51,6 +51,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "Hop - 混合運算", link: "/ran-math/hop" },
 					{ text: "EF - 擴張體", link: "/ran-math/ef" },
 					{ text: "Matrix - 矩陣", link: "/ran-math/matrix" },
+					{ text: "SolveQuad - 解二次方程式", link: "/ran-math/solve-quad" },
 				]
 			},
 			{

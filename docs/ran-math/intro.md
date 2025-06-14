@@ -1,5 +1,9 @@
 ---
 outline: [2, 3] # 顯示 h2, h3
+head:
+  - - link
+    - rel: stylesheet
+      href: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css # katex 語法支援
 ---
 
 # 介紹
@@ -10,5 +14,6 @@ outline: [2, 3] # 顯示 h2, h3
 ## 可能的目標 (想做但沒必要)
 - 使用 `ts` 重寫 `RanMath.js`。
 - 參數支援 `bigint`，不只是內部邏輯。
+- 支援 $\sqrt[n]s$
 
 就留給來到這裡的你吧 ~

@@ -142,7 +142,7 @@ F(6, -9); // -2/3
 分子 ( Numerator )。
 
 ```js
-Frac.prototype.n: number
+Frac#n: number
 ```
 
 範例：
@@ -158,7 +158,7 @@ frac.n // -2
 分母 ( Denominator )。
 
 ```js
-Frac.prototype.d: number
+Frac#d: number
 ```
 
 範例：

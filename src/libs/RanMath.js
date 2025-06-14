@@ -391,7 +391,7 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	_makeOp(nfe, opName, op) { // 自訂運算子
-		if (isNum(nfe) || Frac.isFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
+		if (Hop.isNumOrFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
 		
 		if (!EF.isEF(nfe)) throwErr(`EF.${opName}`, 'Param "nfe" must be a number | Frac | EF .'); // 第二個運算元必須是 number / Frac / EF
 		if (this.s !== 0 && nfe.s !== 0 && this.s !== nfe.s) { // 如果兩個 fleid 的 √s 不一致, 無法運算 (忽略 s 為 0 的情況)
@@ -455,7 +455,7 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	equal(nfe) { // 等於
-		if (isNum(nfe) || Frac.isFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
+		if (Hop.isNumOrFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
 		
 		if (!EF.isEF(nfe)) return false; // 第二個運算元必須是 number / Frac / EF, 否則回傳 false
 		if (!Hop.equal(this.nf_a, nfe.nf_a)) return false;
@@ -652,11 +652,11 @@ export class SolveQuad { // 解二次方程式
 }
 
 export class SolveCubic { // 解三次方程式
-	static TYPE_3_FRAC = 0;              // [Q mode] 解形式為 2 有理數
-	static TYPE_1_FRAC_REAL_SQRT = 1;    // [Q mode] 解形式為 2 實數 (根號): n ± m√s , s > 0
-	static TYPE_1_FRAC_COMPLEX_SQRT = 2; // [Q mode] 解形式為 2 複數 (根號): n ± m√s , s < 0
-	static TYPE_3_REAL = 3;              // [R mode] 解形式為 2 實數
-	static TYPE_1_REAL_2_COMPLEX = 4;    // [R mode] 解形式為 2 複數
+	static TYPE_3_FRAC = 0;              // [Q mode] 解形式為 3 有理數
+	static TYPE_1_FRAC_REAL_SQRT = 1;    // [Q mode] 解形式為 1 有理數 + 2 實數 (根號): n ± m√s , s > 0
+	static TYPE_1_FRAC_COMPLEX_SQRT = 2; // [Q mode] 解形式為 1 有理數 + 2 複數 (根號): n ± m√s , s < 0
+	static TYPE_3_REAL = 3;              // [R mode] 解形式為 3 實數 (float number)
+	static TYPE_1_REAL_2_COMPLEX = 4;    // [R mode] 解形式為 1 實數 + 2 複數 (float number)
 }
 
 export class _Matrix { // [棄用] 舊矩陣
