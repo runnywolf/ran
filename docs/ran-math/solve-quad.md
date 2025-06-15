@@ -106,9 +106,9 @@ SolveQuad.prototype.toStr(): string
 ```js
 new SolveQuad(1, -1, -6).toStr()             // "3, -2"
 new SolveQuad(5, F(-22, 3), F(8, 3)).toStr() // "4/5 , 2/3"
-new SolveQuad(1, 0, 2).toStr()               // "± 1 √ 2 i"
+new SolveQuad(1, 0, 2).toStr()               // "1 √ 2 i , -1 √ 2 i"
 new SolveQuad(4, F(16), 5.2).toStr()         // "-0.3568 , -3.6432"
-new SolveQuad(4, 2, 5.2).toStr()             // "-0.2500 ± 1.1124 i"
+new SolveQuad(4, 2, 5.2).toStr()             // "-0.2500 + 1.1124 i , -0.2500 + -1.1124 i"
 ```
 
 ## `.toLatex`
