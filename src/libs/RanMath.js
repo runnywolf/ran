@@ -96,8 +96,17 @@ export class Frac { // 分數 (Fraction)
 		return value instanceof Frac;
 	}
 	
-	static fromStr(str) { // 將字串轉為分數
+	static fromStr(str) { // 將浮點數字串, 分數字串轉為 Frac
 		if (typeof str !== "string") return F(0); // 若 str 不是字串, 回傳 0
+		
+		if (str.includes(".")) { // 判定浮點數字串
+			const [str_a, str_b] = str.split(".");
+			const [a, b] = [Number(str_a), Number(str_b)];
+			if (!isInt(a) || !isInt(b) || b < 0) return F(0);
+			
+			const offset = 10 ** str_b.length;
+			return F(Number(str_a) * offset + Number(str_b) * (str.includes("-") ? -1 : 1), offset); // b 的正負要與 a 相同
+		}
 		
 		const numArr = str.split("/").map(s => Number(s)); // 將 "/" 符號切分, 並將切割後的數個字串轉為數字
 		if (numArr.some(n => !isInt(n))) return F(0); // 若字串某個部份不是整數, 回傳 0

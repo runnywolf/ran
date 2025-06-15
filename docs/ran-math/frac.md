@@ -85,6 +85,8 @@ Frac.fromStr(str: string): Frac
 Frac.fromStr("-7")        // -7/1
 Frac.fromStr("6/-9")      // -2/3
 Frac.fromStr(" -12 / 7 ") // -12/7
+Frac.fromStr("-1.24")     // -31/25
+Frac.fromStr(".24")       // 6/25
 ```
 
 ## `Frac.sum`
