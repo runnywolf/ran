@@ -686,16 +686,16 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 		if (a < 0) [a, b, c, d] = [-a, -b, -c, -d]; // 使 a 為正數
 		
 		let [r1, r2] = [0, 0]; // 搜尋範圍
-		if (f(0) == 0) return 0;
+		if (f(0) === 0) return 0;
 		else if (f(0) < 0) { // 若 f(0) < 0, 往 +x 的方向搜尋
 			r2 = 1;
 			while (f(r2) < 0) r2 *= 2; // 指數擴大搜尋範圍
 		} else if (f(0) > 0) { // 若 f(0) > 0, 往 -x 的方向搜尋
 			r1 = -1;
 			while (f(r1) > 0) r1 *= 2;
-		}
+		};
 		
-		while (Math.abs(r1-r2)/r1 > tor) {
+		while (Math.abs((r1-r2)/r1) > tor) {
 			if (f((r1+r2)/2) > 0) r2 = (r1+r2)/2;
 			else r1 = (r1+r2)/2;
 		}
@@ -713,23 +713,23 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 		
 		const cubicFracOp = (frac_a, frac_b, frac_c, frac_d) => { // 如果 a, b, c, d 的型態都是 int number 或 Frac
 			const frac_r = SolveCubic._findRationalRoot(frac_a, frac_b, frac_c, frac_d); // 嘗試尋找有理數根
-			if (frac_r) { // 若至少一根為有理數, 可以簡化為二次方程式, 再求剩餘兩根
-				const frac_A = frac_a; // a' = a
-				const frac_B = frac_A.mul(frac_r).add(frac_b); // b' = b + a'r
-				const frac_C = frac_B.mul(frac_r).add(frac_c); // c' = c + b'r
-				const quad = new SolveQuad(frac_A, frac_B, frac_C); // 解二次方程式 a'x^2 + b'x + c'
-				
-				if (quad.rootType === SolveQuad.TYPE_2_FRAC) { // 解形式為 1+2 有理數
-					return [SolveCubic.TYPE_3_FRAC, frac_r, ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
-				}
-				if (quad.rootType === SolveQuad.TYPE_REAL_SQRT) { // 解形式為 1 有理數 + 2 實數 (根號)
-					return [SolveCubic.TYPE_1_FRAC_REAL_SQRT, frac_r, ...quad.roots];
-				}
-				if (quad.rootType === SolveQuad.TYPE_COMPLEX_SQRT) { // 解形式為 1 有理數 + 2 複數 (根號)
-					return [SolveCubic.TYPE_1_FRAC_COMPLEX_SQRT, frac_r, ...quad.roots];
-				}
-			} else { // 若三次方程式不存在有理數根, 降級為 [C mode]
+			if (frac_r === null) { // 若三次方程式不存在有理數根, 降級為 [C mode]
 				return cubicFloatOp(...[frac_a, frac_b, frac_c, frac_d].map(frac => frac.toFloat()));
+			}
+			
+			const frac_A = frac_a; // a' = a ; 若至少一根為有理數, 可以簡化為二次方程式, 再求剩餘兩根
+			const frac_B = frac_A.mul(frac_r).add(frac_b); // b' = b + a'r
+			const frac_C = frac_B.mul(frac_r).add(frac_c); // c' = c + b'r
+			const quad = new SolveQuad(frac_A, frac_B, frac_C); // 解二次方程式 a'x^2 + b'x + c'
+			
+			if (quad.rootType === SolveQuad.TYPE_2_FRAC) { // 解形式為 1+2 有理數
+				return [SolveCubic.TYPE_3_FRAC, new EF(frac_r), ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
+			}
+			if (quad.rootType === SolveQuad.TYPE_REAL_SQRT) { // 解形式為 1 有理數 + 2 實數 (根號)
+				return [SolveCubic.TYPE_1_FRAC_REAL_SQRT, new EF(frac_r), ...quad.roots];
+			}
+			if (quad.rootType === SolveQuad.TYPE_COMPLEX_SQRT) { // 解形式為 1 有理數 + 2 複數 (根號)
+				return [SolveCubic.TYPE_1_FRAC_COMPLEX_SQRT, new EF(frac_r), ...quad.roots];
 			}
 		};
 		const cubicFloatOp = (num_a, num_b, num_c, num_d) => { // 如果 a, b, c, d 至少存在一個 float number
@@ -740,10 +740,10 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 			const quad = new SolveQuad(A, B, C); // 解二次方程式 a'x^2 + b'x + c'
 			
 			if (quad.rootType === SolveQuad.TYPE_2_REAL) { // 解形式為 3 實數 (float number)
-				return [SolveCubic.TYPE_3_REAL, r, ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
+				return [SolveCubic.TYPE_3_REAL, new EF(r), ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
 			}
 			if (quad.rootType === SolveQuad.TYPE_2_COMPLEX) { // 解形式為 1 實數 + 2 複數 (float number)
-				return [SolveCubic.TYPE_1_REAL_2_COMPLEX, r, ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
+				return [SolveCubic.TYPE_1_REAL_2_COMPLEX, new EF(r), ...quad.roots]; // 將有理數根 r 與 quad 的兩根合併輸出
 			}
 		};
 		[this.rootType, ...this.roots] = Hop._makeOp([nf_a, nf_b, nf_c, nf_d], cubicFracOp, cubicFloatOp); // .roots 為三次方程式的 3 個根
