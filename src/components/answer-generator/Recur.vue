@@ -56,11 +56,11 @@
 			考慮將複數部分轉換為極座標形式，並應用歐拉公式：<br>
 			<vl c exp="
 				\begin{split}
-					&= h_1 {(\alpha + \beta i)}^n + h_2 {(\alpha - \beta i)}^n \\
-					&= h_1 {(r e^{i \theta})}^n + h_2 {(r e^{-i \theta})}^n \quad,\quad r = \sqrt{\alpha^2 + \beta^2} \quad,\quad \theta = \tan^{-1}(\beta / \alpha) \\
-					&= h_1 r^n e^{i n \theta} + h_2 r^n e^{-i n \theta} \\
-					&= h_1 r^n (\cos n \theta + i \sin n \theta) + h_2 r^n (\cos n \theta - i \sin n \theta) \\
-					&= (h_1 + h_2) \cos(n \theta) r^n + (h_1 - h_2) i \sin(n \theta) r^n
+				&= h_1 {(\alpha + \beta i)}^n + h_2 {(\alpha - \beta i)}^n \\
+				&= h_1 {(r e^{i \theta})}^n + h_2 {(r e^{-i \theta})}^n \quad,\quad r = \sqrt{\alpha^2 + \beta^2} \quad,\quad \theta = \tan^{-1}(\beta / \alpha) \\
+				&= h_1 r^n e^{i n \theta} + h_2 r^n e^{-i n \theta} \\
+				&= h_1 r^n (\cos n \theta + i \sin n \theta) + h_2 r^n (\cos n \theta - i \sin n \theta) \\
+				&= (h_1 + h_2) \cos(n \theta) r^n + (h_1 - h_2) i \sin(n \theta) r^n
 				\end{split}
 			" />
 			因此<br>
@@ -83,7 +83,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { Frac, EF, _SolveCubic, Hop, _Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { Frac, EF, _SolveCubic, Hop, _Matrix, SCL, _mlTerm, _mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 import RecurNonHomog from "./RecurNonHomog.vue"; // 計算並顯示非齊次部分的組件
 import Content from "@/components/global/Content.vue"; // 內容區塊的組件
@@ -281,10 +281,10 @@ class SolveRecur { // 解非齊次遞迴
 	mlCharPoly() { // 特徵方程式 "t^l = r1 t^{l-1} + r2 t^{l-2} + r3 t^{l-3}" (latex)
 		let l = this.recurLevel; // 遞迴階數
 		let s_latex = this.recurCoef.map(
-			(frac_coef, i) => mlTerm(frac_coef, "t", l-1-i, true, true)
+			(frac_coef, i) => _mlTerm(frac_coef, "t", l-1-i, true, true)
 		).join("");
 		if (s_latex === "") s_latex = "0"; // 若特徵方程式為 0 多項式
-		return `${mlTerm("", "t", l, false)} = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "t^l ="
+		return `${_mlTerm("", "t", l, false)} = ${removePrefix(s_latex, "+")}`; // 去除開頭的 + 後, 在開頭加上 "t^l ="
 	}
 	
 	mlChar() { // 特徵值 "t = ? , ? , ?" (latex)
@@ -301,9 +301,9 @@ class SolveRecur { // 解非齊次遞迴
 	mlMultiRootHomog() { // 重根齊次形式 "h_1 b^n + h_2 n b^n + h_3 n^2 b^n" (latex)
 		const frac_multiRoot = this.homogForm[0][0];
 		const multiRootNum = this.homogForm[0][1];
-		const expLatex = mlTerm(1, frac_multiRoot, "n", false); // 一重根也會生成重根齊次形式, 但不會顯示出來, 不用管它
+		const expLatex = _mlTerm(1, frac_multiRoot, "n", false); // 一重根也會生成重根齊次形式, 但不會顯示出來, 不用管它
 		return Array.from({ length: multiRootNum },
-			(_, i) => `${mlTerm(`h_${i+1}`, "n", i, false)} ${expLatex}`
+			(_, i) => `${_mlTerm(`h_${i+1}`, "n", i, false)} ${expLatex}`
 		).join(" + ");
 	}
 	
@@ -316,27 +316,27 @@ class SolveRecur { // 解非齊次遞迴
 			let s_latex = this.homogForm.map(([frac_r, multiRootNum]) => {
 				return Array.from(
 					{ length: multiRootNum },
-					(_, j) => mlTerm(mlTerm(coef[i++], "n", j, false), frac_r, "n", true, true)
+					(_, j) => _mlTerm(_mlTerm(coef[i++], "n", j, false), frac_r, "n", true, true)
 				).join("");
 			}).join("");
 			return removePrefix(s_latex, "+");
 		}
 		if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
-			let s_latex = mlTerm(coef[0], `\\left( ${this.ef_base.toLatex()} \\right)`, "n", true, true);
-			s_latex += mlTerm(coef[1], `\\left( ${this.ef_base.conjugate().toLatex()} \\right)`, "n", true, true);
-			s_latex += mlTerm(coef[2], sc.frac_r1, "n", true, true); // 剩餘根 (如果為 0 會不顯示)
+			let s_latex = _mlTerm(coef[0], `\\left( ${this.ef_base.toLatex()} \\right)`, "n", true, true);
+			s_latex += _mlTerm(coef[1], `\\left( ${this.ef_base.conjugate().toLatex()} \\right)`, "n", true, true);
+			s_latex += _mlTerm(coef[2], sc.frac_r1, "n", true, true); // 剩餘根 (如果為 0 會不顯示)
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
 		if (type === _SolveCubic.TYPE_3REAL) { // 解形式為: r1 , r2 , r3
 			let s_latex = [sc.r1, sc.r2, sc.r3].map(
-				(r, i) => mlTerm(coef[i], r.toFixed(4), "n", true, true)
+				(r, i) => _mlTerm(coef[i], r.toFixed(4), "n", true, true)
 			).join("");
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
 		if (type === _SolveCubic.TYPE_REAL_IM) { // 解形式為: r1 , (cRe ± cIm i)
-			let s_latex = mlTerm(coef[0], `(${this.ef_base.toLatex()})`, "n", true, true);
-			s_latex += mlTerm(coef[1], `(${this.ef_base.conjugate().toLatex()})`, "n", true, true);
-			s_latex += mlTerm(coef[2], sc.r1.toFixed(4), "n", true, true); // 剩餘根
+			let s_latex = _mlTerm(coef[0], `(${this.ef_base.toLatex()})`, "n", true, true);
+			s_latex += _mlTerm(coef[1], `(${this.ef_base.conjugate().toLatex()})`, "n", true, true);
+			s_latex += _mlTerm(coef[2], sc.r1.toFixed(4), "n", true, true); // 剩餘根
 			return removePrefix(s_latex, "+"); // 去除開頭多餘的 +
 		}
 		
@@ -371,8 +371,8 @@ class SolveRecur { // 解非齊次遞迴
 			if (type === _SolveCubic.TYPE_FRAC_QUAD) {
 				const quadLatex = sc.quad.toLatex();
 				const posRoot = removePrefix(quadLatex.replace("\\pm", "+"), "+"); // +√s 根若開頭為 "+" 要去除
-				if (j == 0) return mlTerm(1, `\\left( ${posRoot} \\right)`, n, false);
-				if (j == 1) return mlTerm(1, `\\left( ${quadLatex.replace("\\pm", "-")} \\right)`, n, false);
+				if (j == 0) return _mlTerm(1, `\\left( ${posRoot} \\right)`, n, false);
+				if (j == 1) return _mlTerm(1, `\\left( ${quadLatex.replace("\\pm", "-")} \\right)`, n, false);
 				if (j == 2) return sc.frac_r1.toLatex(); // 另一個有理根
 			}
 			if (type === _SolveCubic.TYPE_3REAL) {
@@ -380,9 +380,9 @@ class SolveRecur { // 解非齊次遞迴
 				return this.HiLinearEquation[n][j].toFixed(4);
 			}
 			if (type === _SolveCubic.TYPE_REAL_IM) {
-				if (j == 0) return mlTerm(1, `(${sc.cRe.toFixed(4)} + ${sc.cIm.toFixed(4)} i)`, n, false);
-				if (j == 1) return mlTerm(1, `(${sc.cRe.toFixed(4)} - ${sc.cIm.toFixed(4)} i)`, n, false);
-				if (j == 2) return mlTerm(1, sc.r1.toFixed(4), n, false);
+				if (j == 0) return _mlTerm(1, `(${sc.cRe.toFixed(4)} + ${sc.cIm.toFixed(4)} i)`, n, false);
+				if (j == 1) return _mlTerm(1, `(${sc.cRe.toFixed(4)} - ${sc.cIm.toFixed(4)} i)`, n, false);
+				if (j == 2) return _mlTerm(1, sc.r1.toFixed(4), n, false);
 			}
 			return "{?}";
 		};
@@ -393,7 +393,7 @@ class SolveRecur { // 解非齊次遞迴
 			return `${s_latex} = ${this.anSubAnp[n].toLatex()}`; // 加上常數 a_n - a_n^(p)
 		};
 		
-		return mlEquationSystem(
+		return _mlEquationSystem(
 			this.recurLevel, this.recurLevel, coefFunc, (n, j) => `h_${j+1}`, equalLatex, "right"
 		);
 	}
@@ -412,7 +412,7 @@ class SolveRecur { // 解非齊次遞迴
 	
 	mlClosedForm() { // 遞迴的一般項, 無複數 (latex)
 		const HiAnswerOnlyEfIsLatex = this.HiAnswer.map(effn_hi => {
-			if (EF.isEF(effn_hi)) { // 先將 EF 轉為 latex, 因為 mlTerm 不處理 EF
+			if (EF.isEF(effn_hi)) { // 先將 EF 轉為 latex, 因為 _mlTerm 不處理 EF
 				if (Hop.equal(effn_hi.nf_a, 0) || Hop.equal(effn_hi.nf_b, 0)) return effn_hi.toLatex();
 				return `\\left( ${effn_hi.toLatex()} \\right)`;
 			}
@@ -432,15 +432,15 @@ class SolveRecur { // 解非齊次遞迴
 	}
 	
 	mlClosedFormIm() { // 遞迴的一般項, 把複數化簡為三角函數 (latex)
-		let s_latex = mlTerm(this.ef_cosCoef.toLatex(), "\\cos(n \\theta) r^n", 1, true, true); // cos 部分
-		s_latex += mlTerm(this.ef_sinCoef.toLatex(), "\\sin(n \\theta) r^n", 1, true, true); // sin 部分
+		let s_latex = _mlTerm(this.ef_cosCoef.toLatex(), "\\cos(n \\theta) r^n", 1, true, true); // cos 部分
+		s_latex += _mlTerm(this.ef_sinCoef.toLatex(), "\\sin(n \\theta) r^n", 1, true, true); // sin 部分
 		
 		const sc = this.cubic;
 		const type = sc.solutionType(); // 特徵方程式的解形式
 		if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 處理共軛複根之外的剩餘根
-			s_latex += mlTerm(this.HiAnswer[2], sc.frac_r1, "n", true, true);
+			s_latex += _mlTerm(this.HiAnswer[2], sc.frac_r1, "n", true, true);
 		} else if (type === _SolveCubic.TYPE_REAL_IM) {
-			s_latex += mlTerm(Hop.toLatex(this.HiAnswer[2]), sc.r1.toFixed(4), "n", true, true);
+			s_latex += _mlTerm(Hop.toLatex(this.HiAnswer[2]), sc.r1.toFixed(4), "n", true, true);
 		}
 		
 		return s_latex;
@@ -483,15 +483,15 @@ class SolveRecur { // 解非齊次遞迴
 		}
 		else if (type === _SolveCubic.TYPE_FRAC_QUAD) { // 解形式為: frac_r1 , (n ± m√s) / d
 			if (this.isAnswerHaveIm()) { // 答案有複數: s < 0
-				s_homogLatex = mlTerm(this.ef_cosCoef.toLatex(), "\\cos(n \\theta) r^n", 1, true, true); // cos 部分
-				s_homogLatex += mlTerm(this.ef_sinCoef.toLatex(), "\\sin(n \\theta) r^n", 1, true, true); // sin 部分
+				s_homogLatex = _mlTerm(this.ef_cosCoef.toLatex(), "\\cos(n \\theta) r^n", 1, true, true); // cos 部分
+				s_homogLatex += _mlTerm(this.ef_sinCoef.toLatex(), "\\sin(n \\theta) r^n", 1, true, true); // sin 部分
 			} else { // 答案沒有複數
-				s_homogLatex = mlTerm(
+				s_homogLatex = _mlTerm(
 					this.HiAnswer[0].toLatex(),
 					`\\left( ${this.ef_base.toLatex()} \\right)`,
 					"n", true, true
 				);
-				s_homogLatex += mlTerm(
+				s_homogLatex += _mlTerm(
 					this.HiAnswer[1].toLatex(),
 					`\\left( ${this.ef_base.conjugate().toLatex()} \\right)`,
 					"n", true, true
@@ -522,7 +522,7 @@ class SolveRecur { // 解非齊次遞迴
 		}
 		
 		let s_combinedLatex = Object.entries(expFunc).map(([s_frac_b, expAnswer]) => { // 將含有相同的 b^n 的項合併
-			let termLatexArr = expAnswer.map((frac_coef, i) => mlTerm(frac_coef, "n", i)); // 例: [ "?", "?n", "?n^2", ... ] (latex arr)
+			let termLatexArr = expAnswer.map((frac_coef, i) => _mlTerm(frac_coef, "n", i)); // 例: [ "?", "?n", "?n^2", ... ] (latex arr)
 			termLatexArr = termLatexArr.filter(termLatex => termLatex !== "+0"); // 去除零項 ( "+0" )
 			
 			let s_polyLatex; // b^n 對應的的多項式的 latex
@@ -531,8 +531,8 @@ class SolveRecur { // 解非齊次遞迴
 			else s_polyLatex = `( ${removePrefix(termLatexArr.join(""), "+")} )`; // 例: [ "?", "?n", "?n^2", ... ] -> "( ? + ?n + ?n^2 + ... )" (latex)
 			
 			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
-			if (frac_b.equal(1)) return mlTerm(1, s_polyLatex, 1); // 若出現 1^n, 不顯示指數部分
-			return mlTerm(s_polyLatex, frac_b, "n", true, true); // "+ ( ? + ?n + ?n^2 + ... ) b^n"
+			if (frac_b.equal(1)) return _mlTerm(1, s_polyLatex, 1); // 若出現 1^n, 不顯示指數部分
+			return _mlTerm(s_polyLatex, frac_b, "n", true, true); // "+ ( ? + ?n + ?n^2 + ... ) b^n"
 		}).join("");
 		
 		let s_latex = s_homogLatex + s_combinedLatex; // 將無理數和有理數部分合併
@@ -561,7 +561,7 @@ const emit = defineEmits([
 ]);
 
 const mlRecurHomog = (recurCoef = []) => { // 生成 遞迴的齊次部分 "+ r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
-	return recurCoef.map((frac_coef, i) => mlTerm(frac_coef, `a_{n-${i+1}}`, 1, true, true)).join("");
+	return recurCoef.map((frac_coef, i) => _mlTerm(frac_coef, `a_{n-${i+1}}`, 1, true, true)).join("");
 };
 
 const mlRecurHomogPrefix = (recurCoef = []) => { // 生成 遞迴的齊次部分 "a_n = r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}" (latex)
@@ -577,9 +577,9 @@ const mlRecurNonHomog = (nonHomoFunc = {}) => { // 生成 遞迴的非齊次部�
 		const [s_k, s_frac_b] = key.split(","); // 非齊次的 c n^k b^n 項會表示為 { "k,b.n/b.d": c , ... }
 		const frac_b = Frac.fromStr(s_frac_b); // frac_b
 		
-		let s_term = mlTerm(frac_c, "n", s_k); // c n^k 部分的 latex 字串
+		let s_term = _mlTerm(frac_c, "n", s_k); // c n^k 部分的 latex 字串
 		if (!frac_b.equal(new Frac(1))) { // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-			s_term = mlTerm(removePrefix(s_term, "+"), frac_b, "n");
+			s_term = _mlTerm(removePrefix(s_term, "+"), frac_b, "n");
 		}
 		if (s_term !== "+0") s_latex += s_term; // 只顯示 c n^k 不為 0 的項
 	}

@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, toRaw, watch } from "vue";
-import { F, Frac, Matrix, SCL, mlTerm, mlEquationSystem } from "@/libs/RanMath.js";
+import { F, Frac, Matrix, SCL, _mlTerm, _mlEquationSystem } from "@/libs/RanMath.js";
 import { removePrefix } from "@/libs/StringTool.js";
 
 const props = defineProps({
@@ -79,7 +79,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	mlExp() { // 計算 a_n^(p) 之中, 指數項 "{b_i}^n" ... (latex)
-		return removePrefix(mlTerm(1, this.frac_b, 'n'), '+');
+		return removePrefix(_mlTerm(1, this.frac_b, 'n'), '+');
 	}
 	
 	mlSomePj() { // 對應的未知係數 "p_j, ... , p_{j+l-1}" (latex)
@@ -101,7 +101,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		const l = this.recurLevel; // 遞迴階數
 		let s_latex = Array.from({ length: this.PjNum }, (_, n) => { // 需要求幾個未知係數 p_j, 就要生成幾個式子
 			let s_equationLatex = this.recurCoef.map( // "- h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)}" (latex)
-				(frac_coef, i) => mlTerm(frac_coef.mul(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
+				(frac_coef, i) => _mlTerm(frac_coef.mul(-1), `a_{${n+(l-1)-i}}^{(p)}`, 1, true, true)
 			).join(" ");
 			return `a_{${n+l}}^{(p)} ${s_equationLatex} = F(${n+l})`; // "a_n^{(p)} - h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)} = F(n)" (latex)
 		}).join(" \\\\ "); // 以換行符連接所有的式子
@@ -110,7 +110,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	mlPjLinearEquation() { // 代入常數後得到："..." (latex)
-		return mlEquationSystem(
+		return _mlEquationSystem(
 			this.recurLevel + this.PjNum,
 			this.PjNum,
 			(n, j) => this.matrix_PjLE.arr[n][j].nf_a,
@@ -121,7 +121,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 	}
 	
 	mlSolvePjEquationSystem() { // 展開後得到: "p_j 的線性聯立方程式" (latex)
-		return mlEquationSystem(
+		return _mlEquationSystem(
 			this.PjNum,
 			this.PjNum,
 			(i, j) => this.matrix_solvePj.arr[i][j].nf_a,

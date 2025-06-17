@@ -1,5 +1,3 @@
-import { removePrefix, removePostfix } from "./StringTool";
-
 export function isNum(value) { // 是否為數字
 	return typeof value === "number";
 }
@@ -91,6 +89,9 @@ export class Prime { // 質數 (prime number)
 	}
 }
 
+export function F(n = 0, d = 1) { // Frac 工廠
+	return new Frac(n, d);
+}
 export class Frac { // 分數 (Fraction)
 	static isFrac(value) { // 檢查 value 是否為 Frac 實例
 		return value instanceof Frac;
@@ -360,7 +361,7 @@ export class EF { // Extension Field (a + b√s)
 			const nmd_gcd = gcd(gcd(n, m), d); // 約分
 			[n, m, d] = [n / nmd_gcd, m / nmd_gcd, d / nmd_gcd];
 			
-			let s_latex = mlTerm(m, `\\sqrt{${this.s}}`, 1); // m√s
+			let s_latex = _mlTerm(m, `\\sqrt{${this.s}}`, 1); // m√s
 			if (n !== 0) s_latex = `${n}${s_latex}`; // 若 n 不為 0 -> n ± m√s
 			if (d !== 1) s_latex = `\\frac{${removePrefix(s_latex, "+")}}{${d}}`; // 若 d 不為 1, 顯示分數 -> (n ± m√s) / d
 			return removePrefix(s_latex, "+");
@@ -368,15 +369,15 @@ export class EF { // Extension Field (a + b√s)
 		if (this.s === 0) return Hop.toLatex(this.nf_a); // a + 0√0 -> a (可能為 Frac 或 float)
 		
 		if (!Frac.isFrac(this.nf_a)) { // s < 0, 浮點複數
-			let s_latex = mlTerm(`${this.nf_b.toFixed(4)}`, "i", 1); // 浮點複數, b 必不為 0
+			let s_latex = _mlTerm(`${this.nf_b.toFixed(4)}`, "i", 1); // 浮點複數, b 必不為 0
 			if (this.nf_a !== 0) s_latex = `${this.nf_a.toFixed(4)}${s_latex}`;
 			return removePrefix(s_latex, "+");
 		}
 		
 		let s_latex = `${this.nf_b.n}`; // s < 0, 有理複數
-		if (this.s !== -1) s_latex = mlTerm(s_latex, `\\sqrt{${-this.s}}`, 1, false); // 若 s 不為 -1, 顯示根號
+		if (this.s !== -1) s_latex = _mlTerm(s_latex, `\\sqrt{${-this.s}}`, 1, false); // 若 s 不為 -1, 顯示根號
 		if (this.nf_b.d !== 1) s_latex = `\\frac{${s_latex}}{${this.nf_b.d}}`; // 若 d 不為 1, 顯示分數 (分母不能有 +)
-		s_latex = mlTerm(s_latex, "i", 1); // ± im i
+		s_latex = _mlTerm(s_latex, "i", 1); // ± im i
 		if (!this.nf_a.isZero()) s_latex = `${this.nf_a.toLatex()}${s_latex}`; // 若實部不為 0, 變成 re ± im i
 		return removePrefix(s_latex, "+"); // re ± im i
 	}
@@ -758,6 +759,82 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 	}
 }
 
+export function removePrefix(str, prefix) { // 移除字串開頭的特定字串
+	if (str.startsWith(prefix)) return str.slice(prefix.length);
+	return str;
+}
+
+export function removePostfix(str, postfix) { // 移除字串尾端的特定字串
+	if (str.endsWith(postfix)) return str.slice(0, -postfix.length);
+	return str;
+}
+
+export class MakeLatex { // latex 字串處理
+	static delim(str_latex) { // 在 latex 字串兩端加上自動調整大小的小括號
+		return `\\left(${str_latex}\\right)`;
+	}
+	
+	static term(coef, base, pow) { // 根據係數, 底數, 次方, 生成 c b^p 的 latex 字串
+		// coef, base, pow 預處理
+		coef = Hop.isNumOrFrac(coef) ? Hop.toLatex(coef) : String(coef); // 將 number | Frac 轉 string
+		
+		let addDelim = (Frac.isFrac(base) && !base.isInt()); // 若底數為不可約分的分數, 要加括號
+		base = Hop.isNumOrFrac(base) ? Hop.toLatex(base) : String(base); // 將 number | Frac 轉 string
+		if (base[0] === "-") addDelim = true; // 底數字串有負號, 要加括號
+		
+		pow = Hop.isNumOrFrac(pow) ? Hop.toStr(pow) : String(pow); // 分數次方會顯示 "n/d" 而非分數, 而 float 次方會四捨五入至 .4 位
+		
+		// 生成 b^p 部分
+		let s_latex = "?";
+		if (pow === "0" || base === "1") s_latex = "1"; // b^0 = 1 ; 1^p = 1
+		else if (base === "0") s_latex = "0"; // 0^p = 0, 排除 0^0
+		else if (pow === "1") s_latex = (addDelim && coef !== "1") ? `{${MakeLatex.delim(base)}}` : base; // b^1 = b
+		else if (addDelim) s_latex = `{${MakeLatex.delim(base)}}^{${pow}}`; // (b)^p
+		else s_latex = `{${base}}^{${pow}}`; // b^p
+		
+		// 生成 c b^p 部分
+		if (coef === "0" || s_latex === "0") s_latex = "0"; // c 或 b^p 為 0, 該項就必為 0
+		else if (coef === "1") s_latex = s_latex; // 1 b^p -> b^p
+		else if (coef === "-1") s_latex = `-${s_latex}`; // -1 b^p -> -b^p
+		else if (s_latex === "1") s_latex = coef; // c 1 -> c
+		else if (/^[0-9]$/.test(base[0])) s_latex = `${coef}\\cdot${s_latex}`; // 底數 b 的開頭若為數字, 需要用乘點分離
+		else s_latex = `${coef}${s_latex}`; // c b^p
+		
+		return `${s_latex}`;
+	}
+	
+	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") {
+		
+	}
+}
+
+export class MultiTerm { // 生成多個 MakeLatex.term 組合成的式子, 會自動連接
+	constructor() {
+		this._latexStr = ""; // latex string buffer
+	}
+	
+	pushTerm(coef, base, pow) { // 在尾端新增 ±c b^p 項 (latex 語法)
+		let s_term = MakeLatex.term(coef, base, pow);
+		if (s_term === "0") return this; // 若 MakeLatex.term 輸出 "0", 那麼不新增這一項
+		if (s_term[0] !== "+" && s_term[0] !== "-") s_term = "+" + s_term; // 如果 s_term 首字元不是 +-, 補上 "+" (為了將多個 term 連接起來)
+		this._latexStr += s_term;
+		return this; // chaining
+	}
+	
+	getLatex() { // 回傳連接完成的 latex 語法字串
+		if (this._latexStr === "") return "0"; // 如果 multi term 沒有任何一項, 回傳 "0"
+		return removePrefix(this._latexStr, "+"); // 首字元如果出現 "+", 必須移除
+	}
+}
+
+function throwErr(methodName, errMessage) {
+	throw new Error(`[RanMath][${methodName}] ${errMessage}`);
+}
+
+
+
+
+
 export class _Matrix { // [棄用] 舊矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
 		if (!Array.isArray(arr)) { // 如果 A 不是 Array
@@ -1133,20 +1210,15 @@ export class _SolveCubic { // [棄用] 解三次方程式
 	}
 }
 
-export function F(n = 0, d = 1) { // Frac 工廠
-	return new Frac(n, d);
-}
+export const SCL = "~,~~"; // [棄用] separate comma latex
 
-// 字串處理
-export const SCL = "~,\\enspace"; // separate comma latex
-
-export function isStrInt(str) { // [棄用] 某個字串是否為整數
+export function _isStrInt(str) { // [棄用] 某個字串是否為整數
 	return /^-?\d+$/.test(str);
 }
 
-export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [重構] 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
+export function _mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [重構] 根據係數, 底數名稱, 次方數生成 c b^p 的 latex 字串
 	if (nonZero) { // 若 nonZero 為 true, 且生成的 latex 字串的數值為 0, 會回傳空字串而不是 "+0"
-		let s_latex = mlTerm(coef, base, pow);
+		let s_latex = _mlTerm(coef, base, pow);
 		return s_latex === "+0" ? "" : s_latex;
 	}
 	
@@ -1155,7 +1227,7 @@ export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [
 	else coef = String(coef);
 	
 	if (Frac.isFrac(base)) {
-		if (!base.isInt()) base = `\\left( ${base.toLatex()} \\right)`; // 分數為底數要加括號
+		if (!base.isInt()) base = `\\left( ${base.toLatex()} \\right)`; // 分數要加括號
 		else base = base.toLatex();
 	} else base = String(base);
 	if (base[0] === "-") base = `\\left( ${base} \\right)`; // 底數有負號要加括號
@@ -1173,7 +1245,7 @@ export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [
 	
 	if (s_coefLatex[0] !== "-") s_coefLatex = (firstPos ? "+" : "") + s_coefLatex; // 開頭無負號要補 +
 	
-	if (isStrInt(s_coefLatex[s_coefLatex.length-1]) && isStrInt(base[0])) {
+	if (_isStrInt(s_coefLatex[s_coefLatex.length-1]) && _isStrInt(base[0])) {
 		s_coefLatex += " \\cdot "; // 係數與底數連接處若都為數字, 需要加乘點分離
 	}
 	
@@ -1186,16 +1258,12 @@ export function mlTerm(coef, base, pow, firstPos = true, nonZero = false) { // [
 	return s_coefLatex + s_varLatex;
 }
 
-export function mlMultiTerm(latexArr) { // 用於組合多個 latex, 會偵測並以 "+" 連接多個 latex; 當整個式子為 0, 會回傳 0
-	// 採用 +0 合併, 去頭0
-}
-
-export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 生成聯立方程式的 latex (會將未知數對齊)
+export function _mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 生成聯立方程式的 latex (會將未知數對齊)
 	let s_latex = Array.from({ length: row }, (_, i) => {
 		let s_equationLatex = Array.from({ length: col }, (_, j) => {
 			const coef = coefFunc(i, j) ?? "?"; // 係數, 可以為 string, number, Frac
 			const varLatex = varFunc(i, j) ?? "?"; // 未知數的 latex
-			const s_termLatex = mlTerm(coef, `&${varLatex}&`, 1);
+			const s_termLatex = _mlTerm(coef, `&${varLatex}&`, 1);
 			return s_termLatex === "+0" ? "&&" : `~${s_termLatex}`; // 某一個常係數為 0, 為了要保持後續未知數的對齊, 回傳 "&&"
 		}).join(" ");
 		
@@ -1211,10 +1279,3 @@ export function mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalMo
 	s_latex = `\\begin{alignat*}{${col+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
 	return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
 }
-// 字串處理
-
-// 錯誤訊息
-function throwErr(methodName, errMessage) {
-	throw new Error(`[RanMath][${methodName}] ${errMessage}`);
-}
-// 錯誤訊息
