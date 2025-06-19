@@ -652,7 +652,7 @@ export class SolveQuad { // 解二次方程式 (Quadratic Equation)
 	}
 	
 	toLatex() { // 將方程式的解轉為 latex 語法
-		return this.roots.map(ef_x => ef_x.toLatex()).join(SCL);
+		return this.roots.map(ef_x => ef_x.toLatex()).join(MakeLatex.sc);
 	}
 }
 
@@ -755,7 +755,7 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 	}
 	
 	toLatex() { // 將方程式的解轉為 latex 語法
-		return this.roots.map(ef_x => ef_x.toLatex()).join(SCL);
+		return this.roots.map(ef_x => ef_x.toLatex()).join(MakeLatex.sc);
 	}
 }
 
@@ -770,6 +770,8 @@ export function removePostfix(str, postfix) { // 移除字串尾端的特定字�
 }
 
 export class MakeLatex { // latex 字串處理
+	static sc = "~,~~"; // separate comma
+	
 	static delim(str_latex) { // 在 latex 字串兩端加上自動調整大小的小括號
 		return `\\left(${str_latex}\\right)`;
 	}
@@ -813,15 +815,18 @@ export class MultiTerm { // 生成多個 MakeLatex.term 組合成的式子, 會�
 		this._latexStr = ""; // latex string buffer
 	}
 	
-	pushTerm(coef, base, pow) { // 在尾端新增 ±c b^p 項 (latex 語法)
-		let s_term = MakeLatex.term(coef, base, pow);
-		if (s_term === "0") return this; // 若 MakeLatex.term 輸出 "0", 那麼不新增這一項
-		if (s_term[0] !== "+" && s_term[0] !== "-") s_term = "+" + s_term; // 如果 s_term 首字元不是 +-, 補上 "+" (為了將多個 term 連接起來)
-		this._latexStr += s_term;
+	push(s_latex) { // 在尾端連接一個式子
+		if (s_latex === "0") return this; // 若 MakeLatex.term 輸出 "0", 那麼不新增這一項
+		if (s_latex[0] !== "+" && s_latex[0] !== "-") s_latex = "+" + s_latex; // 如果 s_latex 首字元不是 +-, 補上 "+" (為了將多個 term 連接起來)
+		this._latexStr += s_latex;
 		return this; // chaining
 	}
 	
-	getLatex() { // 回傳連接完成的 latex 語法字串
+	pushTerm(coef, base, pow) { // 在尾端新增 ±c b^p 項 (latex 語法)
+		return this.push(MakeLatex.term(coef, base, pow)); // chaining
+	}
+	
+	toLatex() { // 回傳連接完成的 latex 語法字串
 		if (this._latexStr === "") return "0"; // 如果 multi term 沒有任何一項, 回傳 "0"
 		return removePrefix(this._latexStr, "+"); // 首字元如果出現 "+", 必須移除
 	}
@@ -831,9 +836,8 @@ function throwErr(methodName, errMessage) {
 	throw new Error(`[RanMath][${methodName}] ${errMessage}`);
 }
 
-
-
-
+// 以下棄用
+export const SCL = "~,~~"; // [棄用] separate comma latex -> ml.sc
 
 export class _Matrix { // [棄用] 舊矩陣
 	static isMatrix(arr, err = false) { // 檢查 arr 是否是合法矩陣. 若 arr 不是矩陣, err 會決定要不要報錯
@@ -1209,8 +1213,6 @@ export class _SolveCubic { // [棄用] 解三次方程式
 		return null;
 	}
 }
-
-export const SCL = "~,~~"; // [棄用] separate comma latex
 
 export function _isStrInt(str) { // [棄用] 某個字串是否為整數
 	return /^-?\d+$/.test(str);
