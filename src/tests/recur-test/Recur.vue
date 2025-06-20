@@ -30,6 +30,14 @@
 		<div v-if="recur.haveNonHomog()">
 			遞迴的非齊次部分為
 			<vl c :exp="`F(n) = ${recur.mlRecurNonHomog()}`" />
+			合併相同的指數項：
+			<vl c :exp="`F(n) = \\sum\\limits_{i} f_i(n) {b_i}^n = ${recur.nonHomog.mlCombinedExpFunc()}`" />
+			猜測特解的形式為：
+			<vl c :exp="recur.nonHomog.mlParticularForm()" />
+			其中多項式 <vl exp="g_i(n)" /> 的次數應與 <vl exp="f_i(n)" /> 相同。<br>
+			<br>
+			檢查齊次解 <vl exp="a_n^{(h)}" /> 和特解 <vl exp="a_n^{(p)}" />
+			之中是否存在相同的指數部分 <vl exp="{b_i}^n" />：<br>
 		</div>
 		<div v-else>
 			遞迴式沒有非齊次部分，跳過這一步驟。

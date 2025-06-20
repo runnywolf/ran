@@ -799,8 +799,9 @@ export class MakeLatex { // latex 字串處理
 		else if (coef === "1") s_latex = s_latex; // 1 b^p -> b^p
 		else if (coef === "-1") s_latex = `-${s_latex}`; // -1 b^p -> -b^p
 		else if (s_latex === "1") s_latex = coef; // c 1 -> c
-		else if (/^[0-9]$/.test(base[0])) s_latex = `${coef}\\cdot${s_latex}`; // 底數 b 的開頭若為數字, 需要用乘點分離
-		else s_latex = `${coef}${s_latex}`; // c b^p
+		else if (/^[0-9]$/.test(base[0]) && coef[coef.length-1] !== ")") {
+			s_latex = `${coef}\\cdot${s_latex}`; // 底數 b 的開頭若為數字, 需要用乘點分離 (係數 coef 的尾端是 ")" 字符為例外)
+		} else s_latex = `${coef}${s_latex}`; // c b^p
 		
 		return `${s_latex}`;
 	}
