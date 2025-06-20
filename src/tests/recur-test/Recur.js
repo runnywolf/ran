@@ -196,6 +196,34 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		Object.keys(this.combinedExpFunc).forEach(s_frac_b => mt.push(this.mlExpTerm(s_frac_b, true)));
 		return `a_n^{(p)} = \\sum\\limits_{i} g_i(n) {b_i}^n = ${mt.toLatex()}`;
 	}
+	
+	existSameBase() { // a_n^(p) 和 a_n^(h) 是否存在相同的指數部分 b^n
+		return Object.keys(this.expExtraPow).length > 0;
+	}
+	
+	mlSameBaseInHomog() { // 由於 "..." 已出現在 a_n^(h) 之中 (latex)
+		let arr_baseLatex = [];
+		for (const [s_frac_b, extraPow] of Object.entries(this.expExtraPow)) {
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+			for (let i = 0; i < extraPow; i++) {
+				arr_baseLatex.push(ml.term(ml.term(1, "n", i), frac_b.equal(1) ? "{1}" : frac_b, "n"));
+			}
+		}
+		return arr_baseLatex.join("~,~");
+	}
+	
+	mlSameBaseInParticular() { // ，若特解與 a_n^(p) 也包含同樣項次 "..." 會導致與齊次解重疊 (latex)
+		return Object.keys(this.expExtraPow).map(s_frac_b => {
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+			return ml.term(`p_{${this.pjIndex[s_frac_b][0]}}`, frac_b.equal(1) ? "{1}" : frac_b, "n");
+		}).join("~,~");
+	}
+	
+	mlChangeList() { // 為了保證特解與齊次解的線性獨立性，需要將 "(p1 + p2n) b^n" 設為 "(p1n^2 + p2n^3) b^n". (齊次解有二重根 b 的情況)
+		return Object.entries(this.expExtraPow).map(([s_frac_b, extraPow]) => {
+			return [this.mlExpTerm(s_frac_b, true), this.mlExpTerm(s_frac_b, true, extraPow)];
+		});
+	}
 }
 
 export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的未知係數, 並生成計算過程
