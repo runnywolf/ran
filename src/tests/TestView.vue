@@ -1,7 +1,7 @@
 <template>
 	<div class="ts-box ts-content">
 		<Recur
-			:recurCoef="[5, -8, 4]"
+			:recurCoef="[1, 1, -1]"
 			:nonHomoFunc="[[F(1, 2), 2, F(-2, 3)], [5, 0, 2], [-2, 1, 1]]"
 			:initConst="[1, 2]"
 		></Recur>

@@ -7,7 +7,34 @@
 		<vl c :exp="recur.mlRecur()" />
 		
 		<span class="ts-text is-large is-bold">Step1：求齊次解的形式</span><br>
-		遞迴的齊次部分為 <vl :exp="recur.mlRecurHomogEquation()" /><br>
+		遞迴的齊次部分為 <vl :exp="`a_n = ${recur.mlRecurHomog()}`" /><br>
+		<vl exp="\Rightarrow" /> 特徵多項式為 <vl :exp="recur.mlCharacterPolynomial()" /><br>
+		<vl :exp="`\\Rightarrow ~ t = ${recur.mlEigenvalues()}`" />
+		<span v-if="recur.showNoRationalRoot()" style="color: #eb0; margin-left: 10px;">
+			<span class="ts-icon is-circle-exclamation-icon"></span>&nbsp;不存在有理數形式的根
+		</span>
+		<div style="height: 12px;"></div>
+		<span v-if="recur.getMultiRoot()">
+			有{{ recur.getMultiRootNumber() === 2 ? "二" : "三" }}重根
+			<vl :exp="recur.getMultiRoot().toLatex()" />，需要設
+			<vl :exp="recur.mlMultiRootHomog()" /> 保證線性獨立。
+		</span>
+		<span v-else>
+			無重根，
+		</span>
+		<br>
+		因此將齊次解設為<br>
+		<vl c :exp="`a_n^{(h)} = ${recur.mlHomogForm(true)}`" />
+		
+		<span class="ts-text is-large is-bold">Step2：求特解</span>
+		<div v-if="recur.haveNonHomog()">
+			遞迴的非齊次部分為
+			<vl c :exp="`F(n) = ${recur.mlRecurNonHomog()}`" />
+		</div>
+		<div v-else>
+			遞迴式沒有非齊次部分，跳過這一步驟。
+			<div style="height: 12px;"></div>
+		</div>
 	</div>
 </template>
 

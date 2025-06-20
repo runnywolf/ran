@@ -631,7 +631,7 @@ export class SolveQuad { // 解二次方程式 (Quadratic Equation)
 		}
 		
 		const quadFracOp = (frac_a, frac_b, frac_c) => { // 如果 a, b, c 的型態都是 int number 或 Frac, 方程式的解為 [Q mode] (有理數計算)
-			const frac_axis = F(0).sub(frac_b).div(2).div(frac_a); // -b/2a
+			const frac_axis = frac_b.mul(-1).div(2).div(frac_a); // -b/2a
 			const ef_x1 = new EF(frac_axis, 1, frac_axis.mul(frac_axis).sub(frac_c.div(frac_a)));
 			if (ef_x1.s === 0) { // 解形式為 2 有理數
 				return [SolveQuad.TYPE_2_FRAC, ef_x1, ef_x1.mul(-1).sub(frac_b.div(frac_a))]; // x1+x2=-b/a ==> x2=-x1-b/a (使用 Vieta's , 因為 EF 的標準化會丟失共軛資訊)
@@ -645,14 +645,14 @@ export class SolveQuad { // 解二次方程式 (Quadratic Equation)
 			if (ef_x1.s < 0) return [SolveQuad.TYPE_2_COMPLEX, ef_x1, ef_x1.conjugate()]; // 解形式為 2 複數
 		};
 		[this.rootType, ...this.roots] = Hop._makeOp([nf_a, nf_b, nf_c], quadFracOp, quadFloatOp); // .roots 為方程式 ax^2 + bx + c 的 2 個根
+		
+		if (this.rootType === SolveQuad.TYPE_2_FRAC || this.rootType === SolveQuad.TYPE_2_REAL) { // 排序實根
+			if (Hop.lt(this.roots[1].nf_a, this.roots[0].nf_a)) this.roots.reverse();
+		}
 	}
 	
 	toStr() { // 將方程式的解轉為 debug 字串
 		return this.roots.map(ef_x => ef_x.toStr()).join(" , ");
-	}
-	
-	toLatex() { // 將方程式的解轉為 latex 語法
-		return this.roots.map(ef_x => ef_x.toLatex()).join(MakeLatex.sc);
 	}
 }
 
@@ -748,14 +748,14 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 			}
 		};
 		[this.rootType, ...this.roots] = Hop._makeOp([nf_a, nf_b, nf_c, nf_d], cubicFracOp, cubicFloatOp); // .roots 為三次方程式的 3 個根
+		
+		if (this.rootType === SolveCubic.TYPE_3_FRAC || this.rootType === SolveCubic.TYPE_3_REAL) { // 排序實根
+			this.roots.sort((ef_a, ef_b) => Hop.lt(ef_a.nf_a, ef_b.nf_a) ? -1 : 1); // 將實數 ef 的 a 抽出比較即可
+		}
 	}
 	
 	toStr() { // 將方程式的解轉為 debug 字串
 		return this.roots.map(ef_x => ef_x.toStr()).join(" , ");
-	}
-	
-	toLatex() { // 將方程式的解轉為 latex 語法
-		return this.roots.map(ef_x => ef_x.toLatex()).join(MakeLatex.sc);
 	}
 }
 

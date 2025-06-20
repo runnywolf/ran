@@ -27,11 +27,11 @@ const testData = {
 			},
 			{
 				input: [1, F(-7, 3), 0, 0],
-				output: [SolveCubic.TYPE_3_FRAC, ef(0), ef(F(7, 3)), ef(0)]
+				output: [SolveCubic.TYPE_3_FRAC, ef(0), ef(0), ef(F(7, 3))]
 			},
 			{
 				input: [1, 2, 1, 0],
-				output: [SolveCubic.TYPE_3_FRAC, ef(0), ef(-1), ef(-1)]
+				output: [SolveCubic.TYPE_3_FRAC, ef(-1), ef(-1), ef(0)]
 			},
 			{
 				input: [1, 9, 27, 27],
@@ -39,7 +39,7 @@ const testData = {
 			},
 			{
 				input: [5, F(-173, 24), F(-1, 3), F(7, 8)],
-				output: [SolveCubic.TYPE_3_FRAC, ef(F(-1, 3)), ef(F(7, 5)), ef(F(3, 8))]
+				output: [SolveCubic.TYPE_3_FRAC, ef(F(-1, 3)), ef(F(3, 8)), ef(F(7, 5))]
 			},
 			{
 				input: [1, -1, -9, 0],
@@ -59,11 +59,11 @@ const testData = {
 			},
 			{
 				input: [1, -2, -9, -4], // 受限於 FP64 精度, 實際為: -0.5202305181354282 , -1.7856670111980018
-				output: [SolveCubic.TYPE_3_REAL, ef(4.3058975293334302), ef(-0.5202305181354285), ef(-1.7856670111980018)]
+				output: [SolveCubic.TYPE_3_REAL, ef(-1.7856670111980018), ef(-0.5202305181354285), ef(4.3058975293334302)]
 			},
 			{
 				input: [1, 3.14, 0, F(0)],
-				output: [ SolveCubic.TYPE_3_REAL, ef(0), ef(0), ef(-3.14)]
+				output: [ SolveCubic.TYPE_3_REAL, ef(-3.14), ef(0), ef(0)]
 			},
 			{
 				input: [1, 7, -9, 4],
