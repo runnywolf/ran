@@ -55,7 +55,10 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	
 	constructor(recurCoef, nonHomogFunc, initConst) {
 		SolveRecur.checkParam(recurCoef, nonHomogFunc, initConst); // 檢查參數型態
-		[this.recurCoef, this.nonHomogFunc, this.initConst] = SolveRecur.initRecur(recurCoef, nonHomogFunc, initConst); // 整理遞迴式的參數
+		[recurCoef, nonHomogFunc, initConst] = SolveRecur.initRecur(recurCoef, nonHomogFunc, initConst); // 整理遞迴式的參數
+		this.recurCoef = recurCoef;
+		this.nonHomogFunc = nonHomogFunc;
+		this.initConst = initConst;
 		this.order = this.recurCoef.length; // 1|2|3 ; 遞迴階數
 		this.eigenvalue = SolveRecur.initEigenvalue(this.recurCoef, this.order); // Array<EF> ; 齊次遞迴的特徵值
 		this.extraPow = SolveRecur.initExtraPow(this.order, this.eigenvalue); // Array<0|1|2> ; 如果特徵值重根, 需要多乘 n^p 保證線性獨立
@@ -160,29 +163,35 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 	
 	static initExpExtraPow(eigenvalue, combinedExpFunc) { // 檢查 a_n^(p) 和 a_n^(h) 是否有重複的 b^n, 如果有, 需要多乘 n^k 保證線性獨立
 		let expExtraPow = {};
-		eigenvalue.forEach(ef => {
-			if (!Hop.equal(ef.nf_b, 0) || isNum(ef.nf_a)) return; // 無理數特徵值不可能跟特解的有理數 b 相同
-			const s_base = `${ef.nf_a.n}/${ef.nf_a.d}`; // 檢查 combinedExpFunc 裡的 b^n 有沒有跟齊次解重複
-			if (s_base in combinedExpFunc) expExtraPow[s_base] = (expExtraPow[s_base] ?? 0) + 1; // 每個重複的 b^n, 需要多乘一個 n
+		Object.keys(combinedExpFunc).forEach(s_frac_b => {
+			if (eigenvalue.some(ef => ef.equal(Frac.fromStr(s_frac_b)))) { // 檢查 combinedExpFunc 裡的 b^n 有沒有跟齊次解重複
+				expExtraPow[s_frac_b] = (expExtraPow[s_frac_b] ?? 0) + 1; // 每個重複的 b^n, 需要多乘一個 n
+			}
 		});
 		return expExtraPow;
+	}
+	
+	static mlExponential(s_frac_b) { // 生成 "b^n" 的 latex 語法, 會特別保留 1^n 而不會省略成 1
+		const frac_b = Frac.fromStr(s_frac_b);
+		return ml.term(1, frac_b.equal(1) ? "{1}" : frac_b, "n");
 	}
 	
 	constructor(recur) {
 		this.recurCoef = recur.recurCoef; // Array<Frac> ; 齊次部分的係數
 		this.combinedExpFunc = SolveNonHomog.initExpFunc(recur.nonHomogFunc); // 同類指數項 { "b.n/b.d": [ f0, f1, f2 ], ... } 代表 (f0 + f1n + f2n^2) b^n + ...
-		[this.pjIndex, this.pjNum] = SolveNonHomog.initPjIndex(this.combinedExpFunc); // 未知係數的編號, 與 combinedExpFunc 的結構相同 ; pjNum 為未知係數的數量
+		const [pjIndex, pjNum] = SolveNonHomog.initPjIndex(this.combinedExpFunc); // 未知係數的編號, 與 combinedExpFunc 的結構相同 ; pjNum 為未知係數的數量
+		this.pjIndex = pjIndex;
+		this.pjNum = pjNum;
 		this.expExtraPow = SolveNonHomog.initExpExtraPow(recur.eigenvalue, this.combinedExpFunc); // { "b.n/b.d": k, ... } ; 齊次解的某個特徵值 b 的重根數, 且 b^n 存在於特解內. 決定非齊次指數項需要乘 n^k 保證線性獨立
 	}
 	
-	mlExpTerm(s_frac_b, isUnknownCoef, extraNPow = 0) { // 生成 "(p1 + p2n + ...) b^n" (latex). extraNPow 為額外乘上去的 n^p
-		const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
+	mlExpTerm(s_frac_b, isUnknownCoef, extraPow = 0) { // 生成 "(p1 + p2n + ...) b^n" (latex). extraPow 為額外乘上去的 n^p
 		const mt = new MultiTerm(); // "p1 + p2n + ..." (latex)
 		this.combinedExpFunc[s_frac_b].forEach((coef, i) => {
 			if (isUnknownCoef) coef = `p_{${this.pjIndex[s_frac_b][i]}}`; // isUnknownCoef 開啟會把係數替換成未知數 p_j
-			mt.pushTerm(coef, "n", i + extraNPow);
+			mt.pushTerm(coef, "n", i + extraPow);
 		});
-		return ml.term(`(${mt.toLatex()})`, frac_b.equal(1) ? "{1}" : frac_b, "n"); // 防止 1^n 被吃掉
+		return `(${mt.toLatex()})${SolveNonHomog.mlExponential(s_frac_b)}`; // "(p1 + p2n + ...) b^n" (latex)
 	}
 	
 	mlCombinedExpFunc() { // 合併相同的指數項: ... "(f0 + f1n + f2n^2 + ...) b^n + ..." (latex)
@@ -204,9 +213,8 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 	mlSameBaseInHomog() { // 由於 "..." 已出現在 a_n^(h) 之中 (latex)
 		let arr_baseLatex = [];
 		for (const [s_frac_b, extraPow] of Object.entries(this.expExtraPow)) {
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
 			for (let i = 0; i < extraPow; i++) {
-				arr_baseLatex.push(ml.term(ml.term(1, "n", i), frac_b.equal(1) ? "{1}" : frac_b, "n"));
+				arr_baseLatex.push(ml.term(ml.term(1, "n", i), SolveNonHomog.mlExponential(s_frac_b), 1));
 			}
 		}
 		return arr_baseLatex.join("~,~");
@@ -214,8 +222,7 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 	
 	mlSameBaseInParticular() { // ，若特解與 a_n^(p) 也包含同樣項次 "..." 會導致與齊次解重疊 (latex)
 		return Object.keys(this.expExtraPow).map(s_frac_b => {
-			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b (Frac)
-			return ml.term(`p_{${this.pjIndex[s_frac_b][0]}}`, frac_b.equal(1) ? "{1}" : frac_b, "n");
+			return ml.term(`p_{${this.pjIndex[s_frac_b][0]}}`, SolveNonHomog.mlExponential(s_frac_b), 1);
 		}).join("~,~");
 	}
 	
@@ -223,6 +230,33 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		return Object.entries(this.expExtraPow).map(([s_frac_b, extraPow]) => {
 			return [this.mlExpTerm(s_frac_b, true), this.mlExpTerm(s_frac_b, true, extraPow)];
 		});
+	}
+	
+	mlNewParticularForm() { // 因此特解的形式為: "a_n^(p) = (p1 + p2n + ...) b^n + ..." (已乘額外的 n^p)
+		const mt = new MultiTerm();
+		Object.keys(this.combinedExpFunc).forEach(s_frac_b => {
+			const extraPow = this.expExtraPow[s_frac_b] ?? 0; // 為保持特解的線性獨立性, 額外乘上去的 n^p
+			mt.push(this.mlExpTerm(s_frac_b, true, extraPow));
+		});
+		return `a_n^{(p)} = ${mt.toLatex()}`;
+	}
+	
+	mlParticularIntoRecur() { // 將 a_n^(p) 代入原遞迴關係: "a_n^(p) = r1 a_{n-1}^(p) + ... + F(n), n >= ?" (latex)
+		const mt = new MultiTerm();
+		this.recurCoef.forEach((frac_coef, i) => mt.pushTerm(frac_coef, `a_{n-${i+1}}^{(p)}`, 1)); // "r1 a_{n-1}^(p) + ..." (latex)
+		mt.push("F(n)"); // "r1 a_{n-1}^(p) + ... + F(n)" (latex)
+		return `a_n^{(p)} = ${mt.toLatex()} ${ml.sc} n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+	}
+	
+	mlParticularIntoRecurTrans() { // 移項後得到: "a_n^(p) - r1 a_{n-1}^(p) - ... = F(n), n >= ?" (latex)
+		const mt = new MultiTerm().push("a_n^{(p)}"); // "a_n^(p)" (latex)
+		this.recurCoef.forEach((frac_coef, i) => mt.pushTerm(frac_coef.mul(-1), `a_{n-${i+1}}^{(p)}`, 1)); // "a_n^(p) - r1 a_{n-1}^(p) - ..." (latex)
+		return `${mt.toLatex()} = F(n) ${ml.sc} n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+	}
+	
+	mlParticularIntoRecurWhere() { // 其中 ... (latex)
+		let s_latex = `${this.mlNewParticularForm()} \\\\ F(n) = ${this.mlCombinedExpFunc()}`;
+		return `\\begin{cases} ${s_latex} \\end{cases}`;
 	}
 }
 
