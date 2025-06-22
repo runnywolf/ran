@@ -9,7 +9,17 @@
 </template>
 
 <script setup>
-import { SolveQuad, EF, F, gcd } from "ran-math";
+/*
+import { SolveQuad, EF, F, gcd, MakeLatex as ml, _mlEquationSystem } from "ran-math";
+const arr = [
+	[77, 45, 3],
+	[1, -2, 0],
+	[0, 0, 0]
+];
+const equal = [0, 711, 23]
+let testLatex = ml.equationSystem(3, 3, (i, j) => arr[i][j], (i, j) => `a_{${i}${j}}`, i => equal[i], "left")
+console.log(testLatex)
+*/
 
 // import EFtest from "./ran-math/ef-latex.test.vue"; // EF.toLatex 的 ui 測試
 // import TermTest from "./ran-math/make-latex-term.test.vue"; // MakeLatex.term 的 ui 測試

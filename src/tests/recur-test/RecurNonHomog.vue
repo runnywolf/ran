@@ -34,9 +34,9 @@
 	<div class="ts-box" style="margin: 12px 0;">
 		<template v-for="s_frac_b in Object.keys(nonHomog.combinedExpFunc)">
 			<div class="ts-content is-dense">
-				<details class="ts-accordion" name="non-homog-exp">
+				<details class="ts-accordion">
 					<summary>指數項&nbsp;<vl :exp="SolveNonHomog.mlExponential(s_frac_b)" />&nbsp;的部分</summary>
-					<RecurNonHomogExp :nonHomogExp="nonHomog.nonHomogExp"></RecurNonHomogExp>
+					<RecurNonHomogExp :nonHomogExp="nonHomog.dict_nonHomogExp[s_frac_b]"></RecurNonHomogExp>
 				</details>
 			</div>
 			<div v-if="nonHomog.pjIndex[s_frac_b].at(-1) !== nonHomog.pjNum" class="ts-divider"></div><!-- 分隔線 -->

@@ -82,7 +82,7 @@ class SolveNonHomogExp { // 計算遞迴特解當中的某個指數部分 b^n �
 		return removePrefix(_mlTerm(1, this.frac_b, 'n'), '+');
 	}
 	
-	mlSomePj() { // 對應的未知係數 "p_j, ... , p_{j+l-1}" (latex)
+	mlSomePj() { // 對應的 ? 個未知係數 "p_j, ... , p_{j+l-1}" (latex)
 		if (this.PjNum <= 0) return "?";
 		if (this.PjNum == 1) return `p_{${this.startPj}}`;
 		if (this.PjNum == 2) return `p_{${this.startPj}} ~,~ p_{${this.startPj + 1}}`

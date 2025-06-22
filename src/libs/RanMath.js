@@ -807,7 +807,32 @@ export class MakeLatex { // latex 字串處理
 	}
 	
 	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") {
+		let s_latex = Array.from({ length: row }, (_, i) => {
+			let s_equationLatex = Array.from({ length: col }, (_, j) => {
+				const coef = coefFunc(i, j) ?? "?"; // 係數, 可以為 string, number, Frac
+				const varLatex = varFunc(i, j) ?? "?"; // 未知數的 latex
+				const s_termLatex = MakeLatex.term(`${coef}`, `&${varLatex}&`, 1);
+				if (s_termLatex === "0") return "&&"; // 某一個常係數為 0, 為了要保持後續未知數的對齊, 回傳 "&&"
+				if (s_termLatex[0] === "-") return s_termLatex;
+				return `+${s_termLatex}`; // 首字符不是 "-" 要補 "+"
+			}).join("~");
+			
+			s_equationLatex = removePrefix(s_equationLatex, "+"); // 去除開頭的 "+"
+			if (s_equationLatex.split("&&").length - 1 === col) { // 若某一個 row 沒有任何一項, 顯示 0
+				if (equalMode !== "right") s_equationLatex = `0`;
+				else s_equationLatex = `${removePostfix(s_equationLatex, "&")}0&`;
+			}
+			
+			if (equalMode === "right") s_equationLatex = `${s_equationLatex}&=${equalFunc(i) ?? "?"}`; // "=" 在右側
+			else if (equalMode === "left") { // "=" 在左側 (加上 "&" 讓 "=" 符號對齊)
+				s_equationLatex = `${equalFunc(i) ?? "?"}&=~&${removePostfix(s_equationLatex, "&")}`;
+			}
+			
+			return s_equationLatex; // 最後一個字符不能是 &, katex 會報錯
+		}).join("\\\\"); // 以換行符連接所有的式子
 		
+		s_latex = `\\begin{alignat*}{${col+1}}${s_latex}\\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
+		return `\\left\\{${s_latex}\\right.`; // 加上聯立方程式左側的 "{" 符號
 	}
 }
 
@@ -1277,8 +1302,8 @@ export function _mlEquationSystem(row, col, coefFunc, varFunc, equalFunc, equalM
 		else s_equationLatex = `${s_equationLatex} &= ${equalFunc(i) ?? "?"}`; // "=" 在右側
 		
 		return removePostfix(s_equationLatex, "&"); // 最後一個字符不能是 &, katex 會報錯
-	}).join(" \\\\ "); // 以換行符連接所有的式子
+	}).join(" \\\\ \n"); // 以換行符連接所有的式子
 	
-	s_latex = `\\begin{alignat*}{${col+1}} ${s_latex} \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
+	s_latex = `\\begin{alignat*}{${col+1}} \n${s_latex}\n \\end{alignat*}`; // 聯立方程式的 latex 對齊規則 (將未知數和 "=" 對齊)
 	return `\\left\\{ ${s_latex} \\right.`; // 加上聯立方程式左側的 "{" 符號
 }
