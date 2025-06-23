@@ -808,16 +808,18 @@ export class MakeLatex { // latex 字串處理
 	
 	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") {
 		let s_latex = Array.from({ length: row }, (_, i) => {
+			let addPos = false; // 第一項不應該出現 +
 			let s_equationLatex = Array.from({ length: col }, (_, j) => {
 				const coef = coefFunc(i, j) ?? "?"; // 係數, 可以為 string, number, Frac
 				const varLatex = varFunc(i, j) ?? "?"; // 未知數的 latex
-				const s_termLatex = MakeLatex.term(`${coef}`, `&${varLatex}&`, 1);
+				let s_termLatex = MakeLatex.term(coef, `&${varLatex}&`, 1);
 				if (s_termLatex === "0") return "&&"; // 某一個常係數為 0, 為了要保持後續未知數的對齊, 回傳 "&&"
-				if (s_termLatex[0] === "-") return s_termLatex;
-				return `+${s_termLatex}`; // 首字符不是 "-" 要補 "+"
+				
+				if (s_termLatex[0] !== "-" && addPos) s_termLatex = `+${s_termLatex}`;
+				addPos = true;
+				return s_termLatex; // 首字符不是 "-" 要補 "+"
 			}).join("~");
 			
-			s_equationLatex = removePrefix(s_equationLatex, "+"); // 去除開頭的 "+"
 			if (s_equationLatex.split("&&").length - 1 === col) { // 若某一個 row 沒有任何一項, 顯示 0
 				if (equalMode !== "right") s_equationLatex = `0`;
 				else s_equationLatex = `${removePostfix(s_equationLatex, "&")}0&`;

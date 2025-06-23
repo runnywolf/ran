@@ -43,6 +43,7 @@
 		</template>
 	</div>
 	將 <vl exp="p_j" /> 代回 <vl exp="a_n^{(p)}" />，得到特解為<br>
+	<vl c :exp="nonHomog.mlParticular()" />
 </template>
 
 <script setup>

@@ -5,11 +5,11 @@
 	<vl c :exp="nonHomogExp.mlParticularLinearEquation()" />
 	其中 <vl :exp="nonHomogExp.mlExpTermInNonHomog()" />，<br>
 	<vl :exp="nonHomogExp.mlExpTermInParticular()" />，代入常數後得到：
-	<vl c :exp="nonHomogExp.mlPjLinearEquation()" />
+	<vl c :exp="nonHomogExp.mlPjLinearEquationsFromAnp()" />
 	展開後得到：
-	<vl c :exp="'expData.mlSolvePjEquationSystem()'" />
+	<vl c :exp="nonHomogExp.mlPjLinearEquations()" />
 	使用高斯消去法解 <vl exp="p_j" /> 的聯立方程式，得到：
-	<vl c :exp="'expData.mlPjAnswer()'" />
+	<vl c :exp="nonHomogExp.mlPjAnswer()" />
 </template>
 
 <script setup>

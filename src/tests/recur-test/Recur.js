@@ -163,10 +163,9 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 	
 	static initExpExtraPow(eigenvalue, combinedExpFunc) { // 檢查 a_n^(p) 和 a_n^(h) 是否有重複的 b^n, 如果有, 需要多乘 n^k 保證線性獨立
 		let expExtraPow = {};
-		Object.keys(combinedExpFunc).forEach(s_frac_b => {
-			if (eigenvalue.some(ef => ef.equal(Frac.fromStr(s_frac_b)))) { // 檢查 combinedExpFunc 裡的 b^n 有沒有跟齊次解重複
-				expExtraPow[s_frac_b] = (expExtraPow[s_frac_b] ?? 0) + 1; // 每個重複的 b^n, 需要多乘一個 n
-			}
+		Object.keys(combinedExpFunc).forEach(s_frac_b => { // 檢查 combinedExpFunc 裡的 b^n 有沒有跟齊次解重複
+			const extraPow = eigenvalue.filter(ef => ef.equal(Frac.fromStr(s_frac_b))).length; // 每個重複的 b^n, 需要多乘一個 n
+			if (extraPow >= 1) expExtraPow[s_frac_b] = extraPow;
 		});
 		return expExtraPow;
 	}
@@ -186,6 +185,14 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		return dict_nonHomogExp;
 	}
 	
+	static initParticular(dict_nonHomogExp) { // 將每個 b^n 對應的 SolveNonHomogExp 分別計算的特解係數 p_j 合併起來, 形成特解
+		let particular = {};
+		for (const [s_frac_b, nonHomogExp] of Object.entries(dict_nonHomogExp)) {
+			particular[s_frac_b] = [...Array(nonHomogExp.extraPow).fill(F(0)), ...nonHomogExp.pjAnswer]; // 將多項式乘上額外的 n^p
+		}
+		return particular;
+	}
+	
 	static mlExponential(s_frac_b) { // 生成 "b^n" 的 latex 語法, 會特別保留 1^n 而不會省略成 1
 		const frac_b = Frac.fromStr(s_frac_b);
 		return ml.term(1, frac_b.equal(1) ? "{1}" : frac_b, "n");
@@ -199,6 +206,7 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		this.pjNum = pjNum; // int>=1 ; 未知係數的數量
 		this.expExtraPow = SolveNonHomog.initExpExtraPow(recur.eigenvalue, this.combinedExpFunc); // { "b.n/b.d": k, ... } ; 齊次解的某個特徵值 b 的重根數, 且 b^n 存在於特解內. 決定非齊次指數項需要乘 n^k 保證線性獨立
 		this.dict_nonHomogExp = SolveNonHomog.initAllNonHomogExp(recur.recurCoef, this); // { "b.n/b.d": SolveNonHomogExp, ... }
+		this.particular = SolveNonHomog.initParticular(this.dict_nonHomogExp); // { "b.n/b.d": [ f0, f1, f2 ], ... } 代表特解 (f0 + f1n + f2n^2) b^n + ...
 	}
 	
 	mlExpTerm(s_frac_b, isUnknownCoef, extraPow = 0) { // 生成 "(p1 + p2n + ...) b^n" (latex). extraPow 為額外乘上去的 n^p
@@ -274,11 +282,42 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		let s_latex = `${this.mlNewParticularForm()} \\\\ F(n) = ${this.mlCombinedExpFunc()}`;
 		return `\\begin{cases} ${s_latex} \\end{cases}`;
 	}
+	
+	mlParticular() { // 將 p_j 代回 a_n^(p), 得到特解為 "..." (latex)
+		const mt = new MultiTerm();
+		for (const [s_frac_b, expPoly] of Object.entries(this.particular)) {
+			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
+			expPoly.forEach((frac_pj, k) => {
+				let s_term = ml.term(frac_pj, "n", k); // c n^k 部分的 latex 字串
+				if (!frac_pj.equal(1)) s_term = ml.term(s_term, frac_b, "n"); // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
+				mt.push(s_term);
+			});
+		}
+		return `a_n^{(p)} = ${mt.toLatex()}`;
+	}
 }
 
 export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的未知係數, 並生成計算過程
-	static initPjLinearEquations(order, frac_b, pjNum, extraPow) { // 求特解未知數 p_j 所需的足量線性方程式
-		return new Matrix(pjNum + order, pjNum, (n, i) => F(n ** (i + extraPow)).mul(frac_b.pow(n))); // 將自然數 n 代入 a_n^(p)
+	static initPjLinearEquationsFromAnp(order, frac_b, pjNum, extraPow) { // 將自然數 n 代入 a_n^(p), 得到 p_j 的線性組合
+		return new Matrix(pjNum + order, pjNum, (n, i) => F(n ** (i + extraPow)).mul(frac_b.pow(n)));
+	}
+	
+	static initPjLinearEquations(recurCoef, order, pjNum, matrix_pjLEfromAnp) { // p_j 的線性關係
+		const matrix_anpLE = new Matrix(pjNum, pjNum + order, (i, j) => {
+			for (const [k, frac_coef] of recurCoef.entries()) if (j - i === order - 1 - k) return frac_coef.mul(-1);
+			if (i + order === j) return 1;
+			return 0;
+		});
+		return matrix_anpLE.mul(matrix_pjLEfromAnp);
+	}
+	
+	static initFn(order, frac_b, expPoly, pjNum) { // 將常數代入非齊次部分 F(n)
+		const f = (n) => Frac.sum(expPoly.map((frac_c, i) => frac_c.mul(n**i))).mul(frac_b.pow(n)); // 非齊次部分 F(n) 代入 n 的結果: (c0 + c1 n + c2 n^2 + ...) b^n
+		return new Matrix(pjNum, 1, i => f(i + order));
+	}
+	
+	static solvePj(matrix_pjLE, matrix_fn) { // 解聯立求 p_j
+		return matrix_pjLE.inverse().mul(matrix_fn).arr.map(row => row[0].nf_a);
 	}
 	
 	constructor(nonHomog, recurCoef, s_frac_b, expPoly, extraPow, startPj) {
@@ -289,9 +328,16 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		this.pjNum = expPoly.length; // int>=1 ; 未知係數的數量, 一定跟多項式次數相同
 		this.extraPow = extraPow; // int>=0 ; 多乘的 n^k 保證線性獨立
 		this.startPj = startPj; // int>=1 ; 指數項 b^n 的多個未知係數的開始編號
-		this.matrix_pjLE = SolveNonHomogExp.initPjLinearEquations( // Matrix ; a_n^(p) 代入自然數 n 產生用於求特解未知數 p_j 所需的足量線性方程式
-			this.order, Frac.fromStr(s_frac_b), this.pjNum, this.extraPow
+		this.matrix_pjLEfromAnp = SolveNonHomogExp.initPjLinearEquationsFromAnp( // Matrix ; a_n^(p) 以 p_j 表示的線性關係
+			this.order, Frac.fromStr(s_frac_b), this.pjNum, extraPow
 		);
+		this.matrix_pjLE = SolveNonHomogExp.initPjLinearEquations( // Matrix ; p_j 的線性關係
+			recurCoef, this.order, this.pjNum, this.matrix_pjLEfromAnp
+		);
+		this.matrix_fn = SolveNonHomogExp.initFn( // Matrix ; 將常數代入非齊次部分 F(n) 得到的值
+			this.order, Frac.fromStr(s_frac_b), expPoly, this.pjNum
+		);
+		this.pjAnswer = SolveNonHomogExp.solvePj(this.matrix_pjLE, this.matrix_fn); // Array<Frac> ; 未知係數 p_j 的解
 	}
 	
 	mlExp() { // 計算 a_n^(p) 之中, 指數項 "{b_i}^n" ... (latex)
@@ -315,7 +361,7 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		let s_latex = Array.from({ length: this.pjNum }, (_, a) => this.order + a).map(n => { // 將 n = ? ~ ? 代入式 (1)
 			const mt = new MultiTerm().push(`a_{${n}}^{(p)}`);
 			this.recurCoef.forEach((frac_coef, i) => {
-				mt.pushTerm(frac_coef.mul(-1), `a_{${n-i}}^{(p)}`, 1);
+				mt.pushTerm(frac_coef.mul(-1), `a_{${n-1-i}}^{(p)}`, 1);
 			});
 			return `${mt.toLatex()} = F(${n})`; // "a_n^{(p)} - h_1 a_{n-1}^{(p)} - h_2 a_{n-2}^{(p)} - h_3 a_{n-3}^{(p)} = F(n)" (latex)
 		}).join("\\\\"); // 以換行符連接所有的式子
@@ -330,8 +376,32 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		return `a_n^{(p)} = ${this.nonHomog.mlExpTerm(this.s_frac_b, true, this.extraPow)}`;
 	}
 	
-	mlPjLinearEquation() { // 代入常數後得到："..." (latex)
-		return ml.equationSystem(3, 3, (i, j) => i + j, (i, j) => `a_{${i}${j}}`, i => i, "right");
+	mlPjLinearEquationsFromAnp() { // 代入常數後得到："..." (latex)
+		return ml.equationSystem(
+			this.order + this.pjNum,
+			this.pjNum,
+			(n, i) => this.matrix_pjLEfromAnp.arr[n][i].nf_a,
+			(n, i) => `p_{${this.startPj + i}}`,
+			n => `a_{${n}}^{(p)}`,
+			"left"
+		);
+	}
+	
+	mlPjLinearEquations() { // 展開後得到："p_j 的線性聯立方程式" (latex)
+		return ml.equationSystem(
+			this.pjNum,
+			this.pjNum,
+			(i, j) => this.matrix_pjLE.arr[i][j].nf_a,
+			(i, j) => `p_{${this.startPj + j}}`,
+			i => this.matrix_fn.arr[i][0].nf_a.toLatex(),
+			"right"
+		);
+	}
+	
+	mlPjAnswer() { // 使用高斯消去法解 p_j 的聯立方程式，得到: "p_j 的解" (latex)
+		return this.pjAnswer.map(
+			(frac_pj, i) => `p_{${this.startPj + i}} = ${frac_pj.toLatex()}`
+		).join(ml.sc);
 	}
 }
 
