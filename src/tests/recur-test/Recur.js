@@ -53,6 +53,20 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		}
 	}
 	
+	static initHiLinearEquations(order, eigenvalue, extraPow) { // 生成 h_i 的線性方程組 (方陣)
+		return new Matrix(order, order, (n, i) => eigenvalue[i].pow(n).mul(n ** extraPow[i])); // 齊次解代入 n 後, h_i 的係數 (n^p λ^n)
+	}
+	
+	static initAnSubAnp(initConst, nonHomog) { // 將 n 代入 a_n - a_n^(p), 用於解未知係數 h_i 的聯立
+		const anp = (n) => Frac.sum( // 將 n 代入 a_n^(p)
+			Object.entries(nonHomog.particular).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
+				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
+				return Frac.sum(expPoly.map((frac_pj, k) => frac_pj.mul(n**k))).mul(frac_b.pow(n)); // (p1 + p2 n + p3 n^2 + ...) b^n
+			})
+		);
+		return initConst.map((frac_an, n) => frac_an.sub(anp(n))); // a_n - a_n^(p)
+	}
+	
 	constructor(recurCoef, nonHomogFunc, initConst) {
 		SolveRecur.checkParam(recurCoef, nonHomogFunc, initConst); // 檢查參數型態
 		[recurCoef, nonHomogFunc, initConst] = SolveRecur.initRecur(recurCoef, nonHomogFunc, initConst); // 整理遞迴式的參數
@@ -63,6 +77,8 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		this.eigenvalue = SolveRecur.initEigenvalue(this.recurCoef, this.order); // Array<EF> ; 齊次遞迴的特徵值
 		this.extraPow = SolveRecur.initExtraPow(this.order, this.eigenvalue); // Array<0|1|2> ; 如果特徵值重根, 需要多乘 n^p 保證線性獨立
 		if (this.haveNonHomog()) this.nonHomog = new SolveNonHomog(this); // 解決遞迴的非齊次部分, 得到特解, 並生成計算過程
+		this.matrix_hiLE = SolveRecur.initHiLinearEquations(this.order, this.eigenvalue, this.extraPow); // Matrix ; h_i 的線性方程組 (方陣)
+		this.anSubAnp = SolveRecur.initAnSubAnp(this.initConst, this.nonHomog); // Array<Frac> ; a_n - a_n^(p)
 	}
 	
 	mlRecurHomog() { // 遞迴的齊次部分 "r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}"
@@ -83,8 +99,8 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	
 	mlRecur() { // 生成遞迴關係式的 latex 字串
 		const mt = new MultiTerm().push(this.mlRecurHomog()).push(this.mlRecurNonHomog()); // "齊次部分 + 非齊次部分" (latex)
-		let s_latex = `a_n = ${mt.toLatex()} ${ml.sc} n \\ge ${this.order} \\\\ `; // "a_n = 齊次部分 + 非齊次部分 , n >= ?" ; ? 應等於遞迴階數
-		s_latex += this.initConst.map((frac_c, i) => `a_${i}=${frac_c.toLatex()}`).join(ml.sc); // 遞迴初始條件: "a_0 = ? , a_1 = ? , a_2 = ?" (latex)
+		let s_latex = `a_n = ${mt.toLatex()} ~,~~ n \\ge ${this.order} \\\\ `; // "a_n = 齊次部分 + 非齊次部分 , n >= ?" ; ? 應等於遞迴階數
+		s_latex += this.initConst.map((frac_c, i) => `a_${i}=${frac_c.toLatex()}`).join("~,~~"); // 遞迴初始條件: "a_0 = ? , a_1 = ? , a_2 = ?" (latex)
 		return `\\begin{gather*} ${s_latex} \\end{gather*}`; // 使 latex 置中的語法
 	}
 	
@@ -96,7 +112,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	mlEigenvalues() { // 特徵值 "t = ? , ? , ?" (latex)
-		return this.eigenvalue.map(ef => ef.toLatex()).join(ml.sc);
+		return this.eigenvalue.map(ef => ef.toLatex()).join("~,~~");
 	}
 	
 	showNoRationalRoot() { // 是否要顯示 "(!) 不存在有理數形式的根" 的警告訊息
@@ -125,18 +141,42 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	mlHomogForm(show1n, coef = ["h_{1}", "h_{2}", "h_{3}"]) { // 因此將齊次解設為 "..." (latex), 係數預設為 h_i
 		const mt = new MultiTerm();
 		this.eigenvalue.forEach((ef, i) => {
-			let s_base = ef.toLatex();
-			if (show1n && ef.equal(1)) s_base = "{1}"; // 因為 1^n 會被轉成 1, 所以只能這樣做
-			else if (!Hop.equal(ef.nf_b, 0)) s_base = ml.delim(s_base); // 如果 a + b√s 的 b 不為 0, 必須加上括號: h_i (a + b√s)^n
-			
-			const s_expLatex = ml.term(1, s_base, "n"); // b^n (latex) ; 
-			mt.push(ml.term(coef[i], "n", this.extraPow[i]) + s_expLatex); // 只顯示重根的齊次部分
+			const base = (show1n && ef.equal(1)) ? "{1}" : ef;
+			const s_expLatex = ml.term(1, base, "n"); // b^n (latex) ; 
+			mt.pushTerm(ml.term(coef[i], "n", this.extraPow[i]), s_expLatex, 1); // 只顯示重根的齊次部分
 		});
 		return mt.toLatex();
 	}
 	
 	haveNonHomog() { // 遞迴是否有非齊次部分
 		return this.nonHomogFunc.length > 0;
+	}
+	
+	mlGeneralForm() { // 遞迴的通解 a_n = a_n^(h) + a_n^(p) , 因此 "..." (latex)
+		return `a_n = ${this.mlHomogForm(false)}` + (this.haveNonHomog() ? " + a_n^{(p)}" : ""); // 如果遞迴有非齊次部分, 要加上特解 "a_n^{(p)}"
+	}
+	
+	mlGeneralFormTrans() { // 將齊次解移項至左側： "..." (latex)
+		return `${this.mlHomogForm(false)} = a_n` + (this.haveNonHomog() ? " - a_n^{(p)}" : ""); // 如果遞迴有非齊次部分, 要加上特解 "a_n^{(p)}"
+	}
+	
+	mlSomeHi() { // 求未知係數 "h1 , h2 , h3" (latex)
+		return Array.from({ length: this.order }, (_, i) => `h_{${i+1}}`).join("~,~"); // 遞迴階數等於齊次解未知係數的個數
+	}
+	
+	mlNRange() { // 需要將 "n = 0, 1, 2" 代入上式，產生 ... (latex)
+		return "n = " + Array.from({ length: this.order }, (_, i) => `${i}`).join(",");
+	}
+	
+	mlHiLinearEquations() { // ... 產生 ? 個式子的的線性方程組，並解聯立： "..." (latex)
+		const coefFunc = (n, i) => this.matrix_hiLE.arr[n][i];
+		const varFunc = (n, i) => `h_${i+1}`;
+		const equalLatex = (n) => {
+			let s_latex = `a_{${n}}`; // 顯示 "= a_n"
+			if (this.haveNonHomog()) s_latex += ` - a_{${n}}^{(p)}`; // 若遞迴存在非齊次部分, 會多一個 "- a_n^(p)"
+			return `${s_latex} = ${this.anSubAnp[n].toLatex()}`; // 加上常數 a_n - a_n^(p)
+		};
+		return ml.equationSystem(this.order, this.order, coefFunc, varFunc, equalLatex, "right");
 	}
 }
 
@@ -269,13 +309,13 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		const mt = new MultiTerm();
 		this.recurCoef.forEach((frac_coef, i) => mt.pushTerm(frac_coef, `a_{n-${i+1}}^{(p)}`, 1)); // "r1 a_{n-1}^(p) + ..." (latex)
 		mt.push("F(n)"); // "r1 a_{n-1}^(p) + ... + F(n)" (latex)
-		return `a_n^{(p)} = ${mt.toLatex()} ${ml.sc} n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+		return `a_n^{(p)} = ${mt.toLatex()} ~,~~ n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
 	}
 	
 	mlParticularIntoRecurTrans() { // 移項後得到: "a_n^(p) - r1 a_{n-1}^(p) - ... = F(n), n >= ?" (latex)
 		const mt = new MultiTerm().push("a_n^{(p)}"); // "a_n^(p)" (latex)
 		this.recurCoef.forEach((frac_coef, i) => mt.pushTerm(frac_coef.mul(-1), `a_{n-${i+1}}^{(p)}`, 1)); // "a_n^(p) - r1 a_{n-1}^(p) - ..." (latex)
-		return `${mt.toLatex()} = F(n) ${ml.sc} n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
+		return `${mt.toLatex()} = F(n) ~,~~ n \\ge ${this.recurCoef.length}`; // 加上遞迴限制 ", n >= ?" , ? 應等於遞迴階數
 	}
 	
 	mlParticularIntoRecurWhere() { // 其中 ... (latex)
@@ -302,7 +342,7 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		return new Matrix(pjNum + order, pjNum, (n, i) => F(n ** (i + extraPow)).mul(frac_b.pow(n)));
 	}
 	
-	static initPjLinearEquations(recurCoef, order, pjNum, matrix_pjLEfromAnp) { // p_j 的線性關係
+	static initPjLinearEquations(recurCoef, order, pjNum, matrix_pjLEfromAnp) { // 生成 p_j 的線性方程組 (方陣)
 		const matrix_anpLE = new Matrix(pjNum, pjNum + order, (i, j) => {
 			for (const [k, frac_coef] of recurCoef.entries()) if (j - i === order - 1 - k) return frac_coef.mul(-1);
 			if (i + order === j) return 1;
@@ -331,7 +371,7 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		this.matrix_pjLEfromAnp = SolveNonHomogExp.initPjLinearEquationsFromAnp( // Matrix ; a_n^(p) 以 p_j 表示的線性關係
 			this.order, Frac.fromStr(s_frac_b), this.pjNum, extraPow
 		);
-		this.matrix_pjLE = SolveNonHomogExp.initPjLinearEquations( // Matrix ; p_j 的線性關係
+		this.matrix_pjLE = SolveNonHomogExp.initPjLinearEquations( // Matrix ; p_j 的線性方程組 (方陣)
 			recurCoef, this.order, this.pjNum, this.matrix_pjLEfromAnp
 		);
 		this.matrix_fn = SolveNonHomogExp.initFn( // Matrix ; 將常數代入非齊次部分 F(n) 得到的值
@@ -357,7 +397,7 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 		return s_latex;
 	}
 	
-	mlParticularLinearEquation() { // 產生 ? 個式子的線性方程組，並解聯立："..." (latex)
+	mlParticularLinearEquations() { // 產生 ? 個式子的線性方程組，並解聯立："..." (latex)
 		let s_latex = Array.from({ length: this.pjNum }, (_, a) => this.order + a).map(n => { // 將 n = ? ~ ? 代入式 (1)
 			const mt = new MultiTerm().push(`a_{${n}}^{(p)}`);
 			this.recurCoef.forEach((frac_coef, i) => {
@@ -401,7 +441,7 @@ export class SolveNonHomogExp { // 計算特解當中某個指數部分對應的
 	mlPjAnswer() { // 使用高斯消去法解 p_j 的聯立方程式，得到: "p_j 的解" (latex)
 		return this.pjAnswer.map(
 			(frac_pj, i) => `p_{${this.startPj + i}} = ${frac_pj.toLatex()}`
-		).join(ml.sc);
+		).join("~,~~");
 	}
 }
 

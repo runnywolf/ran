@@ -36,6 +36,15 @@
 			遞迴式沒有非齊次部分，跳過這一步驟。
 			<div style="height: 12px;"></div>
 		</div>
+		
+		<span class="ts-text is-large is-bold">Step3：求通解</span><br>
+		遞迴的通解 <vl :exp="'a_n = a_n^{(h)}' + (recur.haveNonHomog() ? ' + a_n^{(p)}' : '')" />，因此<br>
+		<vl c :exp="recur.mlGeneralForm()" />
+		將齊次解移項至左側：<br>
+		<vl c :exp="recur.mlGeneralFormTrans()" />
+		求未知係數 <vl :exp="recur.mlSomeHi()" /> 需要將 <vl :exp="recur.mlNRange()" />
+		代入上式，產生 {{ recur.order }} 個式子的線性方程組，並解聯立：<br>
+		<vl c :exp="recur.mlHiLinearEquations()" />
 	</div>
 </template>
 

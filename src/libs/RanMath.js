@@ -770,16 +770,22 @@ export function removePostfix(str, postfix) { // 移除字串尾端的特定字�
 }
 
 export class MakeLatex { // latex 字串處理
-	static sc = "~,~~"; // separate comma
-	
 	static delim(str_latex) { // 在 latex 字串兩端加上自動調整大小的小括號
 		return `\\left(${str_latex}\\right)`;
 	}
 	
 	static term(coef, base, pow) { // 根據係數, 底數, 次方, 生成 c b^p 的 latex 字串
 		// coef, base, pow 預處理
+		if (EF.isEF(coef)) { // 處理 EF 型態的 coef
+			if (Hop.equal(coef.nf_b, 0)) coef = coef.nf_a; // 如果 a + b√s 的 b 為 0, 轉 number | Frac
+			else coef = MakeLatex.delim(coef.toLatex()); // 如果 a + b√s 的 b 不為 0, 必須加上括號: h_i (a + b√s)^n
+		}
 		coef = Hop.isNumOrFrac(coef) ? Hop.toLatex(coef) : String(coef); // 將 number | Frac 轉 string
 		
+		if (EF.isEF(base)) { // 處理 EF 型態的 base
+			if (Hop.equal(base.nf_b, 0)) base = base.nf_a; // 如果 a + b√s 的 b 為 0, 轉 number | Frac
+			else base = MakeLatex.delim(base.toLatex()); // 如果 a + b√s 的 b 不為 0, 必須加上括號: h_i (a + b√s)^n
+		}
 		let addDelim = (Frac.isFrac(base) && !base.isInt()); // 若底數為不可約分的分數, 要加括號
 		base = Hop.isNumOrFrac(base) ? Hop.toLatex(base) : String(base); // 將 number | Frac 轉 string
 		if (base[0] === "-") addDelim = true; // 底數字串有負號, 要加括號
