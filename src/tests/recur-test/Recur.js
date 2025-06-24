@@ -6,9 +6,6 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		if (!Array.isArray(recurCoef) || recurCoef.some(coef => !Hop.isRational(coef))) { // 齊次部分的係數必須都是 Frac | int number
 			throwErr("SolveRecur.constructor", 'Param "recurCoef" must be an Array<int|Frac> .');
 		}
-		if (!(1 <= recurCoef.length && recurCoef.length <= 3)) { // 只能計算 1 ~ 3 階遞迴
-			throwErr("SolveRecur.constructor", "Only support 1 ~ 3 order recurrence relation.");
-		}
 		if (!Array.isArray(nonHomogFunc) || nonHomogFunc.some(term => !Array.isArray(term))) {
 			throwErr("SolveRecur.constructor", 'Param "nonHomogFunc" must be an Array<[ int|Frac, int>=0, int|Frac ]> .');
 		}
@@ -24,6 +21,10 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		const order = recurCoef.length; // 遞迴階數
 		
 		recurCoef = recurCoef.map(nf_coef => F(0).add(nf_coef)); // 利用 frac.add 將 int number 轉為 Frac, 保證 recurCoef 為 Array<Frac>
+		while (recurCoef.at(-1)?.equal(0)) recurCoef.pop(); // 降階: a_n = r1 a_{n-1} + 0 a_{n-2} 應該等於 a_n = r1 a_{n-1}
+		if (!(1 <= recurCoef.length && recurCoef.length <= 3)) { // 只能計算 1 ~ 3 階遞迴
+			throwErr("SolveRecur.initRecur", "Only support 1 ~ 3 order recurrence relation.");
+		}
 		
 		nonHomogFunc = nonHomogFunc.map(([nf_c, k, nf_b]) => [F(0).add(nf_c), k, F(0).add(nf_b)]); // 保證 nonHomogFunc 為 Array<[Frac, int, Frac]>
 		
@@ -58,13 +59,20 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	static initAnSubAnp(initConst, nonHomog) { // 將 n 代入 a_n - a_n^(p), 用於解未知係數 h_i 的聯立
-		const anp = (n) => Frac.sum( // 將 n 代入 a_n^(p)
-			Object.entries(nonHomog.particular).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
+		const anp = (n) => Frac.sum( // 將 n 代入 a_n^(p), 如果遞迴不存在非齊次部分, 回傳 F(0)
+			Object.entries(nonHomog ? nonHomog.particular : {}).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
 				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
 				return Frac.sum(expPoly.map((frac_pj, k) => frac_pj.mul(n**k))).mul(frac_b.pow(n)); // (p1 + p2 n + p3 n^2 + ...) b^n
 			})
 		);
 		return initConst.map((frac_an, n) => frac_an.sub(anp(n))); // a_n - a_n^(p)
+	}
+	
+	static solveHi(order, matrix_hiLE, anSubAnp) { // 解聯立求 h_i
+		const matrix_anSubAnp = new Matrix(order, 1, n => anSubAnp[n]);
+		let hiAnswer = matrix_hiLE.inverse().mul(matrix_anSubAnp).arr.map(row => row[0]);
+		if (order === 3) hiAnswer[0] = new EF(hiAnswer[0].nf_a); // 因為 h_1 一定是實數, 消除 float EF 的誤差
+		return hiAnswer;
 	}
 	
 	constructor(recurCoef, nonHomogFunc, initConst) {
@@ -79,6 +87,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		if (this.haveNonHomog()) this.nonHomog = new SolveNonHomog(this); // 解決遞迴的非齊次部分, 得到特解, 並生成計算過程
 		this.matrix_hiLE = SolveRecur.initHiLinearEquations(this.order, this.eigenvalue, this.extraPow); // Matrix ; h_i 的線性方程組 (方陣)
 		this.anSubAnp = SolveRecur.initAnSubAnp(this.initConst, this.nonHomog); // Array<Frac> ; a_n - a_n^(p)
+		this.hiAnswer = SolveRecur.solveHi(this.order, this.matrix_hiLE, this.anSubAnp); // Array<EF> ; 未知係數 h_i 的解
 	}
 	
 	mlRecurHomog() { // 遞迴的齊次部分 "r_1 a_{n-1} + r_2 a_{n-2} + r_3 a_{n-3}"
@@ -142,8 +151,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		const mt = new MultiTerm();
 		this.eigenvalue.forEach((ef, i) => {
 			const base = (show1n && ef.equal(1)) ? "{1}" : ef;
-			const s_expLatex = ml.term(1, base, "n"); // b^n (latex) ; 
-			mt.pushTerm(ml.term(coef[i], "n", this.extraPow[i]), s_expLatex, 1); // 只顯示重根的齊次部分
+			mt.pushTerm(ml.term(coef[i], "n", this.extraPow[i]), base, "n"); // 只顯示重根的齊次部分
 		});
 		return mt.toLatex();
 	}
@@ -177,6 +185,78 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 			return `${s_latex} = ${this.anSubAnp[n].toLatex()}`; // 加上常數 a_n - a_n^(p)
 		};
 		return ml.equationSystem(this.order, this.order, coefFunc, varFunc, equalLatex, "right");
+	}
+	
+	mlHiAnswer() { // 解聯立後得到： "..." (latex)
+		return this.hiAnswer.map((ef_hi, i) => `h_{${i+1}} = ${ef_hi.toLatex()}`).join("~,~~");
+	}
+	
+	answerExistComplex() { // h_i 是否有複數
+		return this.hiAnswer.some(ef_hi => ef_hi.s < 0);
+	}
+	
+	mlPolarCoordinate() {
+		let s_latex = "&= h_1 {(\\alpha + \\beta i)}^n + h_2 {(\\alpha - \\beta i)}^n \\\\" +
+		"&= h_1 {(r e^{i \\theta})}^n + h_2 {(r e^{-i \\theta})}^n \\quad,\\quad " +
+		"r = \\sqrt{\\alpha^2 + \\beta^2} \\quad,\\quad \\theta = \\tan^{-1}(\\beta / \\alpha) \\\\" +
+		"&= h_1 r^n e^{i n \\theta} + h_2 r^n e^{-i n \\theta} \\\\" +
+		"&= h_1 r^n (\\cos n \\theta + i \\sin n \\theta) + h_2 r^n (\\cos n \\theta - i \\sin n \\theta) \\\\"+
+		"&= (h_1 + h_2) \\cos(n \\theta) r^n + (h_1 - h_2) i \\sin(n \\theta) r^n";
+		if (this.order === 3) s_latex = s_latex.replaceAll("h_2", "h_3").replaceAll("h_1", "h_2");
+		return `\\begin{split} ${s_latex} \\end{split}`;
+	}
+	
+	mlClosedFormIm() { // 先將複數部分轉為極座標，再使用歐拉公式： ... 因此 "..." (latex)
+		const mt = new MultiTerm();
+		if (this.order === 3) mt.pushTerm(this.hiAnswer[0], this.eigenvalue[0], "n"); // 如果出現複數, 那第一個特徵值不可能重根, 所以 latex 為: h_1 b_1^n
+		const ef_complex = (this.order === 2) ? this.hiAnswer[0] : this.hiAnswer[1]; // a + bi
+		mt.pushTerm(ef_complex.mul(2).real().toLatex(), "\\cos(n \\theta) r^n", 1); // h2 = (a + bi) ; h3 = (a - bi) ===> h2 + h3 = 2a ; (h2 - h3)i = -2b
+		mt.pushTerm(ef_complex.mul(-2).imag().toLatex(), "\\sin(n \\theta) r^n", 1); // 先將 EF 轉 latex, 防止 ml.term 為 EF
+		if (this.haveNonHomog()) mt.push("a_n^{(p)}");
+		return `a_n = ${mt.toLatex()}`;
+	}
+	
+	mlClosedFormImWhere() { // 其中 "三角函數形式的 r 和 \theta" (latex)
+		const ef_base = (this.order === 2) ? this.eigenvalue[0] : this.eigenvalue[1]; // base = a + bi
+		const [ef_alpha, ef_beta] = [ef_base.real(), ef_base.imag()];
+		const ef_norm = new EF(0, 1, ef_base.normSquare()); // 0 + 1√(a^2 + b^2) = √(a^2 + b^2)
+		const ef_bDivA = ef_beta.div(ef_alpha);
+		
+		let nf_tanToPi = null;
+		const tanInverseToFracPi = [ // 如果 tan^-1(...) 可化簡
+			[new EF(0, -1, 3), F(-1, 3)], // tan^-1(-√3) = -1/3 pi
+			[new EF(-1), F(-1, 4)], // tan^-1(-1) = -1/4 pi
+			[new EF(0, F(-1, 3), 3), F(-1, 6)], // tan^-1(-√3 / 3) = -1/6 pi
+			[new EF(0, F(1, 3), 3), F(1, 6)], // tan^-1(√3 / 3) = 1/6 pi
+			[new EF(1), F(1, 4)], // tan^-1(1) = 1/4 pi
+			[new EF(0, 1, 3), F(1, 3)], // tan^-1(√3) = 1/3 pi
+		];
+		for (const [ef_tan, frac_pi] of tanInverseToFracPi) if (ef_bDivA.equal(ef_tan)) { // tan^-1(...) 轉 Frac pi
+			nf_tanToPi = frac_pi;
+			break;
+		}
+		if (!Frac.isFrac(ef_bDivA.nf_a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
+			nf_tanToPi = Math.atan(ef_bDivA.nf_a) / Math.PI;
+		}
+		
+		let s_rLatex = `${ml.delim(ef_alpha.toLatex())}^2 + ${ml.delim(ef_beta.toLatex())}^2`; // "alpha^2 + beta^2" (latex)
+		s_rLatex = `r = \\sqrt{${s_rLatex}} = ${ef_norm.toLatex()}`; // "r = √( alpha^2 + beta^2 ) = 範數" (latex)
+		
+		let s_thetaLatex = `\\theta = \\tan^{-1}({${ef_beta.toLatex()}}/{${ef_alpha.toLatex()}})`; // "theta = tan^-1(beta / alpha)" (latex)
+		s_thetaLatex += ` = \\tan^{-1}(${ef_bDivA.toLatex()})`; // "theta = tan^-1(beta / alpha) = tan^-1 的值" (latex)
+		if (nf_tanToPi) s_thetaLatex += ` = ${Hop.toLatex(nf_tanToPi)} \\pi`; // 如果 tan 可化簡成 pi
+		
+		return `\\begin{gather*} ${s_rLatex} \\\\ ${s_thetaLatex} \\end{gather*}`;
+	}
+	
+	mlClosedForm() { // 通解不含 i, 將 h_1, h_2, ... 直接代回 a_n: "..." (latex)
+		const mt = new MultiTerm().push(this.mlHomogForm(false, this.hiAnswer));
+		if (this.haveNonHomog()) mt.push("a_n^{(p)}");
+		return `a_n = ${mt.toLatex()}`;
+	}
+	
+	mlClosedFormFix() {
+		
 	}
 }
 

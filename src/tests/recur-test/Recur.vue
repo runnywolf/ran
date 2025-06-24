@@ -45,6 +45,27 @@
 		求未知係數 <vl :exp="recur.mlSomeHi()" /> 需要將 <vl :exp="recur.mlNRange()" />
 		代入上式，產生 {{ recur.order }} 個式子的線性方程組，並解聯立：<br>
 		<vl c :exp="recur.mlHiLinearEquations()" />
+		解聯立後得到：<br>
+		<vl c :exp="recur.mlHiAnswer()" />
+		<br>
+		檢查通解 <vl exp="a_n" /> 是否含有虛數 <vl exp="i" />：
+		<div v-if="recur.answerExistComplex()">
+			通解包含 <vl exp="i" />，但是 <vl exp="a_n" />
+			為實數數列，因此需要將複數項轉化為實數表示。<br>
+			<div style="height: 12px;"></div>
+			將複數部分轉換為極座標形式，並應用歐拉公式：<br>
+			<vl c :exp="recur.mlPolarCoordinate()" />
+			因此<br>
+			<vl c :exp="recur.mlClosedFormIm()" />
+			其中
+			<vl c :exp="recur.mlClosedFormImWhere()" />
+		</div>
+		<div v-else>
+			通解不含 <vl exp="i" />，將 <vl :exp="recur.mlSomeHi()" /> 直接代回 <vl exp="a_n" />：<br>
+			<vl c :exp="recur.mlClosedForm()" />
+		</div>
+		整理後的一般項為：<br>
+		<vl c :exp="recur.mlClosedFormFix()" />
 	</div>
 </template>
 
@@ -67,7 +88,7 @@ watch(() => [props.recurCoef, props.nonHomogFunc, props.initConst], ([newRC, new
 		errorMessage.value = null; // 目前沒錯誤, 錯誤訊息預設為 null
 		recur.value = new SolveRecur(newRC, newNHF, newIC); // 計算遞迴
 	} catch (error) {
-		if (newRC.length === 0) { // 輸入 0 階遞迴導致的錯誤
+		if (error.message === "[Recur][SolveRecur.initRecur] Only support 1 ~ 3 order recurrence relation.") { // 輸入 0 階遞迴導致的錯誤
 			errorMessage.value = "必須輸入 1 ~ 3 階遞迴";
 		} else {
 			errorMessage.value = error.message; // 若遞迴的計算過程出錯, 捕捉錯誤訊息, 並顯示
