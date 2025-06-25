@@ -99,9 +99,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	mlRecurNonHomog() { // 遞迴的非齊次部分 "c n^k b^n + ..."
 		const mt = new MultiTerm();
 		this.nonHomogFunc.forEach(([frac_c, k, frac_b]) => { // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 [ [frac_c, k, frac_b], ... ]
-			let s_term = ml.term(frac_c, "n", k); // c n^k 部分的 latex 字串
-			if (!frac_b.equal(1)) s_term = ml.term(s_term, frac_b, "n"); // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-			mt.push(s_term);
+			mt.pushTerm(ml.term(frac_c, "n", k), frac_b, "n");
 		});
 		return mt.toLatex();
 	}
@@ -255,8 +253,48 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		return `a_n = ${mt.toLatex()}`;
 	}
 	
-	mlClosedFormFix() {
+	mlClosedFormFix() { // 整理後的一般項為：
+		const mt_notQ = new MultiTerm();
+		let expPolyFunc = {}; // 因為要與齊次解的有理數 b^n 合併, 需要複製一份特解
+		if (this.haveNonHomog()) { // 如果有非齊次部分才需要複製
+			for (const [s_frac_b, expPoly] of Object.entries(this.nonHomog.particular)) {
+				expPolyFunc[s_frac_b] = expPoly.map(frac_pj => frac_pj.copy()); // deep copy
+			}
+		}
+		this.eigenvalue.forEach((ef, i) => { // 將齊次解的有理數 b^n 與特解合併
+			if (Hop.equal(ef.nf_b, 0) && Frac.isFrac(ef.nf_a)) { // 有理數 b^n
+				const s_frac_b = `${ef.nf_a.n}/${ef.nf_a.d}`;
+				if (!(s_frac_b in expPolyFunc)) expPolyFunc[s_frac_b] = [];
+				const p = this.extraPow[i];
+				while (p > expPolyFunc[s_frac_b].length - 1) expPolyFunc[s_frac_b].push(F(0));
+				expPolyFunc[s_frac_b][p] = this.hiAnswer[i].nf_a;
+			} else if (ef.s >= 0) { // 複數 b^n 需要使用 cos/sin 形式取代, 不可以顯示
+				mt_notQ.pushTerm(this.hiAnswer[i], ef, "n"); // 如果出現無理數, 那特徵值不可能重根, 所以 latex 為: h_1 b_1^n
+			}
+		});
 		
+		const mt = new MultiTerm();
+		Object.entries(expPolyFunc).forEach(([s_frac_b, expPoly]) => { // 生成有理數 b^n 部分的 latex
+			const frac_b = Frac.fromStr(s_frac_b);
+			const arr_term = expPoly.map((frac, i) => ml.term(frac, "n", i)).filter(s_term => s_term != "0");
+			if (arr_term.length === 1) mt.pushTerm(arr_term[0], frac_b, "n"); // c? n^? b^n
+			if (arr_term.length >= 2) {
+				const mt_poly = new MultiTerm();
+				arr_term.forEach(s_term => mt_poly.push(s_term)); // c0 + c1 n + ...
+				if (frac_b.equal(1)) mt.pushTerm(mt_poly.toLatex(), frac_b, "n"); // (c0 + c1 n + ...) 1^n -> c0 + c1 n + ...
+				else mt.pushTerm(ml.delim(mt_poly.toLatex()), frac_b, "n"); // (c0 + c1 n + ...) b^n
+			}
+		});
+		
+		mt.push(mt_notQ.toLatex()); // 無理數 b^n, 顯示在有理數部分之後
+		
+		if (this.answerExistComplex()) { // 如果有複數 b^n, 顯示在最右側, 並使用 cos/sin 形式取代複數 b^n
+			const ef_complex = (this.order === 2) ? this.hiAnswer[0] : this.hiAnswer[1]; // a + bi
+			mt.pushTerm(ef_complex.mul(2).real().toLatex(), "\\cos(n \\theta) r^n", 1); // h2 = (a + bi) ; h3 = (a - bi) ===> h2 + h3 = 2a ; (h2 - h3)i = -2b
+			mt.pushTerm(ef_complex.mul(-2).imag().toLatex(), "\\sin(n \\theta) r^n", 1); // 先將 EF 轉 latex, 防止 ml.term 為 EF
+		}
+		
+		return `a_n = ${mt.toLatex()}`;
 	}
 }
 
@@ -408,9 +446,7 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 		for (const [s_frac_b, expPoly] of Object.entries(this.particular)) {
 			const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
 			expPoly.forEach((frac_pj, k) => {
-				let s_term = ml.term(frac_pj, "n", k); // c n^k 部分的 latex 字串
-				if (!frac_pj.equal(1)) s_term = ml.term(s_term, frac_b, "n"); // 若 b^n 部分不為 1^n , 擴展為 c n^k b^n
-				mt.push(s_term);
+				mt.pushTerm(ml.term(frac_pj, "n", k), frac_b, "n");
 			});
 		}
 		return `a_n^{(p)} = ${mt.toLatex()}`;

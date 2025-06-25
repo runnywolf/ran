@@ -1,26 +1,14 @@
 <template>
 	<div class="ts-box ts-content">
 		<Recur
-			:recurCoef="[1, 1, 2]"
-			:nonHomogFunc="[[-2, 0, 1], [-2, 1, 1], [-3, 2, 1], [1, 0, 2], [2, 0, -1]]"
+			:recurCoef="[1, 1, -1]"
+			:nonHomogFunc="[[-2, 0, 1], [-2, 1, 1], [-3, 2, 1], [1, 1, 2], [2, 0, -1]]"
 			:initConst="[1, 2]"
 		></Recur>
 	</div>
 </template>
 
 <script setup>
-/*
-import { SolveQuad, EF, F, gcd, MakeLatex as ml, _mlEquationSystem } from "ran-math";
-const arr = [
-	[77, 45, 3],
-	[1, -2, 0],
-	[0, 0, 0]
-];
-const equal = [0, 711, 23]
-let testLatex = ml.equationSystem(3, 3, (i, j) => arr[i][j], (i, j) => `a_{${i}${j}}`, i => equal[i], "left")
-console.log(testLatex)
-*/
-
 // import EFtest from "./ran-math/ef-latex.test.vue"; // EF.toLatex 的 ui 測試
 // import TermTest from "./ran-math/make-latex-term.test.vue"; // MakeLatex.term 的 ui 測試
 import Recur from "./recur-test/Recur.vue"
