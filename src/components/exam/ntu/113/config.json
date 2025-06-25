@@ -24,7 +24,7 @@
 			]
 		},
 		"4": {
-			"answerLatex": "2 \\cdot 3^n + (-4)^n",
+			"answerLatex": "a_n = (-4)^n + 2 \\cdot 3^n",
 			"content": [
 				{ "type": "answer", "id": "4-ans" }
 			]
