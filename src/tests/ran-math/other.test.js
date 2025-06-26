@@ -1,7 +1,7 @@
 import { test, expect, describe } from "vitest";
 
 // ---------- test area ----------
-import { isNum, isInt, gcd, lcm, getFactors, getSquareFactor, getRandomInt, sum } from "ran-math";
+import { isNum, isInt, gcd, lcm, getFactors, getSquareFactor, sum, throwTypeErr } from "ran-math";
 
 const testData = {
 	"isNum": {

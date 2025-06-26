@@ -8,84 +8,30 @@ const testData = {
 		testName: (input, output) => `removePrefix("${input[0]}", "${input[1]}") = "${output}"`,
 		testFunc: input => removePrefix(...input),
 		tests: [ // 測資
-			{
-				input: ["abcde", "abc"],
-				output: "de"
-			},
-			{
-				input: ["abcde", "abce"],
-				output: "abcde"
-			},
-			{
-				input: [" abcde", "abc"],
-				output: " abcde"
-			},
-			{
-				input: ["aaaaa", "aa"],
-				output: "aaa"
-			},
-			{
-				input: ["", ""],
-				output: ""
-			},
-			{
-				input: ["", "aaa"],
-				output: ""
-			},
-			{
-				input: ["a", ""],
-				output: "a"
-			},
-			{
-				input: [123, "12"],
-				error: '[RanMath][removePrefix] Param "str" must be a string.'
-			},
-			{
-				input: ["123", 12],
-				error: '[RanMath][removePrefix] Param "prefix" must be a string.'
-			},
+			{ input: ["abcde", "abc"], output: "de" },
+			{ input: ["abcde", "abce"], output: "abcde" },
+			{ input: [" abcde", "abc"], output: " abcde" },
+			{ input: ["aaaaa", "aa"], output: "aaa" },
+			{ input: ["", ""], output: "" },
+			{ input: ["", "aaa"], output: "" },
+			{ input: ["a", ""], output: "a" },
+			{ input: [123, "12"], error: '[RanMath][removePrefix] Param "str" must be a string.' },
+			{ input: ["123", 12], error: '[RanMath][removePrefix] Param "prefix" must be a string.' },
 		]
 	},
 	".removePostfix": {
 		testName: (input, output) => `removePostfix("${input[0]}", "${input[1]}") = "${output}"`,
 		testFunc: input => removePostfix(...input),
 		tests: [ // 測資
-			{
-				input: ["abcde", "cde"],
-				output: "ab"
-			},
-			{
-				input: ["abcde", "bde"],
-				output: "abcde"
-			},
-			{
-				input: ["abcde ", "cde"],
-				output: "abcde "
-			},
-			{
-				input: ["aaaaa", "aa"],
-				output: "aaa"
-			},
-			{
-				input: ["", ""],
-				output: ""
-			},
-			{
-				input: ["", "aaa"],
-				output: ""
-			},
-			{
-				input: ["a", ""],
-				output: "a"
-			},
-			{
-				input: [123, "12"],
-				error: '[RanMath][removePostfix] Param "str" must be a string.'
-			},
-			{
-				input: ["123", 12],
-				error: '[RanMath][removePostfix] Param "postfix" must be a string.'
-			},
+			{ input: ["abcde", "cde"], output: "ab" },
+			{ input: ["abcde", "bde"], output: "abcde" },
+			{ input: ["abcde ", "cde"], output: "abcde " },
+			{ input: ["aaaaa", "aa"], output: "aaa" },
+			{ input: ["", ""], output: "" },
+			{ input: ["", "aaa"], output: "" },
+			{ input: ["a", ""], output: "a" },
+			{ input: [123, "12"], error: '[RanMath][removePostfix] Param "str" must be a string.' },
+			{ input: ["123", 12], error: '[RanMath][removePostfix] Param "postfix" must be a string.' },
 		]
 	}
 };

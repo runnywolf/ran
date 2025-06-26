@@ -775,6 +775,7 @@ export function removePostfix(str, postfix) { // 移除字串尾端的特定字�
 
 export class MakeLatex { // latex 字串處理
 	static delim(str_latex) { // 在 latex 字串兩端加上自動調整大小的小括號
+		if (typeof str_latex !== "string") throwTypeErr("MakeLatex.delim", "str_latex", "string");
 		return `\\left(${str_latex}\\right)`;
 	}
 	
@@ -835,9 +836,9 @@ export class MakeLatex { // latex 字串處理
 				else s_equationLatex = `${removePostfix(s_equationLatex, "&")}0&`;
 			}
 			
-			if (equalMode === "right") s_equationLatex = `${s_equationLatex}&=${equalFunc(i) ?? "?"}`; // "=" 在右側
+			if (equalMode === "right") s_equationLatex = `${s_equationLatex}&=${equalFunc(i) ?? "{?}"}`; // "=" 在右側
 			else if (equalMode === "left") { // "=" 在左側 (加上 "&" 讓 "=" 符號對齊)
-				s_equationLatex = `${equalFunc(i) ?? "?"}&=~&${removePostfix(s_equationLatex, "&")}`;
+				s_equationLatex = `${equalFunc(i) ?? "{?}"}&=~&${removePostfix(s_equationLatex, "&")}`;
 			}
 			
 			return s_equationLatex; // 最後一個字符不能是 &, katex 會報錯
@@ -854,8 +855,8 @@ export class MultiTerm { // 生成多個 MakeLatex.term 組合成的式子, 會�
 	}
 	
 	push(s_latex) { // 在尾端連接一個式子
-		// param check
-		if (s_latex === "0") return this; // 若 MakeLatex.term 輸出 "0", 那麼不新增這一項
+		if (typeof s_latex !== "string") throwTypeErr("MultiTerm.push", "s_latex", "string");
+		if (s_latex === "0" || s_latex === "") return this; // 若為 "0" 或空字串, 那麼不新增這一項
 		if (s_latex[0] !== "+" && s_latex[0] !== "-") s_latex = "+" + s_latex; // 如果 s_latex 首字元不是 +-, 補上 "+" (為了將多個 term 連接起來)
 		this._latexStr += s_latex;
 		return this; // chaining
@@ -876,6 +877,5 @@ function throwErr(methodName, errMessage) {
 }
 
 function throwTypeErr(methodName, paramName, typeName) {
-	const a = (typeName.startsWith("a") || typeName.startsWith("A")) ? "an" : "a";
-	throwErr(methodName, `Param "${paramName}" must be ${a} ${typeName}.`);
+	throwErr(methodName, `Param "${paramName}" must be a ${typeName}.`);
 }
