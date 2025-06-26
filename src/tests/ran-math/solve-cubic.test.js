@@ -99,6 +99,16 @@ const testData = {
 			{ input: [0, 2, 3, 4], error: '[RanMath][SolveCubic.constructor] 0x^3 + bx^2 + cx + d is not a cubic equation.' },
 		],
 	},
+	".toStr": {
+		testName: (input, output) => `new SolveCubic(${input.map(v => toStr(v)).join(", ")}).toStr()`,
+		testFunc: input => new SolveCubic(...input).toStr(),
+		tests: [ // 測資
+			{
+				input: [5, F(-173, 24), F(-1, 3), F(7, 8)],
+				output: "-1/3 , 3/8 , 7/5"
+			},
+		]
+	}
 };
 
 for (const [key, testInfo] of Object.entries(testData)) describe(key, () => {

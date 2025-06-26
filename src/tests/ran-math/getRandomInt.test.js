@@ -9,14 +9,19 @@ for (let i = 0; i < testNumber; i++) test(`Random number is in [-5, 5]`, () => {
 	expect(res).toBeGreaterThanOrEqual(-5);
 	expect(res).toBeLessThanOrEqual(5);
 });
+for (let i = 0; i < testNumber; i++) test(`Random number is in [-5, 5]`, () => {
+	const res = getRandomInt(5, -5);
+	expect(res).toBeGreaterThanOrEqual(-5);
+	expect(res).toBeLessThanOrEqual(5);
+});
 
 const testData = {
 	"getRandomInt": {
 		testName: (input, output) => `getRandomInt(${input.min}, ${input.max}) = ${output}`,
 		testFunc: input => getRandomInt(input.min, input.max),
 		tests: [
-			{ input: { min: 6, max: NaN }, error: '[RanMath][getRandomInt] Param "min" & "max" must be a integer.' },
-			{ input: { min: Infinity, max: -2 }, error: '[RanMath][getRandomInt] Param "min" & "max" must be a integer.' },
+			{ input: { min: 6, max: NaN }, error: '[RanMath][getRandomInt] Param "max" must be a integer.' },
+			{ input: { min: Infinity, max: -2 }, error: '[RanMath][getRandomInt] Param "min" must be a integer.' },
 		]
 	},
 };

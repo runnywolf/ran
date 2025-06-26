@@ -20,7 +20,7 @@ const testData = {
 		tests: [
 			{ input: 1, output: new Matrix(1, 1, (i, j) => i === j ? 1 : 0) },
 			{ input: 3, output: new Matrix(3, 3, (i, j) => i === j ? 1 : 0) },
-			{ input: 0, error: '[RanMath][Matrix.createI] Row number (Param "n") must be a positive integer.' },
+			{ input: 0, error: '[RanMath][Matrix.createI] Row number (Param "n") must be a integer >= 1.' },
 		]
 	},
 	"constructor": {
@@ -38,11 +38,11 @@ const testData = {
 			},
 			{
 				input: [-2, 1, () => 3],
-				error: '[RanMath][Matrix.constructor] Row number (Param "n") must be a positive integer.'
+				error: '[RanMath][Matrix.constructor] Row number (Param "n") must be a integer >= 1.'
 			},
 			{
 				input: [2, -1, () => 3],
-				error: '[RanMath][Matrix.constructor] Column number (Param "m") must be a positive integer.'
+				error: '[RanMath][Matrix.constructor] Column number (Param "m") must be a integer >= 1.'
 			},
 			{
 				input: [2, 1, 3],

@@ -59,9 +59,8 @@ const testData = {
 			{ input: { a: -81, b: -27 }, output: 27 },
 			{ input: { a: 123456, b: 789012 }, output: 12 },
 			{ input: { a: 982451, b: 578851 }, output: 1 },
-			{ input: { a: 1.5, b: -6 }, error: '[RanMath][gcd] Param "a" & "b" must be a integer.' },
-			{ input: { a: 1, b: NaN }, error: '[RanMath][gcd] Param "a" & "b" must be a integer.' },
-			{ input: { a: 166, b: [] }, error: '[RanMath][gcd] Param "a" & "b" must be a integer.' },
+			{ input: { a: 1.5, b: -6 }, error: '[RanMath][gcd] Param "a" must be a integer.' },
+			{ input: { a: 0, b: NaN }, error: '[RanMath][gcd] Param "b" must be a integer.' },
 		]
 	},
 	"lcm": {
@@ -74,9 +73,8 @@ const testData = {
 			{ input: { a: -4, b: 6 }, output: 12 },
 			{ input: { a: 21, b: 6 }, output: 42 },
 			{ input: { a: 123456, b: 789012 }, output: 8117355456 },
-			{ input: { a: 1.5, b: -6 }, error: '[RanMath][lcm] Param "a" & "b" must be a integer.' },
-			{ input: { a: 1, b: NaN }, error: '[RanMath][lcm] Param "a" & "b" must be a integer.' },
-			{ input: { a: 166, b: [] }, error: '[RanMath][lcm] Param "a" & "b" must be a integer.' },
+			{ input: { a: 1.5, b: -6 }, error: '[RanMath][lcm] Param "a" must be a integer.' },
+			{ input: { a: 1, b: NaN }, error: '[RanMath][lcm] Param "b" must be a integer.' },
 		]
 	},
 	"getFactors": {

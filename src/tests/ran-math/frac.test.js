@@ -38,7 +38,7 @@ const testData = {
 			{ input: "2.5/1", output: F(0, 1) }, // 子字串不是整數
 			{ input: "2/1a", output: F(0, 1) }, // 子字串不是整數
 			{ input: "2/1/3", output: F(0, 1) }, // 子字串過多
-			{ input: "2/0", error: '[RanMath][Frac.constructor] The denominator cannot be 0.' }, // 分母為 0
+			{ input: "2/0", error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' }, // 分母為 0
 			
 			{ input: "1.24", output: F(31, 25) },
 			{ input: "01.24", output: F(31, 25) },
@@ -89,9 +89,9 @@ const testData = {
 			{ input: { n: undefined, d: undefined }, output: F(0, 1) },
 			{ input: { n: 3, d: undefined }, output: F(3, 1) },
 			{ input: { n: 6, d: -9 }, output: F(-2, 3) },
-			{ input: { n: NaN, d: 7 }, error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input: { n: -2, d: "3" }, error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input: { n: 5, d: 0 }, error: '[RanMath][Frac.constructor] The denominator cannot be 0.' },
+			{ input: { n: NaN, d: 7 }, error: '[RanMath][Frac.constructor] Param "n" must be a integer.' },
+			{ input: { n: -2, d: "3" }, error: '[RanMath][Frac.constructor] Param "d" must be a integer.' },
+			{ input: { n: 5, d: 0 }, error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' },
 		]
 	},
 	".copy": {

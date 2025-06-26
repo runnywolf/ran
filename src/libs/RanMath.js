@@ -7,7 +7,8 @@ export function isInt(value) { // 是否為整數
 }
 
 export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
-	if (!isInt(a) || !isInt(b)) throwErr("gcd", 'Param "a" & "b" must be a integer.'); // 如果 a, b 不是整數
+	if (!isInt(a)) throwTypeErr("gcd", "a", "integer"); // 如果 a, b 不是整數
+	if (!isInt(b)) throwTypeErr("gcd", "b", "integer");
 	
 	[a, b] = [Math.abs(a), Math.abs(b)];
 	while (b != 0) [a, b] = [b, a % b];
@@ -15,14 +16,15 @@ export function gcd(a, b) { // 最大公因數; gcd(0, 0) = 0
 }
 
 export function lcm(a, b) { // 最小公倍數; lcm(0, 0) = 0
-	if (!isInt(a) || !isInt(b)) throwErr("lcm", 'Param "a" & "b" must be a integer.'); // 如果 a, b 不是整數
+	if (!isInt(a)) throwTypeErr("lcm", "a", "integer"); // 如果 a, b 不是整數
+	if (!isInt(b)) throwTypeErr("lcm", "b", "integer");
 	
 	if (a === 0 || b === 0) return 0;
 	return Math.abs(a / gcd(a, b) * b);
 }
 
 export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
-	if (!isInt(n)) throwErr("getFactors", 'Param "n" must be a integer.'); // 如果 n 不是整數
+	if (!isInt(n)) throwTypeErr("getFactors", "n", "integer"); // 如果 n 不是整數
 	
 	n = Math.abs(n); // 將負數 n 轉正
 	let factors1 = []; // n 的因數 ( <= √n )
@@ -35,7 +37,7 @@ export function getFactors(n) { // 回傳 n 的因數 array (升序排列)
 }
 
 export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回傳 k
-	if (!isInt(n)) throwErr("getSquareFactor", 'Param "n" must be a integer.'); // 如果 n 不是整數
+	if (!isInt(n)) throwTypeErr("getSquareFactor", "n", "integer"); // 如果 n 不是整數
 	
 	n = Math.abs(n); // 將負數 n 轉正
 	for (let i = Math.floor(Math.sqrt(n)); i >= 1; i--) {
@@ -45,10 +47,10 @@ export function getSquareFactor(n) { // 若 k^2 為 n 的最大平方因數, 回
 }
 
 export function getRandomInt(min, max) { // 隨機整數
-	if (!isInt(min) || !isInt(max)) {
-		throwErr("getRandomInt", 'Param "min" & "max" must be a integer.'); // 如果 min 或 max 不是整數
-	}
+	if (!isInt(min)) throwTypeErr("getRandomInt", "min", "integer");
+	if (!isInt(max)) throwTypeErr("getRandomInt", "max", "integer");
 	
+	if (min > max) [min, max] = [max, min];
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -67,9 +69,7 @@ export class Prime { // 質數 (prime number)
 	static prime = [2];
 	
 	static getNth(n) { // 取得第 n 個質數
-		if (!(isInt(n) && n >= 0)) { // 如果 n 不是非負整數
-			throwErr("Prime.getNth", 'Param "n" must be a nonnegative integer.');
-		}
+		if (!(isInt(n) && n >= 0)) throwTypeErr("Prime.getNth", "n", "integer >= 0"); // 如果 n 不是非負整數
 		
 		if (n <= Prime.prime.length - 1) return Prime.prime[n]; // 質數快取
 		
@@ -81,7 +81,7 @@ export class Prime { // 質數 (prime number)
 	}
 	
 	static isPrime(n) { // 是否是質數
-		if (!isInt(n)) throwErr("Prime.isPrime", 'Param "n" must be a integer.'); // 如果 n 不是整數
+		if (!isInt(n)) throwTypeErr("Prime.isPrime", "n", "integer"); // 如果 n 不是整數
 		
 		if (n <= 1) return false;
 		for (let i = 0, p = 2; p*p <= n; p = Prime.getNth(++i)) if (n % p === 0) return false;
@@ -124,8 +124,9 @@ export class Frac { // 分數 (Fraction)
 	}
 	
 	constructor(n = 0, d = 1) {
-		if (!isInt(n) || !isInt(d)) throwErr("Frac.constructor", 'Param "n" & "d" must be a integer.'); // 如果參數 n 或 d 不是整數
-		if (d === 0) throwErr("Frac.constructor", "The denominator cannot be 0."); // 分母為 0
+		if (!isInt(n)) throwTypeErr("Frac.constructor", "n", "integer"); // 如果參數 n 或 d 不是整數
+		if (!isInt(d)) throwTypeErr("Frac.constructor", "d", "integer");
+		if (d === 0) throwErr("Frac.constructor", 'The denominator (param "d") cannot be 0.'); // 分母為 0
 		
 		// 標準化
 		if (d < 0) [n, d] = [-n, -d]; // 若分母為負數, 將 n 和 d 同乘 -1, 保證 d ∈ Z+
@@ -168,7 +169,7 @@ export class Frac { // 分數 (Fraction)
 	
 	_makeOp(nf, opName, op) { // 自訂運算子
 		if (isInt(nf)) nf = F(nf); // 將 int 轉為 Frac
-		if (!Frac.isFrac(nf)) throwErr(`Frac.${opName}`, 'Param "nf" must be a Frac or int.'); // 第二個運算元必須是 Frac / int
+		if (!Frac.isFrac(nf)) throwTypeErr(`Frac.${opName}`, "nf", "Frac or int"); // 第二個運算元必須是 Frac / int
 		return op(this, nf); // 執行運算
 	}
 	
@@ -318,7 +319,7 @@ export class EF { // Extension Field (a + b√s)
 	constructor(nf_a = 0, nf_b = 0, nf_s = 0, _skipGetFactor = false) { // a + b√s
 		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_s, "nf_s"]];
 		for (const [param, paramName] of check) if (!Hop.isNumOrFrac(param)) {
-			throwErr("EF.constructor", `Param "${paramName}" must be a number or Frac.`); // 參數必須為 Frac 或 number
+			throwTypeErr("EF.constructor", paramName, "number or Frac") // 參數必須為 Frac 或 number
 		}
 		
 		// 以下為標準化
@@ -402,7 +403,7 @@ export class EF { // Extension Field (a + b√s)
 	_makeOp(nfe, opName, op) { // 自訂運算子
 		if (Hop.isNumOrFrac(nfe)) nfe = new EF(nfe); // 將 number 和 Frac 轉為 EF
 		
-		if (!EF.isEF(nfe)) throwErr(`EF.${opName}`, 'Param "nfe" must be a number | Frac | EF .'); // 第二個運算元必須是 number / Frac / EF
+		if (!EF.isEF(nfe)) throwTypeErr(`EF.${opName}`, "nfe", "number | Frac | EF "); // 第二個運算元必須是 number / Frac / EF
 		if (this.s !== 0 && nfe.s !== 0 && this.s !== nfe.s) { // 如果兩個 fleid 的 √s 不一致, 無法運算 (忽略 s 為 0 的情況)
 			throwErr(`EF.${opName}`, "Bases of extension fields differ.");
 		}
@@ -481,17 +482,17 @@ export class Matrix { // 矩陣 (Matrix)
 	
 	static createI(n) { // 生成單位矩陣
 		if (!(isInt(n) && n >= 1)) { // 矩陣的列數必須是正整數
-			throwErr("Matrix.createI", 'Row number (Param "n") must be a positive integer.');
+			throwErr("Matrix.createI", 'Row number (Param "n") must be a integer >= 1.');
 		}
 		return new Matrix(n, n, (i, j) => (i === j ? 1 : 0));
 	}
 	
 	constructor(n, m, initFunc) {
 		if (!(isInt(n) && n >= 1)) { // 矩陣的列數必須是正整數
-			throwErr("Matrix.constructor", 'Row number (Param "n") must be a positive integer.');
+			throwErr("Matrix.constructor", 'Row number (Param "n") must be a integer >= 1.');
 		}
 		if (!(isInt(m) && m >= 1)) { // 矩陣的行數必須是正整數
-			throwErr("Matrix.constructor", 'Column number (Param "m") must be a positive integer.');
+			throwErr("Matrix.constructor", 'Column number (Param "m") must be a integer >= 1.');
 		}
 		if (typeof initFunc !== "function") { // 用於初始化矩陣元素的 function
 			throwErr("Matrix.constructor", 'Element generator (Param "initFunc") must be a function.');
@@ -590,7 +591,7 @@ export class Matrix { // 矩陣 (Matrix)
 	}
 	
 	add(matrix) { // 加上另一個矩陣
-		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.add", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (!Matrix.isMatrix(matrix)) throwTypeErr("Matrix.add", "matrix", "Matrix"); // 參數必須是 Matrix 實例
 		if (!(matrix.n === this.n && matrix.m === this.m)) { // 兩個矩陣的維度必須相同才能相加
 			throwErr("Matrix.add", "Cannot add matrices: dimensions do not match.");
 		}
@@ -598,7 +599,7 @@ export class Matrix { // 矩陣 (Matrix)
 	}
 	
 	mul(matrix) { // 乘上另一個矩陣
-		if (!Matrix.isMatrix(matrix)) throwErr("Matrix.mul", 'Param "matrix" must be a Matrix.'); // 參數必須是 Matrix 實例
+		if (!Matrix.isMatrix(matrix)) throwTypeErr("Matrix.mul", "matrix", "Matrix"); // 參數必須是 Matrix 實例
 		if (this.m !== matrix.n) throwErr("Matrix.mul", "Only n*m and m*p matrices can be multiplied."); // 只有 n*m 跟 m*p 矩陣才能相乘
 		return new Matrix(this.n, matrix.m,
 			(i, j) => EF.sum(this.arr[i].map((ef, k) => ef.mul(matrix.arr[k][j])))
@@ -621,7 +622,7 @@ export class SolveQuad { // 解二次方程式 (Quadratic Equation)
 	constructor(nf_a, nf_b, nf_c) { // 計算二次方程式 ax^2 + bx + c 的解
 		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_c, "nf_c"]];
 		for (const [param, paramName] of check) if (!Hop.isNumOrFrac(param)) { // 參數必須為 number 或 Frac
-			throwErr("SolveQuad.constructor", `Param "${paramName}" must be a number or Frac.`);
+			throwTypeErr("SolveQuad.constructor", paramName, "number or Frac");
 		}
 		if (Hop.equal(nf_a, 0)) { // a 若為 0, 則這不是一個二次方程式
 			throwErr("SolveQuad.constructor", "0x^2 + bx + c is not a quadratic equation.");
@@ -703,7 +704,7 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 	constructor(nf_a, nf_b, nf_c, nf_d) { // 計算三次方程式 ax^3 + bx^2 + cx + d 的解
 		const check = [[nf_a, "nf_a"], [nf_b, "nf_b"], [nf_c, "nf_c"], [nf_d, "nf_d"]];
 		for (const [param, paramName] of check) if (!Hop.isNumOrFrac(param)) { // 參數必須為 number 或 Frac
-			throwErr("SolveCubic.constructor", `Param "${paramName}" must be a number or Frac.`);
+			throwTypeErr("SolveCubic.constructor", paramName, "number or Frac");
 		}
 		if (Hop.equal(nf_a, 0)) { // a 若為 0, 則這不是一個三次方程式
 			throwErr("SolveCubic.constructor", "0x^3 + bx^2 + cx + d is not a cubic equation.");
@@ -757,11 +758,17 @@ export class SolveCubic { // 解三次方程式 (Cubic Equation)
 }
 
 export function removePrefix(str, prefix) { // 移除字串開頭的特定字串
+	if (typeof str !== "string") throwTypeErr("removePrefix", "str", "string");
+	if (typeof prefix !== "string") throwTypeErr("removePrefix", "prefix", "string");
+	if (prefix === "") return str;
 	if (str.startsWith(prefix)) return str.slice(prefix.length);
 	return str;
 }
 
 export function removePostfix(str, postfix) { // 移除字串尾端的特定字串
+	if (typeof str !== "string") throwTypeErr("removePostfix", "str", "string");
+	if (typeof postfix !== "string") throwTypeErr("removePostfix", "postfix", "string");
+	if (postfix === "") return str;
 	if (str.endsWith(postfix)) return str.slice(0, -postfix.length);
 	return str;
 }
@@ -809,7 +816,7 @@ export class MakeLatex { // latex 字串處理
 		return `${s_latex}`;
 	}
 	
-	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") {
+	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 聯立方程式
 		let s_latex = Array.from({ length: row }, (_, i) => {
 			let addPos = false; // 第一項不應該出現 +
 			let s_equationLatex = Array.from({ length: col }, (_, j) => {
@@ -866,4 +873,9 @@ export class MultiTerm { // 生成多個 MakeLatex.term 組合成的式子, 會�
 
 function throwErr(methodName, errMessage) {
 	throw new Error(`[RanMath][${methodName}] ${errMessage}`);
+}
+
+function throwTypeErr(methodName, paramName, typeName) {
+	const a = (typeName.startsWith("a") || typeName.startsWith("A")) ? "an" : "a";
+	throwErr(methodName, `Param "${paramName}" must be ${a} ${typeName}.`);
 }
