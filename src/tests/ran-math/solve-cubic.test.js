@@ -1,7 +1,7 @@
 import { test, expect, describe } from "vitest";
 
 // ---------- test area ----------
-import { isInt, F, Frac, EF, SolveCubic, SCL } from "ran-math";
+import { isInt, F, Frac, EF, SolveCubic } from "ran-math";
 
 const toStr = (value) => {
 	if (value instanceof EF) return `${Hop.toStr(value.nf_a)} + ${Hop.toStr(value.nf_b)} √ ${value.s}`;
