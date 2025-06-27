@@ -78,13 +78,13 @@ quad.roots // [new EF(3), new EF(-2)]
 SolveQuad#rootType: number
 ```
 
-| `.rootType` 的值 | 根的形式 |
-| :- | :- |
-| `SolveQuad.TYPE_2_FRAC = 0` | 兩個根都是有理數 |
-| `SolveQuad.TYPE_REAL_SQRT = 1` | 兩個根為 $\frac{n_1}{d_1} \pm \frac{n_2}{d_2} \sqrt{s} ~,~ s \gt 0$ |
-| `SolveQuad.TYPE_COMPLEX_SQRT = 2` | 兩個根為 $\frac{n_1}{d_1} \pm \frac{n_2}{d_2} \sqrt{s} ~,~ s \lt 0$ |
-| `SolveQuad.TYPE_2_REAL = 3` | 兩個根都是實數 ( `float` ) |
-| `SolveQuad.TYPE_2_COMPLEX = 4` | 兩個根都是複數 ( `float` ) |
+| `.rootType` 的值 | `.roots` 的 `EF` 模式 | 根的形式 |
+| :- | :- | :- |
+| `SolveQuad.TYPE_2_FRAC = 0` | `Q mode` | 兩個根都是有理數 |
+| `SolveQuad.TYPE_REAL_SQRT = 1` | `Q mode` | 兩個根為 $\frac{n_1}{d_1} \pm \frac{n_2}{d_2} \sqrt{s} ~,~ s \gt 0$ |
+| `SolveQuad.TYPE_COMPLEX_SQRT = 2` | `Q mode` | 兩個根為 $\frac{n_1}{d_1} \pm \frac{n_2}{d_2} \sqrt{s} ~,~ s \lt 0$ |
+| `SolveQuad.TYPE_2_REAL = 3` | `C mode` | 兩個根都是實數 |
+| `SolveQuad.TYPE_2_COMPLEX = 4` | `C mode` | 兩個根都是複數 |
 
 範例：
 ```js

@@ -15,11 +15,13 @@ $$a + b \sqrt{s}$$
 - $a, b \in \mathbb{Q}$
 - $s \in \mathbb{Z}$
 - $\sqrt{s}$ 為最簡根號形式
+- `nf_a` 和 `nf_b` 必為 `Frac` 型態
 <br><br>
 
 在 $\mathbb{C}$ 模式下，滿足：
 - $a, b \in \mathbb{R}$
 - $s \in \{ 0, -1 \}$
+- `nf_a` 和 `nf_b` 可能為 `number` 或 `Frac` 型態
 
 ## Import
 ```js
