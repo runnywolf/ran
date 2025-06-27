@@ -25,7 +25,7 @@
 			]
 		},
 		"4": {
-			"answerLatex": "a_n = \\frac{17}{7} 2^n + \\frac{4}{7} (-5)^n",
+			"answerLatex": "a_n = \\frac{4}{7} (-5)^n + \\frac{17}{7} 2^n",
 			"content": [
 				{ "type": "answer", "id": "4-ans" }
 			]

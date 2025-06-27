@@ -1,8 +1,19 @@
 ---
 outline: [2, 3] # 顯示 h2, h3
+head:
+  - - link
+    - rel: stylesheet
+      href: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css # katex 語法支援
 ---
 
 # 介紹
 `RanMath.js` 是一款很實用的數學函式庫，用於支援模擬室頁面的複雜數學運算。
 
 提供了非常多的方法用於生成 LaTex 語法，可以使解答產生器變得容易實作。
+
+## 可能的目標 (想做但沒必要)
+- 使用 `ts` 重寫 `RanMath.js`。
+- 參數支援 `bigint`，不只是內部邏輯。
+- 支援 $\sqrt[n]s$
+
+就留給來到這裡的你吧 ~

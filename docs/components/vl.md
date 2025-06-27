@@ -16,7 +16,7 @@ head:
 
 ## 範例
 ```html
-根據 <vl exp="\det(AB) = \det(A) \det(B)"> 這個定理。
+根據 <vl exp="\det(AB) = \det(A) \det(B)" /> 這個定理。
 ```
 根據 $\det(AB) = \det(A) \det(B)$ 這個定理。
 
@@ -24,7 +24,7 @@ head:
 
 置中：
 ```html
-<vl c exp="\langle f, g \rangle = \int_{-1}^{1} f(x) g(x) dx">
+<vl c exp="\langle f, g \rangle = \int_{-1}^{1} f(x) g(x) dx" />
 ```
 $$\langle f, g \rangle = \int_{-1}^{1} f(x) g(x) dx$$
 

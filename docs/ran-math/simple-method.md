@@ -12,8 +12,8 @@ head:
 ## Functions
 | Function | Description |
 | :- | :- |
-| [`isNum`](#isint) | 檢查 $n$ 是否為數字，與 `typeof n === "number"` 等價 |
-| [`isInt`](#isint) | 檢查 $n$ 是否為整數，與 `Number.isInteger(n)` 等價 |
+| [`isNum`](#isint) | 檢查 $n$ 是否為數字，與 `typeof value === "number"` 等價 |
+| [`isInt`](#isint) | 檢查 $n$ 是否為整數，與 `Number.isInteger(value)` 等價 |
 | [`gcd`](#gcd) | 回傳兩數的最大公因數 ( Greatest Common Divisor ) |
 | [`lcm`](#lcm) | 回傳兩數的最小公倍數 ( Least Common Multiple ) |
 | [`getFactors`](#getfactors) | 回傳 $n$ 的所有正因數 ( 升序排列 ) |
@@ -22,15 +22,15 @@ head:
 | [`sum`](#sum) | 總和 |
 
 ## `isNum`
-檢查參數 `n` 是否為數字，與 `typeof n === "number"` 等價。
+檢查參數 `value` 是否為數字，與 `typeof value === "number"` 等價。
 
 ```js
-isNum(n: any): boolean
+isNum(value: any): boolean
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `any` | 要檢查的值 |
+| `value` | `any` | 要檢查的值 |
 
 範例：
 ```js
@@ -42,15 +42,15 @@ isNum(new Number(5)) // false
 ```
 
 ## `isInt`
-檢查參數 `n` 是否為整數，與 `Number.isInteger(n)` 等價。
+檢查參數 `value` 是否為整數，與 `Number.isInteger(value)` 等價。
 
 ```js
-isInt(n: any): boolean
+isInt(value: any): boolean
 ```
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `any` | 要檢查的值 |
+| `value` | `any` | 要檢查的值 |
 
 範例：
 ```js

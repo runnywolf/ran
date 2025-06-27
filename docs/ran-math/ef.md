@@ -15,11 +15,13 @@ $$a + b \sqrt{s}$$
 - $a, b \in \mathbb{Q}$
 - $s \in \mathbb{Z}$
 - $\sqrt{s}$ 為最簡根號形式
+- `nf_a` 和 `nf_b` 必為 `Frac` 型態
 <br><br>
 
 在 $\mathbb{C}$ 模式下，滿足：
 - $a, b \in \mathbb{R}$
 - $s \in \{ 0, -1 \}$
+- `nf_a` 和 `nf_b` 可能為 `number` 或 `Frac` 型態
 
 ## Import
 ```js
@@ -99,7 +101,7 @@ EF.sum([ 5, F(1, 2), "7", 2.5 ])             // error
 如果這 3 個參數存在至少一個 `float number`，會轉為 $\mathbb{C}$ 模式。
 
 ```js
-new EF(nf_a: number|Frac, nf_b: number|Frac, nf_s: number|Frac): EF
+new EF(nf_a: number|Frac = 0, nf_b: number|Frac = 0, nf_s: number|Frac = 0): EF
 ```
 
 | Param | Type | Description |
@@ -126,9 +128,9 @@ new EF(-1, F(3, 2), -0.4)    // (-1 + 0.9487 √ -1)
 $$a + b \sqrt{s}$$
 
 ```js
-EF.prototype.nf_a: number | Frac
-EF.prototype.nf_b: number | Frac
-EF.prototype.s: number
+EF#nf_a: number | Frac
+EF#nf_b: number | Frac
+EF#s: number
 ```
 
 範例：
@@ -165,7 +167,7 @@ EF.prototype.toStr(): string
 ```js
 new EF(1, 2, 3).toStr()              // "1 + 2 √ 3"
 new EF(F(-4, 7), 3, F(2, 5)).toStr() // "-4/7 + 3/5 √ 10"
-new EF(3.14, -1.618, -1).toStr()     // "3.1400 + -1.6180 √ -1"
+new EF(3.14, -1.618, -1).toStr()     // "3.1400 + -1.6180 i"
 ```
 
 ## `.toLatex`

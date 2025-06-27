@@ -115,9 +115,9 @@ let matrix_test = new Matrix(2, 3, (i, j) => testArr[i][j]);
 
 ## `.n` `.m` `.arr`
 ```js
-Matrix.prototype.n: number             // 矩陣的列數
-Matrix.prototype.m: number             // 矩陣的行數
-Matrix.prototype.arr: Array<Array<EF>> // 矩陣, 元素為 EF 型態
+Matrix#n: number             // 矩陣的列數
+Matrix#m: number             // 矩陣的行數
+Matrix#arr: Array<Array<EF>> // 矩陣, 元素為 EF 型態
 ```
 
 > [!CAUTION]

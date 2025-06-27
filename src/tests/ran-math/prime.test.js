@@ -13,9 +13,9 @@ const testData = {
 			{ input: 99, output: 541 },
 			// { input: 828, output: 6361 },
 			// { input: 11678, output: 124339 },
-			{ input: -5, error: '[RanMath][Prime.getNth] Param "n" must be a nonnegative integer.'  },
-			{ input: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a nonnegative integer.' },
-			{ input: [], error: '[RanMath][Prime.getNth] Param "n" must be a nonnegative integer.' },
+			{ input: -5, error: '[RanMath][Prime.getNth] Param "n" must be a integer >= 0.'  },
+			{ input: NaN, error: '[RanMath][Prime.getNth] Param "n" must be a integer >= 0.' },
+			{ input: [], error: '[RanMath][Prime.getNth] Param "n" must be a integer >= 0.' },
 		]
 	},
 	"Prime.isPrime": {

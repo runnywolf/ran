@@ -27,6 +27,8 @@ const testData = {
 		testName: (input, output) => `Frac.fromStr(${toStr(input)}) = ${toStr(output)}`,
 		testFunc: input => Frac.fromStr(input),
 		tests: [ // 測資
+			{ input: "", output: F(0, 1) },
+			{ input: "000", output: F(0, 1) },
 			{ input: "4", output: F(4, 1) },
 			{ input: " -7", output: F(-7, 1) },
 			{ input: "6/-9", output: F(-2, 3) },
@@ -34,8 +36,31 @@ const testData = {
 			{ input: 4, output: F(0, 1) }, // 4 不是字串
 			{ input: "", output: F(0, 1) }, // 空字串
 			{ input: "2.5/1", output: F(0, 1) }, // 子字串不是整數
+			{ input: "2/1a", output: F(0, 1) }, // 子字串不是整數
 			{ input: "2/1/3", output: F(0, 1) }, // 子字串過多
-			{ input: "2/0", error: '[RanMath][Frac.constructor] The denominator cannot be 0.' }, // 分母為 0
+			{ input: "2/0", error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' }, // 分母為 0
+			
+			{ input: "1.24", output: F(31, 25) },
+			{ input: "01.24", output: F(31, 25) },
+			{ input: "0001.24", output: F(31, 25) },
+			{ input: "0100.02400", output: F(12503, 125) },
+			{ input: ".24", output: F(6, 25) },
+			{ input: "1.00", output: F(1, 1) },
+			{ input: ".0024", output: F(3, 1250) },
+			{ input: ".", output: F(0, 1) },
+			{ input: "44.", output: F(44, 1) },
+			{ input: "0.", output: F(0, 1) },
+			{ input: ".0", output: F(0, 1) },
+			
+			{ input: "-1.24", output: F(-31, 25) },
+			{ input: "1-.24", output: F(0, 1) },
+			{ input: "1.-24", output: F(0, 1) },
+			{ input: "1.2-4", output: F(0, 1) },
+			{ input: "1.24-", output: F(0, 1) },
+			{ input: "0-1.24", output: F(0, 1) },
+			{ input: "-001.24", output: F(-31, 25) },
+			{ input: "-.24", output: F(0, 1) },
+			{ input: "-2.", output: F(-2, 1) },
 		],
 	},
 	"Frac.sum": {
@@ -64,9 +89,9 @@ const testData = {
 			{ input: { n: undefined, d: undefined }, output: F(0, 1) },
 			{ input: { n: 3, d: undefined }, output: F(3, 1) },
 			{ input: { n: 6, d: -9 }, output: F(-2, 3) },
-			{ input: { n: NaN, d: 7 }, error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input: { n: -2, d: "3" }, error: '[RanMath][Frac.constructor] Param "n" & "d" must be a integer.' },
-			{ input: { n: 5, d: 0 }, error: '[RanMath][Frac.constructor] The denominator cannot be 0.' },
+			{ input: { n: NaN, d: 7 }, error: '[RanMath][Frac.constructor] Param "n" must be a integer.' },
+			{ input: { n: -2, d: "3" }, error: '[RanMath][Frac.constructor] Param "d" must be a integer.' },
+			{ input: { n: 5, d: 0 }, error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' },
 		]
 	},
 	".copy": {
