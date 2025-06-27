@@ -59,13 +59,8 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	static initAnSubAnp(initConst, nonHomog) { // 將 n 代入 a_n - a_n^(p), 用於解未知係數 h_i 的聯立
-		const anp = (n) => Frac.sum( // 將 n 代入 a_n^(p), 如果遞迴不存在非齊次部分, 回傳 F(0)
-			Object.entries(nonHomog ? nonHomog.particular : {}).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
-				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
-				return Frac.sum(expPoly.map((frac_pj, k) => frac_pj.mul(n**k))).mul(frac_b.pow(n)); // (p1 + p2 n + p3 n^2 + ...) b^n
-			})
-		);
-		return initConst.map((frac_an, n) => frac_an.sub(anp(n))); // a_n - a_n^(p)
+		if (nonHomog === undefined) return initConst; // 如果遞迴不存在非齊次部分, 回傳 a_n 就好
+		return initConst.map((frac_an, n) => frac_an.sub(nonHomog.getAnp(n))); // a_n - a_n^(p)
 	}
 	
 	static solveHi(order, matrix_hiLE, anSubAnp) { // 解聯立求 h_i
@@ -296,6 +291,25 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		
 		return `a_n = ${mt.toLatex()}`;
 	}
+	
+	getAnFromRecursive(n) { // 用遞迴式計算 a_n (必為 Frac)
+		let a = this.initConst.map(frac_c => frac_c.copy());
+		for (let i = 0; i < n; i++) {
+			const fn = this.haveNonHomog() ? this.nonHomog.getFn(i + this.order) : F(0); // 將 n 代入非齊次部分
+			const newAn = Frac.sum(this.recurCoef.map((frac, i) => frac.mul(a[this.order-1-i]))).add(fn); // 計算下一項 a_n
+			if (this.order === 1) a = [newAn];
+			if (this.order === 2) a = [a[1], newAn];
+			if (this.order === 3) a = [a[1], a[2], newAn];
+		}
+		return a[0];
+	}
+	
+	getAnFromClosedForm(n) { // 用一般式計算 a_n (可能會出現無理數, 回傳 float 或 Frac)
+		const ef_anh = EF.sum(this.hiAnswer.map( // 齊次解 a_n^(h) 代入 n 得到的值, 必為有理數
+			(ef_hi, i) => ef_hi.mul(n ** this.extraPow[i]).mul(this.eigenvalue[i].pow(n))
+		));
+		return Hop.add(ef_anh.nf_a, this.haveNonHomog() ? this.nonHomog.getAnp(n) : F(0));
+	}
 }
 
 export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, 並生成計算過程
@@ -450,6 +464,24 @@ export class SolveNonHomog { // 解決遞迴的非齊次部分, 得到特解, �
 			});
 		}
 		return `a_n^{(p)} = ${mt.toLatex()}`;
+	}
+	
+	getFn(n) { // 將 n 帶入非齊次部分 F(n), 回傳有理數
+		return Frac.sum(
+			Object.entries(this.combinedExpFunc).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
+				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
+				return Frac.sum(expPoly.map((frac_pj, k) => frac_pj.mul(n**k))).mul(frac_b.pow(n)); // (p1 + p2 n + p3 n^2 + ...) b^n
+			})
+		);
+	}
+	
+	getAnp(n) { // 將 n 代入特解 a_n^(p), 回傳有理數
+		return Frac.sum(
+			Object.entries(this.particular).map(([s_frac_b, expPoly]) => { // 將所有 (...) b^n 項加起來, 會變成 a_n^(p)
+				const frac_b = Frac.fromStr(s_frac_b); // b^n 的 b
+				return Frac.sum(expPoly.map((frac_pj, k) => frac_pj.mul(n**k))).mul(frac_b.pow(n)); // (p1 + p2 n + p3 n^2 + ...) b^n
+			})
+		);
 	}
 }
 
