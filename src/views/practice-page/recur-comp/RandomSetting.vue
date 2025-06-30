@@ -36,6 +36,6 @@ const numberRange = ref("3"); // 數字範圍 (隨機生成的值可以使用的
 const rootType = ref("int"); // 特徵根的類型
 
 const clickSubmit = () => { // 按下隨機生成的按鈕
-	emit("submit", { numberRange: Number(numberRange.value), rootType: rootType.value }); // 上傳隨機模式至 RecurInput.vue
+	emit("submit", Number(numberRange.value), rootType.value); // 上傳隨機模式至 RecurInput.vue
 };
 </script>

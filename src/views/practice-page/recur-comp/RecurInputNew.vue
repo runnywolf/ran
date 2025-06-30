@@ -87,12 +87,12 @@ const polyCoefInput = shallowRef([]); // 輸入框取得: 多項式的係數 Arr
 const expFuncInput = shallowRef([]); // 輸入框取得: 指數部分的係數和底數 Array<[str, str, str]>, 元素個數 = 指數項數
 const initConstInput = shallowRef([]); // 輸入框取得: 遞迴的初始條件 Array<string>, 元素個數 = 遞迴階數
 
-const recurCoef = ref([]); // Array<Frac> ; 齊次部分的係數, length 代表遞迴階數
-const nonHomogFunc = ref([]); // Array<[Frac, int, Frac]> ; 非齊次的 frac_c n^k (frac_b)^n 項會表示為 [ [frac_c, k, frac_b], ... ]
-const initConst = ref([]); // Array<Frac> ; 遞迴的初始條件, 長度與 recurCoef 的大小相同
+const recurCoef = ref([]); // Array<nf> ; 齊次部分的係數, length 代表遞迴階數
+const nonHomogFunc = ref([]); // Array<[nf, int, nf]> ; 非齊次的 frac_c n^k (frac_b)^n 項會表示為 [ [frac_c, k, frac_b], ... ]
+const initConst = ref([]); // Array<nf> ; 遞迴的初始條件, 長度與 recurCoef 的大小相同
 
-const handleRandomSettingSubmit = ({ numberRange, rootType }) => { // 當生成器的設定改變時
-	console.log(numberRange, rootType, recurCoefInput.value)
+const handleRandomSettingSubmit = (numberRange, rootType) => { // 當生成器的設定改變時
+	console.log(numberRange, rootType)
 	// 寫入輸入框
 	makeRecurData();
 };
@@ -129,12 +129,8 @@ const handleInputChanged = (element, updateArr, i, isPowerInput = false) => {
 };
 
 const isNumberInputValid = (str) => { // 除了 n^p 輸入框以外的, 判定輸入值是否合法
-	try {
-		if (str === "0") return true;
-		return !Frac.fromStr(str).isZero(); // Frac.fromStr 如果輸入值無法轉為分數, 會回傳 F(0)
-	} catch (error) { // div 0 error
-		return false;
-	}
+	if (str === "0") return true;
+	return !Frac.fromStr(str).isZero(); // Frac.fromStr 如果輸入值無法轉為分數, 會回傳 F(0)
 }
 
 const isPowerInputValid = (str) => { // n^p 輸入框, 判定輸入值是否合法
@@ -149,11 +145,18 @@ const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 
 };
 
 const makeRecurData = () => { // 將輸入框的字串轉為 Recur.vue 接受的參數
-	
+	recurCoef.value = recurCoefInput.value.map(str => Frac.fromStr(str));
+	nonHomogFunc.value = [
+		...polyCoefInput.value.map((str, i) => [Frac.fromStr(str), i, 1]), // c n^i -> c n^i 1^n
+		...expFuncInput.value.map(
+			([str_c, str_k, str_b]) => [Frac.fromStr(str_c), Number(str_k), Frac.fromStr(str_b)] // c n^k b^n
+		)
+	];
+	initConst.value = initConstInput.value.map(str => Frac.fromStr(str));
 };
 
 const emitRecur = () => { // 上傳遞迴資訊至 RecurView
-	console.log(recurCoefInput.value, polyCoefInput.value, expFuncInput.value, initConstInput.value);
+	emit("submit", recurCoef.value, nonHomogFunc.value, initConst.value);
 };
 </script>
 

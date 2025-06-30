@@ -111,6 +111,7 @@ export class Frac { // 分數 (Fraction)
 		
 		const numArr = str.split("/").map(s => Number(s)); // 將 "/" 符號切分, 並將切割後的數個字串轉為數字
 		if (numArr.some(n => !isInt(n))) return F(0); // 若字串某個部份不是整數, 回傳 0
+		if (numArr[1] === 0) return F(0); // div 0
 		
 		if (numArr.length === 1) return F(numArr[0]); // 輸入整數 (str 有 0 個 "/", 被切分成 1 個部份)
 		if (numArr.length === 2) return F(numArr[0], numArr[1]); // 輸入分數 (str 有 1 個 "/", 被切分成 2 個部份)
