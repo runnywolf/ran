@@ -18,15 +18,25 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	static initRecur(recurCoef, nonHomogFunc, initConst) { // 整理遞迴式的參數, 以及將 int 轉型為 Frac
-		const order = recurCoef.length; // 遞迴階數
-		
 		recurCoef = recurCoef.map(nf_coef => F(0).add(nf_coef)); // 利用 frac.add 將 int number 轉為 Frac, 保證 recurCoef 為 Array<Frac>
 		while (recurCoef.at(-1)?.equal(0)) recurCoef.pop(); // 降階: a_n = r1 a_{n-1} + 0 a_{n-2} 應該等於 a_n = r1 a_{n-1}
 		if (!(1 <= recurCoef.length && recurCoef.length <= 3)) { // 只能計算 1 ~ 3 階遞迴
 			throwErr("SolveRecur.initRecur", "Only support 1 ~ 3 order recurrence relation.");
 		}
+		const order = recurCoef.length; // 遞迴階數
 		
 		nonHomogFunc = nonHomogFunc.map(([nf_c, k, nf_b]) => [F(0).add(nf_c), k, F(0).add(nf_b)]); // 保證 nonHomogFunc 為 Array<[Frac, int, Frac]>
+		for (let i = nonHomogFunc.length - 1; i >= 0; i--) { // 合併相同 n^k b^n 的項, 因為會涉及到刪除, 所以必須從後面開始檢查
+			const [frac_c, k, frac_b] = nonHomogFunc[i];
+			for (let j = 0; j <= i-1; j++) {
+				const [_c, _k, _frac_b] = nonHomogFunc[j];
+				if (k === _k && frac_b.equal(_frac_b)) { // 相同 n^k b^n 的項
+					nonHomogFunc[j][0] = nonHomogFunc[j][0].add(frac_c); // 將第 i 項合併至第 j 項
+					nonHomogFunc.pop(i); // 刪除第 i 項
+				}
+			}
+		}
+		nonHomogFunc = nonHomogFunc.filter(([frac_c, k, frac_b]) => !frac_c.isZero() && !frac_b.isZero()); // 刪除 0 n^k b^n 和 c n^k 0^n 的項
 		
 		initConst = initConst.map(nf_coef => F(0).add(nf_coef)); // 保證 initConst 為 Array<Frac>
 		initConst = initConst.slice(0, order); // 使 initConst 的長度與 recurCoef 一致, 不足的部分補 F(0)

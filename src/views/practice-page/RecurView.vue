@@ -10,16 +10,19 @@
 		<div class="item">
 			輸入框 n^ 只能輸入 0 ~ 3 的整數。
 		</div>
+		<div class="item">
+			輸入框最大字元數限制為 6，若輸入的字串不合法，會顯示紅色。
+		</div>
 	</div>
 	<div class="ts-divider is-section"></div>
-	<RecurInputNew @submit="handleRecurInputSubmit"></RecurInputNew>
+	<RecurInput @submit="handleRecurInputSubmit"></RecurInput>
 	<div class="ts-divider is-section"></div>
 	<Recur :recurCoef="recurParams[0]" :nonHomogFunc="recurParams[1]" :initConst="recurParams[2]"></Recur>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import RecurInputNew from "./recur-comp/RecurInputNew.vue"; // 遞迴生成器的參數設定
+import RecurInput from "./recur-comp/RecurInput.vue"; // 遞迴生成器的參數設定
 import Recur from "@/components/answer-generator/Recur.vue"; // 遞迴解答生成器
 
 const recurParams = ref([[], [], []]);

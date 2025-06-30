@@ -92,7 +92,7 @@ watch(() => [props.recurCoef, props.nonHomogFunc, props.initConst], ([newRC, new
 			errorMessage.value = "必須輸入 1 ~ 3 階遞迴";
 		} else {
 			errorMessage.value = error.message; // 若遞迴的計算過程出錯, 捕捉錯誤訊息, 並顯示
-			console.error(error.message); // 顯示在 console 上
+			console.error(error); // 將詳細的錯誤訊息顯示在 console 上
 		}
 	}
 }, { immediate: true, deep: true });
