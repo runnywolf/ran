@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router/index.js";
 import { createPinia } from "pinia";
 
+import "tocas/dist/tocas.min.css"; // tocas css
+
 import "./styles/style.css"; // 全域樣式
 import "./styles/problem.css"; // 題目樣式
 
