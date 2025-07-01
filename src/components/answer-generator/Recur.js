@@ -195,7 +195,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	answerExistComplex() { // h_i 是否有複數
-		return this.hiAnswer.some(ef_hi => ef_hi.s < 0);
+		return this.eigenvalue.some(ef_hi => ef_hi.s < 0);
 	}
 	
 	mlPolarCoordinate() {
@@ -223,30 +223,29 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		const ef_base = (this.order === 2) ? this.eigenvalue[0] : this.eigenvalue[1]; // base = a + bi
 		const [ef_alpha, ef_beta] = [ef_base.real(), ef_base.imag()];
 		const ef_norm = new EF(0, 1, ef_base.normSquare()); // 0 + 1√(a^2 + b^2) = √(a^2 + b^2)
-		const ef_bDivA = ef_beta.div(ef_alpha);
 		
+		let ef_bDivA = null;
 		let nf_tanToPi = null;
-		const tanInverseToFracPi = [ // 如果 tan^-1(...) 可化簡
-			[new EF(0, -1, 3), F(-1, 3)], // tan^-1(-√3) = -1/3 pi
-			[new EF(-1), F(-1, 4)], // tan^-1(-1) = -1/4 pi
-			[new EF(0, F(-1, 3), 3), F(-1, 6)], // tan^-1(-√3 / 3) = -1/6 pi
-			[new EF(0, F(1, 3), 3), F(1, 6)], // tan^-1(√3 / 3) = 1/6 pi
-			[new EF(1), F(1, 4)], // tan^-1(1) = 1/4 pi
-			[new EF(0, 1, 3), F(1, 3)], // tan^-1(√3) = 1/3 pi
-		];
-		for (const [ef_tan, frac_pi] of tanInverseToFracPi) if (ef_bDivA.equal(ef_tan)) { // tan^-1(...) 轉 Frac pi
-			nf_tanToPi = frac_pi;
-			break;
-		}
-		if (!Frac.isFrac(ef_bDivA.nf_a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
-			nf_tanToPi = Math.atan(ef_bDivA.nf_a) / Math.PI;
+		if (ef_alpha.equal(0)) nf_tanToPi = F(1, 2); // tan^(beta / 0) = 1/2 pi
+		else {
+			ef_bDivA = ef_beta.div(ef_alpha);
+			if (ef_bDivA.equal(new EF(0, -1, 3))) nf_tanToPi = F(-1, 3); // tan^-1(-√3) = -1/3 pi
+			else if (ef_bDivA.equal(-1)) nf_tanToPi = F(-1, 4); // tan^-1(-1) = -1/4 pi
+			else if (ef_bDivA.equal(new EF(0, F(-1, 3), 3))) nf_tanToPi = F(-1, 6); // tan^-1(-√3 / 3) = -1/6 pi
+			else if (ef_bDivA.equal(new EF(0, F(1, 3), 3))) nf_tanToPi = F(1, 6); // tan^-1(√3 / 3) = 1/6 pi
+			else if (ef_bDivA.equal(1)) nf_tanToPi = F(1, 4); // tan^-1(1) = 1/4 pi
+			else if (ef_bDivA.equal(new EF(0, 1, 3))) nf_tanToPi = F(1, 3); // tan^-1(√3) = 1/3 pi
+			
+			if (!Frac.isFrac(ef_bDivA.nf_a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
+				nf_tanToPi = Math.atan(ef_bDivA.nf_a) / Math.PI;
+			}
 		}
 		
 		let s_rLatex = `${ml.delim(ef_alpha.toLatex())}^2 + ${ml.delim(ef_beta.toLatex())}^2`; // "alpha^2 + beta^2" (latex)
 		s_rLatex = `r = \\sqrt{${s_rLatex}} = ${ef_norm.toLatex()}`; // "r = √( alpha^2 + beta^2 ) = 範數" (latex)
 		
 		let s_thetaLatex = `\\theta = \\tan^{-1}({${ef_beta.toLatex()}}/{${ef_alpha.toLatex()}})`; // "theta = tan^-1(beta / alpha)" (latex)
-		s_thetaLatex += ` = \\tan^{-1}(${ef_bDivA.toLatex()})`; // "theta = tan^-1(beta / alpha) = tan^-1 的值" (latex)
+		if (ef_bDivA) s_thetaLatex += ` = \\tan^{-1}(${ef_bDivA.toLatex()})`; // "theta = tan^-1(beta / alpha) = tan^-1 的值" (latex)
 		if (nf_tanToPi) s_thetaLatex += ` = ${Hop.toLatex(nf_tanToPi)} \\pi`; // 如果 tan 可化簡成 pi
 		
 		return `\\begin{gather*} ${s_rLatex} \\\\ ${s_thetaLatex} \\end{gather*}`;

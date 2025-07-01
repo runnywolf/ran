@@ -65,11 +65,11 @@
 
 <script setup>
 import { shallowRef } from 'vue';
-import { isInt, Frac } from "ran-math";
+import { isInt, gcd, getRandomInt, Frac, F, EF } from "ran-math";
 import RandomSetting from './RandomSetting.vue'; // 用於調整遞迴生成器的參數
 import RecurFormSetting from './RecurFormSetting.vue'; // 用於調整遞迴形式
 
-const INPUT_MAX_CHAR_COUNT = 6; // 輸入框的最大字元數
+const INPUT_MAX_CHAR_COUNT = 8; // 輸入框的最大字元數
 
 const emit = defineEmits([ "submit" ]); // 按下計算按鈕後, 上傳遞迴資訊至 RecurView
 
@@ -83,9 +83,58 @@ const expFuncInput = shallowRef([]); // 輸入框取得: 指數部分的係數�
 const initConstInput = shallowRef([]); // 輸入框取得: 遞迴的初始條件 Array<string>, 元素個數 = 遞迴階數
 
 const handleRandomSettingSubmit = (numberRange, rootType) => { // 當生成器的設定改變時
-	console.log(numberRange, rootType)
-	// 寫入輸入框
+	generateRandomRecurCoef(numberRange, rootType);
 	emitRecur(); // 上傳遞迴資訊至 RecurView
+};
+
+const generateRandomRecurCoef = (numberRange, rootType) => { // 生成隨機的齊次係數, 並複寫到輸入框
+	const order = recurCoefInput.value.length; // 遞迴階數
+	const randomInt = () => getRandomInt(-numberRange, numberRange); // 隨機整數
+	const randomNonZeroInt = () => getRandomInt(1, numberRange) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
+	const randomNonSquarePosInt = () => { // 隨機正整數 (非平方數)
+		let int = getRandomInt(2, numberRange);
+		while (Math.round(int ** 0.5) ** 2 === int) int = getRandomInt(2, numberRange); // 若隨機到平方數, 重骰
+		return int;
+	};
+	let eigenvalue = []; // Array<EF> ; 遞迴特徵根
+	
+	if (rootType === "int") { // 生成整數特徵值
+		eigenvalue = Array.from({ length: order }, () => new EF(randomNonZeroInt())); // 非零隨機整數
+	}
+	else if (rootType === "int-multi") { // 生成整數重根特徵值 (1 階遞迴無視此模式)
+		const ef_multiRoot = new EF(randomNonZeroInt()); // 隨機的重根特徵值
+		if (order === 2 || order === 3) eigenvalue = [ef_multiRoot, ef_multiRoot]; // 如果是 2, 3 階遞迴, 生成二重根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
+	}
+	else if (rootType === "frac") { // 生成分數特徵值
+		eigenvalue = Array.from({ length: order }, () => { // 非零隨機分數
+			const n = randomNonZeroInt(); // 隨機分子
+			let d = randomNonZeroInt(); // 隨機分母
+			while (n % d === 0) d = randomNonZeroInt(); // 隨機分母, 並且不是整數
+			return new EF(F(n, d));
+		});
+	}
+	else if (rootType === "sqrt") { // 生成有根號的特徵值 (1 階遞迴無視此模式)
+		const ef_root = new EF(randomInt(), randomNonZeroInt(), randomNonSquarePosInt()); // 隨機的共軛根
+		if (order === 2 || order === 3) eigenvalue = [ef_root, ef_root.conjugate()]; // 如果是 2, 3 階遞迴, 生成一對共軛根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
+	}
+	else if (rootType === "complex") { // 生成複數特徵值 (1 階遞迴無視此模式)
+		const rootList = [ // -i ; 1-√3i ; 1-i ; 3-√3i ; 3+√3i ; 1+i ; 1+√3i ; i
+			[0, -1, -1], [1, -1, -3], [1, -1, -1], [3, -1, -3], [3, 1, -3], [1, 1, -1], [1, 1, -3], [0, 1, -1],
+		];
+		const ef_root = new EF(...rootList[getRandomInt(0, 7)]).mul(randomNonZeroInt()); // 隨機的共軛根, tan^-1 一定可以化為有理數 pi
+		if (order === 2 || order === 3) eigenvalue = [ef_root, ef_root.conjugate()]; // 如果是 2, 3 階遞迴, 生成一對共軛根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
+	}
+	
+	while (eigenvalue.length < 3) eigenvalue.push(new EF(0)); // 1 或 2 階遞迴需要補 0, 不然無法用下面的公式計算係數
+	const [a, b, c] = eigenvalue; // (t-a)(t-b)(t-c) = t^3 - (a+b+c)t^2 + (ab+bc+ca)t - abc
+	let recurCoef = [ // Array<EF> ; 齊次係數: a_n = (a+b+c) a_{n-1} - (ab+bc+ca) a_{n-2} + abc a_{n-3}
+		a.add(b).add(c), new EF(0).sub(a.mul(b)).sub(b.mul(c)).sub(c.mul(a)), a.mul(b).mul(c)
+	];
+	recurCoef.length = order; // 依照遞迴階數裁切齊次係數 (因為剛剛在尾端補 0)
+	recurCoefInput.value = recurCoef.map(ef => `${ef.nf_a.toStr()}`); // 將 EF 型態的齊次係數轉為 string, 並複寫到輸入框
 };
 
 const handleRecurFormChanged = ({ recurOrder, polyDegree, expTermNum }) => { // 當遞迴形式改變時
@@ -93,6 +142,8 @@ const handleRecurFormChanged = ({ recurOrder, polyDegree, expTermNum }) => { // 
 	resizeRefArray(polyCoefInput, polyDegree + 1, () => ""); // n 次多項式有 n+1 個係數
 	resizeRefArray(expFuncInput, expTermNum, () => ["", "0", ""]);
 	resizeRefArray(initConstInput, recurOrder, () => "");
+	
+	emitRecur(); // 上傳遞迴資訊至 RecurView
 };
 
 const resizeRefArray = (refArray, newLength, newElement) => { // 調整 ref Array 的 length, 增加長度會在 Array 尾端補 0

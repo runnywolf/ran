@@ -16,8 +16,9 @@
 		<div class="ts-select is-solid">
 			<select v-model="rootType">
 				<option value="int">整數</option>
+				<option value="int-multi">整數重根</option>
 				<option value="frac">分數</option>
-				<option value="root">帶有根號</option>
+				<option value="sqrt">帶有根號</option>
 				<option value="complex">複數</option>
 			</select>
 		</div>
