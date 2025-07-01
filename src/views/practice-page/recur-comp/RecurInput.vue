@@ -65,7 +65,7 @@
 
 <script setup>
 import { shallowRef } from 'vue';
-import { isInt, gcd, getRandomInt, Frac, F, EF } from "ran-math";
+import { isInt, getRandomInt, Frac, F, EF } from "ran-math";
 import RandomSetting from './RandomSetting.vue'; // 用於調整遞迴生成器的參數
 import RecurFormSetting from './RecurFormSetting.vue'; // 用於調整遞迴形式
 

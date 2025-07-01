@@ -25,4 +25,7 @@ span.vl {
 	white-space: nowrap; /* 禁止換行 */
 	margin: 0 3px; /* 讓 latex 標籤與內文的間距再大一點 */
 }
+div.vl { /* 當 vl c 內的 latex 語法超出父 div 的寬度時, 出現滾動條 */
+	overflow-x: auto;
+}
 </style>
