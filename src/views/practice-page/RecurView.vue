@@ -11,7 +11,7 @@
 			輸入框 n^ 只能輸入 0 ~ 3 的整數。
 		</div>
 		<div class="item">
-			輸入框最大字元數限制為 8，若輸入的字串不合法，會顯示紅色。
+			輸入框最大字元數限制為 8；若輸入的字串不合法，會顯示紅色。
 		</div>
 	</div>
 	<div class="ts-divider is-section"></div>

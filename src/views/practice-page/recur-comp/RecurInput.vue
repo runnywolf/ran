@@ -83,17 +83,20 @@ const expFuncInput = shallowRef([]); // 輸入框取得: 指數部分的係數�
 const initConstInput = shallowRef([]); // 輸入框取得: 遞迴的初始條件 Array<string>, 元素個數 = 遞迴階數
 
 const handleRandomSettingSubmit = (numberRange, rootType) => { // 當生成器的設定改變時
-	generateRandomRecurCoef(numberRange, rootType);
+	generateRandomRecurCoef(numberRange, rootType); // 生成隨機的齊次係數, 並複寫到輸入框
+	gererateRandomPolyCoef(numberRange); // 生成隨機的多項式, 並複寫到輸入框
+	gererateRandomExpFunc(numberRange); // 生成隨機的指數項, 並複寫到輸入框
+	gererateRandomInitConst(numberRange); // 生成隨機的初始條件, 並複寫到輸入框
 	emitRecur(); // 上傳遞迴資訊至 RecurView
 };
 
-const generateRandomRecurCoef = (numberRange, rootType) => { // 生成隨機的齊次係數, 並複寫到輸入框
+const generateRandomRecurCoef = (range, rootType) => { // 生成隨機的齊次係數, 並複寫到輸入框
 	const order = recurCoefInput.value.length; // 遞迴階數
-	const randomInt = () => getRandomInt(-numberRange, numberRange); // 隨機整數
-	const randomNonZeroInt = () => getRandomInt(1, numberRange) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
+	const randomInt = () => getRandomInt(-range, range); // 隨機整數
+	const randomNonZeroInt = () => getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
 	const randomNonSquarePosInt = () => { // 隨機正整數 (非平方數)
-		let int = getRandomInt(2, numberRange);
-		while (Math.round(int ** 0.5) ** 2 === int) int = getRandomInt(2, numberRange); // 若隨機到平方數, 重骰
+		let int = getRandomInt(2, range);
+		while (Math.round(int ** 0.5) ** 2 === int) int = getRandomInt(2, range); // 若隨機到平方數, 重骰
 		return int;
 	};
 	let eigenvalue = []; // Array<EF> ; 遞迴特徵根
@@ -135,6 +138,29 @@ const generateRandomRecurCoef = (numberRange, rootType) => { // 生成隨機的�
 	];
 	recurCoef.length = order; // 依照遞迴階數裁切齊次係數 (因為剛剛在尾端補 0)
 	recurCoefInput.value = recurCoef.map(ef => `${ef.nf_a.toStr()}`); // 將 EF 型態的齊次係數轉為 string, 並複寫到輸入框
+};
+
+const gererateRandomPolyCoef = (range) => { // 生成隨機的多項式, 並複寫到輸入框
+	polyCoefInput.value = polyCoefInput.value.map(() => `${getRandomInt(-range, range)}`); // 生成隨機整係數
+};
+
+const gererateRandomExpFunc = (range) => { // 生成隨機的指數項, 並複寫到輸入框
+	const randomIntNot0 = () => getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
+	const randomIntNot01 = () => { // 隨機非 0, 1 整數
+		return getRandomInt(0, 1) ? getRandomInt(2, range) : getRandomInt(-range, -1);
+	};
+	expFuncInput.value = expFuncInput.value.map(() => {
+		return [`${randomIntNot0()}`, "0", `${randomIntNot01()}`]; // 隨機的 c b^n 項
+	});
+};
+
+const gererateRandomInitConst = () => { // 生成隨機的初始條件, 並複寫到輸入框
+	const order = initConstInput.value.length; // 遞迴階數
+	if (order === 1 && polyCoefInput.value.length === 0 && expFuncInput.value.length === 0) {
+		initConstInput.value = ["1"]; // 將 1 階齊次遞迴的初始條件設為 a_0 = 1
+	} else { // 將 1 / 2 / 3 階遞迴的初始條件設為 [0] / [0, 1] / [0, 1, 2]
+		initConstInput.value = Array.from({ length: order }, (_, i) => `${i}`);
+	}
 };
 
 const handleRecurFormChanged = ({ recurOrder, polyDegree, expTermNum }) => { // 當遞迴形式改變時

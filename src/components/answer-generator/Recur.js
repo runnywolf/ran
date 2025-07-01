@@ -33,6 +33,7 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 				if (k === _k && frac_b.equal(_frac_b)) { // 相同 n^k b^n 的項
 					nonHomogFunc[j][0] = nonHomogFunc[j][0].add(frac_c); // 將第 i 項合併至第 j 項
 					nonHomogFunc.pop(i); // 刪除第 i 項
+					break;
 				}
 			}
 		}
