@@ -7,7 +7,7 @@
 		G(x) &= \sum\limits_{n=0}^{\infty} a_n x^n \\
 		&= \sum\limits_{n=0}^{\infty} \left( \frac{17}{7} 2^n + \frac{4}{7} (-5)^n \right) x^n \\
 		&= \frac{17}{7} \sum\limits_{n=0}^{\infty} (2x)^n + \frac{4}{7} \sum\limits_{n=0}^{\infty} (-5x)^n \\
-		&= \frac{17}{7} \cdot \frac{1}{1-2x} + \frac{4}{7} \cdot \frac{1}{1+5x}
+		&= \boxed{ \frac{17}{7} \cdot \frac{1}{1-2x} + \frac{4}{7} \cdot \frac{1}{1+5x} }
 		\end{split}
 	" />
 </template>

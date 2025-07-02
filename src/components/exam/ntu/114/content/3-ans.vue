@@ -12,7 +12,7 @@
 		&= 27 \cdot 9 ~\text{mod}~ 13 \\
 		&= (27 ~\text{mod}~ 13)(9 ~\text{mod}~ 13) ~\text{mod}~ 13 \\
 		&= 1 \cdot 9 ~\text{mod}~ 13 \\
-		&= 9
+		&= \boxed{ 9 }
 		\end{split}
 	" />
 </template>

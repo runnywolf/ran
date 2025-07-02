@@ -65,7 +65,7 @@
 				&= \frac{ \left. \frac{1}{9} x^9 \right|_{-1}^{1} - \left. \frac{3}{5} ( \frac{1}{7} x^7 ) \right|_{-1}^{1} }
 				{ \left. \frac{1}{7} x^7 \right|_{-1}^{1} - \left. \frac{6}{5} ( \frac{1}{5} x^5 ) \right|_{-1}^{1} + \left. \frac{9}{25} (\frac{1}{3} x^3) \right|_{-1}^{1} } \\
 				&= \frac{ \frac{1}{9} - \frac{3}{35} }{ \frac{1}{7} - \frac{6}{25} + \frac{3}{25} } \cdot 2 \\
-				&= \frac{20}{9}
+				&= \boxed{ \frac{20}{9} }
 				\end{split}
 			" />
 		</template>
