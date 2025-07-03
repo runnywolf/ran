@@ -815,7 +815,7 @@ export class MakeLatex { // latex 字串處理
 			s_latex = `${coef}\\cdot${s_latex}`; // 底數 b 的開頭若為數字, 需要用乘點分離 (係數 coef 的尾端是 ")" 字符為例外)
 		} else s_latex = `${coef}${s_latex}`; // c b^p
 		
-		return `${s_latex}`;
+		return s_latex;
 	}
 	
 	static equationSystem(row, col, coefFunc, varFunc, equalFunc, equalMode = "right") { // 聯立方程式

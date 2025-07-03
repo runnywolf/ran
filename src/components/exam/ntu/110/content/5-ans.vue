@@ -1,3 +1,5 @@
 <template>
-	[第 5 題的解答]
+	<RanLink to="https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)#Proof">
+		證明 (Lagrange's theorem)
+	</RanLink>
 </template>
