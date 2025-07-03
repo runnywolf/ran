@@ -1,6 +1,6 @@
-# 🦊 Ran 0.3.5
-![](https://img.shields.io/badge/Ran-v0.3.5-55f?style=flat)
-![](https://img.shields.io/badge/RanMath.js-v2.0.0-55f?style=flat)
+# 🦊 Ran 0.3.6
+![](https://img.shields.io/badge/Ran-v0.3.6-55f?style=flat)
+![](https://img.shields.io/badge/RanMath.js-v2.0.1-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
 [![](https://img.shields.io/npm/v/katex.svg?label=KaTex)](https://github.com/KaTeX/KaTeX)
@@ -26,7 +26,7 @@
 - 齊次 / 非齊次遞迴
 
 ## 📄 已收錄題本
-- 台大 114~110 (110 無解答)
+- 台大 114~110
 
 ## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
