@@ -55,5 +55,5 @@
 	因為這是一個 <vl exp="n+1" /> 階行列式，所以<br>
 	<vl c exp="\det(A) = 1 \cdot (1-a^2)^n" />
 	因此 <vl exp="A" /> 的所有特徵值的乘積為<br>
-	<vl c exp="(1-a^2)^n" />
+	<vl c exp="\boxed{ (1-a^2)^n }" />
 </template>

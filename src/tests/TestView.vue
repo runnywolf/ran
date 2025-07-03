@@ -1,6 +1,5 @@
 <template>
 	<div class="ts-box ts-content">
-		
 	</div>
 </template>
 

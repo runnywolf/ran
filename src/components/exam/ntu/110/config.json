@@ -6,25 +6,25 @@
 	"section": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "-before-9", "9", "10" ],
 	"problem": {
 		"1": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{odd} ~~;~~ 2",
 			"content": [
 				{ "type": "answer", "id": "1-ans" }
 			]
 		},
 		"2": {
-			"answerLatex": "?",
+			"answerLatex": "\\log_2{3}",
 			"content": [
 				{ "type": "answer", "id": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "?",
+			"answerLatex": "\\frac{2}{n} \\binom{2n-2}{n-1}",
 			"content": [
 				{ "type": "answer", "id": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "?",
+			"answerLatex": "n+1 ~~;~~ m+1",
 			"content": [
 				{ "type": "answer", "id": "4-ans" }
 			]
@@ -36,31 +36,31 @@
 			]
 		},
 		"6": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{(a)} ~ 4 ~\\text{or}~ 5 \\quad \\text{(b)} ~ 2",
 			"content": [
 				{ "type": "answer", "id": "6-ans" }
 			]
 		},
 		"7": {
-			"answerLatex": "?",
+			"answerLatex": "-\\frac{1}{a_0} (A^{r-1} + a_{r-1} A^{r-2} + \\cdots + a_2 A + a_1 I)",
 			"content": [
 				{ "type": "answer", "id": "7-ans" }
 			]
 		},
 		"8": {
-			"answerLatex": "?",
+			"answerLatex": "2, 2, 4, 4, 5",
 			"content": [
 				{ "type": "answer", "id": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{ac}",
 			"content": [
 				{ "type": "answer", "id": "9-ans" }
 			]
 		},
 		"10": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{ce}",
 			"content": [
 				{ "type": "answer", "id": "10-ans" }
 			]

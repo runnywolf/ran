@@ -38,7 +38,7 @@ const testData = {
 			{ input: "2.5/1", output: F(0, 1) }, // 子字串不是整數
 			{ input: "2/1a", output: F(0, 1) }, // 子字串不是整數
 			{ input: "2/1/3", output: F(0, 1) }, // 子字串過多
-			{ input: "2/0", error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' }, // 分母為 0
+			{ input: "2/0", output: F(0, 1) }, // 分母為 0
 			
 			{ input: "1.24", output: F(31, 25) },
 			{ input: "01.24", output: F(31, 25) },

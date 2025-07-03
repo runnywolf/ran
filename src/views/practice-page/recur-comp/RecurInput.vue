@@ -1,325 +1,236 @@
 <template>
 	<div class="ts-wrap is-vertical is-compact">
+		<RandomSetting @submit="handleRandomSettingSubmit"></RandomSetting>
+		<RecurFormSetting @recurFormChanged="handleRecurFormChanged"></RecurFormSetting>
 		
-		<!-- 隨機生成器 -->
-		<div class="ts-wrap is-compact is-middle-aligned">
-			
-			<!-- 隨機生成按鈕 -->
-			<button class="ts-button is-outlined" @click="makeRandomRecur">隨機生成</button>
-			
-			<!-- 常數範圍 -->
-			<div class="ts-select is-solid">
-				<select v-model="randomRange">
-					<option :value="3">± 3&nbsp;&nbsp;以內</option>
-					<option :value="6">± 6&nbsp;&nbsp;以內</option>
-					<option :value="10">± 10&nbsp;&nbsp;以內</option>
-				</select>
-			</div>
-			
-			<!-- 常數型態 -->
-			<div class="ts-select is-solid">
-				<select v-model="randomType">
-					<option value="z">整數</option>
-					<option value="q">有理數</option>
-				</select>
-			</div>
-			
-			<span>的遞迴特徵值和非齊次常數</span>
-			
-			<!-- 有理係數的提示 -->
-			<span
-				class="ts-icon is-circle-question-icon"
-				data-tooltip="「± 3 以內的有理數」<br>表示分子和分母均介於 ± 3 以內"
-				data-html=true
-			></span>
-			
-		</div>
-		
-		<!-- 調整遞迴式各區塊的按鈕 -->
-		<div class="ts-wrap is-compact is-middle-aligned">
-			<div v-for="regionInfo in regionList"
-				class="ts-wrap is-middle-aligned group-box"
-				style="--gap: 2px;"
-				:style="{ '--bg': regionInfo.bgColor }"
-			>
-				<!-- 減少的按鈕 -->
-				<button
-					class="ts-button is-circular is-icon is-ghost add-sub-button"
-					@click="regionInfo.add(-1)"
-					:disabled="regionInfo.isMin()"
-				>
-					<span class="ts-icon is-minus-icon"></span>
-				</button>
-				
-				<!-- 區塊名稱 -->
-				<span>{{ regionInfo.name }}</span>
-				
-				<!-- 增加的按鈕 -->
-				<button
-					class="ts-button is-small is-circular is-icon is-ghost add-sub-button"
-					@click="regionInfo.add(1)"
-					:disabled="regionInfo.isMax()"
-				>
-					<span class="ts-icon is-plus-icon"></span>
-				</button>
-			</div>
-		</div>
-		
-		<!-- 遞迴式 (有超多輸入框) -->
+		<!-- 遞迴式 (紅綠藍輸入框) -->
 		<div class="ts-wrap is-middle-aligned" style="--gap: 0;">
-			
-			<vl exp="a_n = " />
-			
 			<!-- 齊次部分 (遞迴) -->
+			<vl exp="a_n = " />
 			<div class="group-box" style="--bg: #fcc;">
-				<template v-for="i in recurNum">
-					<span
-						contenteditable
-						class="number-input"
-						:class="(recurCoefInput[i-1].isZero() ? 'number-input-error' : '')"
-						@input="recurCoefInput[i-1] = checkFracInput($event.target.innerText)"
-					></span>
-					<vl :exp="`a_{n-${i}}` + (i == recurNum ? '' : '~+')" />
+				<template v-for="(coef, i) in recurCoefInput">
+					<span contenteditable class="number-input" @input="handleInputChanged($event.target, recurCoefInput, i)">
+						{{ coef }}
+					</span>
+					<vl :exp="`a_{n-${i}}` + (i === recurCoefInput.length-1 ? '' : '~+')" />
 				</template>
 			</div>
-			<vl exp="+" />
 			
 			<!-- 非齊次部分 (多項式) -->
+			<vl exp="+" />
 			<div class="group-box" style="--bg: #bfb;">
-				<template v-for="i in polyDegree+1">
-					<span
-						contenteditable
-						class="number-input"
-						:class="(polyCoefInput[i-1].isZero() ? 'number-input-error' : '')"
-						@input="polyCoefInput[i-1] = checkFracInput($event.target.innerText)"
-					></span>
-					<vl v-if="polyDegree != 0" :exp="getTermLatex(i-1)" />
+				<template v-for="(coef, i) in polyCoefInput">
+					<span contenteditable class="number-input" @input="handleInputChanged($event.target, polyCoefInput, i)">
+						{{ coef }}
+					</span>
+					<vl v-if="polyCoefInput.length > 1" :exp="getTermLatex(i)" />
 				</template>
 			</div>
-			<vl exp="+" />
 			
 			<!-- 非齊次部分 (指數) -->
+			<vl exp="+" />
 			<div class="group-box" style="--bg: #ccf;">
-				<template v-for="i in expFuncNum">
-					<span
-						contenteditable
-						class="number-input"
-						:class="(expFuncInput[i-1][0].isZero() ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][0] = checkFracInput($event.target.innerText)"
-					></span>
+				<template v-for="(term, i) in expFuncInput">
+					<span contenteditable class="number-input" @input="handleInputChanged($event.target, term, 0)">
+						{{ term[0] }}
+					</span>
 					<vl exp="\cdot" />
-					<span
-						contenteditable
-						class="number-input"
-						:class="(expFuncInput[i-1][1].isZero() ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][1] = checkFracInput($event.target.innerText)"
-					></span>
-					<vl exp="^n \cdot" />
 					<span>n^</span>
-					<span
-						contenteditable
-						class="number-input"
-						:class="(Hop.isNegInt(expFuncInput[i-1][2]) ? 'number-input-error' : '')"
-						@input="expFuncInput[i-1][2] = checkPowerInput($event.target.innerText)"
-					>0</span>
-					<vl v-if="i != expFuncNum" exp="+" />
+					<span contenteditable class="number-input" @input="handleInputChanged($event.target, term, 1, true)">
+						{{ term[1] }}
+					</span>
+					<vl exp="\cdot" />
+					<span contenteditable class="number-input" @input="handleInputChanged($event.target, term, 2)">
+						{{ term[2] }}
+					</span>
+					<vl exp="^n" />
+					<vl v-if="i !== expFuncInput.length-1" exp="+" />
 				</template>
 			</div>
 			
 		</div>
 		
-		<!-- 遞迴初始條件 (有一些輸入框) -->
+		<!-- 遞迴初始條件 (灰色輸入框) -->
 		<div class="ts-wrap is-compact is-middle-aligned">
-			<div v-for="i in recurNum" class="group-box" style="--bg: #ddd;">
-				<vl :exp="`a_${i-1} =`" />
-				<span
-					contenteditable
-					class="number-input"
-					@input="initConstInput[i-1] = checkFracInput($event.target.innerText)"
-				></span>
+			<div v-for="(c, i) in initConstInput" class="group-box" style="--bg: #ddd;">
+				<vl :exp="`a_${i} =`" />
+				<span contenteditable class="number-input" @input="handleInputChanged($event.target, initConstInput, i)">
+					{{ c }}
+				</span>
 			</div>
 		</div>
-		
-		<!-- 根據輸入框得到的遞迴式 -->
-		<vl c :exp="recurLatex" />
 		
 	</div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { getRandomInt, Hop, Frac } from "@/libs/RanMath.js";
+import { shallowRef } from 'vue';
+import { isInt, getRandomInt, Frac, F, EF } from "ran-math";
+import RandomSetting from './RandomSetting.vue'; // 用於調整遞迴生成器的參數
+import RecurFormSetting from './RecurFormSetting.vue'; // 用於調整遞迴形式
 
-const props = defineProps({
-	recurLatex: { type: String, default: "?" }, // 遞迴關係式的 latex 字串
-});
+const INPUT_MAX_CHAR_COUNT = 8; // 輸入框的最大字元數
 
-const emit = defineEmits([
-	"input", // 遞迴式改變時, 上傳遞迴式資訊
-]);
+const emit = defineEmits([ "submit" ]); // 按下計算按鈕後, 上傳遞迴資訊至 RecurView
 
-const randomRange = ref(3); // 隨機生成的常數範圍
-const randomType = ref("z"); // 隨機生成整數/有理數
+// 因為我想要讓輸入框寬度隨著內容改變只能用 contenteditable span
+// 但 span 不支援 v-model, 因此只能用 @input="arr[i] = $event.target.innerText" 綁定
+// 但普通的 ref 變數對 arr[i] 賦值會觸發模板更新 {{ coef }} , 當 span 被修改時, 我正在編輯的字串被覆寫導致光標會跑掉
+// 所以在這邊使用 shallowRef, 因為只有修改 .value 才會觸發更新
+const recurCoefInput = shallowRef([]); // 輸入框取得: 遞迴的係數 Array<string>, 元素個數 = 遞迴階數
+const polyCoefInput = shallowRef([]); // 輸入框取得: 多項式的係數 Array<string>, 元素個數-1 = 多項式次數
+const expFuncInput = shallowRef([]); // 輸入框取得: 指數部分的係數和底數 Array<[str, str, str]>, 元素個數 = 指數項數
+const initConstInput = shallowRef([]); // 輸入框取得: 遞迴的初始條件 Array<string>, 元素個數 = 遞迴階數
 
-const getRandomNum = (range, isInt, nonZero = false) => { // 生成隨機數字, 回傳 Frac
-	const denom = isInt ? 1 : getRandomInt(1, range); // 分母
-	if (nonZero) return new Frac(getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1), denom); // 回傳隨機非零數字
-	return new Frac(getRandomInt(-range, range), denom); // 回傳隨機數字
+const handleRandomSettingSubmit = (numberRange, rootType) => { // 當生成器的設定改變時
+	generateRandomRecurCoef(numberRange, rootType); // 生成隨機的齊次係數, 並複寫到輸入框
+	gererateRandomPolyCoef(numberRange); // 生成隨機的多項式, 並複寫到輸入框
+	gererateRandomExpFunc(numberRange); // 生成隨機的指數項, 並複寫到輸入框
+	gererateRandomInitConst(numberRange); // 生成隨機的初始條件, 並複寫到輸入框
+	emitRecur(); // 上傳遞迴資訊至 RecurView
 };
 
-const makeRandomRecur = () => { // 生成隨機遞迴
-	const r = randomRange.value; // 隨機生成的範圍
-	const isInt = (randomType.value != "q"); // 生成的數字類型, 只要不為有理數, 就是整數
+const generateRandomRecurCoef = (range, rootType) => { // 生成隨機的齊次係數, 並複寫到輸入框
+	const order = recurCoefInput.value.length; // 遞迴階數
+	const randomInt = () => getRandomInt(-range, range); // 隨機整數
+	const randomNonZeroInt = () => getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
+	const randomNonSquarePosInt = () => { // 隨機正整數 (非平方數)
+		let int = getRandomInt(2, range);
+		while (Math.round(int ** 0.5) ** 2 === int) int = getRandomInt(2, range); // 若隨機到平方數, 重骰
+		return int;
+	};
+	let eigenvalue = []; // Array<EF> ; 遞迴特徵根
 	
-	const level = recurNum.value; // 遞迴階數, 隨機生成 齊次遞迴的特徵多項式的根
-	const [r1, r2, r3] = Array.from({ length: level }, () => getRandomNum(r, isInt, true)); // 根必須非零, 不然遞迴會降階
-	if (level == 1) { // (x-r1)=0  >>>  x = r1
-		recurCoefInput.value = [ r1 ];
-	} else if (level == 2) { // (x-r1)(x-r2)=0  >>>  x^2 = (r1+r2)x - r1r2
-		recurCoefInput.value = [ r1.add(r2), r1.mul(r2).mul(-1) ];
-	} else if (level == 3) { // (x-r1)(x-r2)(x-r3)=0  >>>  x^3 = (r1+r2+r3)x^2 - (r1r2+r2r3+r3r1)x + r1r2r3
-		recurCoefInput.value = [
-			r1.add(r2).add(r3), r1.mul(r2).add(r2.mul(r3)).add(r3.mul(r1)).mul(-1), r1.mul(r2).mul(r3)
+	if (rootType === "int") { // 生成整數特徵值
+		eigenvalue = Array.from({ length: order }, () => new EF(randomNonZeroInt())); // 非零隨機整數
+	}
+	else if (rootType === "int-multi") { // 生成整數重根特徵值 (1 階遞迴無視此模式)
+		const ef_multiRoot = new EF(randomNonZeroInt()); // 隨機的重根特徵值
+		if (order === 2 || order === 3) eigenvalue = [ef_multiRoot, ef_multiRoot]; // 如果是 2, 3 階遞迴, 生成二重根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
+	}
+	else if (rootType === "frac") { // 生成分數特徵值
+		eigenvalue = Array.from({ length: order }, () => { // 非零隨機分數
+			const n = randomNonZeroInt(); // 隨機分子
+			let d = randomNonZeroInt(); // 隨機分母
+			while (n % d === 0) d = randomNonZeroInt(); // 隨機分母, 並且不是整數
+			return new EF(F(n, d));
+		});
+	}
+	else if (rootType === "sqrt") { // 生成有根號的特徵值 (1 階遞迴無視此模式)
+		const ef_root = new EF(randomInt(), randomNonZeroInt(), randomNonSquarePosInt()); // 隨機的共軛根
+		if (order === 2 || order === 3) eigenvalue = [ef_root, ef_root.conjugate()]; // 如果是 2, 3 階遞迴, 生成一對共軛根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
+	}
+	else if (rootType === "complex") { // 生成複數特徵值 (1 階遞迴無視此模式)
+		const rootList = [ // -i ; 1-√3i ; 1-i ; 3-√3i ; 3+√3i ; 1+i ; 1+√3i ; i
+			[0, -1, -1], [1, -1, -3], [1, -1, -1], [3, -1, -3], [3, 1, -3], [1, 1, -1], [1, 1, -3], [0, 1, -1],
 		];
+		const ef_root = new EF(...rootList[getRandomInt(0, 7)]).mul(randomNonZeroInt()); // 隨機的共軛根, tan^-1 一定可以化為有理數 pi
+		if (order === 2 || order === 3) eigenvalue = [ef_root, ef_root.conjugate()]; // 如果是 2, 3 階遞迴, 生成一對共軛根
+		if (order === 1 || order === 3) eigenvalue.push(new EF(randomNonZeroInt())); // 如果是 1, 3 階遞迴, 補上額外的一根
 	}
 	
-	const pd = polyDegree.value; // 多項式次數
-	polyCoefInput.value = Array.from({ length: pd+1 }, (v, i) => { // 隨機生成 多項式的係數
-		if (i === pd) return getRandomNum(r, isInt, true); // 多項式最高項不為 0
-		return getRandomNum(r, isInt);
-	});
-	
-	const efn = expFuncNum.value; // 指數項數
-	expFuncInput.value = Array.from({ length: efn }, () => { // 隨機生成 指數部分的係數和底數
-		return [ getRandomNum(r, isInt, true), getRandomNum(r, isInt, true), 0 ];
-	});
-	
-	initConstInput.value = Array.from({ length: level }, (v, i) => new Frac(i)); // 隨機生成 遞迴的初始條件
+	while (eigenvalue.length < 3) eigenvalue.push(new EF(0)); // 1 或 2 階遞迴需要補 0, 不然無法用下面的公式計算係數
+	const [a, b, c] = eigenvalue; // (t-a)(t-b)(t-c) = t^3 - (a+b+c)t^2 + (ab+bc+ca)t - abc
+	let recurCoef = [ // Array<EF> ; 齊次係數: a_n = (a+b+c) a_{n-1} - (ab+bc+ca) a_{n-2} + abc a_{n-3}
+		a.add(b).add(c), new EF(0).sub(a.mul(b)).sub(b.mul(c)).sub(c.mul(a)), a.mul(b).mul(c)
+	];
+	recurCoef.length = order; // 依照遞迴階數裁切齊次係數 (因為剛剛在尾端補 0)
+	recurCoefInput.value = recurCoef.map(ef => `${ef.nf_a.toStr()}`); // 將 EF 型態的齊次係數轉為 string, 並複寫到輸入框
 };
 
-const regionList = [ // 用於生成三個區塊: 遞迴階數, 多項式次數, 指數項數 的調整按鈕
-	{
-		name: "遞迴階數", // 區塊名稱
-		bgColor: "#fcc", // 區塊的背景顏色
-		add: (n) => { recurNum.value += n; }, // 將區塊對應的變數 +1 或 -1
-		isMin: () => recurNum.value <= 1, // 區塊對應的變數是否到下限
-		isMax: () => recurNum.value >= 3, // 區塊對應的變數是否到上限
-	},
-	{
-		name: "多項式次數",
-		bgColor: "#bfb",
-		add: (n) => { polyDegree.value += n; },
-		isMin: () => polyDegree.value <= -1,
-		isMax: () => polyDegree.value >= 3,
-	},
-	{
-		name: "指數項數",
-		bgColor: "#ccf",
-		add: (n) => { expFuncNum.value += n; },
-		isMin: () => expFuncNum.value <= 0,
-		isMax: () => expFuncNum.value >= 3,
-	},
-];
+const gererateRandomPolyCoef = (range) => { // 生成隨機的多項式, 並複寫到輸入框
+	polyCoefInput.value = polyCoefInput.value.map(() => `${getRandomInt(-range, range)}`); // 生成隨機整係數
+};
 
-const recurNum = ref(2); // 遞迴階數, 範圍: 1 ~ 3
-const polyDegree = ref(-1); // 多項式次數, 範圍: -1 ~ 3
-const expFuncNum = ref(0); // 指數項數, 範圍: 0 ~ 3
+const gererateRandomExpFunc = (range) => { // 生成隨機的指數項, 並複寫到輸入框
+	const randomIntNot0 = () => getRandomInt(1, range) * (getRandomInt(0, 1) * 2 - 1); // 隨機非零整數
+	const randomIntNot01 = () => { // 隨機非 0, 1 整數
+		return getRandomInt(0, 1) ? getRandomInt(2, range) : getRandomInt(-range, -1);
+	};
+	expFuncInput.value = expFuncInput.value.map(() => {
+		return [`${randomIntNot0()}`, "0", `${randomIntNot01()}`]; // 隨機的 c b^n 項
+	});
+};
 
-const recurCoefInput = ref([]); // 輸入框取得: 遞迴的係數 Arr[Frac], 元素個數 = 遞迴階數
-const polyCoefInput = ref([]); // 輸入框取得: 多項式的係數 Arr[Frac], 元素個數-1 = 多項式次數
-const expFuncInput = ref([]); // 輸入框取得: 指數部分的係數和底數 Arr[[Frac, Frac, int]], 元素個數 = 指數項數
-const initConstInput = ref([]); // 輸入框取得: 遞迴的初始條件 Arr[Frac], 元素個數 = 遞迴階數
-
-watch(recurNum, (newRecurNum) => { // 當遞迴階數改變時
-	while (recurCoefInput.value.length < newRecurNum) recurCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
-	while (recurCoefInput.value.length > newRecurNum) recurCoefInput.value.pop(); // array 長度過長就刪除尾端
-	while (initConstInput.value.length < newRecurNum) initConstInput.value.push(new Frac(0)); // array 長度不夠就補 0
-	while (initConstInput.value.length > newRecurNum) initConstInput.value.pop(); // array 長度過長就刪除尾端
-}, { immediate: true });
-
-watch(polyDegree, (newPolyDegree) => { // 當多項式次數改變時
-	while (polyCoefInput.value.length < newPolyDegree+1) polyCoefInput.value.push(new Frac(0)); // array 長度不夠就補 0
-	while (polyCoefInput.value.length > newPolyDegree+1) polyCoefInput.value.pop(); // array 長度過長就刪除尾端
-}, { immediate: true });
-
-watch(expFuncNum, (newExpFuncNum) => { // 當指數項數改變時
-	while (expFuncInput.value.length < newExpFuncNum) { // array 長度不夠就補 [0, 0]
-		expFuncInput.value.push([new Frac(0), new Frac(0), 0]);
+const gererateRandomInitConst = () => { // 生成隨機的初始條件, 並複寫到輸入框
+	const order = initConstInput.value.length; // 遞迴階數
+	if (order === 1 && polyCoefInput.value.length === 0 && expFuncInput.value.length === 0) {
+		initConstInput.value = ["1"]; // 將 1 階齊次遞迴的初始條件設為 a_0 = 1
+	} else { // 將 1 / 2 / 3 階遞迴的初始條件設為 [0] / [0, 1] / [0, 1, 2]
+		initConstInput.value = Array.from({ length: order }, (_, i) => `${i}`);
 	}
-	while (expFuncInput.value.length > newExpFuncNum) expFuncInput.value.pop(); // array 長度過長就刪除尾端
-}, { immediate: true });
+};
 
-const MAX_INPUT_LENGTH = 6; // 輸入框的最大字符限制
-const MAX_EXP_POWER = 3; // c n^k b^n 項的 k 的最大值
+const handleRecurFormChanged = ({ recurOrder, polyDegree, expTermNum }) => { // 當遞迴形式改變時
+	resizeRefArray(recurCoefInput, recurOrder, () => "");
+	resizeRefArray(polyCoefInput, polyDegree + 1, () => ""); // n 次多項式有 n+1 個係數
+	resizeRefArray(expFuncInput, expTermNum, () => ["", "0", ""]);
+	resizeRefArray(initConstInput, recurOrder, () => "");
+	
+	emitRecur(); // 上傳遞迴資訊至 RecurView
+};
 
-const recurCoef = ref([]); // 去除 0 係數的遞迴
-const nonHomoFunc = ref({}); // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
-const initConst = ref([]); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
+const resizeRefArray = (refArray, newLength, newElement) => { // 調整 ref Array 的 length, 增加長度會在 Array 尾端補 0
+	const arr = refArray.value; // 取出 Array 的參考
+	if (newLength < arr.length) arr.length = newLength; // 截斷多餘的部分
+	while (newLength > arr.length) arr.push(newElement()); // 尾端補 0 或 [0, 0, 0], 使用箭頭函式防止指向同個 object
+	refArray.value = [...arr]; // 修改 .value 觸發 shallowRef 使 ui 更新
+};
+
+const handleInputChanged = (element, updateArr, i, isPowerInput = false) => {
+	let inputStr = element.innerText; // 輸入框的字串
+	
+	if (inputStr.includes("\n")) { // 如果輸入框的字串有換行符
+		inputStr = inputStr.replace("\n", ""); // 移除換行符
+		element.innerText = inputStr; // 強制移除, 避免輸入框高度變高
+	}
+	if (inputStr.length > INPUT_MAX_CHAR_COUNT) { // 如果輸入框的字串大於 6 個字元
+		inputStr = inputStr.slice(0, INPUT_MAX_CHAR_COUNT); // 移除多餘的字元
+		element.innerText = inputStr; // 強制移除
+	}
+	
+	updateArr[i] = inputStr; // shallowRef 不會觸發模板更新
+	
+	if (!isPowerInput && !isNumberInputValid(inputStr)) element.style.color = "red"; // 除了 n^p 輸入框以外的, 且輸入值非法, 會顯示紅色字
+	else if (isPowerInput && !isPowerInputValid(inputStr)) element.style.color = "red"; // n^p 輸入框, 輸入值非法, 會顯示紅色字
+	else element.style.color = "black"; // 合法輸入值為黑色
+	
+	emitRecur(); // 上傳遞迴資訊至 RecurView
+};
+
+const isNumberInputValid = (str) => { // 除了 n^p 輸入框以外的, 判定輸入值是否合法
+	if (str === "" || str === "0") return true;
+	return !Frac.fromStr(str).isZero(); // Frac.fromStr 如果輸入值無法轉為分數, 會回傳 F(0)
+}
+
+const isPowerInputValid = (str) => { // n^p 輸入框, 判定輸入值是否合法
+	const p = Number(str);
+	return isInt(p) && 0 <= p && p <= 3; // 只接受 0 ~ 3
+};
 
 const getTermLatex = (n) => { // 生成多項式的特定冪次 (latex 字串), 用於多項式的輸入框
-	const term = (n == 0 ? "" : (n == 1 ? "n" : `n^${n}`));
-	const add = (n == polyDegree.value ? "" : (n == 0 ? "+" : "~+"));
+	const term = (n === 0 ? "" : (n == 1 ? "n" : `n^${n}`));
+	const add = (n === polyCoefInput.value.length-1 ? "" : (n == 0 ? "+" : "~+"));
 	return term + add;
 };
 
-const checkFracInput = (inputText) => { // 檢查分數輸入
-	if (inputText.length > MAX_INPUT_LENGTH) return new Frac(0); // 0 默認為不佳 (或是錯誤) 的輸入
-	return Frac.fromStr(inputText);
+const emitRecur = () => { // 上傳遞迴資訊至 RecurView
+	const recurCoef = recurCoefInput.value.map(str => Frac.fromStr(str));
+	const nonHomogFunc = [
+		...polyCoefInput.value.map((str, i) => [Frac.fromStr(str), i, 1]), // c n^i -> c n^i 1^n
+		...expFuncInput.value.map(
+			([str_c, str_k, str_b]) => [Frac.fromStr(str_c), Number(str_k), Frac.fromStr(str_b)] // c n^k b^n
+		)
+	];
+	const initConst = initConstInput.value.map(str => Frac.fromStr(str));
+	
+	emit("submit", recurCoef, nonHomogFunc, initConst);
 };
-
-const checkPowerInput = (inputText) => { // 檢查非齊次的 c n^k b^n 項的 k 的輸入, 是否在正常範圍
-	const power = Number(inputText);
-	if (!Hop.isNegInt(power) && 0 <= power && power <= MAX_EXP_POWER) return power;
-	return -1; // -1 會被認為是錯誤的輸入 (會在 nonHomoFunc 建構時被忽略)
-};
-
-watch(recurCoefInput, (newRecurCoefInput) => { // 遞迴部分被修改
-	let coef = [...newRecurCoefInput]; // 去除 proxy
-		
-	while (coef.length > 0 && coef[coef.length-1].isZero()) coef.pop(); // 去除 0 係數遞迴
-	recurCoef.value = coef;
-	initConst.value = initConstInput.value.slice(0, coef.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
-}, { immediate: true, deep: true });
-
-watch([polyCoefInput, expFuncInput], ([newPolyCoefInput, newExpFuncInput]) => { // 當非齊次部分被修改
-	let expFunc = {}; // 使用 dict 來合併重複的指數
-	const addTerm = (frac_c, k, frac_b) => { // 將 c n^k b^n 項加入到 expFunc
-		if (frac_c.isZero() || frac_b.isZero()) return; // 係數為 0 或底數為 0 -> 可忽略
-		
-		const key = `${k},${frac_b.n}/${frac_b.d}`; // 非齊次的 frac_c n^k (frac_b)^n 項會表示為 { "k,b.n/b.d": c , ... }
-		if (key in expFunc) expFunc[key] = expFunc[key].add(frac_c); // key 存在
-		else expFunc[key] = frac_c; // key 不存在就建立新的
-	};
-	
-	for (const [i, coef] of newPolyCoefInput.entries()) addTerm(coef, i, new Frac(1)); // 讀取多項式部分輸入
-	
-	for (const [frac_c, frac_b, k] of newExpFuncInput) if (!Hop.isNegInt(k)) addTerm(frac_c, k, frac_b); // 讀取指數部分的輸入
-	
-	for (const [key, frac_c] of Object.entries(expFunc)) if (frac_c.isZero()) delete expFunc[key]; // 刪除係數為 0 的項
-	
-	nonHomoFunc.value = expFunc;
-}, { immediate: true, deep: true });
-
-watch(initConstInput, (newInitConstInput) => { // 當遞迴的初始條件被修改
-	initConst.value = newInitConstInput.slice(0, recurCoef.value.length); // 遞迴的初始條件, 會保持與 recurCoef 的大小相同
-}, { immediate: true, deep: true });
-
-watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newInitConst]) => {
-	emit("input", { // 當遞迴式改變時, 上傳遞迴式至 RecurView
-		recurCoef: newRecurCoef,
-		nonHomoFunc: newNonHomoFunc,
-		initConst: newInitConst,
-	});
-});
 </script>
 
 <style scoped>
-.add-sub-button { /* + - 按鈕的樣式 */
-	width: 28px; height: 28px; /* 比 tocas small 小一點 */
-}
-.add-sub-button:hover { /* + - 按鈕 hover 時, 會稍微變亮 */
-	background-color: #fff6;
-}
 .group-box { /* 淺色背景的分組區域 */
 	border-radius: 4px;
 	padding: 4px;
@@ -331,13 +242,10 @@ watch([recurCoef, nonHomoFunc, initConst], ([newRecurCoef, newNonHomoFunc, newIn
 	border: none; border-radius: 4px;
 	outline: none; /* 選取時不出現黑框 */
 	padding: 0 4px;
-	min-width: 20px;
+	min-width: 20px; height: 28px;
 	background-color: #fff;
 	text-align: center;
 	line-height: 1.8;
 	white-space: nowrap; /* 禁止換行 */
-}
-.number-input-error { /* 不合法的輸入值會變成紅色 */
-	color: #f00;
 }
 </style>

@@ -18,15 +18,26 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	static initRecur(recurCoef, nonHomogFunc, initConst) { // 整理遞迴式的參數, 以及將 int 轉型為 Frac
-		const order = recurCoef.length; // 遞迴階數
-		
 		recurCoef = recurCoef.map(nf_coef => F(0).add(nf_coef)); // 利用 frac.add 將 int number 轉為 Frac, 保證 recurCoef 為 Array<Frac>
 		while (recurCoef.at(-1)?.equal(0)) recurCoef.pop(); // 降階: a_n = r1 a_{n-1} + 0 a_{n-2} 應該等於 a_n = r1 a_{n-1}
 		if (!(1 <= recurCoef.length && recurCoef.length <= 3)) { // 只能計算 1 ~ 3 階遞迴
 			throwErr("SolveRecur.initRecur", "Only support 1 ~ 3 order recurrence relation.");
 		}
+		const order = recurCoef.length; // 遞迴階數
 		
 		nonHomogFunc = nonHomogFunc.map(([nf_c, k, nf_b]) => [F(0).add(nf_c), k, F(0).add(nf_b)]); // 保證 nonHomogFunc 為 Array<[Frac, int, Frac]>
+		for (let i = nonHomogFunc.length - 1; i >= 0; i--) { // 合併相同 n^k b^n 的項, 因為會涉及到刪除, 所以必須從後面開始檢查
+			const [frac_c, k, frac_b] = nonHomogFunc[i];
+			for (let j = 0; j <= i-1; j++) {
+				const [_c, _k, _frac_b] = nonHomogFunc[j];
+				if (k === _k && frac_b.equal(_frac_b)) { // 相同 n^k b^n 的項
+					nonHomogFunc[j][0] = nonHomogFunc[j][0].add(frac_c); // 將第 i 項合併至第 j 項
+					nonHomogFunc.pop(i); // 刪除第 i 項
+					break;
+				}
+			}
+		}
+		nonHomogFunc = nonHomogFunc.filter(([frac_c, k, frac_b]) => !frac_c.isZero() && !frac_b.isZero()); // 刪除 0 n^k b^n 和 c n^k 0^n 的項
 		
 		initConst = initConst.map(nf_coef => F(0).add(nf_coef)); // 保證 initConst 為 Array<Frac>
 		initConst = initConst.slice(0, order); // 使 initConst 的長度與 recurCoef 一致, 不足的部分補 F(0)
@@ -185,13 +196,13 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 	}
 	
 	answerExistComplex() { // h_i 是否有複數
-		return this.hiAnswer.some(ef_hi => ef_hi.s < 0);
+		return this.eigenvalue.some(ef_hi => ef_hi.s < 0);
 	}
 	
 	mlPolarCoordinate() {
 		let s_latex = "&= h_1 {(\\alpha + \\beta i)}^n + h_2 {(\\alpha - \\beta i)}^n \\\\" +
 		"&= h_1 {(r e^{i \\theta})}^n + h_2 {(r e^{-i \\theta})}^n \\quad,\\quad " +
-		"r = \\sqrt{\\alpha^2 + \\beta^2} \\quad,\\quad \\theta = \\tan^{-1}(\\beta / \\alpha) \\\\" +
+		"r = \\sqrt{\\alpha^2 + \\beta^2} \\quad,\\quad \\theta = \\text{atan2}(\\beta , \\alpha) \\\\" +
 		"&= h_1 r^n e^{i n \\theta} + h_2 r^n e^{-i n \\theta} \\\\" +
 		"&= h_1 r^n (\\cos n \\theta + i \\sin n \\theta) + h_2 r^n (\\cos n \\theta - i \\sin n \\theta) \\\\"+
 		"&= (h_1 + h_2) \\cos(n \\theta) r^n + (h_1 - h_2) i \\sin(n \\theta) r^n";
@@ -209,35 +220,47 @@ export class SolveRecur { // 計算遞迴式的一般項, 並生成計算過程
 		return `a_n = ${mt.toLatex()}`;
 	}
 	
+	_atan2(ef) { // 對非實數 (ef.s < 0) 求極座標角度 (rad), 有可能回傳 Frac 或 float
+		const atan2FracOp = (frac_a, frac_b) => { // Q mode EF, (a + b√s)
+			const [ef_alpha, ef_beta] = [ef.real(), ef.imag()]; // α + β i
+			
+			let frac_atan2; // 如果 atan2 的結果是分數 pi 形式, 此值會是 Frac, 否則為 undefined
+			if (ef_alpha.equal(0)) frac_atan2 = F(1, 2); // atan2(±inf) = ±1/2
+			else {
+				const ef_slope = ef_beta.div(ef_alpha); // 斜率: β / α
+				ef_slope.nf_a.n = Math.abs(ef_slope.nf_a.n);
+				ef_slope.nf_b.n = Math.abs(ef_slope.nf_b.n); // 將斜率轉正
+				
+				if (ef_slope.equal(new EF(0, F(1, 3), 3))) frac_atan2 = F(1, 6); // atan2(√3 / 3) = 1/6 pi
+				else if (ef_slope.equal(1)) frac_atan2 = F(1, 4); // atan2(1) = 1/4 pi
+				else if (ef_slope.equal(new EF(0, 1, 3))) frac_atan2 = F(1, 3); // atan2(√3) = 1/3 pi
+			}
+			
+			if (frac_atan2 === undefined) return atanFloatOp(frac_a.toFloat(), frac_b.toFloat()); // 無法化簡為有理數 pi 的情形
+			
+			if (frac_a.lt(0)) frac_atan2 = F(1).sub(frac_atan2); // 虛軸鏡像
+			if (frac_b.lt(0)) frac_atan2 = F(0).sub(frac_atan2); // 實軸鏡像
+			return frac_atan2;
+		};
+		const atanFloatOp = (num_a, num_b) => { // C mode EF, (a + b√s)
+			const [alpha, beta] = [num_a, num_b * Math.sqrt(-ef.s)]; // α + β i
+			return Math.atan2(beta, alpha);
+		};
+		return Hop._makeOp([ef.nf_a, ef.nf_b], atan2FracOp, atanFloatOp);
+	}
+	
 	mlClosedFormImWhere() { // 其中 "三角函數形式的 r 和 \theta" (latex)
 		const ef_base = (this.order === 2) ? this.eigenvalue[0] : this.eigenvalue[1]; // base = a + bi
-		const [ef_alpha, ef_beta] = [ef_base.real(), ef_base.imag()];
+		const [ef_alpha, ef_beta] = [ef_base.real(), ef_base.imag()]; // a + b i
 		const ef_norm = new EF(0, 1, ef_base.normSquare()); // 0 + 1√(a^2 + b^2) = √(a^2 + b^2)
-		const ef_bDivA = ef_beta.div(ef_alpha);
-		
-		let nf_tanToPi = null;
-		const tanInverseToFracPi = [ // 如果 tan^-1(...) 可化簡
-			[new EF(0, -1, 3), F(-1, 3)], // tan^-1(-√3) = -1/3 pi
-			[new EF(-1), F(-1, 4)], // tan^-1(-1) = -1/4 pi
-			[new EF(0, F(-1, 3), 3), F(-1, 6)], // tan^-1(-√3 / 3) = -1/6 pi
-			[new EF(0, F(1, 3), 3), F(1, 6)], // tan^-1(√3 / 3) = 1/6 pi
-			[new EF(1), F(1, 4)], // tan^-1(1) = 1/4 pi
-			[new EF(0, 1, 3), F(1, 3)], // tan^-1(√3) = 1/3 pi
-		];
-		for (const [ef_tan, frac_pi] of tanInverseToFracPi) if (ef_bDivA.equal(ef_tan)) { // tan^-1(...) 轉 Frac pi
-			nf_tanToPi = frac_pi;
-			break;
-		}
-		if (!Frac.isFrac(ef_bDivA.nf_a)) { // 如果 tan^-1(...) 內是浮點數, 直接轉為 float pi 形式
-			nf_tanToPi = Math.atan(ef_bDivA.nf_a) / Math.PI;
-		}
+		const nf_atan2 = this._atan2(ef_base); // atan2(b, a)
 		
 		let s_rLatex = `${ml.delim(ef_alpha.toLatex())}^2 + ${ml.delim(ef_beta.toLatex())}^2`; // "alpha^2 + beta^2" (latex)
 		s_rLatex = `r = \\sqrt{${s_rLatex}} = ${ef_norm.toLatex()}`; // "r = √( alpha^2 + beta^2 ) = 範數" (latex)
 		
-		let s_thetaLatex = `\\theta = \\tan^{-1}({${ef_beta.toLatex()}}/{${ef_alpha.toLatex()}})`; // "theta = tan^-1(beta / alpha)" (latex)
-		s_thetaLatex += ` = \\tan^{-1}(${ef_bDivA.toLatex()})`; // "theta = tan^-1(beta / alpha) = tan^-1 的值" (latex)
-		if (nf_tanToPi) s_thetaLatex += ` = ${Hop.toLatex(nf_tanToPi)} \\pi`; // 如果 tan 可化簡成 pi
+		let s_thetaLatex = `\\theta = \\text{atan2}(${ef_beta.toLatex()} , ${ef_alpha.toLatex()})`; // "theta = atan2(beta , alpha)" (latex)
+		s_thetaLatex += Frac.isFrac(nf_atan2) ? " = " : " \\approx "; // 浮點數 pi 需要加 "大約等於" 的符號
+		s_thetaLatex += `${Hop.toLatex(nf_atan2)} \\pi`;
 		
 		return `\\begin{gather*} ${s_rLatex} \\\\ ${s_thetaLatex} \\end{gather*}`;
 	}

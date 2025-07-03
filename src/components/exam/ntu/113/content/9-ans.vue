@@ -19,5 +19,8 @@
 	<vl exp="\Rightarrow~ T" /> 非奇異<br>
 	<vl exp="\Rightarrow~ T" /> 滿秩<br>
 	<br>
-	因為 <vl exp="S" /> 與 <vl exp="T" /> 維度相同，所以 <vl exp="\text{rk}(S) = \text{rk}(T)" />。
+	因為 <vl exp="S" /> 與 <vl exp="T" /> 維度相同，所以 <vl exp="\text{rk}(S) = \text{rk}(T)" />。<br>
+	<br>
+	題目說要用 <vl exp="\text{rank}(T)" /> 表示 <vl exp="\text{rank}(S)" />，因此答案為
+	<vl exp="\boxed{ \text{rank}(T) }" />。
 </template>

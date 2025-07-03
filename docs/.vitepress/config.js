@@ -27,6 +27,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			{
 				text: "Practice Page - 模擬室頁面",
 				items: [
+					{ text: "遞迴", link: "/practice-page/recur-view" },
 					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
 					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
 				]
