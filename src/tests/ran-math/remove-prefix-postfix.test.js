@@ -1,7 +1,7 @@
 import { test, expect, describe } from "vitest";
 
 // ---------- test area ----------
-import { removePrefix, removePostfix } from "ran-math";
+import { removePrefix, removeSuffix } from "ran-math";
 
 const testData = {
 	".removePrefix": {
@@ -10,6 +10,7 @@ const testData = {
 		tests: [ // 測資
 			{ input: ["abcde", "abc"], output: "de" },
 			{ input: ["abcde", "abce"], output: "abcde" },
+			{ input: ["abcde", "abcde"], output: "" },
 			{ input: [" abcde", "abc"], output: " abcde" },
 			{ input: ["aaaaa", "aa"], output: "aaa" },
 			{ input: ["", ""], output: "" },
@@ -19,19 +20,20 @@ const testData = {
 			{ input: ["123", 12], error: '[RanMath][removePrefix] Param "prefix" must be a string.' },
 		]
 	},
-	".removePostfix": {
-		testName: (input, output) => `removePostfix("${input[0]}", "${input[1]}") = "${output}"`,
-		testFunc: input => removePostfix(...input),
+	".removeSuffix": {
+		testName: (input, output) => `removeSuffix("${input[0]}", "${input[1]}") = "${output}"`,
+		testFunc: input => removeSuffix(...input),
 		tests: [ // 測資
 			{ input: ["abcde", "cde"], output: "ab" },
 			{ input: ["abcde", "bde"], output: "abcde" },
+			{ input: ["abcde", "abcde"], output: "" },
 			{ input: ["abcde ", "cde"], output: "abcde " },
 			{ input: ["aaaaa", "aa"], output: "aaa" },
 			{ input: ["", ""], output: "" },
 			{ input: ["", "aaa"], output: "" },
 			{ input: ["a", ""], output: "a" },
-			{ input: [123, "12"], error: '[RanMath][removePostfix] Param "str" must be a string.' },
-			{ input: ["123", 12], error: '[RanMath][removePostfix] Param "postfix" must be a string.' },
+			{ input: [123, "12"], error: '[RanMath][removeSuffix] Param "str" must be a string.' },
+			{ input: ["123", 12], error: '[RanMath][removeSuffix] Param "suffix" must be a string.' },
 		]
 	}
 };

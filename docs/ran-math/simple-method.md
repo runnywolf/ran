@@ -25,6 +25,7 @@ head:
 檢查參數 `value` 是否為數字，與 `typeof value === "number"` 等價。
 
 ```js
+import { isNum } from "ran-math";
 isNum(value: any): boolean
 ```
 
@@ -45,6 +46,7 @@ isNum(new Number(5)) // false
 檢查參數 `value` 是否為整數，與 `Number.isInteger(value)` 等價。
 
 ```js
+import { isInt } from "ran-math";
 isInt(value: any): boolean
 ```
 
@@ -67,6 +69,7 @@ isInt(new Number(5)) // false
 $$\gcd(a, b)$$
 
 ```js
+import { gcd } from "ran-math";
 gcd(a: number, b: number): number
 ```
 
@@ -89,6 +92,7 @@ gcd(-60, 36) // 12
 $$\text{lcm}(a, b)$$
 
 ```js
+import { lcm } from "ran-math";
 lcm(a: number, b: number): number
 ```
 
@@ -111,6 +115,7 @@ lcm(123456, 789012) // 8117355456
 回傳 $n$ 的所有正因數 ( 升序排列 )。
 
 ```js
+import { getFactors } from "ran-math";
 getFactors(n: number): Array<number>
 ```
 
@@ -135,6 +140,7 @@ getFactors(-6) // [1, 2, 3, 6]
 定義 $1$ 為 $0$ 的最大平方因數。
 
 ```js
+import { getSquareFactor } from "ran-math";
 getSquareFactor(n: number): number
 ```
 
@@ -158,6 +164,7 @@ getSquareFactor(123456) // 8 -> √123456 = 8√1929
 回傳範圍 `[min, max]` 內的隨機整數。
 
 ```js
+import { getRandomInt } from "ran-math";
 getRandomInt(min: number, max: number): number
 ```
 
@@ -178,6 +185,7 @@ getRandomInt(-5, 5) // 隨機生成 -5 到 5 的隨機整數
 如果有元素不為 `number`，會報錯。
 
 ```js
+import { sum } from "ran-math";
 sum(...arr: Array<number|Array>): number
 ```
 

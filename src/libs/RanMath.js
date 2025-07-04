@@ -766,11 +766,11 @@ export function removePrefix(str, prefix) { // 移除字串開頭的特定字串
 	return str;
 }
 
-export function removePostfix(str, postfix) { // 移除字串尾端的特定字串
-	if (typeof str !== "string") throwTypeErr("removePostfix", "str", "string");
-	if (typeof postfix !== "string") throwTypeErr("removePostfix", "postfix", "string");
-	if (postfix === "") return str;
-	if (str.endsWith(postfix)) return str.slice(0, -postfix.length);
+export function removeSuffix(str, suffix) { // 移除字串尾端的特定字串
+	if (typeof str !== "string") throwTypeErr("removeSuffix", "str", "string");
+	if (typeof suffix !== "string") throwTypeErr("removeSuffix", "suffix", "string");
+	if (suffix === "") return str;
+	if (str.endsWith(suffix)) return str.slice(0, -suffix.length);
 	return str;
 }
 
@@ -834,12 +834,12 @@ export class MakeLatex { // latex 字串處理
 			
 			if (s_equationLatex.split("&&").length - 1 === col) { // 若某一個 row 沒有任何一項, 顯示 0
 				if (equalMode !== "right") s_equationLatex = `0`;
-				else s_equationLatex = `${removePostfix(s_equationLatex, "&")}0&`;
+				else s_equationLatex = `${removeSuffix(s_equationLatex, "&")}0&`;
 			}
 			
 			if (equalMode === "right") s_equationLatex = `${s_equationLatex}&=${equalFunc(i) ?? "{?}"}`; // "=" 在右側
 			else if (equalMode === "left") { // "=" 在左側 (加上 "&" 讓 "=" 符號對齊)
-				s_equationLatex = `${equalFunc(i) ?? "{?}"}&=~&${removePostfix(s_equationLatex, "&")}`;
+				s_equationLatex = `${equalFunc(i) ?? "{?}"}&=~&${removeSuffix(s_equationLatex, "&")}`;
 			}
 			
 			return s_equationLatex; // 最後一個字符不能是 &, katex 會報錯
