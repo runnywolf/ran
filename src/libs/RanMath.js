@@ -775,9 +775,9 @@ export function removeSuffix(str, suffix) { // 移除字串尾端的特定字串
 }
 
 export class MakeLatex { // latex 字串處理
-	static delim(str_latex) { // 在 latex 字串兩端加上自動調整大小的小括號
-		if (typeof str_latex !== "string") throwTypeErr("MakeLatex.delim", "str_latex", "string");
-		return `\\left(${str_latex}\\right)`;
+	static delim(str) { // 在 latex 字串兩端加上自動調整大小的小括號
+		if (typeof str !== "string") throwTypeErr("MakeLatex.delim", "str", "string");
+		return `\\left(${str}\\right)`;
 	}
 	
 	static term(coef, base, pow) { // 根據係數, 底數, 次方, 生成 c b^p 的 latex 字串

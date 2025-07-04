@@ -21,8 +21,8 @@ import { Matrix } from "ran-math";
 
 | Property | Type | Description |
 | :- | :- | :- |
-| [`.n`](#n-m-arr) | `number` ( `int` ) | 矩陣的列數 |
-| [`.m`](#n-m-arr) | `number` ( `int` ) | 矩陣的行數 |
+| [`.n`](#n-m-arr) | `number` ( `int >= 1` ) | 矩陣的列數 |
+| [`.m`](#n-m-arr) | `number` ( `int >= 1` ) | 矩陣的行數 |
 | [`.arr`](#n-m-arr) | `Array<Array<EF>>` | 矩陣 |
 
 | Method | Description |
@@ -66,7 +66,7 @@ Matrix.createI(n: number): Matrix
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `number` ( `int` ) | $n$ 必須為正整數 |
+| `n` | `number` ( `int >= 1` ) | $n$ 必須為正整數 |
 
 範例：
 ```js
@@ -90,8 +90,8 @@ new Matrix(
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `number` ( `int` ) | 矩陣的列數 |
-| `m` | `number` ( `int` ) | 矩陣的行數 |
+| `n` | `number` ( `int >= 1` ) | 矩陣的列數 |
+| `m` | `number` ( `int >= 1` ) | 矩陣的行數 |
 | `initFunc` | `(i: number, j: number) => number \| Frac \| EF` | 回傳矩陣元素 $A_{ij}$ |
 
 範例：
@@ -165,8 +165,8 @@ Matrix.prototype.swapRow(i: number, j: number): void
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `i` | `number` ( `int` ) | 列 $i$ |
-| `j` | `number` ( `int` ) | 列 $j$ |
+| `i` | `number` ( `int >= 0` ) | 列 $i$ |
+| `j` | `number` ( `int >= 0` ) | 列 $j$ |
 
 範例：
 ```js
@@ -185,7 +185,7 @@ Matrix.prototype.scaleRow(i: number, s: number|Frac|EF): void
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `i` | `number` ( `int` ) | 列 $i$ |
+| `i` | `number` ( `int >= 0` ) | 列 $i$ |
 | `s` | `number \| Frac \| EF` | 純量 $s$ |
 
 範例：
@@ -205,8 +205,8 @@ Matrix.prototype.addRow(i: number, j: number, s: number|Frac|EF): void
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `i` | `number` ( `int` ) | 列 $i$ |
-| `j` | `number` ( `int` ) | 列 $j$ |
+| `i` | `number` ( `int >= 0` ) | 列 $i$ |
+| `j` | `number` ( `int >= 0` ) | 列 $j$ |
 | `s` | `number \| Frac \| EF` | 純量 $s$ |
 
 範例：

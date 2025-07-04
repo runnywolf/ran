@@ -55,6 +55,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "SolveQuad - 解二次方程式", link: "/ran-math/solve-quad" },
 					{ text: "SolveCubic - 解三次方程式", link: "/ran-math/solve-cubic" },
 					{ text: "字串處理", link: "/ran-math/string-util" },
+					{ text: "MakeLatex - 生成 LaTex 語法", link: "/ran-math/make-latex" },
 				]
 			},
 			{

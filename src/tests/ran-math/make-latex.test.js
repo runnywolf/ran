@@ -10,7 +10,7 @@ const testData = {
 		tests: [ // 測資
 			{ input: "a + b", output: "\\left(a + b\\right)" },
 			{ input: "", output: "\\left(\\right)" },
-			{ input: 44, error: '[RanMath][MakeLatex.delim] Param "str_latex" must be a string.' },
+			{ input: 44, error: '[RanMath][MakeLatex.delim] Param "str" must be a string.' },
 		]
 	},
 	"MakeLatex.term": {
