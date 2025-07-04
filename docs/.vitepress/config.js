@@ -56,6 +56,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "SolveCubic - 解三次方程式", link: "/ran-math/solve-cubic" },
 					{ text: "字串處理", link: "/ran-math/string-util" },
 					{ text: "MakeLatex - 生成 LaTex 語法", link: "/ran-math/make-latex" },
+					{ text: "MultiTerm", link: "/ran-math/multi-term" },
 				]
 			},
 			{

@@ -7,6 +7,9 @@ head:
 ---
 
 # RecurNonHomog
+> [!CAUTION]
+> 此組件已重構，此文檔將作廢或改寫。
+
 > [!WARNING]
 > 這個組件是 [Recur.vue](./recur) 拆分出的子組件，你不應該單獨使用它。
 
