@@ -26,7 +26,6 @@ import { SolveQuad } from "ran-math";
 | Method | Description |
 | :- | :- |
 | [`.toStr`](#tostr) | 將兩個根轉為 debug 字串 |
-| [`.toLatex`](#tolatex) | 將兩個根轉為 LaTex 語法，會用逗號分隔 |
 
 ## `SolveQuad constructor`
 建構子，傳入係數會直接計算方程式的根。
@@ -35,7 +34,11 @@ import { SolveQuad } from "ran-math";
 若係數存在 `float number`，輸出的根會使用 $\mathbb{C}$ 模式。
 
 ```js
-new SolveQuad(nf_a: number|Frac, nf_b: number|Frac, nf_c: number|Frac): SolveQuad
+new SolveQuad(
+	nf_a: number | Frac,
+	nf_b: number | Frac,
+	nf_c: number | Frac
+): SolveQuad
 ```
 
 | Param | Type | Description |
@@ -110,18 +113,3 @@ new SolveQuad(1, 0, 2).toStr()               // "1 √ 2 i , -1 √ 2 i"
 new SolveQuad(4, F(16), 5.2).toStr()         // "-0.3568 , -3.6432"
 new SolveQuad(4, 2, 5.2).toStr()             // "-0.2500 + 1.1124 i , -0.2500 + -1.1124 i"
 ```
-
-## `.toLatex`
-將兩個根轉為 LaTex 語法，會用逗號分隔。
-
-```js
-SolveQuad.prototype.toLatex(): string
-```
-
-範例：
-```js
-new SolveQuad(4, 2, 5).toLatex()
-// "\frac{-1}{4}+\frac{\sqrt{19}}{4}i~,\enspace\frac{-1}{4}+\frac{-\sqrt{19}}{4}i"
-```
-
-$$\frac{-1}{4}+\frac{\sqrt{19}}{4}i~,\enspace\frac{-1}{4}+\frac{-\sqrt{19}}{4}i$$

@@ -53,11 +53,14 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "EF - 擴張體", link: "/ran-math/ef" },
 					{ text: "Matrix - 矩陣", link: "/ran-math/matrix" },
 					{ text: "SolveQuad - 解二次方程式", link: "/ran-math/solve-quad" },
+					{ text: "SolveCubic - 解三次方程式", link: "/ran-math/solve-cubic" },
 				]
 			},
 			{
 				text: "RanMath.js 實作細節",
-				items: []
+				items: [
+					{ text: "SolveCubic", link: "/ran-math-details/solve-cubic" },
+				]
 			},
 		],
 		socialLinks: [
