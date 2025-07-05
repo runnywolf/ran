@@ -33,7 +33,7 @@ Prime.getNth(n: number): number
 
 | Param | Type | Description |
 | :- | :- | :- |
-| `n` | `number` ( `int` ) | 第 n 個質數 |
+| `n` | `number` ( `int >= 0` ) | 第 n 個質數 |
 
 範例：
 ```js

@@ -29,7 +29,7 @@ import { F } from "ran-math"; // new Frac 的工廠函數
 | Property | Type | Description |
 | :- | :- | :- |
 | [`.n`](#n) | `number` ( `int` ) | 分子 $n$ |
-| [`.d`](#d) | `number` ( `int` ) | 分母 $d$ |
+| [`.d`](#d) | `number` ( `int != 0` ) | 分母 $d$ |
 
 | Method | Description |
 | :- | :- |
@@ -122,7 +122,7 @@ new Frac(n: number = 0, d: number = 1): Frac
 | Param | Type | Description |
 | :- | :- | :- |
 | `n` | `number` ( `int` ) | 分子 $n$ |
-| `d` | `number` ( `int` ) | 分母 $d$，不可以傳入 `0` |
+| `d` | `number` ( `int != 0` ) | 分母 $d$，不可以傳入 `0` |
 
 範例：
 ```js

@@ -7,7 +7,7 @@ export default defineConfig({
 	resolve: {
 		alias: { // 路徑別名
 			"@": "/src", // @ 代表 /src
-			"ran-math": "/src/libs/RanMath.js" // 可以直接 import "RanMath"
+			"ran-math": "/src/libs/RanMath.js" // 可以直接 import { ... } from "ran-math"
 		}
 	},
 	test: { // 測試: npx vitest run --coverage
