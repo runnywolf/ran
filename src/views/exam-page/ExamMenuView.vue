@@ -7,18 +7,18 @@
 					<thead>
 						<tr>
 							<th v-for="uni in config.uniList">
-								<span :data-tooltip="config.uni[uni].name" data-position="top">
-									{{ config.uni[uni].shortName }}
+								<span :data-tooltip="config.uniConfigs[uni].name" data-position="top">
+									{{ config.uniConfigs[uni].shortName }}
 								</span>
 							</th>
 						</tr>
 					</thead>
 					
 					<tbody>
-						<tr v-for="year in yearList">
+						<tr v-for="year in tableYearList">
 							<td v-for="uni in config.uniList">
 								<RanLink v-if="yearSet[uni].has(year)" :to="`#/exam/${uni}-${year}`">
-									{{ config.uni[uni].shortName }}&nbsp;{{ year }}
+									{{ config.uniConfigs[uni].shortName }}&nbsp;{{ year }}
 								</RanLink>
 								<span v-else>&nbsp;</span><!-- 防止整個 row 都沒有 link 而塌陷 -->
 							</td>
@@ -33,16 +33,16 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import config from "@/components/exam/config.json"; // 保存題本資訊的設定檔
+import config from "@/exam-data/config.json"; // 保存題本資訊的設定檔
 
 const yearSet = ref({}); // 用於查詢學校的某個年份的題本是否存在
-const yearList = ref([]); // 表格的年份 arr
+const tableYearList = ref([]); // Array<number> ; 表格有哪些年份
 
 onMounted(() => { // 當組件載入時
 	let yearRange = [Infinity, -Infinity]; // 表格的年份跨度
 	
 	for (const uni of config.uniList) { // 遍歷所有學校
-		const yearArr = config.uni[uni].yearList.map(Number); // 題本年份 String[] 轉 Number[]
+		const yearArr = config.uniConfigs[uni].yearList.map(Number); // 題本年份 String[] 轉 Number[]
 		yearSet.value[uni] = new Set(yearArr); // 題本年份 Number[] 轉 Set
 		
 		if (yearArr.length == 0) continue; // 若學校的題本數為 0, 不處理
@@ -52,7 +52,7 @@ onMounted(() => { // 當組件載入時
 	}
 	
 	if (yearRange[0] === Infinity || yearRange[1] === -Infinity) return;
-	for (let i = yearRange[1]; i >= yearRange[0]; i--) yearList.value.push(i);
+	for (let i = yearRange[1]; i >= yearRange[0]; i--) tableYearList.value.push(i);
 });
 </script>
 

@@ -1,0 +1,19 @@
+{
+	"subjectCode": 200,
+	"subjectName": "科目全名 (備用)",
+	"subjectShortName": "科目縮寫",
+	"department": "科系",
+	"externalLink": "題本來源連結",
+	"externalLinkTip": "題本來源連結的提示",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "答案的 latex 語法",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		}
+	}
+}
