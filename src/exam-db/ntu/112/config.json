@@ -1,0 +1,80 @@
+{
+	"subjectCode": "348",
+	"subjectName": "數學 (A)",
+	"subjectShortName": "數學 (A)",
+	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/112/2023-348.pdf",
+	"externalLinkTip": "國立臺灣大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": true,
+	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "-before-6", "6", "7", "8", "9", "10", "11" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "\\text{D}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "\\text{A}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans1", "suffix": "(特徵方程求一般式)" },
+				{ "type": "answer", "fileBaseName": "2-ans2", "suffix": "(特徵值+選項逆推)" },
+				{ "type": "answer", "fileBaseName": "2-ans3", "suffix": "(選項逆推)" }
+			]
+		},
+		"3": {
+			"answerLatex": "\\text{A}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans", "suffix": "(特徵方程求生成函數+選項逆推)" }
+			]
+		},
+		"4": {
+			"answerLatex": "\\text{B}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "\\text{D}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "\\text{D}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "\\text{B}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "\\text{ACD}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "\\text{A}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "\\text{ABE}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		},
+		"11": {
+			"answerLatex": "\\text{ABCDE}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-ans" }
+			]
+		}
+	}
+}

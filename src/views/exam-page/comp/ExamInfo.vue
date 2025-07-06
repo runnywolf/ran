@@ -18,7 +18,7 @@
 					<span class="ts-icon is-calendar-icon"></span>
 				</td>
 				<td>
-					{{ year ?? "-" }} 年
+					{{ examYear ?? "-" }}&nbsp;年
 				</td>
 			</tr>
 			
@@ -28,10 +28,10 @@
 					<span class="ts-icon is-hashtag-icon"></span>
 				</td>
 				<td>
-					<span>{{ subjectId ?? "-" }}</span>
+					<span>{{ subjectCode ?? "-" }}</span>
 					<span
 						class="ts-icon is-circle-question-icon is-start-spaced"
-						data-tooltip="每個科目在當年度的唯一編號"
+						data-tooltip="每份題本在當年度的唯一編號"
 					></span>
 				</td>
 			</tr>
@@ -42,7 +42,7 @@
 					<span class="ts-icon is-file-icon"></span>
 				</td>
 				<td>
-					{{ subject ?? "-" }}
+					{{ subjectShortName ?? "-" }}
 				</td>
 			</tr>
 			
@@ -53,9 +53,9 @@
 <script setup>
 const props = defineProps({
 	uniShortName: String, // 學校中文縮寫
-	year: String, // 題本年份
-	subjectId: String, // 科目代號
-	subject: String, // 科目
+	examYear: String, // 題本年份
+	subjectCode: String, // 科目代號
+	subjectShortName: String, // 科目縮寫
 });
 </script>
 

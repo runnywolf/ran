@@ -1,0 +1,75 @@
+{
+	"subjectCode": "313",
+	"subjectName": "數學 (A)",
+	"subjectShortName": "數學 (A)",
+	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/113/113-313.pdf",
+	"externalLinkTip": "國立臺灣大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": true,
+	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "2",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "4",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "24",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "a_n = (-4)^n + 2 \\cdot 3^n",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "4 ~~;~~ 4 ~~;~~ \\text{no} ~~;~~ \\text{yes}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans-1", "suffix": "(Chromatic number)" },
+				{ "type": "answer", "fileBaseName": "5-ans-2", "suffix": "(Maximum independent set)" },
+				{ "type": "answer", "fileBaseName": "5-ans-3", "suffix": "(Eulerian)" },
+				{ "type": "answer", "fileBaseName": "5-ans-4", "suffix": "(Hamiltonian)" }
+			]
+		},
+		"6": {
+			"answerLatex": "\\frac{1}{3}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "\\text{span}( \\!\\begin{bmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{bmatrix}\\! )",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "(2, 1, 0)",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "\\text{rank}(T)",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "\\frac{1}{540} ?",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		}
+	}
+}

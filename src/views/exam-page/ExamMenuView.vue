@@ -33,7 +33,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import config from "@/exam-data/config.json"; // 保存題本資訊的設定檔
+import config from "@/exam-db/config.json"; // 保存題本資訊的設定檔
 
 const yearSet = ref({}); // 用於查詢學校的某個年份的題本是否存在
 const tableYearList = ref([]); // Array<number> ; 表格有哪些年份

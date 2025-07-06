@@ -1,8 +1,7 @@
 {
-	"subjectCode": 200,
-	"subjectName": "科目全名 (備用)",
+	"subjectCode": "科目代號",
+	"subjectName": "科目全名",
 	"subjectShortName": "科目縮寫",
-	"department": "科系",
 	"externalLink": "題本來源連結",
 	"externalLinkTip": "題本來源連結的提示",
 	"timeMinutes": 100,
