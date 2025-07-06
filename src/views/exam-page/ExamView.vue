@@ -22,6 +22,48 @@
 			</div>
 			<div class="ts-divider"></div>
 			
+			<!-- 測驗模式的開關 -->
+			<div class="ts-content is-dense sidebar-exam-mode">
+				<label class="ts-switch">
+					<input type="checkbox" v-model="isExamModeEnabled" />
+					<span>測驗模式&nbsp;</span>
+					<span
+						class="ts-icon is-circle-question-icon"
+						data-tooltip="開啟測驗模式後，題本內容會在作答前被隱藏，<br>並且不顯示解答。"
+						data-html=true
+					></span>
+				</label>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 計時器 -->
+			<div class="ts-content is-dense sidebar-timer" :style="{ opacity: isExamModeEnabled ? 1 : 0.4 }">
+				<ExamTimer></ExamTimer>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 題本來源的超連結 -->
+			<div class="ts-content is-dense">
+				<span class="ts-icon is-link-icon is-end-spaced"></span>
+				<RanLink v-if="examConfig.externalLink"
+					:to="examConfig.externalLink"
+					:tooltip="examConfig.externalLinkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
+				>題本來源</RanLink>
+				<span v-else>未知的來源</span>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 下載按鈕 (未實作) -->
+			<div class="ts-content is-dense">
+				<button
+					class="ts-button is-outlined is-start-icon"
+					@click="clickDownload"
+					data-tooltip="暫時想不到要怎麼做 ฅ^⦁⩊⦁^ฅ ੭"
+				>
+					<span class="ts-icon is-download-icon"></span>下載題本
+				</button>
+			</div>
+			
 		</template>
 		
 		<!-- 右側的考卷 -->
@@ -45,7 +87,8 @@ import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
-import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件 (於 v0.2.0-dev.4 分離)
+import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
+import ExamTimer from "./comp/ExamTimer.vue"; // 計時器的組件
 
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
@@ -83,17 +126,16 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	router.push("/exam"); // 轉址回題本清單
 };
 
+const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
+
+
+
+const clickDownload = () => { // 下載題本
+	
+};
+
 // ----------------- refactor line -----------------
 /*
-const globalVar = globalStore(); // 全域變數
-
-const route = useRoute(); // 目前的路由資訊
-const router = useRouter(); // 路由器
-
-const uni = ref(undefined); // 學校
-const year = ref(undefined); // 年份
-const examConfig = ref({}); // 題本設定檔
-
 const FIND_PROBLEM_TIMES = 10; // 最大尋找次數, 如果題目載入太慢就不滾動
 const FIND_PROBLEM_PER_MS = 100; // 每次尋找的時間
 onMounted(() => { // 元素已掛載至 DOM, 檢查要不要滾動至題目
@@ -113,36 +155,6 @@ onMounted(() => { // 元素已掛載至 DOM, 檢查要不要滾動至題目
 		clearInterval(intervalId);
 	}, FIND_PROBLEM_PER_MS); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
 });
-
-watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
-	var idParam = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
-	if (idParam.length != 2) { // 如果題本 id 的參數個數不為 2, 視為無效 id, 轉址回題本清單
-		handleWrongExamIdFormat(newExamId);
-		return;
-	}
-	const [_uni, _year] = idParam; // 題本 id 的第一個參數為 uni, 第二個參數為 year
-	
-	const configFile = await import(`../../components/exam/${_uni}/${_year}/config.json`) // 讀取題本設定檔
-		.catch(() => handleExamMissing(_uni, _year)); // 若題本設定檔不存在或路徑錯誤, 報錯, 並轉址回題本清單
-	if (!configFile) return;
-	
-	uni.value = _uni;
-	year.value = _year;
-	examConfig.value = configFile.default; // json -> Object
-}, { immediate: true }); // 組件載入時, 做一次
-function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的參數個數不為 2, 視為無效 id
-	console.error(
-		`Wrong id format. (exam id: ${wrongExamId})\n`
-	);
-	router.push("/exam"); // 轉址回題本清單
-}
-function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路徑錯誤
-	console.error(
-		`Exam config is not exist. (exam ${_uni}-${_year})\n`+
-		`-> Check if @/components/exam/${_uni}/${_year}/config.json exist?\n`
-	);
-	router.push("/exam"); // 轉址回題本清單
-};
 
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為關閉
 const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
@@ -193,24 +205,15 @@ watch(remainingSec, (newSec) => { // 如果剩餘時間歸零, 將題目隱藏
 	if (newSec <= 0) isProblemVisible.value = false;
 });
 
-const clickDownload = () => { // 下載題本
-	
-};
+
 */
 </script>
 
 <style scoped>
-.sidebar-setting {
-	padding-bottom: 2px; /* 減少測驗模式與下底線的距離 (7.5px -> 2px) */
+.sidebar-exam-mode {
+	padding-bottom: 2px;
 }
 .sidebar-timer {
 	padding: 10px 15px 12px 15px; /* 計時器區塊的 padding 修正 */
-}
-.sidebar-timer-time {
-	margin-top: -3px; /* 把計時器的時間部分往上拉一點 */
-}
-.sidebar-timer-progress {
-	margin-top: 7px; /* 計時器進度條與按鈕的垂直間距 */
-	background-color: #999; /* 進度條底色 */
 }
 </style>
