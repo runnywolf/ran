@@ -51,6 +51,7 @@ class Timer { // 計時器
 	start() { // 開始計時
 		this.isRunning = true;
 		this.intervalId = setInterval(() => this.remainingSeconds--, 1000); // 每 1000ms 將剩餘秒數 -1
+		emit("start"); // 發送事件給父組件 ExamView
 	}
 	
 	pause() { // 停止計時
@@ -66,6 +67,7 @@ class Timer { // 計時器
 	reset() { // 重設計時器
 		this.pause(); // 停止計時
 		this.remainingSeconds = this.timeSeconds; // 重設計時器的時間
+		emit("reset"); // 發送事件給父組件 ExamView
 	}
 	
 	getRemainingTimeText() { // 將剩餘秒數轉為 "分鐘:秒數" 的字串
@@ -90,22 +92,21 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-	"returnTimer", // 回傳 Timer 物件用於控制計時器
+	"return-timer", // 回傳 Timer 物件用於控制計時器
+	"start", // 開始計時
+	"reset", // 被重置
 	"timeup", // 時間到
 ]);
 
 const timer = ref(new Timer()); // 設定計時器
 
-emit("returnTimer", timer.value); // 將計時器控制器交給父組件 ExamView
+emit("return-timer", timer.value); // 將計時器控制器交給父組件 ExamView
 
 watch(() => props.timeMinutes, newMin => timer.value.setTimeSeconds(60 * newMin)); // 更新計時器的計時秒數
 watch(() => props.isEnabled, () => timer.value.reset()); // 啟用或禁用計時器會使計時器被重置
 
 watch(() => timer.value.remainingSeconds, newSec => { // 偵測剩餘時間
-	if (newSec <= 0) { // 如果計時器時間到了, 發送事件給父組件 ExamView
-		emit("timeup");
-		timer.value.reset(); // 重設計時器
-	}
+	if (newSec <= 0) emit("timeup"); // 如果計時器時間到了, 發送事件給父組件 ExamView
 });
 </script>
 

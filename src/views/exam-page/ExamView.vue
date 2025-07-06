@@ -41,8 +41,10 @@
 				<ExamTimer
 					:timeMinutes="examConfig.timeMinutes"
 					:isEnabled="isExamModeEnabled"
-					@returnTimer="timer => examTimer = timer"
-					@timeup="console.log('time up!')"
+					@return-timer="timer => examTimer = timer"
+					@start="onTimerStart"
+					@reset="onTimerReset"
+					@timeup="onTimeup"
 				></ExamTimer>
 			</div>
 			<div class="ts-divider"></div>
@@ -73,15 +75,14 @@
 		
 		<!-- 右側的考卷 -->
 		<template #content>
-			<!--ExamPaper
-				:uni="uni" :year="year" :examConfig="examConfig"
-				:isContentVisible="!isExamModeEnabled"
-				:isProblemVisible="isProblemVisible"
-				:isExamOver="remainingSec <= 0"
-				:examTimeSec="examTimeSec"
-				@clickStartExam="clickStartExam"
-				@resetTimer="resetTimer"
-			></ExamPaper-->
+			<ExamPaper
+				:uni="uni"
+				:year="year"
+				:examConfig="examConfig"
+				:state="examPaperState"
+				@click-start-button="clickStartButtonInExamPaper"
+				@click-reset-button="clickResetButtonInExamPaper"
+			></ExamPaper>
 		</template>
 		
 	</BodyLayout>
@@ -94,11 +95,12 @@ import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設�
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
 import ExamTimer from "./comp/ExamTimer.vue"; // 計時器的組件
+import ExamPaper from "./comp/ExamPaper.vue"; // 考卷的組件
 
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
-const uni = ref(); // 學校英文縮寫
-const year = ref(); // 題本民國年份
+const uni = ref(); // 題本的學校英文縮寫
+const year = ref(); // 題本的民國年份
 const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
@@ -133,9 +135,34 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 
 const examTimer = ref(null); // 計時器控制器
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
+const examPaperState = ref(0); // 題本組件的狀態: 0顯示答案, 1作答前, 2正在考試, 3時間結束
+
+watch(isExamModeEnabled, newExamMode => {
+	examPaperState.value = newExamMode ? 1 : 0; // 當測驗模式改變時, 將題本組件狀態設為 "0顯示答案" 或 "1作答前"
+}, { immediate: true });
+
+const onTimerStart = () => { // 當計時器開始計時
+	if (examPaperState.value === 1) examPaperState.value = 2; // 題本組件由 "1作答前" 轉為 "2正在考試" 的狀態
+};
+
+const onTimerReset = () => { // 當計時器被重置
+	if (examPaperState.value !== 0) examPaperState.value = 1; // 除了 "0顯示答案", 強制轉為 "1作答前" 的狀態
+};
+
+const onTimeup = () => { // 計時器倒數結束
+	if (examPaperState.value === 2) examPaperState.value = 3; // 題本組件由 "2正在考試" 轉為 "3時間結束" 的狀態
+};
+
+const clickStartButtonInExamPaper = () => { // 按下右側題本的 "開始作答" 按鈕
+	examTimer.value.start(); // 開始計時
+};
+
+const clickResetButtonInExamPaper = () => { // 按下右側題本的 "重設計時器" 按鈕
+	examTimer.value.reset(); // 重設計時器
+};
 
 const clickDownload = () => { // 下載題本
-	
+	// todo
 };
 
 // ----------------- refactor line -----------------
@@ -159,40 +186,6 @@ onMounted(() => { // 元素已掛載至 DOM, 檢查要不要滾動至題目
 		clearInterval(intervalId);
 	}, FIND_PROBLEM_PER_MS); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
 });
-
-const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為關閉
-const isProblemVisible = ref(!isExamModeEnabled.value); // 是否要顯示題本內容
-const isTimerActive = ref(false); // 計時器是否正在計時
-const examTimeSec = ref(6000); // 考試時間, 幾乎都是 100 分鐘, 師大 90 分鐘
-const remainingSec = ref(examTimeSec.value); // 計時器剩餘的秒數
-
-watch(isExamModeEnabled, (newMode) => { // 當測驗模式被切換時
-	resetTimer(); // 重置計時器
-	isProblemVisible.value = !newMode; // 如果測驗模式被開啟, 隱藏題本內容, 反之顯示題本內容
-});
-watch(examConfig, () => { // 當題本被切換
-	if (isExamModeEnabled.value) clickResetButton(); // 若在測驗模式下, 等同於按下重設計時器
-});
-const clickToggleButton = () => { // 按下計時器的 開始/暫停 按鈕
-	if (remainingSec.value <= 0) return;
-	toggleTimer(); // 切換計時器的狀態
-	if (!isProblemVisible.value) isProblemVisible.value = true; // 如果題目被隱藏(還沒開始考試), 則顯示題目
-};
-const clickResetButton = () => { // 按下重設計時器的按鈕
-	resetTimer(); // 重設計時器
-	isProblemVisible.value = false; // 隱藏題目
-};
-const clickStartExam = () => { // 按下開始作答的按鈕
-	resetTimer(); // 重設計時器
-	startTimer(); // 開始計時
-	isProblemVisible.value = true; // 顯示題目
-};
-
-watch(remainingSec, (newSec) => { // 如果剩餘時間歸零, 將題目隱藏
-	if (newSec <= 0) isProblemVisible.value = false;
-});
-
-
 */
 </script>
 
