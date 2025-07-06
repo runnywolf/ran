@@ -37,8 +37,13 @@
 			<div class="ts-divider"></div>
 			
 			<!-- 計時器 -->
-			<div class="ts-content is-dense sidebar-timer" :style="{ opacity: isExamModeEnabled ? 1 : 0.4 }">
-				<ExamTimer></ExamTimer>
+			<div class="ts-content is-dense sidebar-timer">
+				<ExamTimer
+					:timeMinutes="examConfig.timeMinutes"
+					:isEnabled="isExamModeEnabled"
+					@returnTimer="timer => examTimer = timer"
+					@timeup="console.log('time up!')"
+				></ExamTimer>
 			</div>
 			<div class="ts-divider"></div>
 			
@@ -83,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
@@ -126,9 +131,8 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	router.push("/exam"); // 轉址回題本清單
 };
 
+const examTimer = ref(null); // 計時器控制器
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
-
-
 
 const clickDownload = () => { // 下載題本
 	
@@ -184,23 +188,6 @@ const clickStartExam = () => { // 按下開始作答的按鈕
 	isProblemVisible.value = true; // 顯示題目
 };
 
-let timer = null; // 計時器
-const startTimer = () => { // 開始計時
-	isTimerActive.value = true;
-	timer = setInterval(() => {remainingSec.value--}, 1000); // 每 1000ms 將剩餘秒數 -1
-};
-const pauseTimer = () => { // 停止計時
-	isTimerActive.value = false;
-	clearInterval(timer); // 停止計時器
-	timer = null; // 初始化
-};
-const resetTimer = () => { // 重置計時器
-	pauseTimer(); // 停止計時
-	remainingSec.value = examTimeSec.value // 重設計時器的時間
-};
-const toggleTimer = () => { // 切換計時器的狀態
-	isTimerActive.value ? pauseTimer() : startTimer();
-};
 watch(remainingSec, (newSec) => { // 如果剩餘時間歸零, 將題目隱藏
 	if (newSec <= 0) isProblemVisible.value = false;
 });
