@@ -2,11 +2,11 @@
 	<div class="ts-wrap is-vertical">
 		
 		<!-- 題目 -->
-		<div class="ran-problem-font" :class="isScoreVisible ? '' : 'hide-problem-score'">
-			<component :is="problemAsyncComp"></component>
+		<div class="ran-problem-font" :class="{ 'hide-problem-score': displayMode === 2 }">
+			<component :is="sectionAsyncComp"></component>
 		</div>
 		
-		<!-- 顯示題目頁面的連結按鈕 -->
+		<!-- 若顯示模式為 1, 會顯示綠框答案和詳解連結 -->
 		<div v-if="isLinkMode()" class="ts-wrap">
 			
 			<!-- 答案 -->
@@ -15,12 +15,14 @@
 			</Content>
 			
 			<!-- 詳解連結-->
-			<button class="ts-button" @click="router.push(`/exam/${uni}-${year}/${no}`)">詳解</button>
+			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`">
+				詳解
+			</RanLink>
 			
 		</div>
 		
-		<!-- 顯示多個內容區塊 -->
-		<div v-else-if="isContentMode()" class="ts-wrap is-compact is-vertical content">
+		<!-- 若顯示模式為 2, 會顯示綠框答案和詳解 -->
+		<div v-else-if="false" class="ts-wrap is-compact is-vertical content">
 			
 			<!-- 答案 -->
 			<Content colorStyle="green" collapsed>
@@ -52,24 +54,67 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, watch, defineAsyncComponent } from "vue";
+import { defineAsyncComponent, computed } from "vue";
 import { useRouter } from "vue-router";
-import ProblemNotFoundComp from "@/components/problem/error-comp/ProblemNotFound.vue"; // 題目載入失敗時, 顯示的錯誤訊息組件
-import ContentNotFoundComp from "@/components/problem/error-comp/ContentNotFound.vue"; // 內容區塊載入失敗時, 顯示的錯誤訊息組件
+import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
+import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
+import ContentNotFoundComp from "./problem-comp/ContentNotFound.vue"; // 題目的內容載入失敗時, 顯示的錯誤訊息組件
 
 const props = defineProps({
-	uni: String, // 學校英文縮寫
-	year: String, // 題本年份
+	uni: String, // 題本的學校英文縮寫
+	year: String, // 題本的民國年份
 	no: String, // 題號
-	problemConfig: Object, // 題目的設定檔, 位於 config.problem.<no> 內
-	displayMode: String, // 顯示模式: 題目下面內容區塊的類型, 不傳入則不生成 ( link: 題目的超連結按鈕 / content: 解答等等... )
-	isScoreVisible: { type: Boolean, default: false }, // 是否要顯示題目中的配分
+	problemConfig: { type: Object, default: {} }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
+	displayMode: { type: Number, default: 0 }, // 顯示模式: 0顯示題目+題號 1顯示題目+題號+答案+詳解連結 2顯示題目+答案+詳解(ProblemView專用)
 });
 
-const router = useRouter(); // 路由器
+// #region 載入題目組件
+const sectionAsyncComp = computed(() => { // 區塊組件 (題目或者是題本的說明區塊)
+	const { uni, year, no } = props;
+	return defineAsyncComponent({ // 動態載入區塊組件
+		loader: () => import(`../../exam-db/${uni}/${year}/sections/${no}.vue`) // 載入
+			.catch(handleSectionCompMissing),
+		loadingComponent: LoadingComp,
+		delay: 200, // 顯示加載組件前的延遲時間，默認為 200ms
+		errorComponent: SectionNotFoundComp,
+		timeout: 5000
+	});
+});
 
-const isLinkMode = () => (props.displayMode === "link" && props.no[0] != "-"); // 顯示模式為 link
-const isContentMode = () => (props.displayMode === 'content' && props.no[0] != '-' && props.problemConfig); // 顯示模式為 content
+function handleSectionCompMissing() { // 當區塊組件載入失敗時
+	const { uni, year, no } = props;
+	console.error( // 在 console 報錯
+		`Section comp is not exist. ${getErrorSectionMessage()}\n`+
+		`-> Check if src/exam-db/${uni}/${year}/sections/${no}.vue exist?\n`+
+		`-> If ${no}.vue exist, check the "${no}" is in section: [...] in ${getErrorConfigPath()}`
+	);
+	return SectionNotFoundComp;
+}
+
+function getErrorSectionMessage() { // 錯誤發生在哪一題的訊息
+	return `(problem ${props.no} in exam ${props.uni}-${props.year})`;
+}
+
+function getErrorConfigPath() { // 有錯的設定檔路徑
+	return `src/exam-db/${props.uni}/${props.year}/config.json`;
+}
+// #endregion
+
+// #region 若顯示模式為 1, 會顯示綠框答案和詳解連結
+const isLinkMode = () => (props.displayMode === 1 && props.no[0] != "-"); // 若 section base 開頭為 "-", 不會顯示答案和連結
+const answerLatex = computed(() => {
+	const s_latex = props.problemConfig.answerLatex; // 題目的答案 (latex 字串)
+	return s_latex ? s_latex : "?"; // 如果讀取不到, 預設為 "?"
+});
+const router = useRouter(); // 路由器
+// #endregion
+
+// #region 若顯示模式為 2, 會顯示綠框答案和詳解
+const isContentMode = () => (props.displayMode === 2 && props.no[0] != '-'); // 顯示模式為 2
+// #endregion
+
+// -------------- refactor line ---------------
+/*
 
 const problemAsyncComp = shallowRef(null); // 題目的動態組件
 const answerLatex = ref("?"); // 答案的 latex 語法, 預設值為 "?"
@@ -145,19 +190,7 @@ function handleProblemConfigMissing() { // 題目設定檔不存在
 	);
 }
 
-function handleAnswerUndefined() { // key answerLatex 不存在於題目設定檔 (config.problem.<no>) 內
-	console.error(
-		`Answer latex string is undefined. ${_getErrorProblemMessage()}\n`+
-		`-> Add "answerLatex": "..." in problem.${props.no}: {...} in ${_getErrorConfigPath()}`
-	);
-}
 
-function handleAnswerError() { // answerLatex 的值應為長度 > 0 的字串
-	console.warn(
-		`Answer latex string must be a non-empty string. ${_getErrorProblemMessage()}\n`+
-		`-> Set problem.${props.no}.answerLatex: "..." in ${_getErrorConfigPath()}`
-	);
-}
 
 function handleContentEmpty() { // key content 不存在於題目設定檔 (config.problem.<no>) 內
 	console.error(
@@ -176,18 +209,23 @@ function handleContentMissing(contentId) { // 內容區塊組件載入失敗時
 	return ContentNotFoundComp; // 回傳錯誤訊息組件
 }
 
-function _getErrorProblemMessage() { // 錯誤發生在哪一題的訊息
-	return `(problem ${props.no} in exam ${props.uni}-${props.year})`;
-}
 
-function _getErrorConfigPath() { // 有錯的設定檔路徑
-	return `@/components/exam/${props.uni}/${props.year}/config.json`;
-}
+*/
 </script>
 
 <style scoped>
 .hide-problem-score:deep(.problem-score) { /* 隱藏或顯示題目的配分 */
 	display: none; /* 題目的 vue 檔內必須使用 *.problem-score 包裹配分才有效果 */
+}
+.problem-view-link { /* 詳解連結按鈕 (為了實現另開分頁, 由 button 改為 RanLink) */
+	border-radius: 6px;
+	background-color: var(--ts-gray-800);
+	width: 72px; height: 36px;
+	font-size: 14px; font-weight: 500; color: white !important;
+	display: flex; justify-content: center; align-items: center;
+}
+.problem-view-link:hover { /* 詳解連結按鈕 hover 時, 使按鈕稍微變亮 */
+	background-color: var(--ts-gray-700);
 }
 .content {
 	line-height: 30px; /* 內容區塊的行距 (倍) */

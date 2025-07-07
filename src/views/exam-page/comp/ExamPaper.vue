@@ -4,14 +4,20 @@
 	<div class="ts-content" :class="{ 'exam-blurred': state === 1 || state === 3 }">
 		<template v-for="(sectionBaseName, i) in examConfig.sectionFileBaseNames"><!-- 生成題本的每一題 -->
 			
-			<!-- 題目 -->
+			<!-- 題目 (用有序清單模擬題號) -->
 			<ol v-if="sectionBaseName[0] !== '-'"
 				:style="getOlStyle(sectionBaseName)"
 				:start="sectionBaseName"
 				:id="`exam-paper-problem-${sectionBaseName}` /* 用於滾動至某一題 */"
 			>
 				<li class="ran-problem-font">
-					第 {{ sectionBaseName }} 題
+					<Problem
+						:uni="uni"
+						:year="year"
+						:no="sectionBaseName"
+						:problemConfig="examConfig.problemConfigs[sectionBaseName]"
+						:displayMode="state === 0 ? 1 : 0"
+					></Problem>
 				</li>
 			</ol>
 			

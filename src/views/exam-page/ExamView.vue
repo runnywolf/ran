@@ -97,6 +97,7 @@ import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
 import ExamTimer from "./comp/ExamTimer.vue"; // 計時器的組件
 import ExamPaper from "./comp/ExamPaper.vue"; // 考卷的組件
 
+// #region 路由解碼
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
 const uni = ref(); // 題本的學校英文縮寫
@@ -132,10 +133,16 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	);
 	router.push("/exam"); // 轉址回題本清單
 };
+// #endregion
 
 const examTimer = ref(null); // 計時器控制器
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
 const examPaperState = ref(0); // 題本組件的狀態: 0顯示答案, 1作答前, 2正在考試, 3時間結束
+
+watch(examConfig, () => { // 偵測直接改網址造成的路由變化
+	examPaperState.value = isExamModeEnabled.value ? 1 : 0; // 當題本改變時, 將題本組件狀態設為 "0顯示答案" 或 "1作答前"
+	examTimer.value.reset(); // 重設計時器
+});
 
 watch(isExamModeEnabled, newExamMode => {
 	examPaperState.value = newExamMode ? 1 : 0; // 當測驗模式改變時, 將題本組件狀態設為 "0顯示答案" 或 "1作答前"
