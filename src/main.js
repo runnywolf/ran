@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
-import { createPinia } from "pinia";
 
 import "./styles/style.css"; // 全域樣式
 import "./styles/problem.css"; // 題目樣式
@@ -15,7 +14,6 @@ import Vl from "./components/problem/Vl.vue"; // 縮短 vatex 標籤長度的組
 const app = createApp(App);
 
 app.use(router);
-app.use(createPinia());
 
 app.component("Content", Content);
 app.component("RanLink", RanLink);
