@@ -109,7 +109,7 @@ const getOlStyle = (problemBaseName) => { // 獲取某一題的題號樣式 (ui 
 }
 .exam-cover-ui { /* 覆蓋於模糊的題目之上的 ui */
 	position: absolute; /* 絕對定位 */
-	top: 100px; /* 與考卷頂部的距離 */
+	top: 80px; /* 與考卷頂部的距離 */
 	left: 50%; /* 水平置中 */
 	transform: translate(-50%, 0); /* 調整 x 座標讓其水平置中 */
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */

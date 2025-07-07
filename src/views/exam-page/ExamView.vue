@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
@@ -126,6 +126,31 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 };
 // #endregion
 
+// #region 點擊 ProblemView 的題本連結, 滾動至某一題
+const FIND_PROBLEM_TIMES = 10; // 最大尋找次數, 如果題目載入太慢就不滾動
+const FIND_PROBLEM_EVERY_MS = 100; // 每次尋找的時間 (ms)
+
+onMounted(() => { // dom 元素掛載好時, 嘗試滾動
+	const scrollTargetNo = localStorage.getItem("scrollTargetNoInExamView"); // 要滾動到的題號
+	if (!scrollTargetNo) return; // 沒有要滾動
+	
+	localStorage.setItem("scrollTargetNoInExamView", null); // 消耗掉這個值
+	isExamModeEnabled.value = false; // 若需要滾動, 必須關掉測驗模式
+	
+	let findCount = 0; // 目前的尋找次數
+	const intervalId = setInterval(() => {
+		findCount++; // 尋找次數 +1
+		if (findCount > FIND_PROBLEM_TIMES) clearInterval(intervalId); // 尋找次數達到上限會停止, 不滾動
+		
+		const targetOl = document.querySelector(`#exam-paper-problem-${scrollTargetNo}`); // 取得題目的 ol 標籤
+		if (!targetOl) return; // 找不到標籤, 重新找
+		
+		targetOl.scrollIntoView({ behavior: "smooth", block: "start" }); // 滾動至題目
+		clearInterval(intervalId); // 停止尋找
+	}, FIND_PROBLEM_EVERY_MS); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
+});
+// #endregion
+
 const examTimer = ref(null); // 計時器控制器
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
 const examPaperState = ref(0); // 題本組件的狀態: 0顯示答案, 1作答前, 2正在考試, 3時間結束
@@ -162,29 +187,6 @@ const clickResetButtonInExamPaper = () => { // 按下右側題本的 "重設計�
 const clickDownload = () => { // 下載題本
 	// todo
 };
-
-// ----------------- refactor line -----------------
-/*
-const FIND_PROBLEM_TIMES = 10; // 最大尋找次數, 如果題目載入太慢就不滾動
-const FIND_PROBLEM_PER_MS = 100; // 每次尋找的時間
-onMounted(() => { // 元素已掛載至 DOM, 檢查要不要滾動至題目
-	if (!globalVar.examScrollProbNo) return; // 題號不存在, 就不滾動
-	
-	isExamModeEnabled.value = false; // 若需要滾動, 必須關掉測驗模式
-	
-	let findCount = 0; // 目前的尋找次數
-	const intervalId = setInterval(() => {
-		findCount++; // 尋找次數 +1
-		if (findCount > FIND_PROBLEM_TIMES) clearInterval(intervalId); // 尋找次數達到上限會停止, 不滾動
-		const targetOl = document.querySelector(`#exam-paper-p${globalVar.examScrollProbNo}`); // 取得題目的 ol 標籤
-		if (!targetOl) return; // 找不到標籤, 重新找
-		
-		targetOl.scrollIntoView({ behavior: "smooth", block: "start" }); // 滾動至題目
-		globalVar.examScrollProbNo = null; // 如果成功滾動, 清除這個值
-		clearInterval(intervalId);
-	}, FIND_PROBLEM_PER_MS); // 因為題目是動態載入的, 所以每一段時間檢測標籤存不存在
-});
-*/
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
 			<!-- 題本的連結 -->
 			<div class="ts-content is-dense">
 				<span class="ts-icon is-reply-icon is-end-spaced"></span>
-				<RanLink :to="`#/exam/${uni}-${year}`" @click="">
+				<RanLink :to="`#/exam/${uni}-${year}`" @click="clickExamLink">
 					<span>&nbsp;{{ dbConfig.uniConfigs[uni]?.shortName ?? "" }}</span>
 					<span>&nbsp;{{ year ?? "" }}</span>
 				</RanLink>
@@ -73,4 +73,8 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 
 const no = computed(() => route.params.prob); // 當路由的題目編號改變時
 const problemConfig = computed(() => examConfig.value.problemConfigs?.[no.value]); // 題目設定
+
+const clickExamLink = () => { // 當左側資訊版的題本連結被點擊
+	localStorage.setItem("scrollTargetNoInExamView", no.value); // 儲存要滾動到的題號
+};
 </script>
