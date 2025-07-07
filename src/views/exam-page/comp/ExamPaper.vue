@@ -54,9 +54,15 @@
 			<span class="ts-icon is-pen-icon"></span>開始作答
 		</button>
 		
+		<!-- 若題本的解答不完整, 會顯示這則訊息 -->
+		<div v-if="!examConfig.isAnswerComplete" class="ts-text is-small is-bold exam-start-warning">
+			<span class="ts-icon is-triangle-exclamation-icon"></span>
+			這份題本的解答不完整，確定要繼續作答嗎？
+		</div>
+		
 		<!-- 最下面的提示 -->
 		<div class="ts-text is-small is-secondary is-italic">
-			如果你只想翻閱一下歷屆試題，可以關閉左側選單中的「測驗模式」
+			如果你只想翻閱一下歷屆試題，可以關閉左側選單中的「 測驗模式 」
 		</div>
 		
 	</div>
@@ -107,5 +113,9 @@ const getOlStyle = (problemBaseName) => { // 獲取某一題的題號樣式 (ui 
 	left: 50%; /* 水平置中 */
 	transform: translate(-50%, 0); /* 調整 x 座標讓其水平置中 */
 	white-space: nowrap; user-select: none; /* 禁止換行, 禁止被選取 */
+}
+.exam-start-warning { /* 若題本的解答不完整, 會顯示這則訊息 */
+	color: #e90;
+	margin-bottom: -16px;
 }
 </style>
