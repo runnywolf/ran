@@ -46,6 +46,20 @@
 				</td>
 			</tr>
 			
+			<!-- 題本的來源連結 -->
+			<tr>
+				<td>
+					<span class="ts-icon is-link-icon"></span>
+				</td>
+				<td>
+					<RanLink v-if="externalLink"
+						:to="externalLink"
+						:tooltip="externalLinkTip ? externalLinkTip : '沒有附註任何東西捏 (´･ω･`)'"
+					>題本來源</RanLink>
+					<span v-else>未知的來源</span>
+				</td>
+			</tr>
+			
 		</tbody>
 	</table>
 </template>
@@ -56,6 +70,8 @@ const props = defineProps({
 	examYear: String, // 題本年份
 	subjectCode: String, // 科目代號
 	subjectShortName: String, // 科目縮寫
+	externalLink: String, // 題本的來源連結
+	externalLinkTip: String, // 來源連結的註解, hover 時會顯示
 });
 </script>
 

@@ -15,7 +15,7 @@
 			</Content>
 			
 			<!-- 詳解連結-->
-			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`">
+			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`" newTab>
 				詳解
 			</RanLink>
 			

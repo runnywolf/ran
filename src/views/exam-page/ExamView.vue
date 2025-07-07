@@ -18,6 +18,8 @@
 					:examYear="year"
 					:subjectCode="examConfig.subjectCode"
 					:subjectShortName="examConfig.subjectShortName"
+					:externalLink="examConfig.externalLink"
+					:externalLinkTip="examConfig.externalLinkTip"
 				></ExamInfo>
 			</div>
 			<div class="ts-divider"></div>
@@ -46,17 +48,6 @@
 					@reset="onTimerReset"
 					@timeup="onTimeup"
 				></ExamTimer>
-			</div>
-			<div class="ts-divider"></div>
-			
-			<!-- 題本來源的超連結 -->
-			<div class="ts-content is-dense">
-				<span class="ts-icon is-link-icon is-end-spaced"></span>
-				<RanLink v-if="examConfig.externalLink"
-					:to="examConfig.externalLink"
-					:tooltip="examConfig.externalLinkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
-				>題本來源</RanLink>
-				<span v-else>未知的來源</span>
 			</div>
 			<div class="ts-divider"></div>
 			
