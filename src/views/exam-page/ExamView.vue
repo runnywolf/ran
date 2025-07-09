@@ -78,7 +78,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { showToast } from "toast";
+import { showToast, ToastType } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
@@ -111,6 +111,7 @@ watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗�
 
 function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
 	console.error(`Wrong exam id format "${wrongExamId}".\n`);
+	showToast(`題本編號的形式錯誤`, ToastType.WARNING);
 	router.push("/exam"); // 轉址回題本清單
 }
 
@@ -119,6 +120,7 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 		`Exam config is not exist. (exam "${_uni}-${_year}")\n`+
 		`-> Check if src/exam-db/${_uni}/${_year}/config.json exist?\n`
 	);
+	showToast(`題本 ${_uni}-${_year} 不存在`, ToastType.ERROR);
 	router.push("/exam"); // 轉址回題本清單
 };
 // #endregion
@@ -148,6 +150,7 @@ onMounted(() => { // dom 元素掛載好時, 嘗試滾動
 });
 // #endregion
 
+// #region 控制考試狀態
 const examTimer = ref(null); // 計時器控制器
 const isExamModeEnabled = ref(true); // 是否開啟測驗模式, 預設為開啟
 const examPaperState = ref(0); // 題本組件的狀態: 0顯示答案, 1作答前, 2正在考試, 3時間結束
@@ -180,9 +183,11 @@ const clickStartButtonInExamPaper = () => { // 按下右側題本的 "開始作�
 const clickResetButtonInExamPaper = () => { // 按下右側題本的 "重設計時器" 按鈕
 	examTimer.value.reset(); // 重設計時器
 };
+// #endregion
 
 const clickDownload = () => { // 下載題本
-	showToast("此功能未實作 ฅ^⦁⩊⦁^ฅ ੭", "error");
+	showToast("此功能未實作 ฅ^⦁⩊⦁^ฅ ੭", ToastType.ERROR);
+	// 也許之後可以切分出一個用於下載的 comp
 };
 </script>
 
