@@ -53,11 +53,7 @@
 			
 			<!-- 下載按鈕 (未實作) -->
 			<div class="ts-content is-dense">
-				<button
-					class="ts-button is-outlined is-start-icon"
-					@click="clickDownload"
-					data-tooltip="暫時想不到要怎麼做 ฅ^⦁⩊⦁^ฅ ੭"
-				>
+				<button class="ts-button is-outlined is-start-icon" @click="clickDownload">
 					<span class="ts-icon is-download-icon"></span>下載題本
 				</button>
 			</div>
@@ -82,6 +78,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { showToast } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
@@ -131,10 +128,10 @@ const FIND_PROBLEM_TIMES = 10; // 最大尋找次數, 如果題目載入太慢�
 const FIND_PROBLEM_EVERY_MS = 100; // 每次尋找的時間 (ms)
 
 onMounted(() => { // dom 元素掛載好時, 嘗試滾動
-	const scrollTargetNo = localStorage.getItem("scrollTargetNoInExamView"); // 要滾動到的題號
+	const scrollTargetNo = sessionStorage.getItem("scroll-target-no-in-exam-view"); // 要滾動到的題號
 	if (!scrollTargetNo) return; // 沒有要滾動
 	
-	localStorage.setItem("scrollTargetNoInExamView", null); // 消耗掉這個值
+	sessionStorage.removeItem("scroll-target-no-in-exam-view"); // 消耗掉這個值
 	isExamModeEnabled.value = false; // 若需要滾動, 必須關掉測驗模式
 	
 	let findCount = 0; // 目前的尋找次數
@@ -185,7 +182,7 @@ const clickResetButtonInExamPaper = () => { // 按下右側題本的 "重設計�
 };
 
 const clickDownload = () => { // 下載題本
-	// todo
+	showToast("此功能未實作 ฅ^⦁⩊⦁^ฅ ੭", "error");
 };
 </script>
 

@@ -7,10 +7,12 @@
 			</div>
 		</div>
 	</div>
+	<Toast></Toast>
 </template>
 
 <script setup>
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "./components/app-comp/Navbar.vue";
+import Toast from "./components/app-comp/Toast.vue";
 </script>
 
 <style scoped>

@@ -75,6 +75,6 @@ const no = computed(() => route.params.prob); // 當路由的題目編號改變�
 const problemConfig = computed(() => examConfig.value.problemConfigs?.[no.value]); // 題目設定
 
 const clickExamLink = () => { // 當左側資訊版的題本連結被點擊
-	localStorage.setItem("scrollTargetNoInExamView", no.value); // 儲存要滾動到的題號
+	sessionStorage.setItem("scroll-target-no-in-exam-view", no.value); // 儲存要滾動到的題號
 };
 </script>
