@@ -49,6 +49,7 @@ print("\033c", end="") # clear console
 uni = input("學校英文縮寫: ")
 year = input("題本年份: ")
 section_base_names = [x for x in input("數個區塊名稱 (用空白鍵分隔): ").split(" ") if x != ""]
+input("沒有回滾機制，按任意鍵開始建立題本資料夾。")
 
 SRC_PATH = Path(__file__).parent.parent # 路徑 src
 DB_PATH = SRC_PATH/"exam-db" # database 絕對路徑
@@ -57,3 +58,5 @@ EXAM_PATH = SRC_PATH/"exam-db"/uni/year # 題本資料夾的絕對路徑
 create_exam_dirs(uni)
 create_exam_config(section_base_names)
 create_vue_files(section_base_names)
+
+input("建立完成。")
