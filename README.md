@@ -1,5 +1,5 @@
-# 🦊 Ran 0.3.7
-![](https://img.shields.io/badge/Ran-v0.3.7-55f?style=flat)
+# 🦊 Ran 0.4
+![](https://img.shields.io/badge/Ran-v0.4.0-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.2-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -8,9 +8,9 @@
 
 一款用於準備資工所數學的網頁 App。
 
-開始使用 → [Ran](https://runnywolf.github.io/ran/#/exam)<br>
+開始使用 → [Ran](https://runnywolf.github.io/ran/#/)<br>
 說明文件 → [Ran Docs](https://runnywolf.github.io/ran/docs/exam-page/create-exam)<br>
-數學函式庫 → [RanMath](https://github.com/runnywolf/ran/tree/main/src/libs)
+數學函式庫 → [RanMath](https://github.com/runnywolf/ran/blob/main/src/libs/ran-math.js)
 
 > [!WARNING]  
 > 目前手機瀏覽器會有顯示異常的問題，請至瀏覽器設定內切換至電腦版網站。
