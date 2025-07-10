@@ -7,12 +7,5 @@
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
 	"sectionFileBaseNames": [],
-	"problemConfigs": {
-		"1": {
-			"answerLatex": "答案的 latex 語法",
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
-		}
-	}
+	"problemConfigs": {}
 }

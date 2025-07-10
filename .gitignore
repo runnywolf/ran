@@ -28,3 +28,6 @@ docs/.vitepress/cache
 
 # vitest test result
 coverage
+
+# vscode 識別 vue alias 用
+jsconfig.json
