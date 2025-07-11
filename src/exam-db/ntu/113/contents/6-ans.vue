@@ -19,7 +19,7 @@
 	" /><br>
 	<br>
 	若將向量 <vl exp="b" /> 投影到向量空間 <vl exp="\text{Col}(A)" />，得到向量
-	<vl exp="Ax' \in \text{Col}(A)" />，會使 <vl exp="\| Ax'-b \|" /> 達到最小值。
+	<vl exp="Ax' \in \text{Col}(A)" />，會使 <vl exp="\| Ax'-b \|" /> 達到最小值：
 	<vl c exp="
 		\begin{split}
 		Ax' &= \text{proj}_{\text{Col}(A)}(b) \\
@@ -34,6 +34,7 @@
 		&= \frac{1}{3} \!\begin{bmatrix} 4 \\ -1 \\ 5 \end{bmatrix}
 		\end{split}
 	" />
+	因此範數平方的最小值為：
 	<vl c exp="
 		\begin{split}
 		\| Ax'-b \|^2 &= \| \frac{1}{3} \!\begin{bmatrix} 4 \\ -1 \\ 5 \end{bmatrix}\!

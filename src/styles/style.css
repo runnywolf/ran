@@ -12,3 +12,7 @@ span.ran-neko::before { /* 貓咪 */
 details.ts-accordion[open] details.ts-accordion:not([open]) summary::before { /* tocas ui bug */
 	transform: rotate(270deg);
 }
+
+details.ts-accordion > summary {
+	margin: 0 !important;
+}
