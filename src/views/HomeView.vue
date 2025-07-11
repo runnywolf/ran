@@ -17,6 +17,7 @@
 						<div class="item">收錄各校的歷屆試題</div>
 						<div class="item">盡可能的提供詳解</div>
 						<div class="item">帶有計時器的測驗模式</div>
+						<div class="item">重新排版，閱讀更舒適</div>
 					</div>
 				</div>
 			</div>

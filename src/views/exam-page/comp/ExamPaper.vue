@@ -6,8 +6,7 @@
 			
 			<!-- 題目 (用有序清單模擬題號) -->
 			<ol v-if="sectionBaseName[0] !== '-'"
-				:style="getOlStyle(sectionBaseName)"
-				:start="sectionBaseName"
+				:class="`problem-no-${sectionBaseName}`"
 				:id="`exam-paper-problem-${sectionBaseName}` /* 用於滾動至某一題 */"
 			>
 				<li class="ran-problem-font">
@@ -78,7 +77,7 @@
 </template>
 
 <script setup>
-import { isInt } from "ran-math";
+import { watch } from "vue";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
@@ -94,13 +93,27 @@ const emit = defineEmits([
 	"click-reset-button" // 按下 "重設計時器" 的按鈕會觸發
 ]);
 
-const getOlStyle = (problemBaseName) => { // 獲取某一題的題號樣式 (ui 由 <ol> 顯示)
-	const id = Number(problemBaseName);
-	if (isInt(id) && id >= 1) { // 如果題號是正整數, 顯示題號
-		return { "padding-left": `${11 + 9 * problemBaseName.length}px`, "list-style": "decimal" };
-	} // 因為 ol 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
-	return { "padding-left": "0px", "list-style": "none" };	// 如果題號不是整數, 隱藏題號
+const getTextWidth = (text) => { // 計算題號的寬度, 用於向右修正 (by gpt-4.1-mini)
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	ctx.font = '16px "Times New Roman", Times, serif';
+	return ctx.measureText(text).width;
 };
+
+watch(() => props.examConfig.sectionFileBaseNames, baseNames => {
+	if (!baseNames) return;
+	
+	const problemNoStyle = document.createElement("style"); // 用 js 建立一個用於顯示 marker 題號的 style 區塊 (因為 vue 不允許動態修改 marker)
+	document.head.appendChild(problemNoStyle); // 插入至 <head>
+
+	const sheet = problemNoStyle.sheet;
+	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length);
+	baseNames.filter(name => name[0] !== "-").map(name => { // 非說明區塊才有題號
+		const problemNoPaddingLeft = getTextWidth(name + ". ") + 5;
+		insertCss(`.problem-no-${name} > li::marker { content: "${name}. " }`); // 將自訂的題號 marker 加入到 <style>
+		insertCss(`.problem-no-${name} { padding-left: ${problemNoPaddingLeft}px }`); // 因為 li 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
+	});
+});
 </script>
 
 <style scoped>
