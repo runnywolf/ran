@@ -48,7 +48,7 @@
 			]
 		},
 		"7": {
-			"answerLatex": "\\text{span}( ( 0, 0, 0, 1 ) )",
+			"answerLatex": "\\text{span}\\{ ( 0, 0, 0, 1 ) \\}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

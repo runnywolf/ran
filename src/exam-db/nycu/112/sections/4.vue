@@ -1,7 +1,7 @@
 <template>
-	<MakeProblem scoreText="(?%)">
+	<MakeProblem scoreText="(5 points)">
 		<template #problem>
-			第 4 題的題目
+			Assume <vl exp="x" /> is a natural number. Solve <vl exp="x^x = 2^{2048}" />.
 		</template>
 	</MakeProblem>
 </template>

@@ -57,6 +57,6 @@
 	" />
 	可以發現子空間 <vl exp="W" /> 恰比子空間 <vl exp="V" /> 多一個向量
 	<vl exp="\!\begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}\!" />。<br>
-	令子空間 <vl exp="U = \text{span}( ( 0, 0, 0, 1 ) )" />，恰好滿足
+	令子空間 <vl exp="U = \text{span}\{ ( 0, 0, 0, 1 ) \}" />，恰好滿足
 	<vl exp="W = U \oplus V" /> 和 <vl exp="U \perp V" />。
 </template>

@@ -1,3 +1,3 @@
 <template>
-	題本的說明區塊 -8-group
+	8. [Function & Relation]
 </template>

@@ -1,7 +1,8 @@
 <template>
-	<MakeProblem scoreText="(?%)">
+	<MakeProblem scoreText="(5 points)">
 		<template #problem>
-			第 6 題的題目
+			Calculate 
+			<vl c exp="\sum\limits_{k=1}^{n^2} \lfloor \sqrt{k} \rfloor" />
 		</template>
 	</MakeProblem>
 </template>

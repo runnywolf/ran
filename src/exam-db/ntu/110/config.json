@@ -33,7 +33,7 @@
 			]
 		},
 		"5": {
-			"answerLatex": "?",
+			"answerLatex": "\\text{See solution} \\to",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

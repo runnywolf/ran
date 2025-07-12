@@ -1,7 +1,7 @@
 <template>
-	<MakeProblem scoreText="(?%)">
+	<MakeProblem scoreText="(5 points)">
 		<template #problem>
-			第 3 題的題目
+			Which is bigger? <vl exp="{1.01}^{100}" /> and <vl exp="2" />.
 		</template>
 	</MakeProblem>
 </template>
