@@ -1,15 +1,15 @@
 <template>
-	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
-		<template #problem>
-			<vl exp="\, R" /> is a non&#8209;symmetric relation on <vl exp="A" />
-			if there exist <vl exp="x, y \in A" /> such that <vl exp="(x, y) \in R" />
-			but <vl exp="(y, x) \notin R" />. If <vl exp="|A| = m" />,
-			how many non&#8209;symmetric relations on <vl exp="A" /> are there?
-		</template>
-		<template #A><vl exp="2^{(m^2-m)/2}" /></template>
-		<template #B><vl exp="2^{m^2} - 2^{(m^2+m)/2}" /></template>
-		<template #C><vl exp="3^{(m^2-m)/2}" /></template>
-		<template #D><vl exp="2^{(m^2+m)/2}" /></template>
-		<template #E><vl exp="2^{m^2-m}" /></template>
-	</MakeProblem>
+	<vk>
+		<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+			<template #problem>
+				$\, R$ is a non&#8209;symmetric relation on $A$ if there exist $x, y \in A$ such that $(x, y) \in R$
+				but $(y, x) \notin R$. If $|A| = m$, how many non&#8209;symmetric relations on $A$ are there?
+			</template>
+			<template #A>$2^{(m^2-m)/2}$</template>
+			<template #B>$2^{m^2} - 2^{(m^2+m)/2}$</template>
+			<template #C>$3^{(m^2-m)/2}$</template>
+			<template #D>$2^{(m^2+m)/2}$</template>
+			<template #E>$2^{m^2-m}$</template>
+		</MakeProblem>
+	</vk>
 </template>
