@@ -63,7 +63,7 @@ import ContentNotFoundComp from "./problem-comp/ContentNotFound.vue"; // 題目�
 const props = defineProps({
 	uni: String, // 題本的學校英文縮寫
 	year: String, // 題本的民國年份
-	no: String, // 題號
+	no: { type: String, default: "" }, // 題號
 	problemConfig: { type: Object, default: {} }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
 	displayMode: { type: Number, default: 0 }, // 顯示模式: 0顯示題目+題號 1顯示題目+題號+答案+詳解連結 2顯示題目+答案+詳解(ProblemView專用)
 });

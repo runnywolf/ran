@@ -29,18 +29,19 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { showToast, ToastType } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
-// #region 路由解碼
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
 const uni = ref(); // 題本的學校英文縮寫
 const year = ref(); // 題本的民國年份
-const examConfig = ref({}); // 題本設定檔
+const no = ref(); // 題目編號
+const problemConfig = ref({}); // 題目設定
 
-watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
+watch(() => [route.params.id, route.params.prob], async ([newExamId, newNo]) => { // 當路由改變時, 嘗試解碼題本 id
 	var idParams = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
 	if (idParams.length != 2) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id, 轉址回題本清單
 		handleWrongExamIdFormat(newExamId);
@@ -54,11 +55,20 @@ watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗�
 	
 	uni.value = _uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
 	year.value = _year;
-	examConfig.value = examConfigFile.default; // json -> Object
+	no.value = newNo; // 題號
+	
+	const examConfig = examConfigFile.default; // json -> Object
+	if (!(newNo in examConfig.problemConfigs)) { // 題號不存在
+		handleProblemMissing(_uni, _year, newNo);
+		return; // 提前終止
+	}
+	
+	problemConfig.value = examConfig.problemConfigs[newNo]; // 題目設定
 }, { immediate: true }); // 組件載入時, 做一次
 
 function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
 	console.error(`Wrong exam id format "${wrongExamId}".\n`);
+	showToast(`題本編號的形式錯誤`, ToastType.WARNING);
 	router.push("/exam"); // 轉址回題本清單
 }
 
@@ -67,12 +77,15 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 		`Exam config is not exist. (exam "${_uni}-${_year}")\n`+
 		`-> Check if src/exam-db/${_uni}/${_year}/config.json exist?\n`
 	);
+	showToast(`題本 ${_uni}-${_year} 不存在`, ToastType.ERROR);
 	router.push("/exam"); // 轉址回題本清單
-};
-// #endregion
+}
 
-const no = computed(() => route.params.prob); // 當路由的題目編號改變時
-const problemConfig = computed(() => examConfig.value.problemConfigs?.[no.value]); // 題目設定
+function handleProblemMissing(_uni, _year, _no) { // 題號不存在
+	console.error(`Problem ${_no} is not exist. (exam "${_uni}-${_year}")`);
+	showToast(`題本 ${_uni}-${_year} 的第 ${_no} 題不存在`, ToastType.ERROR);
+	router.push(`/exam/${_uni}-${_year}`); // 轉址回題本
+}
 
 const clickExamLink = () => { // 當左側資訊版的題本連結被點擊
 	sessionStorage.setItem("scroll-target-no-in-exam-view", no.value); // 儲存要滾動到的題號
