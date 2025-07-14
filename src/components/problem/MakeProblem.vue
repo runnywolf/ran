@@ -2,7 +2,7 @@
 	<div class="ts-grid is-stacked is-compact">
 		
 		<!-- 預設的題目區塊 (會包含配分) -->
-		<div class="column">
+		<div v-if="$slots.problem || !isProblemScoreHided" class="column">
 			<span v-if="scoreText" class="problem-score">{{ scoreText }}</span>
 			<span>
 				<slot name="problem"></slot>
@@ -38,12 +38,18 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
 	scoreText: { type: String, default: "" }, // 配分字串
 	extraProblemSlotNames: { type: Array, default: [] }, // 額外的題目區塊名 (會顯示在預設題目區塊下, 選項之上)
 	optionSlotNames: { type: Array, default: [] }, // 選項插槽名稱
 	useUlToListOptions: { type: Boolean, default: false }, // 如果為 true, 會使用 ul 來排版選項
 });
+
+const isProblemScoreHided = computed(() => document.querySelector('.hide-problem-score'));
+// 當配分被隱藏, 同時 slot.problem 是空的 -> 不顯示預設的題目區塊.
+// 主要是解決題目只有配分的時候, 隱藏配分不會讓題目區塊的 div 消失, 導致 ts-grid 仍然添加了額外的間隔.
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@
 				<ol class="ran-order-list is-lower-alpha">
 					<li>
 						<span class="problem-score">(5%)</span>
-						Suppose $U$ and $V$ are distinct six&#8209;dimensional subspaces
+						Suppose $U$ and $V$ are distinct six‑;dimensional subspaces
 						of a vector space $W$ and $\dim W = 8$.
 						Find $\dim(U \cap V)$.
 					</li>

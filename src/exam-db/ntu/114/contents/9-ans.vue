@@ -47,8 +47,8 @@
 		1 & a & a^2 & a^3 & \cdots & a^n \\
 		0 & 1-a^2 & * & * & \cdots & * \\
 		0 & 0 & 1-a^2 & * & \cdots & * \\
-		0 & 0 & 0 & 1-a^2 &  & \vdots \\
-		\vdots & \vdots & \vdots &  & \ddots & * \\
+		0 & 0 & 0 & 1-a^2 & & \vdots \\
+		\vdots & \vdots & \vdots & & \ddots & * \\
 		0 & 0 & 0 & \cdots & 0 & 1-a^2
 		\end{vmatrix}
 		$$

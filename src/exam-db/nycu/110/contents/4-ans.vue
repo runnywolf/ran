@@ -1,5 +1,5 @@
 <template>
 	<vk>
-		@INSERT_BASIC_TEMP@
+		第 4 題的解答
 	</vk>
 </template>

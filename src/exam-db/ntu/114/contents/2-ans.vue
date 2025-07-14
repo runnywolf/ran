@@ -1,7 +1,7 @@
 <template>
 	畫卡諾圖：
 	<div class="ts-box is-collapsed">
-    <table class="ts-table is-collapsed is-celled is-definition karnaugh-table">
+		<table class="ts-table is-collapsed is-celled is-definition karnaugh-table">
 			<thead>
 				<tr>
 					<th>wx \ yz</th><th>00</th><th>01</th><th>11</th><th>10</th>

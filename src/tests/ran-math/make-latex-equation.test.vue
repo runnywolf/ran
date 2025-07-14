@@ -54,7 +54,7 @@ const tests = [
 <style>
 .code {
 	font-family: monospace;
-  white-space: pre-line; /* 合并连续空格，保留换行符 */
-  overflow-wrap: break-word; /* 更现代的属性，效果类似 word-wrap */
+	white-space: pre-line; /* 合并连续空格，保留换行符 */
+	overflow-wrap: break-word; /* 更现代的属性，效果类似 word-wrap */
 }
 </style>
