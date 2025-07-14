@@ -1,5 +1,6 @@
 <template>
-	<vl exp="
+	<vk>
+		$
 		Ax \in \text{Col}(A) = \text{span}(
 		\!\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\! ,
 		\!\begin{bmatrix} 0 \\ 1 \\ -1 \end{bmatrix}\! ,
@@ -9,18 +10,18 @@
 		\!\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\! ,
 		\!\begin{bmatrix} 0 \\ 1 \\ -1 \end{bmatrix}\!
 		)
-	" /><br>
-	<div style="height: 8px"></div>
-	※ 因為
-	<vl exp="
+		$<br>
+		<div style="height: 8px"></div>
+		※ 因為
+		$
 		-1 \!\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}\! +
 		2 \!\begin{bmatrix} 0 \\ 1 \\ -1 \end{bmatrix}\! =
 		\!\begin{bmatrix} -1 \\ 2 \\ -3 \end{bmatrix}\!
-	" /><br>
-	<br>
-	若將向量 <vl exp="b" /> 投影到向量空間 <vl exp="\text{Col}(A)" />，得到向量
-	<vl exp="Ax' \in \text{Col}(A)" />，會使 <vl exp="\| Ax'-b \|" /> 達到最小值：
-	<vl c exp="
+		$<br>
+		<br>
+		若將向量 $b$ 投影到向量空間 $\text{Col}(A)$，得到向量
+		$Ax' \in \text{Col}(A)$，會使 $\| Ax'-b \|$ 達到最小值：
+		$$
 		\begin{split}
 		Ax' &= \text{proj}_{\text{Col}(A)}(b) \\
 		&= A (A^T A)^{-1} A^T b \\
@@ -33,9 +34,9 @@
 		\!\begin{bmatrix} 4 \\ -1 \end{bmatrix} \\
 		&= \frac{1}{3} \!\begin{bmatrix} 4 \\ -1 \\ 5 \end{bmatrix}
 		\end{split}
-	" />
-	因此範數平方的最小值為：
-	<vl c exp="
+		$$
+		因此範數平方的最小值為：
+		$$
 		\begin{split}
 		\| Ax'-b \|^2 &= \| \frac{1}{3} \!\begin{bmatrix} 4 \\ -1 \\ 5 \end{bmatrix}\!
 		- \!\begin{bmatrix} 1 \\ 0 \\ 2 \end{bmatrix}\! \|^2 \\
@@ -44,5 +45,6 @@
 		&= (\frac{1}{3})^2 + (\frac{-1}{3})^2 + (\frac{-1}{3})^2 \\
 		&= \boxed{ \frac{1}{3} }
 		\end{split}
-	" />
+		$$
+	</vk>
 </template>

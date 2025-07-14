@@ -1,8 +1,10 @@
 <template>
-	<MakeProblem scoreText="(5 points)">
-		<template #problem>
-			Calculate 
-			<vl c exp="\sum\limits_{k=1}^{n^2} \lfloor \sqrt{k} \rfloor" />
-		</template>
-	</MakeProblem>
+	<vk>
+		<MakeProblem scoreText="(5 points)">
+			<template #problem>
+				Calculate 
+				$$\sum\limits_{k=1}^{n^2} \lfloor \sqrt{k} \rfloor$$
+			</template>
+		</MakeProblem>
+	</vk>
 </template>
