@@ -122,7 +122,7 @@ function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路�
 	);
 	showToast(`題本 ${_uni}-${_year} 不存在`, ToastType.ERROR);
 	router.push("/exam"); // 轉址回題本清單
-};
+}
 // #endregion
 
 // #region 點擊 ProblemView 的題本連結, 滾動至某一題

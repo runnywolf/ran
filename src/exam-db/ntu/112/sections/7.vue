@@ -1,18 +1,18 @@
 <template>
-	<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
-		<template #problem>
-			Given a linear transformation <vl exp="T: P_2(R) \rightarrow P_2(R)" />
-			defined by <vl c exp="T(f(x)) = f''(x) + 2f'(x) - f(x)"/>
-			where <vl exp="P_2(R)" /> represents the real-valued 2nd-order polynomials. Assume
-			<vl exp="M" /> is the matrix representation of <vl exp="T" />
-			with respect to the ordered basis. Please find the determinant of
-			<vl exp="(M^{-1} + 2I)" />, where <vl exp="I" />
-			is the identity matrix with the same dimension as <vl exp="M" />.
-		</template>
-		<template #A>0</template>
-		<template #B>1</template>
-		<template #C>2</template>
-		<template #D>3</template>
-		<template #E>4</template>
-	</MakeProblem>
+	<vk>
+		<MakeProblem scoreText="(10%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
+			<template #problem>
+				Given a linear transformation $T: P_2(R) \rightarrow P_2(R)$ defined by
+				$$T(f(x)) = f''(x) + 2f'(x) - f(x)$$
+				where $P_2(R)$ represents the real-valued 2nd-order polynomials. Assume $M$ is the matrix
+				representation of $T$ with respect to the ordered basis. Please find the determinant of
+				$(M^{-1} + 2I)$, where $I$ is the identity matrix with the same dimension as $M$.
+			</template>
+			<template #A>0</template>
+			<template #B>1</template>
+			<template #C>2</template>
+			<template #D>3</template>
+			<template #E>4</template>
+		</MakeProblem>
+	</vk>
 </template>

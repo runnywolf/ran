@@ -49,3 +49,11 @@
 .ran-order-list.is-lower-alpha > li::marker {
 	content: "(" counter(list-counter, lower-alpha) ")";
 }
+
+.ran-order-list.is-lower-roman {
+	padding-left: 1.5em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: lower-roman;
+}
+.ran-order-list.is-lower-roman > li::marker {
+	content: "(" counter(list-counter, lower-roman) ")";
+}

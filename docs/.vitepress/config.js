@@ -12,9 +12,10 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "歷屆試題", link: "/exam-page/create-exam" },
-			{ text: "模擬室頁面", link: "/practice-page/recur-non-homog" },
+			{ text: "歷屆試題頁面", link: "/exam-page/create-exam" },
+			{ text: "模擬室頁面", link: "/practice-page/recur-view" },
 			{ text: "組件", link: "/components/content" },
+			{ text: "函式庫", link: "/libs/toast" },
 			{ text: "RanMath", link: "/ran-math/intro" },
 		],
 		sidebar: [
@@ -40,6 +41,13 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "MakeProblem - 題目模板", link: "/components/make-problem" },
 					{ text: "MultiOption - 多選題", link: "/components/multi-option" },
 					{ text: "vl - 數學公式", link: "/components/vl" },
+					{ text: "VueKatex - 語法渲染", link: "/components/vue-katex" },
+				]
+			},
+			{
+				text: "Libraries - 函式庫",
+				items: [
+					{ text: "Toast - 彈出式訊息", link: "/libs/toast" },
 				]
 			},
 			{

@@ -1,3 +1,5 @@
 <template>
-	@INSERT_BASIC_TEMP@
+	<vk>
+		@INSERT_BASIC_TEMP@
+	</vk>
 </template>
