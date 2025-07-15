@@ -2,7 +2,7 @@
 	<div class="ts-grid is-stacked is-compact">
 		
 		<!-- 預設的題目區塊 (會包含配分) -->
-		<div v-if="$slots.problem || !isProblemScoreHided" class="column">
+		<div v-if="$slots.problem || (scoreText && !isProblemScoreHided)" class="column">
 			<span v-if="scoreText" class="problem-score">{{ scoreText }}</span>
 			<span>
 				<slot name="problem"></slot>
