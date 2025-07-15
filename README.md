@@ -1,5 +1,5 @@
-# 🦊 Ran 0.4
-![](https://img.shields.io/badge/Ran-v0.4.0-55f?style=flat)
+# 🦊 Ran 0.4.1
+![](https://img.shields.io/badge/Ran-v0.4.1-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.2-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -27,6 +27,7 @@
 
 ## 📄 已收錄題本
 - 台大 114~110
+- 交大 112~108 (無詳解)
 
 ## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
