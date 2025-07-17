@@ -1,0 +1,84 @@
+{
+	"subjectCode": "414",
+	"subjectName": "數學",
+	"subjectShortName": "數學",
+	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/108/108_graduate_414.pdf",
+	"externalLinkTip": "國立臺灣大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		},
+		"11": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-ans" }
+			]
+		},
+		"12": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "12-ans" }
+			]
+		}
+	}
+}
