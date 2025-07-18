@@ -1,8 +1,8 @@
 <template>
 	<vk>
-		<MakeProblem scoreText="(?%)">
+		<MakeProblem scoreText="@SCORE_TEXT@">
 			<template #problem>
-				第 @PROBLEM_NAME@ 題的題目
+				@INSERT_PROBLEM_TEMP@
 			</template>
 		</MakeProblem>
 	</vk>

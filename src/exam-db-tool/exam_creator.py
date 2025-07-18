@@ -1,5 +1,25 @@
-import json, os
+import json, os, re
 from pathlib import Path
+
+def split_raw_exam_text(exam_text: str) -> list[str]: # 切分並處理 llm 輸出的題本字串
+	problem_text_arr = []
+	for prob_text in exam_text.split("\n\n"):
+		score_text = ""
+		if "@@" in prob_text:
+			[score_text, prob_text] = prob_text.split("@@", maxsplit=1)
+			score_text = score_text.split(" ", maxsplit=1)[1]
+		else:
+			prob_text = prob_text.split(" ", maxsplit=1)[1]
+		
+		prob_text = repr(prob_text.strip()).replace("\\\\", "\\") # 去除頭尾的空白\n\t
+		prob_text = prob_text.replace("\\n", "<br>") # 換行符轉 <br>
+		prob_text = re.sub(r'\\\( | \\\)|\\\(|\\\)', '$', prob_text) # "\( ... \)" 轉 "$ ... $"
+		prob_text = re.sub(r'\\\[ | \\\]|\\\[|\\\]', '$$', prob_text) # "\[ ... \]" 轉 "$$ ... $$"
+		prob_text = prob_text.lstrip("'").rstrip("'")
+		
+		problem_text_arr.append([score_text, prob_text])
+	
+	return problem_text_arr
 
 def create_exam_dirs(uni: str) -> None: # 建立題本資料夾和其子資料夾, 以及 config.json
 	os.makedirs(DB_PATH/uni, exist_ok=True)
@@ -30,19 +50,24 @@ def create_exam_config(section_base_names: list[str]) -> None: # 建立題本設
 		f.write(config_temp_str)
 
 def create_vue_files(section_base_names: list[str]) -> None:
-	with open(SRC_PATH/"exam-db-tool"/"BasicTemp.vue", "r", encoding="utf-8") as f: # 讀取題目 vue 檔的預設模板
+	with open(SRC_PATH/"exam-db-tool"/"basic-temp.vue", "r", encoding="utf-8") as f: # 讀取題目 vue 檔的預設模板
 		basic_temp_str = f.read()
-	with open(SRC_PATH/"exam-db-tool"/"ProblemTemp.vue", "r", encoding="utf-8") as f: # 讀取題目 vue 檔的預設模板
+	with open(SRC_PATH/"exam-db-tool"/"problem-temp.vue", "r", encoding="utf-8") as f: # 讀取題目 vue 檔的預設模板
 		answer_temp_str = f.read()
 	
-	for base_name in section_base_names:
+	with open(SRC_PATH/"exam-db-tool"/"raw-exam-text.txt", "r", encoding="utf-8") as f:
+		raw_exam_text = f.read()
+	arr_raw_exam_text_splited = split_raw_exam_text(raw_exam_text)
+	
+	for i, base_name in enumerate(section_base_names):
 		if base_name[0] == "-":
 			with open(EXAM_PATH/"sections"/f"{base_name}.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
 				f.write(basic_temp_str.replace("@INSERT_BASIC_TEMP@", f"題本的說明區塊 {base_name}"))
 		else:
 			with open(EXAM_PATH/"sections"/f"{base_name}.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
-				f.write(answer_temp_str.replace("@PROBLEM_NAME@", base_name))
-			with open(EXAM_PATH/"contents"/f"{base_name}-ans.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
+				[score_text, prob_text] = arr_raw_exam_text_splited[i]
+				f.write(answer_temp_str.replace("@SCORE_TEXT@", score_text).replace("@INSERT_PROBLEM_TEMP@", prob_text))
+			with open(EXAM_PATH/"contents"/f"{base_name}-ans.vue", "w", encoding="utf-8") as f: # 新增預設的解答 vue 檔
 				f.write(basic_temp_str.replace("@INSERT_BASIC_TEMP@", f"第 {base_name} 題的解答"))
 
 print("\033c", end="") # clear console
