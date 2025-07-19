@@ -26,7 +26,7 @@
 				Then we have $\det C = \det A + \det B$.
 			</template>
 			<template #e>
-				Let $T$ be a diagonalizable linear operator on a finite‑;dimensional vector space,
+				Let $T$ be a diagonalizable linear operator on a finite‑dimensional vector space,
 				and let $m$ be any positive integer. $T$ and $T^m$ are simultaneously diagonalizable.
 			</template>
 		</MakeProblem>

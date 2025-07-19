@@ -12,7 +12,7 @@ def split_raw_exam_text(exam_text: str) -> list[str]: # 切分並處理 llm 輸�
 			prob_text = prob_text.split(" ", maxsplit=1)[1]
 		
 		prob_text = repr(prob_text.strip()).replace("\\\\", "\\") # 去除頭尾的空白\n\t
-		prob_text = prob_text.replace("\\n", "<br>") # 換行符轉 <br>
+		prob_text = prob_text.replace("\\n", "\n\t\t\t\t") # 換行自動縮排
 		prob_text = re.sub(r'\\\( | \\\)|\\\(|\\\)', '$', prob_text) # "\( ... \)" 轉 "$ ... $"
 		prob_text = re.sub(r'\\\[ | \\\]|\\\[|\\\]', '$$', prob_text) # "\[ ... \]" 轉 "$$ ... $$"
 		prob_text = prob_text.lstrip("'").rstrip("'")

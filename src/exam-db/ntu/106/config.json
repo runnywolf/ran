@@ -2,11 +2,11 @@
 	"subjectCode": "414",
 	"subjectName": "數學",
 	"subjectShortName": "數學",
-	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/108/108_graduate_414.pdf",
+	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/106g/106_graduate_414.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
-	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
+	"sectionFileBaseNames": [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
@@ -21,13 +21,13 @@
 			]
 		},
 		"3": {
-			"answerLatex": "2n+2 ~~;~~ n+1",
+			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "2n ~~;~~ n-1",
+			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
@@ -69,7 +69,7 @@
 			]
 		},
 		"11": {
-			"answerLatex": "",
+			"answerLatex": "2^{n-1}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
