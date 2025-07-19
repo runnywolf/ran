@@ -14,7 +14,7 @@
 				If two matrices $A$ and $B$ are similar, then they have the same eigenvectors.
 			</template>
 			<template #d>
-				Let $V$ be a vector space of $m \times n$ matrices over $R$.
+				Let $V$ be a vector space of $m \times n$ matrices over $\mathbb{R}$.
 				$\lang A, B \rang = \text{tr}(B^TA)$ defines an inner product in $V$.
 			</template>
 			<template #e>
