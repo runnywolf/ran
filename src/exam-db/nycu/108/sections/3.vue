@@ -2,8 +2,8 @@
 	<vk>
 		<MakeProblem :optionSlotNames="[ 'a', 'b', 'c' ]" useUlToListOptions>
 			<template #problem>
-				Let $C[-1, 1]$ be the vector space over $R$ of all continuous functions defined on the interval $[-1, 1]$.
-				Let $V : \{ f(x) \in C[-1, 1] ~|~ f(x) = ae^x + be^{2x} + ce^{3x} ~,~ a, b, c \in R \}$ .
+				Let $C[-1, 1]$ be the vector space over $\mathbb{R}$ of all continuous functions defined on the interval $[-1, 1]$.
+				Let $V : \{ f(x) \in C[-1, 1] ~|~ f(x) = ae^x + be^{2x} + ce^{3x} ~,~ a, b, c \in \mathbb{R} \}$ .
 			</template>
 			<template #a>
 				<span class="problem-score">(2 points)</span>

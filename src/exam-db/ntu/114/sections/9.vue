@@ -12,7 +12,7 @@
 				\vdots & \vdots  & \vdots  &         & \ddots & a \\
 				a^n    & a^{n-1} & a^{n-2} & \cdots  & a      & 1
 				\end{bmatrix}\!
-				$, where $a \in R$ and $n$ is a positive integer.
+				$, where $a \in \mathbb{R}$ and $n$ is a positive integer.
 				Find the product of all the eigenvalues of $A$ in the simplest form.
 			</template>
 		</MakeProblem>

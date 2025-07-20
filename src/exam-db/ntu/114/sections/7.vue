@@ -6,7 +6,7 @@
 				Points will be counted only if all the answers are correct.
 			</template>
 			<template #A>
-				$\{ -x^2 + 3x + 6 , x^3 + 2 , x^3 - 3x^2 + 5 \}$ in $P_3(R)$
+				$\{ -x^2 + 3x + 6 , x^3 + 2 , x^3 - 3x^2 + 5 \}$ in $P_3(\mathbb{R})$
 			</template>
 			<template #B>
 				$
@@ -17,7 +17,7 @@
 				\!\begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}\!
 				\right\}
 				$
-				in $M_{2 \times 2}(R)$
+				in $M_{2 \times 2}(\mathbb{R})$
 			</template>
 			<template #C>
 				$
@@ -29,7 +29,7 @@
 				\!\begin{pmatrix} 0 & 1 \\ 0 & 1 \\ 0 & 1 \end{pmatrix}\!
 				\right\}
 				$
-				in $M_{3 \times 2}(R)$
+				in $M_{3 \times 2}(\mathbb{R})$
 			</template>
 			<template #D>
 				$
@@ -40,7 +40,7 @@
 				\!\begin{pmatrix} 1 \\ 1 \\ 1 \\ -1 \end{pmatrix}\!
 				\right\}
 				$
-				in $R^4$
+				in $\mathbb{R}^4$
 			</template>
 			<template #E>
 				$
@@ -50,7 +50,7 @@
 				\!\begin{pmatrix} 1 \\ -2 \\ 1 \end{pmatrix}\!
 				\right\}
 				$
-				in $R^3$
+				in $\mathbb{R}^3$
 			</template>
 		</MakeProblem>
 	</vk>

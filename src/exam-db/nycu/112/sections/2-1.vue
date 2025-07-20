@@ -9,7 +9,7 @@
 				b = \!\begin{bmatrix} 1 \\ 1 \\ 1 \\ 1 \end{bmatrix}
 				$$
 				If the Gram-Schmidt process is applied to determine an orthonormal basis for
-				$R(A) = \{b \in R^m ~|~ b = A_{mn}x\}$ and $QR$ factorization of
+				$R(A) = \{b \in \mathbb{R}^m ~|~ b = A_{mn}x\}$ and $QR$ factorization of
 				$A$, then, after the first one orthonormal vector $q_1$ and $r_{11}$ are computed, we have
 				$$
 				Q = [q_1 \quad q_2 \quad q_3]

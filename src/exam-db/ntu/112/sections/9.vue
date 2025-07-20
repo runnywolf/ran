@@ -2,7 +2,7 @@
 	<vk>
 		<MakeProblem scoreText="(5%)" :optionSlotNames="['A', 'B', 'C', 'D', 'E']">
 			<template #problem>
-				Let $S, D,$ and $Q \in M_n(R)$ represent a symmetric matrix, a diagonal matrix, and an
+				Let $S, D,$ and $Q \in M_{n \times n}(\mathbb{R})$ represent a symmetric matrix, a diagonal matrix, and an
 				orthogonal matrix. Assume that their degree of freedom are $d_S, d_D$ and $d_Q$, respectively.
 				Find the value of $d_S - d_D - d_Q$.
 			</template>
