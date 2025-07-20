@@ -62,7 +62,7 @@ def create_vue_files(section_base_names: list[str]) -> None:
 	for i, base_name in enumerate(section_base_names):
 		if base_name[0] == "-":
 			with open(EXAM_PATH/"sections"/f"{base_name}.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
-				f.write(basic_temp_str.replace("@INSERT_BASIC_TEMP@", f"題本的說明區塊 {base_name}"))
+				f.write(basic_temp_str.replace("@INSERT_BASIC_TEMP@", arr_raw_exam_text_splited[i][1]))
 		else:
 			with open(EXAM_PATH/"sections"/f"{base_name}.vue", "w", encoding="utf-8") as f: # 新增預設的題目 vue 檔
 				[score_text, prob_text] = arr_raw_exam_text_splited[i]
