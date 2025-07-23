@@ -2,11 +2,14 @@
 	"subjectCode": "1102",
 	"subjectName": "線性代數與離散數學",
 	"subjectShortName": "線代與離散",
-	"externalLink": "https://drive.google.com/drive/folders/1jqPtThYPBfcr0092RBYts7OHVLTDwngn",
-	"externalLinkTip": "Google Drive (mayjaylee1928)",
+	"externalLink": "",
+	"externalLinkTip": "",
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
-	"sectionFileBaseNames": [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ],
+	"sectionFileBaseNames": [
+		"-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+		"-before-10", "10", "11", "12", "13", "14", "15"
+	],
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
@@ -66,6 +69,36 @@
 			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		},
+		"11": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-ans" }
+			]
+		},
+		"12": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "12-ans" }
+			]
+		},
+		"13": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "13-ans" }
+			]
+		},
+		"14": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "14-ans" }
+			]
+		},
+		"15": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "15-ans" }
 			]
 		}
 	}
