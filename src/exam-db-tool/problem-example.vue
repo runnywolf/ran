@@ -16,7 +16,7 @@ https://katex.org/docs/supported.html
 <!-- 多選題或數個子題 -->
 <template>
 	<vk>
-		<MakeProblem scoreText="" :optionSlotNames="[ 'a', 'b', 'c', 'd', 'e' ]" useUlToListOptions>
+		<MakeProblem scoreText="" :optionSlotNames="[ 'a', 'b', 'c', 'd', 'e' ]" useUlToListOptions> <!-- extraProblemSlotNames -->
 			<template #problem></template>
 			<template #a></template>
 			<template #b></template>
