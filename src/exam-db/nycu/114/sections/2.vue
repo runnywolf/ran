@@ -24,7 +24,8 @@
 
 <style scoped>
 .fs {
-	font-size: 20px;
+	font-size: 24px;
 	margin-right: 8px;
+	vertical-align: -3px;
 }
 </style>
