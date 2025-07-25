@@ -15,14 +15,12 @@ https://katex.org/docs/supported.html
 
 <!-- 多選題或數個子題 -->
 <template>
-	<vk>
-		<MakeProblem scoreText="" :optionSlotNames="[ 'a', 'b', 'c', 'd', 'e' ]" useUlToListOptions> <!-- extraProblemSlotNames -->
-			<template #problem></template>
-			<template #a></template>
-			<template #b></template>
-			<template #c></template>
-			<template #d></template>
-			<template #e></template>
-		</MakeProblem>
-	</vk>
+	<MakeProblem scoreText="" listEndLabel="c" :listItemScoreTexts="['', '', '']"> <!-- extraProblemSlotNames -->
+		<template #problem></template>
+		<template #a></template>
+		<template #b></template>
+		<template #c></template>
+		<template #d></template>
+		<template #e></template>
+	</MakeProblem>
 </template>
