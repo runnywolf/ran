@@ -34,6 +34,14 @@
 	content: "(" counter(list-counter, decimal) ")";
 }
 
+.ran-order-list.is-number {
+	padding-left: 1.22em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: decimal;
+}
+.ran-order-list.is-number > li::marker {
+	content: "(" counter(list-counter, decimal) ")";
+}
+
 .ran-order-list.is-upper-alpha {
 	padding-left: 1.45em; /* 題目編號與 box 左側邊緣的距離 */
 	list-style-type: upper-alpha;

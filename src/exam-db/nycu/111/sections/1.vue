@@ -19,7 +19,7 @@
 				</div>
 				(which would entail that, during the game,
 				a disk pile at any peg will be size-ordered with smaller ones on top of larger ones);
-				<div class="image">
+				<div class="ts-wrap is-vertical is-center-aligned" style="margin: 12px 0;">
 					<img src="./img/1-1.webp">
 				</div>
 			</template>
@@ -31,7 +31,7 @@
 			<template #b>
 				<span class="problem-score">(3 points)</span>
 				The game can be extended to the case of 4-peg as shown below.
-				<div class="image">
+				<div class="ts-wrap is-vertical is-center-aligned" style="margin: 12px 0;">
 					<img src="./img/1-2.webp">
 				</div>
 				Suppose that $H^4(n)$ denotes the number of moves needed to relocate a pile of $n$ disks at a peg
@@ -51,10 +51,3 @@
 		</MakeProblem>
 	</vk>
 </template>
-
-<style scoped>
-.image {
-	padding: 12px 0;
-	display: flex; justify-content: center;
-}
-</style>

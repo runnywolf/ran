@@ -2,7 +2,7 @@
 	<vk>
 		<MakeProblem :optionSlotNames="[ 'a', 'b', 'c', 'd' ]" useUlToListOptions>
 			<template #problem>
-				Determine whether each of these functions is a bijection from $R$ to $R$.
+				Determine whether each of these functions is a bijection from $\mathbb{R}$ to $\mathbb{R}$.
 			</template>
 			<template #a>
 				<span class="problem-score">(2 points)&nbsp;</span> $f(x) = -3x + 4$

@@ -3,8 +3,7 @@ outline: [2, 3] # 顯示 h2, h3
 ---
 
 # 如何新增題本
-目前只能透過 `git push` 上傳題本至 Ran。<br>
-以下會詳細說明如何新增一個新題本。
+目前只能透過 `git push` 上傳題本至 Ran，以下會詳細說明如何新增一個新題本。
 
 ## Step 1：設定學校與年份
 開啟 `src/exam-db/config.json`，這個 `config` 用於設定學校的基本資訊和題本年份。
@@ -66,7 +65,7 @@ outline: [2, 3] # 顯示 h2, h3
 ```
 
 ## Step 2：建立題本資料夾
-執行 `src/exam-db-tool/create_exam.py`，輸入學校英文縮寫和新題本的年份。
+執行 `src/exam-db-tool/exam_creator.py`，輸入學校英文縮寫和新題本的年份。
 
 接著輸入多個[區塊檔名](#區塊檔名) (不包含附檔名)，會自動建立整個題本資料夾和需要的檔案。
 
@@ -84,6 +83,30 @@ outline: [2, 3] # 顯示 h2, h3
 則區塊檔名的開頭必須加上 `"-"`，例如 `-notice`，<br>
 此程式會自動生成用於顯示說明區塊的 Vue 組件檔，位於<br>
 `src/exam-db/ntu/110/sections/-notice.vue`。<br>
+
+### 設定題本資訊
+```json
+{
+	"subjectCode": "科目代號",
+	"subjectName": "科目全名",
+	"subjectShortName": "科目縮寫",
+	"externalLink": "題本來源連結",
+	"externalLinkTip": "題本來源連結的提示",
+	"timeMinutes": 100,
+	"isAnswerComplete": true,
+	...
+}
+
+```
+| Key | Type | 說明 |
+| :- | :- | :- |
+| `subjectCode` | `string` | 科目代號 ( 每一個科目在當年度都有唯一編號 ) |
+| `subjectName` | `string` | 題本的科目的完整名稱 |
+| `subjectShortName` | `string` | 題本的科目縮寫 ( 建議 7 全型字內 ) |
+| `externalLink` | `string` | 題本的來源連結 |
+| `externalLinkTip` | `string` | 題本的來源連結的說明 ( 游標 hover 時會顯示 ) |
+| `timeMinutes` | `number` ( `int` ) | 題本的作答時間 ( 分鐘 )，除了師大 90 min 以外，<br>其他好像都是 100 min。 |
+| `isAnswerComplete` | `boolean` | 如果這份題本的所有詳解是完整的，改成 `true` |
 
 ## Step 3：添加額外題目
 Step2 只會建立基本的題本架構。

@@ -5,7 +5,7 @@
 				The homogeneous coordinates map $\begin{bmatrix} x & y & z \end{bmatrix}^T$ to
 				$\begin{bmatrix} x & y & z & 1 \end{bmatrix}^T$, that can help us format translation
 				in the form of linear transformations. Consider the figure below.
-				<div class="image">
+				<div class="ts-wrap is-vertical is-center-aligned" style="margin: 12px 0;">
 					<img src="./img/10.webp">
 				</div>
 				There are two coordinate systems. One is with basis $B_1 = \{e_X, e_Y, e_Z\}$ and origin $o_1$,
@@ -48,10 +48,3 @@
 		</MakeProblem>
 	</vk>
 </template>
-
-<style scoped>
-.image {
-	margin: 10px 0;
-	display: flex; justify-content: center;
-}
-</style>

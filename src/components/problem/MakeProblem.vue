@@ -18,10 +18,7 @@
 		
 		<!-- 選項 -->
 		<template v-if="optionSlotNames.length > 0">
-			<ul v-if="useUlToListOptions"
-				class="ran-order-list"
-				:class="[ optionSlotNames[0] === 'A' ? 'is-upper-alpha' : 'is-lower-alpha' ]"
-			>
+			<ul v-if="useUlToListOptions" class="ran-order-list" :class="optionListStyle">
 				<li v-for="slotName in optionSlotNames">
 					<slot :name="slotName"></slot>
 				</li>
@@ -47,9 +44,15 @@ const props = defineProps({
 	useUlToListOptions: { type: Boolean, default: false }, // 如果為 true, 會使用 ul 來排版選項
 });
 
-const isProblemScoreHided = computed(() => document.querySelector('.hide-problem-score'));
 // 當配分被隱藏, 同時 slot.problem 是空的 -> 不顯示預設的題目區塊.
 // 主要是解決題目只有配分的時候, 隱藏配分不會讓題目區塊的 div 消失, 導致 ts-grid 仍然添加了額外的間隔.
+const isProblemScoreHided = computed(() => document.querySelector('.hide-problem-score'));
+const optionListStyle = computed(() => {
+	if (props.optionSlotNames[0] === "A") return "is-upper-alpha";
+	if (props.optionSlotNames[0] === "a") return "is-lower-alpha";
+	if (props.optionSlotNames[0] === "1") return "is-number";
+	return "is-lower-alpha";
+});
 </script>
 
 <style scoped>

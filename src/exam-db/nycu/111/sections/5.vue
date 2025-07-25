@@ -20,17 +20,10 @@
 				<span class="problem-score">(5 points)</span>
 				Let $P_G(n)$ be the number of different ways to color the vertices of G3 using $n$ colors,
 				where $n \ge 0$ is an integer. What is minimum number of $P_G(n)$, where $P_G(n) \gt 0$?
-				<div class="image">
+				<div class="ts-wrap is-vertical is-center-aligned" style="margin-top: 12px;">
 					<img src="./img/5.webp">
 				</div>
 			</template>
 		</MakeProblem>
 	</vk>
 </template>
-
-<style scoped>
-.image {
-	padding-top: 12px;
-	display: flex; justify-content: center;
-}
-</style>

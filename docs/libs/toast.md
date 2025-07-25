@@ -14,8 +14,8 @@ head:
 import { showToast, ToastType } from "toast";
 
 showToast("顯示黑色的彈出訊息 (預設)", ToastType.DEFAULT);
-showToast("顯示藍色的彈出訊息 (訊息)", ToastType.DEFAULT);
-showToast("顯示綠色的彈出訊息 (成功)", ToastType.DEFAULT);
-showToast("顯示黃色的彈出訊息 (警告)", ToastType.DEFAULT);
-showToast("顯示紅色的彈出訊息 (錯誤)", ToastType.DEFAULT);
+showToast("顯示藍色的彈出訊息 (訊息)", ToastType.INFO);
+showToast("顯示綠色的彈出訊息 (成功)", ToastType.SUCCESS);
+showToast("顯示黃色的彈出訊息 (警告)", ToastType.WARNING);
+showToast("顯示紅色的彈出訊息 (錯誤)", ToastType.ERROR);
 ```

@@ -10,11 +10,11 @@
 			</template>
 			<template #b>
 				Let $S$ be the set of all sequences in $\mathbb{R}^\infty$ which have exactly $N$
-				non‑;zero elements where $N$ is a known constant. $S$ is a subspace of $\mathbb{R}^\infty$.
+				non‑zero elements where $N$ is a known constant. $S$ is a subspace of $\mathbb{R}^\infty$.
 			</template>
 			<template #c>
 				Any square matrix $A$ can be represented as
-				a sum of a symmetric matrix and a skew‑;symmetric matrix.
+				a sum of a symmetric matrix and a skew‑symmetric matrix.
 			</template>
 			<template #d>
 				If $A$ and $B$ are similar, they have the same eigenvectors.

@@ -42,7 +42,7 @@
 				The null space of $A$ is equal to the column space of $A^TA$.
 			</template>
 			<template #j>
-				Let $A$ and $B$ be $n \times n$ real matrices. Then, $rank(AB) \le \min(rank(A), rank(B))$
+				Let $A$ and $B$ be $n \times n$ real matrices. Then, $\text{rank}(AB) \le \min(\text{rank}(A), \text{rank}(B))$
 			</template>
 		</MakeProblem>
 	</vk>
