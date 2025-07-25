@@ -84,6 +84,30 @@ outline: [2, 3] # 顯示 h2, h3
 此程式會自動生成用於顯示說明區塊的 Vue 組件檔，位於<br>
 `src/exam-db/ntu/110/sections/-notice.vue`。<br>
 
+### 設定題本資訊
+```json
+{
+	"subjectCode": "科目代號",
+	"subjectName": "科目全名",
+	"subjectShortName": "科目縮寫",
+	"externalLink": "題本來源連結",
+	"externalLinkTip": "題本來源連結的提示",
+	"timeMinutes": 100,
+	"isAnswerComplete": true,
+	...
+}
+
+```
+| Key | Type | 說明 |
+| :- | :- | :- |
+| `subjectCode` | `string` | 科目代號 ( 每一個科目在當年度都有唯一編號 ) |
+| `subjectName` | `string` | 題本的科目的完整名稱 |
+| `subjectShortName` | `string` | 題本的科目縮寫 ( 建議 7 全型字內 ) |
+| `externalLink` | `string` | 題本的來源連結 |
+| `externalLinkTip` | `string` | 題本的來源連結的說明 ( 游標 hover 時會顯示 ) |
+| `timeMinutes` | `number` ( `int` ) | 題本的作答時間 ( 分鐘 )，除了師大 90 min 以外，<br>其他好像都是 100 min。 |
+| `isAnswerComplete` | `boolean` | 如果這份題本的所有詳解是完整的，改成 `true` |
+
 ## Step 3：添加額外題目
 Step2 只會建立基本的題本架構。
 
