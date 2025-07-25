@@ -3,11 +3,7 @@ outline: [2, 3] # 顯示 h2, h3
 ---
 
 # 如何新增題本
-> [!CAUTION]
-> 此文檔將作廢或改寫。
-
-目前只能透過 `git push` 上傳題本至 Ran。<br>
-以下會詳細說明如何新增一個新題本。
+目前只能透過 `git push` 上傳題本至 Ran，以下會詳細說明如何新增一個新題本。
 
 ## Step 1：設定學校與年份
 開啟 `src/exam-db/config.json`，這個 `config` 用於設定學校的基本資訊和題本年份。
@@ -69,7 +65,7 @@ outline: [2, 3] # 顯示 h2, h3
 ```
 
 ## Step 2：建立題本資料夾
-執行 `src/exam-db-tool/create_exam.py`，輸入學校英文縮寫和新題本的年份。
+執行 `src/exam-db-tool/exam_creator.py`，輸入學校英文縮寫和新題本的年份。
 
 接著輸入多個[區塊檔名](#區塊檔名) (不包含附檔名)，會自動建立整個題本資料夾和需要的檔案。
 
