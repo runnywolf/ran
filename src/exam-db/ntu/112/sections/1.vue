@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem scoreText="(10%)" :extraProblemSlotNames="['img-options']">
+	<MakeProblem scoreText="(10%)" :extraSlotNames="['img-options']">
 		<template #problem>
 			Which one of the following graphs has no Hamiltonian cycles?
 		</template>
