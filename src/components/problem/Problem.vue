@@ -154,9 +154,6 @@ function handleContentMissing(contentId) { // 內容區塊組件載入失敗時
 </script>
 
 <style scoped>
-.hide-problem-score:deep(.problem-score) { /* 隱藏或顯示題目的配分 */
-	display: none; /* 題目的 vue 檔內必須使用 *.problem-score 包裹配分才有效果 */
-}
 .problem-view-link { /* 詳解連結按鈕 (為了實現中鍵另開分頁, 由 button 改為 RanLink) */
 	border-radius: 6px;
 	background-color: var(--ts-gray-800);
