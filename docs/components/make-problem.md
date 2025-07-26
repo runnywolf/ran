@@ -18,8 +18,9 @@ outline: [2, 3] # 顯示 h2, h3
 ```html
 <MakeProblem
 	scoreText="(5%)"
-	:extraProblemSlotNames="[ 'prob-2', 'prob-3' ]"
-	:optionSlotNames="[ 'A', 'B', 'C', 'D', 'E' ]"
+	:extraSlotNames="[ 'prob-2', 'prob-3' ]"
+	listEndLabel="E"
+	useSpanList
 >
 	<template #problem>
 		題目.........<br>換行................
@@ -41,11 +42,7 @@ outline: [2, 3] # 顯示 h2, h3
 
 ## 範例 2
 ```html
-<MakeProblem
-	scoreText="(5%)"
-	:optionSlotNames="[ 'A', 'B', 'C' ]"
-	useUlToListOptions
->
+<MakeProblem scoreText="(5%)" listEndLabel="C">
 	<template #problem>
 		題目.........<br>換行................
 	</template>
@@ -59,7 +56,8 @@ outline: [2, 3] # 顯示 h2, h3
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `scoreText` | `String` | `""` | 題目的配分字串 |
-| `extraProblemSlotNames` | `Array<string>` | `[]` | 額外的題目區塊名 |
-| `optionSlotNames` | `Array<string>` | `[]` | 選項的編號 |
-| `useUlToListOptions` | `boolean` | `false` | 是否要以 `ul` 標籤顯示選項 |
+| `scoreText` | `String` | `null` | 配分字串 |
+| `extraSlotNames` | `Array` | `[]` | 額外的題目區塊名<br>( 會顯示在預設題目區塊下，選項之上 ) |
+| `listEndLabel` | `String` | `null` | 有序列表的最後一個編號，<br>主要用於子題或多選題的選項。<br>接受 `int number`、`[a-z]`、`[A-Z]` 這三種編號的列表。 |
+| `listItemScoreTexts` | `Array` | `[]` | 列表的配分字串 ( 不適用於 span list ) | 
+| `useSpanList` | `Boolean` | `false` | 如果為 `false`，使用 ul 來排版有序清單<br>如果為 `true`，使用 grid 排版<br>( 例如某些選項長度很短的選擇題 ) |
