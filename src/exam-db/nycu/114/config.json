@@ -9,7 +9,11 @@
 	"sectionFileBaseNames": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ],
 	"problemConfigs": {
 		"1": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a)}~ \\bigvee\\limits_{i=1}^{4} ~ \\bigwedge\\limits_{j=i}^{i+3} R(2, j)",
+				"\\text{(b)}~ \\bigwedge\\limits_{i=1}^{7} ~ \\bigvee\\limits_{j=1}^{6} Y(j, i) \\rule{0em}{2em}",
+				"\\text{(c)}~ \\lnot B(i, j) \\to \\Big( R(i, j) \\land \\lnot Y(i, j) \\Big) \\lor \\Big( \\lnot R(i, j) \\land Y(i, j) \\Big) \\rule{0em}{1.8em}"
+			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]

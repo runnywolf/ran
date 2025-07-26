@@ -39,7 +39,10 @@
 			]
 		},
 		"6": {
-			"answerLatex": "\\text{(a)} ~ 4 ~\\text{or}~ 5 \\quad \\text{(b)} ~ 2",
+			"answerLatex": [
+				"\\text{(a)}~ 4 ~\\text{or}~ 5",
+				"\\text{(b)}~ 2"
+			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
