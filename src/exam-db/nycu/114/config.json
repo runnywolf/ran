@@ -5,7 +5,7 @@
 	"externalLink": "https://drive.google.com/drive/folders/1YWFclHo6ksW1pHRzCdefdTXO00vSPB3K",
 	"externalLinkTip": "Google Drive (mayjaylee1928)",
 	"timeMinutes": 100,
-	"isAnswerComplete": false,
+	"isAnswerComplete": true,
 	"sectionFileBaseNames": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ],
 	"problemConfigs": {
 		"1": {
@@ -19,49 +19,52 @@
 			]
 		},
 		"2": {
-			"answerLatex": "",
+			"answerLatex": [ "\\text{(a) } 1,2,5", "\\text{(b) See prove}" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "",
+			"answerLatex": [ "\\text{(a) } 1094", "\\text{(b) } 966", "\\text{(c) } 770", "\\text{(d) } 4620" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "",
+			"answerLatex": [ "\\text{(a) No}", "\\text{(b) No}", "\\text{(c) No}", "\\text{(d) No},~ 10" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
-			"answerLatex": "",
+			"answerLatex": [ "\\text{(a) Yes}", "\\text{(b) See answer}" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) False} \\quad \\text{(b) True} \\quad \\text{(c) True} \\quad \\text{(d) False}",
+				"\\text{(e) 4} \\quad \\text{(f) 4} \\quad \\text{(g) 6}"
+			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "40",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
-			"answerLatex": "",
+			"answerLatex": "Q = \\def\\arraystretch{1.35}\\!\\begin{bmatrix} \\frac{4}{5} & \\frac{-3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\! ,~ D = \\def\\arraystretch{1}\\!\\begin{bmatrix} 15 & 0 \\\\ 0 & -10 \\end{bmatrix}\\!",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "\\begin{bmatrix} 4 & 0 \\\\ 7 & -5 \\\\ -5 & 2 \\end{bmatrix}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

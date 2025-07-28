@@ -24,3 +24,6 @@ https://katex.org/docs/supported.html
 		<template #e></template>
 	</MakeProblem>
 </template>
+
+<!-- katex 調整矩陣列距 --> \def\arraystretch{1.35}
+<!-- katex 增加高度 --> \rule{0em}{2em}

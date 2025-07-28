@@ -33,7 +33,7 @@
 			]
 		},
 		"5": {
-			"answerLatex": "\\text{See solution} \\to",
+			"answerLatex": "\\text{Prove} \\to",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
