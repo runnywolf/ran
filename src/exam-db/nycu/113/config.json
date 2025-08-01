@@ -17,7 +17,7 @@
 		"2": {
 			"answerLatex": [
 				"\\text{(a) } \\frac{k(k+1)(2k+1)}{6} ~,~~ k = \\frac{n(n+1)(2n+1)}{6}",
-				"\\text{(b) } (a, b) = (41k^2 ,~ 41(7-k)^2) ~,~~ k = 0, \\cdots\\!, 7"
+				"\\text{(b) } (a, b) = (41k^2 ,~ 41(7-k)^2) ~,~~ k = 0, \\cdots\\!, 7 \\rule{0em}{1.4em}"
 			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
@@ -60,7 +60,7 @@
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See prove}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

@@ -1,6 +1,6 @@
 <template>
 	<Content colorStyle="green" collapsed>
-		<div class="ts-wrap is-compact is-middle-aligned">
+		<div class="ts-wrap is-compact is-middle-aligned" style="line-height: 0;">
 			<div style="margin-top: -2px;">Ans:</div>
 			<div v-if="Array.isArray(answerLatex)" class="ts-wrap is-vertical" style="--gap: 2px"><!-- 垂直排列的多個答案 -->
 				<vl v-for="e in answerLatex" :exp="e" />
