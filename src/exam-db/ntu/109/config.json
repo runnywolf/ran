@@ -27,7 +27,7 @@
 			]
 		},
 		"4": {
-			"answerLatex": "\\frac{-3}{4} + \\frac{-1}{2} n + \\frac{7}{4} \\cdot 3^n",
+			"answerLatex": "a_n = \\frac{-3}{4} + \\frac{-1}{2} n + \\frac{7}{4} \\cdot 3^n",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
