@@ -524,7 +524,7 @@ export class Matrix { // 矩陣 (Matrix)
 	}
 	
 	copy() { // 回傳一個相同值的 Matrix 實例
-		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j].copy());
+		return new Matrix(this.n, this.m, (i, j) => this.arr[i][j]);
 	}
 	
 	toStr() { // 轉 debug 字串
