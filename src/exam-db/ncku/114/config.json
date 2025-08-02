@@ -27,7 +27,7 @@
 			]
 		},
 		"4": {
-			"answerLatex": "",
+			"answerLatex": "\\text{d}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
