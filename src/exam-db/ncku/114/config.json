@@ -1,15 +1,15 @@
 {
-	"subjectCode": "198",
+	"subjectCode": "149",
 	"subjectName": "計算機數學",
 	"subjectShortName": "計算機數學",
-	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_113_3.pdf",
+	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_114_3.pdf",
 	"externalLinkTip": "國立成功大學圖書館 考古題",
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
-	"sectionFileBaseNames": [ "-notice", "-before-1", "1", "2", "3", "4", "5", "-before-6", "6", "7", "8", "9", "10" ],
+	"sectionFileBaseNames": [ "-before-1", "1", "2", "3", "4", "-before-5", "5", "6", "7", "8", "9" ],
 	"problemConfigs": {
 		"1": {
-			"answerLatex": "a_n = 2900 + 100n + 100 \\cdot 3^n",
+			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -45,7 +45,7 @@
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "\\text{D}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -60,12 +60,6 @@
 			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
-		},
-		"10": {
-			"answerLatex": "\\text{ae}",
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		}
 	}

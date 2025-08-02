@@ -16,9 +16,12 @@ https://tocas-ui.com/5.0/zh-tw/getting-started.html
 <!-- katex supported functions -->
 https://katex.org/docs/supported.html
 
-<!-- 多選題或數個子題, extraProblemSlotNames -->
+<!-- katex 調整矩陣列距 --> \def\arraystretch{1.35}
+<!-- katex 增加高度 --> \rule{0em}{2em}
+
+<!-- 多選題或數個子題, extraSlotNames -->
 <template>
-	<MakeProblem scoreText="" listEndLabel="c" :listItemScoreTexts="['', '', '']">
+	<MakeProblem scoreText="" listEndLabel="c" :listItemScoreTexts="['', '', '']" useSpanList>
 		<template #problem></template>
 		<template #a></template>
 		<template #b></template>
@@ -28,5 +31,4 @@ https://katex.org/docs/supported.html
 	</MakeProblem>
 </template>
 
-<!-- katex 調整矩陣列距 --> \def\arraystretch{1.35}
-<!-- katex 增加高度 --> \rule{0em}{2em}
+<!-- [fix problem error] 題本錯誤修正, 需要加上這個 -->
