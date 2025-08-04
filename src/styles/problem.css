@@ -9,7 +9,10 @@
 	word-spacing: 0.06em; /* 單詞之間空白的距離 */
 	line-height: 1.2em; /* 行距 (倍) */
 }
-
+.ran-tocas-font {
+	font-size: 16px;
+	font-family: "noto sans tc";
+}
 .ran-biaukai { /* 標楷體, 用於考卷的說明文字 */
 	font-family: DFKai-sb;
 }
@@ -17,7 +20,11 @@
 	font-weight: bold;
 }
 
-.ran-order-list { /* 編號為 (A), (B), (C), ... 的 ul/ol 清單 */
+.hide-problem-score .problem-score { /* 用於控制題目的配分是否要顯示 */
+	display: none;
+}
+
+.ran-order-list { /* 編號為 (A), (B), (C), ... 的 ol 清單 */
 	margin: 0;
 	padding-left: 1.23em; /* 題目編號與 box 左側邊緣的距離 */
 	list-style-type: decimal;
@@ -56,6 +63,14 @@
 }
 .ran-order-list.is-lower-alpha > li::marker {
 	content: "(" counter(list-counter, lower-alpha) ")";
+}
+
+.ran-order-list.is-upper-roman {
+	padding-left: 1.5em; /* 題目編號與 box 左側邊緣的距離 */
+	list-style-type: upper-roman;
+}
+.ran-order-list.is-upper-roman > li::marker {
+	content: "(" counter(list-counter, upper-roman) ")";
 }
 
 .ran-order-list.is-lower-roman {

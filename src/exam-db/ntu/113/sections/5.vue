@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem scoreText="(10 points)" :extraProblemSlotNames="['sub-problems', 'graph']">
+	<MakeProblem scoreText="(10 points)" :extraSlotNames="['sub-problems', 'graph']">
 		<template #problem>
 			For the following graph:
 		</template>

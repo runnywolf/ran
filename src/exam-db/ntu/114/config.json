@@ -52,7 +52,10 @@
 			]
 		},
 		"8": {
-			"answerLatex": "\\text{(A)} \\!\\begin{bmatrix} 2 & 0 & \\frac{2}{3} & 0 \\\\ 0 & \\frac{2}{3} & 0 & \\frac{2}{5} \\\\ \\frac{2}{3} & 0 & \\frac{2}{5} & 0 \\\\ 0 & \\frac{2}{5} & 0 & \\frac{2}{7} \\end{bmatrix}\\! \\quad \\text{(B)} ~ \\dfrac{20}{9}",
+			"answerLatex": [
+				"\\text{(A)}~ \\!\\begin{bmatrix} 2 & 0 & \\frac{2}{3} & 0 \\\\ 0 & \\frac{2}{3} & 0 & \\frac{2}{5} \\\\ \\frac{2}{3} & 0 & \\frac{2}{5} & 0 \\\\ 0 & \\frac{2}{5} & 0 & \\frac{2}{7} \\end{bmatrix}",
+				"\\text{(B)}~ \\dfrac{20}{9} \\rule{0em}{2em}"
+			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

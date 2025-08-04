@@ -8,27 +8,13 @@
 		
 		<!-- 若顯示模式為 1, 會顯示綠框答案和詳解連結 -->
 		<div v-if="isLinkMode()" class="ts-wrap">
-			
-			<!-- 答案 -->
-			<Content colorStyle="green" collapsed>
-				Ans:&nbsp;&nbsp;<vl :exp="answerLatex" />
-			</Content>
-			
-			<!-- 詳解連結-->
-			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`">
-				詳解
-			</RanLink>
-			
+			<AnswerBox :answerLatex="answerLatex"></AnswerBox><!-- 綠色答案框 -->
+			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`">詳解</RanLink><!-- 詳解連結-->
 		</div>
 		
 		<!-- 若顯示模式為 2, 會顯示綠框答案和詳解 -->
 		<div v-else-if="isContentMode()" class="ts-wrap is-compact is-vertical content">
-			
-			<!-- 答案 -->
-			<Content colorStyle="green" collapsed>
-				Ans:&nbsp;&nbsp;<vl :exp="answerLatex" />
-			</Content>
-			
+			<AnswerBox :answerLatex="answerLatex"></AnswerBox><!-- 綠色答案框 -->
 			<template v-for="(contentConfig, i) in problemConfig.contentConfigs">
 				
 				<!-- 詳解類型的內容區塊 -->
@@ -48,7 +34,6 @@
 				<Content v-else colorStyle="red">錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶</Content>
 				
 			</template>
-			
 		</div>
 		
 	</div>
@@ -56,6 +41,7 @@
 
 <script setup>
 import { defineAsyncComponent, computed, watch, shallowRef } from "vue";
+import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
 import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "./problem-comp/ContentNotFound.vue"; // 題目的內容載入失敗時, 顯示的錯誤訊息組件
@@ -154,9 +140,6 @@ function handleContentMissing(contentId) { // 內容區塊組件載入失敗時
 </script>
 
 <style scoped>
-.hide-problem-score:deep(.problem-score) { /* 隱藏或顯示題目的配分 */
-	display: none; /* 題目的 vue 檔內必須使用 *.problem-score 包裹配分才有效果 */
-}
 .problem-view-link { /* 詳解連結按鈕 (為了實現中鍵另開分頁, 由 button 改為 RanLink) */
 	border-radius: 6px;
 	background-color: var(--ts-gray-800);

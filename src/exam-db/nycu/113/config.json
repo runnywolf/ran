@@ -9,13 +9,16 @@
 	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
 	"problemConfigs": {
 		"1": {
-			"answerLatex": "",
+			"answerLatex": "\\footnotesize\\text{女護士}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) } \\frac{k(k+1)(2k+1)}{6} ~,~~ k = \\frac{n(n+1)(2n+1)}{6}",
+				"\\text{(b) } (a, b) = (41k^2 ,~ 41(7-k)^2) ~,~~ k = 0, \\cdots\\!, 7 \\rule{0em}{1.4em}"
+			],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -57,7 +60,7 @@
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See prove}",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

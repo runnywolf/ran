@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem scoreText="(5 points)" :extraProblemSlotNames="[ 'story', 'notice' ]">
+	<MakeProblem scoreText="(5 points)" :extraSlotNames="['story', 'notice']">
 		<template #problem>
 			Solve the following puzzle.
 		</template>

@@ -1,0 +1,66 @@
+{
+	"subjectCode": "149",
+	"subjectName": "計算機數學",
+	"subjectShortName": "計算機數學",
+	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_114_3.pdf",
+	"externalLinkTip": "國立成功大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [ "-before-1", "1", "2", "3", "4", "-before-5", "5", "6", "7", "8", "9" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "\\text{d}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "\\text{D}",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		}
+	}
+}

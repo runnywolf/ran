@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem scoreText="(5%)" :extraProblemSlotNames="['img-options']">
+	<MakeProblem scoreText="(5%)" :extraSlotNames="['img-options']">
 		<template #problem>
 			Which ones of the following directed graphs are Eulerian? _______
 		</template>

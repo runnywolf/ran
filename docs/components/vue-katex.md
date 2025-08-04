@@ -17,6 +17,7 @@ head:
 ## 範例
 ```html
 <vk>
-	只要把 html 元素放在這裡面，就會自動渲染 $a$ 和 $$test$$ 內的 KaTex 語法。
+	只要把 html 元素放在這裡面，<br>
+	就會自動渲染 text node 內 $a$ 和 $$test$$ 內的 KaTex 語法。
 </vk>
 ```
