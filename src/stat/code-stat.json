@@ -1,0 +1,131 @@
+{
+	"App.vue": {
+		"vue": {
+			"number": 1,
+			"line": 21,
+			"sizeByte": 555
+		}
+	},
+	"components": {
+		"vue": {
+			"number": 17,
+			"line": 770,
+			"sizeByte": 34195
+		},
+		"js": {
+			"number": 1,
+			"line": 537,
+			"sizeByte": 33248
+		}
+	},
+	"exam-db": {
+		"json": {
+			"number": 26,
+			"line": 2044,
+			"sizeByte": 49111
+		},
+		"vue": {
+			"number": 593,
+			"line": 8370,
+			"sizeByte": 291849
+		},
+		"webp": {
+			"number": 50,
+			"line": 0,
+			"sizeByte": 408632
+		}
+	},
+	"exam-db-tool": {
+		"vue": {
+			"number": 3,
+			"line": 38,
+			"sizeByte": 1236
+		},
+		"json": {
+			"number": 1,
+			"line": 12,
+			"sizeByte": 338
+		},
+		"py": {
+			"number": 1,
+			"line": 71,
+			"sizeByte": 4583
+		},
+		"txt": {
+			"number": 1,
+			"line": 0,
+			"sizeByte": 0
+		}
+	},
+	"libs": {
+		"js": {
+			"number": 2,
+			"line": 742,
+			"sizeByte": 41018
+		}
+	},
+	"main.js": {
+		"js": {
+			"number": 1,
+			"line": 20,
+			"sizeByte": 1007
+		}
+	},
+	"router": {
+		"js": {
+			"number": 1,
+			"line": 38,
+			"sizeByte": 2012
+		}
+	},
+	"stat": {
+		"json": {
+			"number": 1,
+			"line": 131,
+			"sizeByte": 1762
+		},
+		"py": {
+			"number": 1,
+			"line": 28,
+			"sizeByte": 1518
+		}
+	},
+	"styles": {
+		"css": {
+			"number": 2,
+			"line": 89,
+			"sizeByte": 2927
+		}
+	},
+	"tests": {
+		"vue": {
+			"number": 4,
+			"line": 192,
+			"sizeByte": 5264
+		},
+		"js": {
+			"number": 13,
+			"line": 1821,
+			"sizeByte": 77439
+		}
+	},
+	"views": {
+		"vue": {
+			"number": 23,
+			"line": 1303,
+			"sizeByte": 56252
+		}
+	},
+	"docs": {
+		"md": {
+			"number": 27,
+			"line": 3127,
+			"sizeByte": 111514
+		},
+		"png": {
+			"number": 10,
+			"line": 0,
+			"sizeByte": 310604
+		}
+	}
+}
