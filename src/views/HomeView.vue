@@ -34,6 +34,13 @@
 				</div>
 			</div>
 		</div>
+		<div class="ts-content">
+			<span class="ts-icon is-end-spaced is-github-icon is-large"></span>
+			<RanLink to="https://github.com/runnywolf/ran">GitHub</RanLink>
+			<span class="footer-menu-divider"></span>
+			<span class="ts-icon is-end-spaced is-discord-icon is-large"></span>
+			<RanLink>還沒創群組</RanLink>
+		</div>
 	</div>
 </template>
 
@@ -66,5 +73,9 @@ const router = useRouter(); // 路由器
 }
 .box-info-icon-margin-fix {
 	margin-top: -6px;
+}
+.footer-menu-divider {
+	margin: 0 16px;
+	border-left: #ccc solid 1px;
 }
 </style>
