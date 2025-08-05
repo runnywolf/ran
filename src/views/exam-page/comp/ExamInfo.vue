@@ -22,27 +22,13 @@
 				</td>
 			</tr>
 			
-			<!-- 題本的科目代號 -->
-			<tr>
-				<td>
-					<span class="ts-icon is-hashtag-icon"></span>
-				</td>
-				<td>
-					<span>{{ subjectCode ?? "-" }}</span>
-					<span
-						class="ts-icon is-circle-question-icon is-start-spaced"
-						data-tooltip="每份題本在當年度的唯一編號"
-					></span>
-				</td>
-			</tr>
-			
 			<!-- 題本的科目 -->
 			<tr>
 				<td>
 					<span class="ts-icon is-file-icon"></span>
 				</td>
 				<td>
-					{{ subjectShortName ?? "-" }}
+					{{ examConfig.subjectShortName ?? "-" }}
 				</td>
 			</tr>
 			
@@ -52,11 +38,40 @@
 					<span class="ts-icon is-link-icon"></span>
 				</td>
 				<td>
-					<RanLink v-if="externalLink"
-						:to="externalLink"
-						:tooltip="externalLinkTip ? externalLinkTip : '沒有附註任何東西捏 (´･ω･`)'"
+					<RanLink v-if="examConfig.externalLink"
+						:to="examConfig.externalLink"
+						:tooltip="examConfig.externalLinkTip ?? '沒有附註任何東西捏 (´･ω･`)'"
 					>題本來源</RanLink>
 					<span v-else>未知的來源</span>
+				</td>
+			</tr>
+			
+			<!-- 更多資訊的按鈕 -->
+			<tr>
+				<td>
+					<span class="ts-icon is-info-icon" style="pointer-events: none"></span>
+				</td>
+				<td>
+					<button class="ts-text more-info-button" popovertarget="more-info">更多資訊</button>
+					<div class="ts-popover" id="more-info" data-position="right" popover>
+						<table class="ts-table is-celled is-collapsed is-dense">
+							<tbody>
+								<tr>
+									<td>科目</td><td>{{ examConfig.subjectName ?? "-" }}</td>
+								</tr>
+								<tr>
+									<td>編號</td>
+									<td>
+										<span>{{ examConfig.subjectCode ?? "-" }}</span>
+										<span class="ts-icon is-circle-question-icon is-start-spaced" data-tooltip="每個科目在當年度的唯一編號"></span>
+									</td>
+								</tr>
+								<tr>
+									<td>系所</td><td>{{ examConfig.department ?? "-" }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</td>
 			</tr>
 			
@@ -68,10 +83,7 @@
 const props = defineProps({
 	uniShortName: String, // 學校中文縮寫
 	examYear: String, // 題本年份
-	subjectCode: String, // 科目代號
-	subjectShortName: String, // 科目縮寫
-	externalLink: String, // 題本的來源連結
-	externalLinkTip: String, // 來源連結的註解, hover 時會顯示
+	examConfig: Object, // 題本資訊
 });
 </script>
 
@@ -84,5 +96,14 @@ const props = defineProps({
 }
 .sidebar-table > tbody > tr > td:not(:first-child) {
 	padding-left: 8px; /* 學校下拉選單跟 icon 的距離 */
+}
+.more-info-button {
+	margin-left: -34px;
+	padding: 4px 10px 6px 34px;
+	background-color: #ddda;
+	border-radius: 4px;
+}
+.more-info-button:hover {
+	background-color: #ddd;
 }
 </style>

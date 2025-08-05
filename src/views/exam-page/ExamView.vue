@@ -16,10 +16,7 @@
 				<ExamInfo
 					:uniShortName="dbConfig.uniConfigs[uni]?.shortName"
 					:examYear="year"
-					:subjectCode="examConfig.subjectCode"
-					:subjectShortName="examConfig.subjectShortName"
-					:externalLink="examConfig.externalLink"
-					:externalLinkTip="examConfig.externalLinkTip"
+					:examConfig="examConfig"
 				></ExamInfo>
 			</div>
 			<div class="ts-divider"></div>
