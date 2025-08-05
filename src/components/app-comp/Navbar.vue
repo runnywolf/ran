@@ -2,8 +2,8 @@
 	<div class="ts-app-navbar navbar">
 		<router-link v-for="optionInfo in navbarOptionList"
 			class="item"
-			:class="getClass(optionInfo.activeRouteNames)"
-			:to="{ name: optionInfo.toRouteName }"
+			:class="{ 'is-active': route.path.split('/')[1] === optionInfo.toPath }"
+			:to="`/${optionInfo.toPath}`"
 		>
 			<div :class="`ts-icon is-${optionInfo.iconName}-icon`"></div>
 			<div class="label">{{ optionInfo.label }}</div>
@@ -14,28 +14,20 @@
 <script setup>
 import { useRoute } from 'vue-router';
 
-/* 導覽列的每個選項的資訊
- * iconName: 選項的圖示 id (font-awesome)
- * label: 選項的文字
- * toRouteName: 點擊後會切換到的路由名稱
- * activeRouteName: 若目前的路由名稱在這個 array 裡, 會使選項變成淺色 (看起來被選取)
- */
-const navbarOptionList = [
-	{ iconName: "house", label: "首頁", toRouteName: "Home", activeRouteNames: [ "Home" ] },
-	{ iconName: "book", label: "筆記", toRouteName: "Notes", activeRouteNames: [ "Notes" ] },
-	{ iconName: "file", label: "歷屆試題", toRouteName: "ExamMenu", activeRouteNames: [ "ExamMenu", "Exam" ] },
-	{ iconName: "magnifying-glass", label: "搜尋題目", toRouteName: "Search", activeRouteNames: [ "Search" ] },
-	{ iconName: "pen", label: "模擬室", toRouteName: "Practice", activeRouteNames: [ "Practice" ] },
-	{ iconName: "ellipsis", label: "更多", toRouteName: "Other", activeRouteNames: [ "Other" ] },
-];
-
 const route = useRoute(); // 路由
 
-const getClass = (activeRouteNames) => { // 根據目前的路由名稱讓特定選項看起來被選中
-	if (activeRouteNames.includes(route.name)) return "is-active";
-	if (activeRouteNames[0] == "Practice" && route.name?.includes("Practice")) return "is-active"; // Practice 子頁面的例外處理
-	return "";
-};
+// 導覽列的每個選項的資訊
+// iconName: 選項的圖示 id (font-awesome)
+// label: 選項的文字
+// toPath: 點擊後會切換到的第一層路徑
+const navbarOptionList = [
+	{ iconName: "house", label: "首頁", toPath: "" },
+	{ iconName: "book", label: "筆記", toPath: "notes" },
+	{ iconName: "file", label: "歷屆試題", toPath: "exam" },
+	{ iconName: "magnifying-glass", label: "搜尋題目", toPath: "search" },
+	{ iconName: "pen", label: "模擬室", toPath: "practice" },
+	{ iconName: "ellipsis", label: "更多", toPath: "other" },
+];
 </script>
 
 <style scoped>

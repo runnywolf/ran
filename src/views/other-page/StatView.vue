@@ -1,0 +1,3 @@
+<template>
+	other/stat
+</template>

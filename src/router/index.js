@@ -9,22 +9,27 @@ const routes = [
 	{ path: "/search", name: "Search", component: () => import("@/views/SearchView.vue") },
 	{
 		path: "/practice", name: "Practice", component: () => import("@/views/PracticeView.vue"),
-		redirect: "/practice/recurrence",
+		redirect: "/practice/recur",
 		children: [
-			{ path: "recurrence", name: "PracticeRecur", component: () => import("@/views/practice-page/RecurView.vue") },
-			/*
-			{ path: "gram-schmidt", name: "PracticeGs", component: () => import("@/views/practice-page/GsView.vue") },
-			{ path: "inconsistent", name: "PracticeInconsis", component: () => import("@/views/practice-page/InconsisView.vue") },
-			{ path: "lu", name: "PracticeLu", component: () => import("@/views/practice-page/LuView.vue") },
-			{ path: "qr", name: "PracticeQr", component: () => import("@/views/practice-page/QrView.vue") },
-			{ path: "svd", name: "PracticeSvd", component: () => import("@/views/practice-page/SvdView.vue") },
-			{ path: "diagonal", name: "PracticeDiag", component: () => import("@/views/practice-page/DiagView.vue") },
-			*/
+			{ path: "recur", component: () => import("@/views/practice-page/RecurView.vue") },
+			{ path: "gs", component: () => import("@/views/practice-page/GsView.vue") },
+			{ path: "ic", component: () => import("@/views/practice-page/IcView.vue") },
+			{ path: "lu", component: () => import("@/views/practice-page/LuView.vue") },
+			{ path: "qr", component: () => import("@/views/practice-page/QrView.vue") },
+			{ path: "svd", component: () => import("@/views/practice-page/SvdView.vue") },
+			{ path: "diag", component: () => import("@/views/practice-page/DiagView.vue") },
 			{ path: ":pathMatch(.*)", redirect: "/practice" },
 		]
 	},
-	{ path: "/other", name: "Other", component: () => import("@/views/OtherView.vue") },
-	{ path: "/test", name: "Test", component: () => import("@/tests/TestView.vue") /* , redirect: "/" */ }, // 測試用
+	{
+		path: "/other", name: "Other", component: () => import("@/views/OtherView.vue"),
+		redirect: "/other/stat",
+		children: [
+			{ path: "stat", component: () => import("@/views/other-page/StatView.vue") },
+			{ path: ":pathMatch(.*)", redirect: "/other" },
+		]
+	},
+	{ path: "/test", name: "Test", component: () => import("@/tests/TestView.vue") , redirect: "/" }, // 測試用
 	{ path: "/:pathMatch(.*)", redirect: "/" },
 ];
 
