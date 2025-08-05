@@ -1,5 +1,11 @@
 <template>
-	<div class="ts-text is-big" style="margin-top: -4px; margin-bottom: 8px;">程式碼</div>
+	<div class="ts-text is-big" style="margin-top: -4px; margin-bottom: 8px;">
+		程式碼
+		<span
+			class="ts-icon is-circle-exclamation-icon is-start-spaced"
+			data-tooltip="以下所有的統計資料都並非動態，而是依賴開發環境的手動更新，可以參考 src/stat/make-stat.py。"
+		></span>
+	</div>
 	<div class="ts-box is-collapsed">
 		<table class="ts-table is-collapsed stat-table">
 			<thead>
@@ -17,7 +23,7 @@
 								:class="`bg-color-${fileTypeName}`"
 								:style="{ '--t': ratio }"
 								:data-tooltip="`${fileTypeName} - ${value.toLocaleString()} ( ${ratio.toFixed(2)}% )`"
-							></div>
+							></div><!-- 驚喜! 三層 v-for 嵌套! -->
 						</div>
 					</td>
 				</tr>
