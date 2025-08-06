@@ -17,6 +17,7 @@
 		},
 		"2": {
 			"answerLatex": "a_{n+1} = -a_n + 2 ~,~ a_1 = 0 \\quad;\\quad a_{n+1} = a_n + 2n + 2 ~,~ a_1 = 2",
+			"tags": [ "rd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-a-ans", "suffix": "(a)" },
 				{ "type": "answer", "fileBaseName": "2-b-ans", "suffix": "(b)" }

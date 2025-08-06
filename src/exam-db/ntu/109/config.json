@@ -11,6 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "(1 - x^{b-a+1})^n (1 - x)^{-n} x^a",
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -29,12 +30,14 @@
 		},
 		"4": {
 			"answerLatex": "a_n = \\frac{-3}{4} + \\frac{-1}{2} n + \\frac{7}{4} \\cdot 3^n",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\frac{-1}{4} \\cdot \\frac{1}{1-x} + \\frac{-1}{2} \\cdot \\frac{1}{(1-x)^2} + \\frac{7}{4} \\cdot \\frac{1}{1-3x}",
+			"tags": [ "gf-pfd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

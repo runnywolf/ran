@@ -17,6 +17,7 @@
 		},
 		"2": {
 			"answerLatex": "\\text{A}",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans1", "suffix": "(特徵方程求一般式)" },
 				{ "type": "answer", "fileBaseName": "2-ans2", "suffix": "(特徵值+選項逆推)" },
@@ -25,6 +26,7 @@
 		},
 		"3": {
 			"answerLatex": "\\text{A}",
+			"tags": [ "gf-pfd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans", "suffix": "(特徵方程求生成函數+選項逆推)" }
 			]

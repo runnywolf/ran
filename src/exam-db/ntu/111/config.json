@@ -17,12 +17,14 @@
 		},
 		"2": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "\\text{E}",
+			"tags": [ "gf-pfd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

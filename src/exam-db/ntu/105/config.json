@@ -74,18 +74,21 @@
 		},
 		"11": {
 			"answerLatex": "",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
+			"tags": [ "gf-pfd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
 		},
 		"13": {
 			"answerLatex": "",
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]

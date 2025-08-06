@@ -80,6 +80,7 @@
 		},
 		"8-1": {
 			"answerLatex": "",
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-1-ans" }
 			]

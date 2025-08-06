@@ -1,0 +1,6 @@
+{
+	"rr": { "en": "Recurrence relation", "zhtw": "遞迴" },
+	"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
+	"gf": { "en": "Generating function", "zhtw": "生成函數" },
+	"gf-pfd": { "en": "Generating function\n- Partial fraction decomposition", "zhtw": "生成函數" }
+}

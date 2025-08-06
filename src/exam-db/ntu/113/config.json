@@ -29,6 +29,7 @@
 		},
 		"4": {
 			"answerLatex": "a_n = (-4)^n + 2 \\cdot 3^n",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

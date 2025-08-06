@@ -43,6 +43,7 @@
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

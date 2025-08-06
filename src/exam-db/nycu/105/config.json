@@ -82,7 +82,13 @@
 			]
 		},
 		"13": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) }~ t^2 - 2t + 1 = 0",
+				"\\text{(b) }~ a_n^{(h)} = h_1 + h_2 n",
+				"\\text{(c) }~ a_n^{(p)} = {-n^2} + n^3",
+				"\\text{(d) }~ a_n = 5 + 5n - n^2 + n^3"
+			],
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]

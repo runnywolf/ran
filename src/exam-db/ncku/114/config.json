@@ -29,6 +29,7 @@
 		},
 		"4": {
 			"answerLatex": "\\text{d}",
+			"tags": [ "rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
