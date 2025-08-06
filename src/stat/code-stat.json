@@ -9,8 +9,8 @@
 	"components": {
 		"vue": {
 			"number": 17,
-			"line": 770,
-			"sizeByte": 34195
+			"line": 757,
+			"sizeByte": 33852
 		},
 		"js": {
 			"number": 1,
@@ -21,8 +21,8 @@
 	"exam-db": {
 		"json": {
 			"number": 26,
-			"line": 2044,
-			"sizeByte": 49111
+			"line": 2046,
+			"sizeByte": 49176
 		},
 		"vue": {
 			"number": 593,
@@ -87,7 +87,7 @@
 		"py": {
 			"number": 1,
 			"line": 28,
-			"sizeByte": 1518
+			"sizeByte": 1510
 		}
 	},
 	"styles": {
@@ -111,9 +111,9 @@
 	},
 	"views": {
 		"vue": {
-			"number": 23,
-			"line": 1303,
-			"sizeByte": 56252
+			"number": 24,
+			"line": 1337,
+			"sizeByte": 57546
 		}
 	},
 	"docs": {
