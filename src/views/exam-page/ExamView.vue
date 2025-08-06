@@ -78,9 +78,9 @@ import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
-import ExamInfo from "./comp/ExamInfo.vue"; // 題本資訊的組件
-import ExamTimer from "./comp/ExamTimer.vue"; // 計時器的組件
-import ExamPaper from "./comp/ExamPaper.vue"; // 考卷的組件
+import ExamInfo from "./exam-comp/ExamInfo.vue"; // 題本資訊的組件
+import ExamTimer from "./exam-comp/ExamTimer.vue"; // 計時器的組件
+import ExamPaper from "./exam-comp/ExamPaper.vue"; // 考卷的組件
 
 // #region 路由解碼
 const route = useRoute(); // 目前的路由資訊

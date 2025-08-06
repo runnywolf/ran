@@ -12,14 +12,19 @@
 					<span>&nbsp;{{ year ?? "" }}</span>
 				</RanLink>
 			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 標籤 -->
+			<div class="ts-content is-compact">
+				<ProblemTags :tags="problemConfig.tags ?? []"></ProblemTags>
+			</div>
 			
 		</template>
 		
 		<!-- 右側的題目區域 -->
 		<template #content>
 			<div class="ts-content">
-				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" :displayMode="2">
-				</Problem>
+				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" :displayMode="2"></Problem>
 			</div>
 		</template>
 		
@@ -27,11 +32,12 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
+import ProblemTags from "./problem-comp/ProblemTags.vue"; // 解碼並顯示題目的多個標籤
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
 const route = useRoute(); // 目前的路由資訊

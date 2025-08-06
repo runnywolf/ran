@@ -30,12 +30,14 @@
 		},
 		"4": {
 			"answerLatex": "a_n = \\frac{4}{7} (-5)^n + \\frac{17}{7} 2^n",
+			"tags": [ "recurrence" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\frac{17}{7} \\cdot \\frac{1}{1-2x} + \\frac{4}{7} \\cdot \\frac{1}{1+5x}",
+			"tags": [ "generating-func" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

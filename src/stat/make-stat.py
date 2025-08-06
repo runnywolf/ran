@@ -1,4 +1,4 @@
-import json, os, re
+import json
 from pathlib import Path
 
 SRC_PATH = Path(__file__).parent.parent # 路徑 src

@@ -38,7 +38,7 @@
 			<span class="ts-icon is-end-spaced is-github-icon is-large"></span>
 			<RanLink to="https://github.com/runnywolf/ran">GitHub</RanLink>
 			<span class="footer-menu-divider"></span>
-			<span class="ts-icon is-end-spaced is-discord-icon is-large"></span>
+			<span class="ts-icon is-end-spaced is-discord-icon is-large" style="margin-right: 8px"></span>
 			<RanLink>還沒創群組</RanLink>
 		</div>
 	</div>
