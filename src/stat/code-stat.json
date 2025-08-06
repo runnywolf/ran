@@ -87,7 +87,7 @@
 		"py": {
 			"number": 1,
 			"line": 28,
-			"sizeByte": 1510
+			"sizeByte": 1519
 		}
 	},
 	"styles": {
@@ -118,9 +118,14 @@
 	},
 	"docs": {
 		"md": {
-			"number": 27,
-			"line": 3127,
-			"sizeByte": 111514
+			"number": 30,
+			"line": 3212,
+			"sizeByte": 114305
+		},
+		"webp": {
+			"number": 1,
+			"line": 0,
+			"sizeByte": 37168
 		},
 		"png": {
 			"number": 10,

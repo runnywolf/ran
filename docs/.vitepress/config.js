@@ -1,6 +1,5 @@
 import { defineConfig } from "vitepress";
 import markdownItKatex from "markdown-it-katex"; // katex 語法支援
-import mermaid from 'mermaid'
 
 export default defineConfig({ // https://vitepress.dev/reference/site-config
 	base: "/ran/docs/", // 說明文件的路徑位於 /ran/docs/
@@ -10,11 +9,6 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	markdown: { // LaTex 語法支援
 		config: (md) => { md.use(markdownItKatex); }
 	},
-	enhanceApp({ router }) {
-    router.onAfterRouteChanged = () => {
-      mermaid.init(undefined, document.querySelectorAll('.language-mermaid'))
-    }
-  },
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
@@ -29,6 +23,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				text: "Exam Page - 歷屆試題頁面",
 				collapsed: true,
 				items: [
+					{ text: "架構", link: "/exam-page/arch" },
 					{ text: "ExamMenu - 題本清單", link: "/exam-page/exam-menu" },
 					{ text: "Exam - 題本閱讀器", link: "/exam-page/exam" },
 					{ text: "如何新增題本", link: "/exam-page/create-exam" },

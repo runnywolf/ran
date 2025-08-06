@@ -32,7 +32,7 @@ def get_stat(path: Path, only=[]) -> dict: # 遞迴計算某個路徑下的所�
 
 all_stat = {}
 for dir in SRC_PATH.iterdir(): all_stat[dir.name] = get_stat(SRC_PATH/dir.name)
-all_stat["docs"] = get_stat(SRC_PATH.parent/"docs", only=[".md", ".png"]) # docs 只統計 md/png
+all_stat["docs"] = get_stat(SRC_PATH.parent/"docs", only=[".md", ".png", ".webp"]) # docs 只統計 md/png
 
 with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
 	json.dump(all_stat, f, ensure_ascii=False, indent="\t")
