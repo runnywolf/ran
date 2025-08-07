@@ -19,10 +19,10 @@
 					<td v-for="valueName in ['number', 'line', 'sizeByte']">
 						<span>{{ item.cs.sum[valueName].toLocaleString() }}</span>
 						<div class="stacked-bar">
-							<div v-for="[fileTypeName, value, ratio] in item.cs.getFileTypePercent(valueName)"
+							<div v-for="[fileTypeName, value, percent] in item.cs.getFileTypePercent(valueName)"
 								:class="`bg-color-${fileTypeName}`"
-								:style="{ '--t': ratio }"
-								:data-tooltip="`${fileTypeName} - ${value.toLocaleString()} ( ${ratio.toFixed(2)}% )`"
+								:style="{ '--t': percent }"
+								:data-tooltip="`${fileTypeName} - ${value.toLocaleString()} ( ${percent.toFixed(2)}% )`"
 							></div><!-- 驚喜! 三層 v-for 嵌套! -->
 						</div>
 					</td>

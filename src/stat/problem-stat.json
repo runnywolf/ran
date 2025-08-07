@@ -2,5 +2,11 @@
 	"examNumber": 25,
 	"answerCompleteExamNumber": 7,
 	"problemNumber": 276,
-	"problemHasAnswerNumber": 88
+	"problemHasAnswerNumber": 88,
+	"tagsNumber": {
+		"rr": 15,
+		"gf-pfd": 5,
+		"gf": 7,
+		"rd": 2
+	}
 }

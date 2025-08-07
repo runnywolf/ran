@@ -81,13 +81,13 @@
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 142,
-			"sizeByte": 1947
+			"line": 148,
+			"sizeByte": 2022
 		},
 		"py": {
 			"number": 1,
-			"line": 52,
-			"sizeByte": 2868
+			"line": 59,
+			"sizeByte": 3434
 		}
 	},
 	"styles": {
@@ -112,8 +112,8 @@
 	"views": {
 		"vue": {
 			"number": 25,
-			"line": 1362,
-			"sizeByte": 58710
+			"line": 1388,
+			"sizeByte": 59716
 		}
 	},
 	"docs": {
