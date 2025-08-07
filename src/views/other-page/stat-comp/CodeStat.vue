@@ -1,5 +1,5 @@
 <template>
-	<div class="ts-text is-big" style="margin-top: -6px; margin-bottom: 8px;">
+	<div class="ts-text is-big is-bold" style="margin-top: -6px; margin-bottom: 8px;">
 		程式碼
 		<span
 			class="ts-icon is-circle-exclamation-icon is-start-spaced"

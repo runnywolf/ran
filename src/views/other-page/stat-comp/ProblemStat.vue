@@ -1,5 +1,5 @@
 <template>
-	<div class="ts-text is-big" style="margin-top: -6px; margin-bottom: 8px;">
+	<div class="ts-text is-big is-bold" style="margin-top: -6px; margin-bottom: 8px;">
 		題目統計
 	</div>
 	<div class="ts-text">
