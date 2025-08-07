@@ -1,5 +1,5 @@
 <template>
-	<div class="ts-text is-big" style="margin-top: -4px; margin-bottom: 8px;">
+	<div class="ts-text is-big" style="margin-top: -6px; margin-bottom: 8px;">
 		程式碼
 		<span
 			class="ts-icon is-circle-exclamation-icon is-start-spaced"
@@ -83,11 +83,15 @@ for (const rangeName of [ "components", "libs", "router", "styles", "views", "Ap
 	cs_app.add(dict_cs_srcItems[rangeName]);
 }
 
+const cs_tool = new CodeStat({ py: dict_cs_srcItems["stat"].data.py }); // stat 資料夾內只統計 make_stat.py
+cs_tool.add(dict_cs_srcItems["exam-db-tool"]); // 加入 exam-db 的小工具
+
 const displayList = [ // 要顯示的統計資料
 	{ rangeName: "App", cs: cs_app },
 	{ rangeName: "歷屆試題", cs: dict_cs_srcItems["exam-db"] },
 	{ rangeName: "測試", cs: dict_cs_srcItems["tests"] },
 	{ rangeName: "Docs", cs: dict_cs_srcItems["docs"] },
+	{ rangeName: "小工具", cs: cs_tool },
 ];
 </script>
 
@@ -135,6 +139,9 @@ const displayList = [ // 要顯示的統計資料
 }
 .bg-color-css {
 	background-color: #264de4 !important;
+}
+.bg-color-py {
+	background-color: #3776ab !important;
 }
 .bg-color-md {
 	background-color: #444 !important;

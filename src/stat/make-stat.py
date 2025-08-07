@@ -6,7 +6,7 @@ SRC_PATH = Path(__file__).parent.parent # 路徑 src
 def create_empty_type_stat() -> dict:
 	return { "number": 0, "line": 0, "sizeByte": 0 }
 
-def get_stat(path: Path, only=[]) -> dict: # 遞迴計算某個路徑下的所有檔案的統計資料
+def get_code_stat(path: Path, only=[]) -> dict: # 遞迴計算某個路徑下的所有檔案的統計資料
 	all_files = [ path ] if path.is_file() else path.rglob("*")
 	if len(only) > 0: all_files = [f for f in all_files if f.suffix in only]
 	
@@ -30,9 +30,37 @@ def get_stat(path: Path, only=[]) -> dict: # 遞迴計算某個路徑下的所�
 	
 	return stat
 
-all_stat = {}
-for dir in SRC_PATH.iterdir(): all_stat[dir.name] = get_stat(SRC_PATH/dir.name)
-all_stat["docs"] = get_stat(SRC_PATH.parent/"docs", only=[".md", ".png", ".webp"]) # docs 只統計 md/png
+def make_code_stat_json() -> None: # 生成程式碼的統計
+	all_stat = {}
+	for dir in SRC_PATH.iterdir(): all_stat[dir.name] = get_code_stat(SRC_PATH/dir.name)
+	all_stat["docs"] = get_code_stat(SRC_PATH.parent/"docs", only=[".md", ".png", ".webp"]) # docs 只統計 md/png
 
-with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
-	json.dump(all_stat, f, ensure_ascii=False, indent="\t")
+	with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
+		json.dump(all_stat, f, ensure_ascii=False, indent="\t")
+
+def make_problem_stat_json() -> None: # 生成題目的統計
+	with open(SRC_PATH/"exam-db"/"config.json", "r", encoding="utf-8") as f: # 讀取 db config
+		db_config = json.load(f)
+	
+	stat = {
+		"examNumber": 0, # 題本數
+		"answerCompleteExamNumber": 0, # 完整詳解的題本數
+		"problemNumber": 0, # 題目數
+		"problemHasAnswerNumber": 0, # 有答案的題目數
+	}
+	for uni, uni_config in db_config["uniConfigs"].items():
+		for year in uni_config["yearList"]: # 讀取每份題本
+			with open(SRC_PATH/"exam-db"/uni/year/"config.json", "r", encoding="utf-8") as f: # 讀取題本設定檔
+				exam_config = json.load(f) # 題本設定檔
+				stat["examNumber"] += 1
+				stat["answerCompleteExamNumber"] += 1 if exam_config["isAnswerComplete"] else 0
+				stat["problemNumber"] += len(exam_config["problemConfigs"])
+				stat["problemHasAnswerNumber"] += sum(
+					1 if len(problem_config["answerLatex"]) > 0 else 0 for problem_config in exam_config["problemConfigs"].values()
+				)
+	
+	with open(SRC_PATH/"stat"/"problem-stat.json", "w", encoding="utf-8") as f: # write json
+		json.dump(stat, f, ensure_ascii=False, indent="\t")
+
+make_code_stat_json() # 生成程式碼的統計
+make_problem_stat_json() # 生成題目的統計

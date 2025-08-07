@@ -20,14 +20,14 @@
 	},
 	"exam-db": {
 		"json": {
-			"number": 26,
-			"line": 2046,
-			"sizeByte": 49176
+			"number": 27,
+			"line": 2084,
+			"sizeByte": 50267
 		},
 		"vue": {
 			"number": 593,
-			"line": 8370,
-			"sizeByte": 291849
+			"line": 8371,
+			"sizeByte": 292005
 		},
 		"webp": {
 			"number": 50,
@@ -80,14 +80,14 @@
 	},
 	"stat": {
 		"json": {
-			"number": 1,
-			"line": 131,
-			"sizeByte": 1762
+			"number": 2,
+			"line": 142,
+			"sizeByte": 1947
 		},
 		"py": {
 			"number": 1,
-			"line": 28,
-			"sizeByte": 1519
+			"line": 52,
+			"sizeByte": 2868
 		}
 	},
 	"styles": {
@@ -111,9 +111,9 @@
 	},
 	"views": {
 		"vue": {
-			"number": 24,
-			"line": 1337,
-			"sizeByte": 57546
+			"number": 25,
+			"line": 1362,
+			"sizeByte": 58710
 		}
 	},
 	"docs": {
