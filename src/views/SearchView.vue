@@ -1,14 +1,119 @@
 <template>
 	<div class="ts-box ts-wrap is-vertical is-center-aligned">
+		
+		<!-- 搜尋框 + 建議列表 -->
 		<div class="ts-content is-padded">
-			<div class="ts-input is-start-icon" >
+			
+			<!-- 搜尋框 -->
+			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="dropdown-suggestions">
 				<span class="ts-icon is-magnifying-glass-icon"></span>
-				<input type="text" placeholder="電話號碼">
+				<input type="text" placeholder="搜尋" v-model="searchText">
 			</div>
-    </div>
+			
+			<!-- 建議列表 -->
+			<div style="width: 500px; padding: 8px;" class="ts-popover" id="dropdown-suggestions" popover>
+				
+				<!-- 建議列表 -->
+				<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
+					<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr" class="ts-wrap is-compact">
+						<Tag :tag="tag"></Tag>
+						<div class="ts-text">
+							<span v-for="{ substr, isLcs } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isLcs }">
+								{{ substr }}
+							</span><!-- 將 lcs 部份的字串塗橘色 -->
+						</div>
+					</div>
+				</div>
+				
+				<!-- 如果沒有搜尋到符合的 tag, 顯示這段訊息 -->
+				<div v-else class="ts-text is-center-aligned">
+					沒有符合的 tag 捏<br>
+					(´･ω･`) <span class="ts-icon is-question-icon is-large is-spinning"></span>
+				</div>
+				
+			</div>
+			
+		</div>
+		
 	</div>
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
+import tagMap from "@/exam-db/tag-map.json"; // tag 映射
+import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
+function strEqualIgnoreCase(str_a, str_b) { // 忽略大小寫的字串比較
+	return str_a.toLowerCase() === str_b.toLowerCase();
+}
+
+function lcs(str_a, str_b) { // LCS
+	const [n, m] = [str_a.length, str_b.length]; // 字串長度
+	
+	const dpArr = Array.from({ length: n+1 }, () => Array(m+1).fill(0));
+	for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) {
+		if (strEqualIgnoreCase(str_a[i-1], str_b[j-1])) dpArr[i][j] = dpArr[i-1][j-1] + 1;
+		else dpArr[i][j] = Math.max(dpArr[i-1][j], dpArr[i][j-1]);
+	}
+	
+	let [i, j] = [n, m];
+	let lcsStr = "";
+	while (i > 0 && j > 0) {
+		if (strEqualIgnoreCase(str_a[i-1], str_b[j-1])) {
+			lcsStr = str_a[i-1] + lcsStr; i--; j--;
+		} else {
+			dpArr[i-1][j] >= dpArr[i][j-1] ? i-- : j--;
+		}
+	}
+	
+	return lcsStr;
+}
+
+function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字串切分成子字串 (與搜尋字串相同的內容會有底色)
+	if (lcsStr.length === 0) return [{ substr: str, isLcs: false }]; // 整段 str 都不是 lcs
+	
+	let lcsReadIndex = 0;
+	const substrs = []; // lcs 子字串和非 lcs 子字串交替元素的 arr
+	const pushChar = (char, isLcs) => { // 將一個字元加入到 substrs
+		if (substrs.length > 0 && substrs.at(-1).isLcs === isLcs) substrs.at(-1).substr += char;
+		else substrs.push({ substr: char, isLcs });
+	};
+	for (const char of str) {
+		if (lcsReadIndex <= lcsStr.length-1 && strEqualIgnoreCase(char, lcsStr[lcsReadIndex])) { // 逐一比對 (忽略大小寫)
+			pushChar(char, true);
+			lcsReadIndex++;
+		} else {
+			pushChar(char, false);
+		}
+	}
+	return substrs;
+}
+
+const searchText = ref(""); // 搜尋框的字串
+const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
+
+watch(searchText, newSearchText => { // 當搜尋框的字串改變時
+	let tagLcsDataArr = []; // 求所有 tag 與 search text 的 lcs (同個 tag 會取中/英文 lcs 最長者)
+	for (let [tag, { en: enTag, zhtw: zhtwTag }] of Object.entries(tagMap)) { // 遍歷所有 tag 的中/英文, 尋找 lcs
+		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
+		const [enTagLcs, zhtwTagLcs] = [lcs(enTag, newSearchText), lcs(zhtwTag, newSearchText)]; // 尋找與 search text 的 lcs
+		tagLcsDataArr.push( // 同個 tag 會取中/英文 lcs 最長者
+			enTagLcs.length >= zhtwTagLcs.length ?
+			{ tag, lcsLength: enTagLcs.length, lcsSubstrs: getLcsSubstrs(enTag, enTagLcs) } :
+			{ tag, lcsLength: zhtwTagLcs.length, lcsSubstrs: getLcsSubstrs(zhtwTag, zhtwTagLcs) }
+		);
+	}
+	tagLcsDataArr = tagLcsDataArr
+		.filter(tagLcsData => tagLcsData.lcsLength > 0) // 忽略 lcs 長度為零的 tag
+		.sort((a, b) => b.lcsLength - a.lcsLength); // 將所有 tag 的比對結果依照 lcs 長度降序排列
+	sortedTagLcsDataArr.value = tagLcsDataArr;
+	
+	document.querySelector("#dropdown-suggestions").showPopover() // 顯示下拉建議列表
+});
 </script>
+
+<style scoped>
+.dropdown-lcs-text { /* lcs 部份會有底色 */
+	background-color: #fc0;
+}
+</style>

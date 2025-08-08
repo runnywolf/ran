@@ -37,7 +37,7 @@ import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import stat from "@/stat/problem-stat.json"; // 統計資料
 
 const sortedTagStat = Object.entries(stat.tagsNumber).sort((a, b) => b[1]-a[1]).map( // 降序排列的 tag 統計資料
-	([tag, count]) => ({ tag: tag, count: count, percent: count / stat.problemNumber * 100 })
+	([tag, count]) => ({ tag, count, percent: count / stat.problemNumber * 100 })
 );
 </script>
 
