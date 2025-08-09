@@ -1,7 +1,7 @@
 <template>
 	<div class="ts-chip is-circular is-start-icon" :data-tooltip="tagMap[tag]?.en">
 		<span class="ts-icon is-hashtag-icon is-small tag-icon"></span>
-		<span>{{ tagMap[tag]?.zhtw ?? "未知" }}</span>
+		<span class="tag-name">{{ tagMap[tag]?.zhtw ?? "未知" }}</span>
 	</div>
 </template>
 
@@ -14,5 +14,8 @@ const props = defineProps({ tag: String }); // 題目的標籤
 <style scoped>
 .tag-icon {
 	margin-right: -4px;
+}
+.tag-name {
+	user-select: none; /* 禁止選取 */
 }
 </style>

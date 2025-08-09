@@ -4,9 +4,10 @@ const routes = [
 	{ path: "/", name: "Home", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", name: "Notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", name: "ExamMenu", component: () => import("@/views/exam-page/ExamMenuView.vue") },
-	{ path: "/exam/:id", name: "Exam", component: () => import("@/views/exam-page/ExamView.vue") },
+	{ path: "/exam/:id", name: "Exam", component: () => import("@/views/exam-page/ExamView.vue") }, // 題本編號 :id 的格式範例: "ntu-110"
 	{ path: "/exam/:id/:prob", name: "Problem", component: () => import("@/views/exam-page/ProblemView.vue") },
-	{ path: "/search", name: "Search", component: () => import("@/views/SearchView.vue") },
+	{ path: "/search", component: () => import("@/views/SearchView.vue") },
+	{ path: "/search/:tag", component: () => import("@/views/SearchView.vue") }, // 會自動新增一個 tag 在搜尋欄下方
 	{
 		path: "/practice", name: "Practice", component: () => import("@/views/PracticeView.vue"),
 		redirect: "/practice/recur",

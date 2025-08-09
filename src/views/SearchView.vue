@@ -1,39 +1,46 @@
 <template>
-	<div class="ts-box ts-wrap is-vertical is-center-aligned">
+	<div class="ts-box">
 		
 		<!-- 搜尋框 + 建議列表 -->
 		<div class="ts-content is-padded">
-			
-			<!-- 搜尋框 -->
-			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="dropdown-suggestions">
-				<span class="ts-icon is-magnifying-glass-icon"></span>
-				<input type="text" placeholder="搜尋" v-model="searchText">
-			</div>
-			
-			<!-- 建議列表 -->
-			<div style="width: 500px; padding: 8px;" class="ts-popover" id="dropdown-suggestions" popover>
+			<div class="ts-wrap is-vertical is-center-aligned is-compact">
+				
+				<!-- 搜尋框 -->
+				<div style="width: 500px" class="ts-input is-start-icon" popovertarget="dropdown-suggestions">
+					<span class="ts-icon is-magnifying-glass-icon"></span>
+					<input type="text" placeholder="搜尋" v-model="searchText">
+				</div>
 				
 				<!-- 建議列表 -->
-				<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
-					<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr"
-						class="ts-wrap is-compact dropdown-suggestion"
-						@click="console.log(tag)"
-					>
-						<Tag :tag="tag"></Tag>
-						<div class="ts-text">
-							<span v-for="{ substr, isLcs } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isLcs }">
-								{{ substr }}
-							</span><!-- 將 lcs 部份的字串塗橘色 -->
+				<div style="width: 500px; padding: 8px;" class="ts-popover" id="dropdown-suggestions" popover>
+					
+					<!-- 建議列表 -->
+					<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
+						<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr"
+							class="ts-wrap is-compact dropdown-suggestion"
+							@click="whenDropDownTagClicked(tag)"
+						>
+							<Tag :tag="tag"></Tag>
+							<div class="ts-text">
+								<span v-for="{ substr, isLcs } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isLcs }">
+									{{ substr }}
+								</span><!-- 將 lcs 部份的字串塗橘色 -->
+							</div>
 						</div>
 					</div>
+					
+					<!-- 如果沒有搜尋到符合的 tag, 顯示這段訊息 -->
+					<div v-else class="ts-text is-center-aligned">
+						沒有符合的 tag 捏<br>
+						(´･ω･`) <span class="ts-icon is-question-icon is-large is-spinning"></span>
+					</div>
+					
 				</div>
 				
-				<!-- 如果沒有搜尋到符合的 tag, 顯示這段訊息 -->
-				<div v-else class="ts-text is-center-aligned">
-					沒有符合的 tag 捏<br>
-					(´･ω･`) <span class="ts-icon is-question-icon is-large is-spinning"></span>
+				<!-- 搜尋框下面的已選取 tags -->
+				<div class="ts-wrap is-compact">
+					<Tag v-for="tag in selectedTags" :tag="tag"></Tag>
 				</div>
-				
 			</div>
 			
 		</div>
@@ -95,9 +102,8 @@ function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字�
 	return substrs;
 }
 
-function getRmsScore(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
+function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
 	const squareArr = lcsSubstrs.filter(({ isLcs }) => isLcs).map(({ substr }) => substr.length ** 2); // 若 ^2 獎勵太多, 考慮降低
-	if (squareArr.length === 0) return 0; // lcs = 0, score = 0
 	return Math.sqrt(sum(squareArr)); // root sum square
 }
 
@@ -109,31 +115,40 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 		const enTagLcsSubstrs = getLcsSubstrs(enTag, lcs(enTag, searchText)); // 尋找 lcs 的子字串
 		const zhtwTagLcsSubstrs = getLcsSubstrs(zhtwTag, lcs(zhtwTag, searchText));
 		
-		const enTagScore = getRmsScore(enTagLcsSubstrs);
-		const zhtwTagScore = getRmsScore(zhtwTagLcsSubstrs);
+		const enTagScore = getLcsRss(enTagLcsSubstrs);
+		const zhtwTagScore = getLcsRss(zhtwTagLcsSubstrs);
 		
 		const lcsData = enTagScore >= zhtwTagScore ? // 同個 tag 會取中/英文 lcs 最長者
-			{ tag, rmsScore: enTagScore, lcsSubstrs: enTagLcsSubstrs } :
-			{ tag, rmsScore: zhtwTagScore, lcsSubstrs: zhtwTagLcsSubstrs }; // tag 與 lcs 資訊
+			{ tag, lcsRss: enTagScore, lcsSubstrs: enTagLcsSubstrs } :
+			{ tag, lcsRss: zhtwTagScore, lcsSubstrs: zhtwTagLcsSubstrs }; // tag 與 lcs 資訊
 		
-		if (lcsData.rmsScore === 0) continue; // 忽略 lcs 長度為零的 tag
+		if (lcsData.lcsRss === 0) continue; // 忽略 lcs 長度為零的 tag
 		lcsDataArr.push(lcsData);
 	}
-	lcsDataArr = lcsDataArr.sort((a, b) => b.rmsScore - a.rmsScore); // 採用 lcs 長度降序排列
+	lcsDataArr = lcsDataArr.sort((a, b) => b.lcsRss - a.lcsRss); // 採用 lcs 長度降序排列
 	while (lcsDataArr.length > DROPDOWN_MAX_TAG_NUMBER) lcsDataArr.pop(); // 只保留 lcs 長度較長的前幾項
 	return lcsDataArr;
 }
 
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
+const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
 
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 	sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
 	document.querySelector("#dropdown-suggestions").showPopover() // 顯示下拉建議列表
 });
+
+function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
+	selectedTags.value.push(tag); // 選取 tag
+	document.querySelector("#dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
+};
 </script>
 
 <style scoped>
+.dropdown-suggestion {
+	user-select: none; /* 禁止選取搜尋結果 */
+}
 .dropdown-suggestion:hover {
 	background-color: #eee;
 	border-radius: 15px;
