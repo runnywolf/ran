@@ -43,6 +43,8 @@ import { ref, watch } from "vue";
 import tagMap from "@/exam-db/tag-map.json"; // tag 映射
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
+const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
+
 function strEqualIgnoreCase(str_a, str_b) { // 忽略大小寫的字串比較
 	return str_a.toLowerCase() === str_b.toLowerCase();
 }
@@ -69,7 +71,7 @@ function lcs(str_a, str_b) { // LCS
 	return lcsStr;
 }
 
-function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字串切分成子字串 (與搜尋字串相同的內容會有底色)
+function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字串切分成子字串 (功能實作: 與搜尋字串相同的內容會有底色)
 	if (lcsStr.length === 0) return [{ substr: str, isLcs: false }]; // 整段 str 都不是 lcs
 	
 	let lcsReadIndex = 0;
@@ -89,25 +91,28 @@ function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字�
 	return substrs;
 }
 
+function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成建議列表的顯示資料
+	let lcsDataArr = []; // 求所有 tag 與 search text 的 lcs (同個 tag 會取中/英文 lcs 最長者)
+	for (let [tag, { en: enTag, zhtw: zhtwTag }] of Object.entries(tagMap)) { // 遍歷所有 tag 的中/英文, 尋找 lcs
+		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
+		const [enTagLcs, zhtwTagLcs] = [lcs(enTag, searchText), lcs(zhtwTag, searchText)]; // 尋找與 search text 的 lcs
+		const lcsData = enTagLcs.length >= zhtwTagLcs.length ? // 同個 tag 會取中/英文 lcs 最長者
+			{ tag, lcsLength: enTagLcs.length, lcsSubstrs: getLcsSubstrs(enTag, enTagLcs) } :
+			{ tag, lcsLength: zhtwTagLcs.length, lcsSubstrs: getLcsSubstrs(zhtwTag, zhtwTagLcs) }; // tag 與 lcs 資訊
+		
+		if (lcsData.lcsLength === 0) continue; // 忽略 lcs 長度為零的 tag
+		lcsDataArr.push(lcsData);
+	}
+	lcsDataArr = lcsDataArr.sort((a, b) => b.lcsLength - a.lcsLength); // 採用 lcs 長度降序排列
+	while (lcsDataArr.length > DROPDOWN_MAX_TAG_NUMBER) lcsDataArr.pop(); // 只保留 lcs 長度較長的前幾項
+	return lcsDataArr;
+}
+
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
-	let tagLcsDataArr = []; // 求所有 tag 與 search text 的 lcs (同個 tag 會取中/英文 lcs 最長者)
-	for (let [tag, { en: enTag, zhtw: zhtwTag }] of Object.entries(tagMap)) { // 遍歷所有 tag 的中/英文, 尋找 lcs
-		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
-		const [enTagLcs, zhtwTagLcs] = [lcs(enTag, newSearchText), lcs(zhtwTag, newSearchText)]; // 尋找與 search text 的 lcs
-		tagLcsDataArr.push( // 同個 tag 會取中/英文 lcs 最長者
-			enTagLcs.length >= zhtwTagLcs.length ?
-			{ tag, lcsLength: enTagLcs.length, lcsSubstrs: getLcsSubstrs(enTag, enTagLcs) } :
-			{ tag, lcsLength: zhtwTagLcs.length, lcsSubstrs: getLcsSubstrs(zhtwTag, zhtwTagLcs) }
-		);
-	}
-	tagLcsDataArr = tagLcsDataArr
-		.filter(tagLcsData => tagLcsData.lcsLength > 0) // 忽略 lcs 長度為零的 tag
-		.sort((a, b) => b.lcsLength - a.lcsLength); // 將所有 tag 的比對結果依照 lcs 長度降序排列
-	sortedTagLcsDataArr.value = tagLcsDataArr;
-	
+	sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
 	document.querySelector("#dropdown-suggestions").showPopover() // 顯示下拉建議列表
 });
 </script>
