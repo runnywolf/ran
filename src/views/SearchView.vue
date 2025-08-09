@@ -15,7 +15,10 @@
 				
 				<!-- 建議列表 -->
 				<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
-					<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr" class="ts-wrap is-compact">
+					<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr"
+						class="ts-wrap is-compact dropdown-suggestion"
+						@click="console.log(tag)"
+					>
 						<Tag :tag="tag"></Tag>
 						<div class="ts-text">
 							<span v-for="{ substr, isLcs } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isLcs }">
@@ -40,6 +43,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { sum } from "ran-math";
 import tagMap from "@/exam-db/tag-map.json"; // tag 映射
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
@@ -91,19 +95,31 @@ function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字�
 	return substrs;
 }
 
-function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成建議列表的顯示資料
+function getRmsScore(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
+	const squareArr = lcsSubstrs.filter(({ isLcs }) => isLcs).map(({ substr }) => substr.length ** 2); // 若 ^2 獎勵太多, 考慮降低
+	if (squareArr.length === 0) return 0; // lcs = 0, score = 0
+	return Math.sqrt(sum(squareArr)); // root sum square
+}
+
+function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成建議列表的顯示資料 (依據 LCS-RSS 降序排列)
 	let lcsDataArr = []; // 求所有 tag 與 search text 的 lcs (同個 tag 會取中/英文 lcs 最長者)
 	for (let [tag, { en: enTag, zhtw: zhtwTag }] of Object.entries(tagMap)) { // 遍歷所有 tag 的中/英文, 尋找 lcs
 		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
-		const [enTagLcs, zhtwTagLcs] = [lcs(enTag, searchText), lcs(zhtwTag, searchText)]; // 尋找與 search text 的 lcs
-		const lcsData = enTagLcs.length >= zhtwTagLcs.length ? // 同個 tag 會取中/英文 lcs 最長者
-			{ tag, lcsLength: enTagLcs.length, lcsSubstrs: getLcsSubstrs(enTag, enTagLcs) } :
-			{ tag, lcsLength: zhtwTagLcs.length, lcsSubstrs: getLcsSubstrs(zhtwTag, zhtwTagLcs) }; // tag 與 lcs 資訊
 		
-		if (lcsData.lcsLength === 0) continue; // 忽略 lcs 長度為零的 tag
+		const enTagLcsSubstrs = getLcsSubstrs(enTag, lcs(enTag, searchText)); // 尋找 lcs 的子字串
+		const zhtwTagLcsSubstrs = getLcsSubstrs(zhtwTag, lcs(zhtwTag, searchText));
+		
+		const enTagScore = getRmsScore(enTagLcsSubstrs);
+		const zhtwTagScore = getRmsScore(zhtwTagLcsSubstrs);
+		
+		const lcsData = enTagScore >= zhtwTagScore ? // 同個 tag 會取中/英文 lcs 最長者
+			{ tag, rmsScore: enTagScore, lcsSubstrs: enTagLcsSubstrs } :
+			{ tag, rmsScore: zhtwTagScore, lcsSubstrs: zhtwTagLcsSubstrs }; // tag 與 lcs 資訊
+		
+		if (lcsData.rmsScore === 0) continue; // 忽略 lcs 長度為零的 tag
 		lcsDataArr.push(lcsData);
 	}
-	lcsDataArr = lcsDataArr.sort((a, b) => b.lcsLength - a.lcsLength); // 採用 lcs 長度降序排列
+	lcsDataArr = lcsDataArr.sort((a, b) => b.rmsScore - a.rmsScore); // 採用 lcs 長度降序排列
 	while (lcsDataArr.length > DROPDOWN_MAX_TAG_NUMBER) lcsDataArr.pop(); // 只保留 lcs 長度較長的前幾項
 	return lcsDataArr;
 }
@@ -118,6 +134,10 @@ watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 </script>
 
 <style scoped>
+.dropdown-suggestion:hover {
+	background-color: #eee;
+	border-radius: 15px;
+}
 .dropdown-lcs-text { /* lcs 部份會有底色 */
 	background-color: #fc0;
 }
