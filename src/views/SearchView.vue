@@ -38,7 +38,7 @@
 				</div>
 				
 				<!-- 搜尋框下面的已選取 tags -->
-				<div class="ts-wrap is-compact">
+				<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
 					<Tag v-for="tag in selectedTags" :tag="tag"></Tag>
 				</div>
 			</div>
@@ -50,6 +50,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { sum } from "ran-math";
 import tagMap from "@/exam-db/tag-map.json"; // tag 映射
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
@@ -135,14 +136,23 @@ const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
 
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
-	sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
-	document.querySelector("#dropdown-suggestions").showPopover() // 顯示下拉建議列表
+	if (newSearchText) { // 輸入框非空, 顯示建議列表
+		sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
+		document.querySelector("#dropdown-suggestions").showPopover() // 顯示建議列表
+	} else { // 輸入框為空, 隱藏建議列表
+		document.querySelector("#dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
+	}
 });
 
 function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 	selectedTags.value.push(tag); // 選取 tag
-	document.querySelector("#dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
+	searchText.value = ""; // 清空搜尋框
 };
+
+const route = useRoute(); // 路由
+watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
+	selectedTags.value = (newTag in tagMap) ? [newTag] : [];
+}, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
 </script>
 
 <style scoped>
