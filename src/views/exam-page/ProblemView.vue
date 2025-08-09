@@ -16,7 +16,10 @@
 			
 			<!-- 標籤 -->
 			<div class="ts-content is-compact">
-				<ProblemTags :tags="problemConfig.tags ?? []"></ProblemTags>
+				<div v-if="(problemConfig.tags ?? []).length > 0" class="ts-grid is-compact">
+					<Tag v-for="tag in problemConfig.tags" :tag="tag"></Tag>
+				</div>
+				<div v-else class="ts-content is-center-aligned is-fitted">無標籤</div>
 			</div>
 			
 		</template>
@@ -37,7 +40,7 @@ import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
-import ProblemTags from "./problem-comp/ProblemTags.vue"; // 解碼並顯示題目的多個標籤
+import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
 const route = useRoute(); // 目前的路由資訊
