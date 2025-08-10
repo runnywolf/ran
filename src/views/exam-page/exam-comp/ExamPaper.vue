@@ -15,7 +15,8 @@
 						:year="year"
 						:no="sectionBaseName"
 						:problemConfig="examConfig.problemConfigs[sectionBaseName]"
-						:displayMode="state === 0 ? 1 : 0"
+						:showAnswer="state === 0"
+						:showLink="state === 0"
 					></Problem>
 				</li>
 			</ol>

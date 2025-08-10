@@ -26,8 +26,9 @@
 		
 		<!-- 右側的題目區域 -->
 		<template #content>
-			<div class="ts-content">
-				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" :displayMode="2"></Problem>
+			<div class="ts-content hide-problem-score">
+				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" showAnswer showContent>
+				</Problem>
 			</div>
 		</template>
 		

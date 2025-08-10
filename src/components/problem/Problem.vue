@@ -2,20 +2,23 @@
 	<div class="ts-wrap is-vertical">
 		
 		<!-- 題目 -->
-		<div class="ran-problem-font" :class="{ 'hide-problem-score': displayMode === 2 }">
+		<div class="ran-problem-font">
 			<component :is="sectionAsyncComp"></component>
 		</div>
 		
-		<!-- 若顯示模式為 1, 會顯示綠框答案和詳解連結 -->
-		<div v-if="isLinkMode()" class="ts-wrap">
-			<AnswerBox :answerLatex="answerLatex"></AnswerBox><!-- 綠色答案框 -->
-			<RanLink class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`">詳解</RanLink><!-- 詳解連結-->
-		</div>
-		
-		<!-- 若顯示模式為 2, 會顯示綠框答案和詳解 -->
-		<div v-else-if="isContentMode()" class="ts-wrap is-compact is-vertical content">
-			<AnswerBox :answerLatex="answerLatex"></AnswerBox><!-- 綠色答案框 -->
-			<template v-for="(contentConfig, i) in problemConfig.contentConfigs">
+		<div v-if="props.no[0] !== '-'" class="ts-wrap is-compact is-vertical content"><!-- 開頭為 "-" 的 section 不是題目, 無詳解 -->
+			
+			<!-- 綠色答案框 & 詳解連結 -->
+			<div class="ts-wrap">
+				<AnswerBox v-if="showAnswer" :answerLatex="props.problemConfig.answerLatex ?? '?'"><!-- 綠色答案框 -->
+				</AnswerBox>
+				<RanLink v-if="showLink" class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`"><!-- 詳解連結-->
+					詳解
+				</RanLink>
+			</div>
+			
+			<!-- 多個 content box (包含詳解) -->
+			<template v-if="showContent" v-for="(contentConfig, i) in problemConfig.contentConfigs">
 				
 				<!-- 詳解類型的內容區塊 -->
 				<Content v-if="contentConfig.type === 'answer'" colorStyle="blue">
@@ -34,6 +37,7 @@
 				<Content v-else colorStyle="red">錯誤的內容區塊類型 ٩(ŏ﹏ŏ、)۶</Content>
 				
 			</template>
+			
 		</div>
 		
 	</div>
@@ -51,7 +55,9 @@ const props = defineProps({
 	year: String, // 題本的民國年份
 	no: { type: String, default: "" }, // 題號
 	problemConfig: { type: Object, default: {} }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
-	displayMode: { type: Number, default: 0 }, // 顯示模式: 0顯示題目+題號 1顯示題目+題號+答案+詳解連結 2顯示題目+答案+詳解(ProblemView專用)
+	showAnswer: { type: Boolean, default: false }, // 顯示綠框答案
+	showLink: { type: Boolean, default: false }, // 顯示 "詳解" 按鈕
+	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)
 });
 
 // #region 載入題目組件
@@ -87,22 +93,11 @@ function getErrorConfigPath() { // 有錯的設定檔路徑
 }
 // #endregion
 
-// #region 若顯示模式為 1, 會顯示綠框答案和詳解連結
-const isLinkMode = () => (props.displayMode === 1 && props.no[0] != "-"); // 若 section base 開頭為 "-", 不會顯示答案和連結
-
-const answerLatex = computed(() => {
-	const s_latex = props.problemConfig.answerLatex; // 題目的答案 (latex 字串)
-	return s_latex ? s_latex : "?"; // 如果讀取不到, 預設為 "?"
-});
-// #endregion
-
-// #region 若顯示模式為 2, 會顯示綠框答案和詳解
-const isContentMode = () => (props.displayMode === 2 && props.no[0] != '-'); // 顯示模式為 2
-
+// #region 若需要顯示內容區塊 (解答)
 const contentAsyncComps = shallowRef([]); // 內容組件 ; 避免 async 造成的效能問題, 使用 shallowRef
 
 watch(() => [props.uni, props.year, props.no], async () => { // 題號改變時, 載入題目的解答和其他內容
-	if (props.displayMode !== 2) return []; // 顯示模式必須是 2, 才會載入內容區塊組件
+	if (!props.showContent) return []; // showContent 必須是 true, 才會載入內容區塊組件
 	
 	const contentConfigs = props.problemConfig.contentConfigs; // 題目的內容區塊的設定
 	if (contentConfigs === undefined || contentConfigs.length === 0) return handleContentEmpty();
@@ -151,6 +146,9 @@ function handleContentMissing(contentId) { // 內容區塊組件載入失敗時
 	background-color: var(--ts-gray-700);
 }
 .content {
-	line-height: 30px; /* 內容區塊的行距 (倍) */
+	line-height: 30px; /* 內容區塊(解答) 文字的行距 */
+}
+.content .problem-view-link {
+	line-height: 0px; /* 防止 line-height: 30px; 作用於 "詳解" 按鈕上 */
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="ts-wrap is-vertical is-center-aligned is-compact">
-				
+		
 		<!-- 搜尋框 -->
 		<div style="width: 500px" class="ts-input is-start-icon" popovertarget="dropdown-suggestions">
 			<span class="ts-icon is-magnifying-glass-icon"></span>
@@ -10,7 +10,7 @@
 		<!-- 建議列表 -->
 		<div style="width: 500px; padding: 8px;" class="ts-popover" id="dropdown-suggestions" popover>
 			
-			<!-- 建議列表 -->
+			<!-- 多個建議 tag -->
 			<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
 				<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr"
 					class="ts-wrap is-compact dropdown-suggestion"

@@ -11,5 +11,5 @@
 </template>
 
 <script setup>
-const props = defineProps([ 'answerLatex' ]); // 解答的 latex 語法 (string), 若為多個解答則為 Array<string>
+const props = defineProps([ "answerLatex" ]); // 解答的 latex 語法 (string), 若為多個解答則為 Array<string>
 </script>
