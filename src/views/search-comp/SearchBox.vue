@@ -35,7 +35,7 @@
 		
 		<!-- 搜尋框下面的已選取 tags -->
 		<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
-			<Tag v-for="tag in selectedTags" :tag="tag"></Tag>
+			<Tag v-for="(tag, i) in selectedTags" :tag="tag" @click="selectedTags.splice(i, 1)"></Tag>
 		</div>
 		
 	</div>
@@ -151,7 +151,7 @@ watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變�
 
 watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
 	emit("input-changed", text, tags);
-}, { immediate: true });
+}, { immediate: true, deep: true }); // 第一次載入 emit 和刪除 tag 分別需要 immediate 和 deep 來觸發
 </script>
 
 <style scoped>

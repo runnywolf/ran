@@ -21,10 +21,8 @@ const props = defineProps({
 const router = useRouter(); // 路由器
 
 function whenTagClicked() { // 左側 tag 被點擊
-	if (props.clickToSearch && props.tag in tagMap) { // 如果 tag 存在才跳轉
-		router.push(`/search/${props.tag}`); // 跳轉至搜尋頁面, 並自動選取這個 tag
-		document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 所以需要刪除
-	}
+	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 所以需要刪除 (這是一個機制)
+	if (props.clickToSearch && props.tag in tagMap) router.push(`/search/${props.tag}`); // 如果 tag 存在, 跳轉至搜尋頁面, 並自動選取這個 tag
 }
 </script>
 
