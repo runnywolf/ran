@@ -140,7 +140,7 @@ watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 });
 
 function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
-	selectedTags.value.push(tag); // 選取 tag
+	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 	searchText.value = ""; // 清空搜尋框
 };
 
@@ -149,7 +149,9 @@ watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變�
 	selectedTags.value = (newTag in tagMap) ? [newTag] : [];
 }, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
 
-watch([searchText, selectedTags], ([text, tags]) => emit("input-changed", text, tags)); // 當搜尋框或 tag 改變, emit text 和 tag arr
+watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
+	emit("input-changed", text, tags);
+}, { immediate: true });
 </script>
 
 <style scoped>

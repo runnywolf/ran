@@ -17,7 +17,7 @@
 			<!-- 標籤 -->
 			<div class="ts-content is-compact">
 				<div v-if="(problemConfig.tags ?? []).length > 0" class="ts-grid is-compact">
-					<Tag v-for="tag in problemConfig.tags" :tag="tag" @click="router.push(`/search/${tag}`)"></Tag>
+					<Tag v-for="tag in problemConfig.tags" :tag="tag" clickToSearch></Tag>
 				</div>
 				<div v-else class="ts-content is-center-aligned is-fitted">無標籤</div>
 			</div>

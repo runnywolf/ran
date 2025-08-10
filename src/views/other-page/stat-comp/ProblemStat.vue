@@ -22,7 +22,7 @@
 			<tbody>
 				<tr v-for="tagData in sortedTagStat">
 					<td>
-						<Tag :tag="tagData.tag"></Tag>
+						<Tag :tag="tagData.tag" clickToSearch></Tag>
 					</td>
 					<td>{{ tagData.count }}</td>
 					<td>{{ tagData.percent.toFixed(2) }}%</td>
