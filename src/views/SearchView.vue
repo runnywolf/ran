@@ -16,18 +16,22 @@
 				沒有找到符合條件的題目
 			</div>
 			<div v-else class="ts-wrap is-vertical is-center-aligned is-compact">
-				<div v-for="{ uni, year, no, config } in searchResultProblemDatas" class="ts-box" style="width: 790px;">
-					<div class="ts-content">
+				<template v-for="({ uni, year, no, config }, i) in searchResultProblemDatas" :key="`${uni}-${year}-${no}`">
+					<div v-if="i < maxResultProblemNumber" class="ts-box ts-content" style="width: 790px;">
 						<div class="problem-name">
 							<span>{{ dbConfig.uniConfigs[uni].shortName }} {{ year }} 第 {{ no }} 題</span>
 						</div>
-						<Problem :uni="uni" :year="year" :no="no" :problemConfig="config" showLink hideProblemScore></Problem>
+						<Problem :uni="uni" :year="year" :no="no" :problemConfig="config" showLink hideProblemScore>
+						</Problem>
 					</div>
-				</div>
+				</template>
 			</div>
 			
 			<!-- 顯示更多的按鈕 -->
-			<button class="ts-button is-secondary">顯示更多</button>
+			<button v-if="searchResultProblemDatas.length > maxResultProblemNumber"
+				class="ts-button is-secondary"
+				@click="maxResultProblemNumber += RESULT_LIMITS"
+			>顯示更多</button>
 			
 		</div>
 	</div>
@@ -40,7 +44,7 @@ import Problem from "@/components/problem/Problem.vue"; // 題目組件
 import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
-const RESULT_LIMITS = 10; // 搜尋結果每次最多顯示幾題
+const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
 
 async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
@@ -83,13 +87,17 @@ let problemDatas = []; // 所有題目的 config. { uni, year, no, config }
 const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
+const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
 getProblemDatas();
 
 function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	isSearching.value = true; // 顯示 "搜尋中"
+	searchResultProblemDatas.value = []; // 清空搜尋結果, 防止 "顯示更多" 按鈕顯示
+	
 	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
 	debounceTimerId = setTimeout(() => {
 		searchResultProblemDatas.value = getSearchResult(problemDatas, searchText, searchTags); // 搜尋符合的題目
+		maxResultProblemNumber.value = RESULT_LIMITS; // 重置顯示的題目數
 		isSearching.value = false; // 搜尋完成
 	}, DEBOUNCE_TIME_MS);
 }
