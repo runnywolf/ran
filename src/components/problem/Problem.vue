@@ -1,5 +1,5 @@
 <template>
-	<div class="ts-wrap is-vertical">
+	<div class="ts-wrap is-vertical" :class="{ 'hide-problem-score': hideProblemScore }">
 		
 		<!-- 題目 -->
 		<div class="ran-problem-font">
@@ -55,6 +55,7 @@ const props = defineProps({
 	year: String, // 題本的民國年份
 	no: { type: String, default: "" }, // 題號
 	problemConfig: { type: Object, default: {} }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
+	hideProblemScore: { type: Boolean, default: false }, // 是否顯示題目的配分
 	showAnswer: { type: Boolean, default: false }, // 顯示綠框答案
 	showLink: { type: Boolean, default: false }, // 顯示 "詳解" 按鈕
 	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)
