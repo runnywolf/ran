@@ -4,14 +4,14 @@
 		<!-- 左側的練習項目 -->
 		<template #sidebar>
 			<div class="ts-content is-compact ts-menu is-dense is-separated is-start-icon">
-				<router-link v-for="optionInfo in sidebarOptionList"
+				<router-link v-for="{ iconName, label, toPath } in sidebarOptionList"
 					class="item"
-					:class="{ 'is-active': route.path === optionInfo.toPath }"
-					:to="optionInfo.toPath"
+					:class="{ 'is-active': route.path === toPath }"
+					:to="toPath"
 					data-position="right"
 				>
-					<span :class="`ts-icon is-${optionInfo.iconName}-icon`"></span>
-					<span>{{ optionInfo.label }}</span>
+					<span :class="`ts-icon is-${iconName}-icon`"></span>
+					<span>{{ label }}</span>
 				</router-link>
 			</div>
 		</template>
