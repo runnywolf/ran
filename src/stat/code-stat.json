@@ -21,8 +21,8 @@
 	"exam-db": {
 		"json": {
 			"number": 27,
-			"line": 2093,
-			"sizeByte": 50514
+			"line": 2110,
+			"sizeByte": 50869
 		},
 		"vue": {
 			"number": 593,
@@ -81,8 +81,8 @@
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 153,
-			"sizeByte": 2093
+			"line": 155,
+			"sizeByte": 2114
 		},
 		"py": {
 			"number": 1,

@@ -18,6 +18,7 @@
 		},
 		"2": {
 			"answerLatex": "3",
+			"tags": [ "fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]

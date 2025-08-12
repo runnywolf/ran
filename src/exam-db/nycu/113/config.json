@@ -11,6 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\footnotesize\\text{女護士}",
+			"tags": [ "fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -26,6 +27,7 @@
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "fl", "?" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

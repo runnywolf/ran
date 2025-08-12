@@ -4,5 +4,5 @@
 	"gf": { "en": "Generating function", "zhtw": "生成函數" },
 	"ic": { "en": "Integer Composition", "zhtw": "整數分解" },
 	"fl": { "en": "Formal Logic", "zhtw": "形式邏輯" },
-	"?": { "en": "", "zhtw": "待分類" }
+	"?": { "en": "?", "zhtw": "待分類" }
 }

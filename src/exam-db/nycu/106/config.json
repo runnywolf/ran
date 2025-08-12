@@ -13,6 +13,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]

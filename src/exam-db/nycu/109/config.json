@@ -37,6 +37,7 @@
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "?", "fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

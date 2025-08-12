@@ -49,6 +49,7 @@
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
