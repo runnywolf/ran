@@ -26,7 +26,7 @@
 		},
 		"3": {
 			"answerLatex": "\\text{A}",
-			"tags": [ "gf-pfd" ],
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans", "suffix": "(特徵方程求生成函數+選項逆推)" }
 			]

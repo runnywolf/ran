@@ -38,7 +38,7 @@
 		},
 		"5": {
 			"answerLatex": "\\frac{-1}{4} \\cdot \\frac{1}{1-x} + \\frac{-1}{2} \\cdot \\frac{1}{(1-x)^2} + \\frac{7}{4} \\cdot \\frac{1}{1-3x}",
-			"tags": [ "gf-pfd" ],
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

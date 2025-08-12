@@ -24,13 +24,14 @@
 		},
 		"3": {
 			"answerLatex": "\\text{E}",
-			"tags": [ "gf-pfd" ],
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "\\text{A}",
+			"tags": [ "ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

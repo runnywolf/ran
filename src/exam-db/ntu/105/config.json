@@ -82,7 +82,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "gf-pfd" ],
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
