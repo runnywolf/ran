@@ -13,7 +13,16 @@
 				搜尋中<span class="ts-icon is-spinning is-spinner-icon is-start-spaced"></span>
 			</div>
 			<div v-else-if="searchResultProblemDatas.length === 0" class="ts-text is-center-aligned">
-				沒有找到符合條件的題目
+				<div>沒有找到符合條件的題目 (´-ω-｀)</div>
+				<button class="ts-text is-underlined" popovertarget="search-page-notice">
+					搜尋頁面注意事項
+				</button>
+				<div class="ts-popover" id="search-page-notice" popover>
+					<div class="ts-content is-dense">
+						點擊搜尋框下方的標籤，可以刪除。<br>
+						目前只支援 tag 搜尋。
+					</div>
+				</div>
 			</div>
 			<div v-else class="ts-wrap is-vertical is-center-aligned is-compact">
 				<template v-for="({ uni, year, no, config }, i) in searchResultProblemDatas" :key="`${uni}-${year}-${no}`">
