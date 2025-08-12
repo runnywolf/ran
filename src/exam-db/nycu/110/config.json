@@ -35,6 +35,7 @@
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

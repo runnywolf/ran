@@ -17,6 +17,7 @@
 		},
 		"2": {
 			"answerLatex": "",
+			"tags": [ "gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]

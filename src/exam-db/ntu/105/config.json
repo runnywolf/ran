@@ -62,6 +62,7 @@
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

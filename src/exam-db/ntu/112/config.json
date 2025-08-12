@@ -33,6 +33,7 @@
 		},
 		"4": {
 			"answerLatex": "\\text{B}",
+			"tags": [ "ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

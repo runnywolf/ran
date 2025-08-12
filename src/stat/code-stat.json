@@ -8,9 +8,9 @@
 	},
 	"components": {
 		"vue": {
-			"number": 17,
-			"line": 757,
-			"sizeByte": 33852
+			"number": 18,
+			"line": 795,
+			"sizeByte": 35776
 		},
 		"js": {
 			"number": 1,
@@ -21,13 +21,13 @@
 	"exam-db": {
 		"json": {
 			"number": 27,
-			"line": 2084,
-			"sizeByte": 50267
+			"line": 2093,
+			"sizeByte": 50514
 		},
 		"vue": {
 			"number": 593,
-			"line": 8371,
-			"sizeByte": 292005
+			"line": 8372,
+			"sizeByte": 292058
 		},
 		"webp": {
 			"number": 50,
@@ -74,15 +74,15 @@
 	"router": {
 		"js": {
 			"number": 1,
-			"line": 38,
-			"sizeByte": 2012
+			"line": 39,
+			"sizeByte": 2064
 		}
 	},
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 148,
-			"sizeByte": 2022
+			"line": 153,
+			"sizeByte": 2093
 		},
 		"py": {
 			"number": 1,
@@ -112,8 +112,13 @@
 	"views": {
 		"vue": {
 			"number": 25,
-			"line": 1388,
-			"sizeByte": 59716
+			"line": 1575,
+			"sizeByte": 68583
+		},
+		"js": {
+			"number": 1,
+			"line": 27,
+			"sizeByte": 1632
 		}
 	},
 	"docs": {
