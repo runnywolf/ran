@@ -76,6 +76,7 @@
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
+import { decodeExamIdAndGetConfig } from "./getExamConfig.js"; // 讀取題本設定檔
 import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./exam-comp/ExamInfo.vue"; // 題本資訊的組件
@@ -90,40 +91,15 @@ const year = ref(); // 題本的民國年份
 const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
-	var idParams = newExamId.split("-"); // 若路由為 exam/ntu-112, 則 id = "ntu-112", 以 "-" 字符拆分 id
-	if (idParams.length != 2) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id, 轉址回題本清單
-		handleWrongExamIdFormat(newExamId);
-		return; // 提前終止
-	}
-	const [_uni, _year] = idParams; // 題本 id 的第一個參數為 uni, 第二個參數為 year
-	
-	const examConfigFile = await import(`../../exam-db/${_uni}/${_year}/config.json`) // 讀取題本設定檔
-		.catch(() => handleExamMissing(_uni, _year)) // 若題本設定檔不存在或路徑錯誤, 報錯, 並轉址回題本清單
-	if (!examConfigFile) return; // 題本設定檔不存在, 提前終止
-	
-	uni.value = _uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
-	year.value = _year;
-	examConfig.value = examConfigFile.default; // json -> Object
+	const examData = await decodeExamIdAndGetConfig(newExamId, router); // 讀取題本設定檔
+	uni.value = examData.uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
+	year.value = examData.year;
+	examConfig.value = examData.examConfig;
 }, { immediate: true }); // 組件載入時, 做一次
-
-function handleWrongExamIdFormat(wrongExamId) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
-	console.error(`Wrong exam id format "${wrongExamId}".\n`);
-	showToast(`題本編號的形式錯誤`, ToastType.WARNING);
-	router.push("/exam"); // 轉址回題本清單
-}
-
-function handleExamMissing(_uni, _year) { // 若題本設定檔不存在或路徑錯誤
-	console.error(
-		`Exam config is not exist. (exam "${_uni}-${_year}")\n`+
-		`-> Check if src/exam-db/${_uni}/${_year}/config.json exist?\n`
-	);
-	showToast(`題本 ${_uni}-${_year} 不存在`, ToastType.ERROR);
-	router.push("/exam"); // 轉址回題本清單
-}
 // #endregion
 
 // #region 點擊 ProblemView 的題本連結, 滾動至某一題
-const FIND_PROBLEM_TIMES = 10; // 最大尋找次數, 如果題目載入太慢就不滾動
+const FIND_PROBLEM_TIMES = 20; // 最大尋找次數, 如果題目載入太慢就不滾動
 const FIND_PROBLEM_EVERY_MS = 100; // 每次尋找的時間 (ms)
 
 onMounted(() => { // dom 元素掛載好時, 嘗試滾動

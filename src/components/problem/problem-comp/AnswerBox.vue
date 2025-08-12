@@ -3,9 +3,9 @@
 		<div class="ts-wrap is-compact is-middle-aligned" style="line-height: 0;">
 			<div style="margin-top: -2px;">Ans:</div>
 			<div v-if="Array.isArray(answerLatex)" class="ts-wrap is-vertical" style="--gap: 2px"><!-- 垂直排列的多個答案 -->
-				<vl v-for="e in answerLatex" :exp="e" />
+				<vl v-for="exp in answerLatex" :exp="exp ? exp : '?'" />
 			</div>
-			<vl v-else :exp="answerLatex" /><!-- 單個答案 -->
+			<vl v-else :exp="answerLatex ? answerLatex : '?'" /><!-- 單個答案, 因為要過濾空字串, 所以用三元而不是 ?? -->
 		</div>
 	</Content>
 </template>

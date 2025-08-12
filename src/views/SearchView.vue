@@ -65,7 +65,7 @@ async function getProblemDatas() { // 所有題目的 config
 	
 	const examIdAndConfigs = await Promise.all(examIds.map(async ([uni, year]) => { // 載入所有題本的 config. { uni, year, config }
 		return import(`../exam-db/${uni}/${year}/config.json`)
-			.then(res => ({ uni, year, examConfig: res.default }));
+			.then(module => ({ uni, year, examConfig: module.default }));
 	}));
 	
 	const datas = []; // 所有題目的 config. { uni, year, no, config }

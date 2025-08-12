@@ -10,7 +10,7 @@
 			
 			<!-- 綠色答案框 & 詳解連結 -->
 			<div class="ts-wrap">
-				<AnswerBox v-if="showAnswer" :answerLatex="props.problemConfig.answerLatex ?? '?'"><!-- 綠色答案框 -->
+				<AnswerBox v-if="showAnswer" :answerLatex="props.problemConfig.answerLatex"><!-- 綠色答案框 -->
 				</AnswerBox>
 				<RanLink v-if="showLink" class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`"><!-- 詳解連結-->
 					詳解
