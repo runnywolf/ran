@@ -53,28 +53,27 @@ import Problem from "@/components/problem/Problem.vue"; // 題目組件
 import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
-const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
+const RESULT_LIMITS = 1e5; // 搜尋結果每次最多顯示幾題
 
 async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
 	
-	const examIds = []; // 所有題本的 { uni, year }
-	for (const [uni, { yearList }] of Object.entries(dbConfig.uniConfigs)) {
-		for (const year of yearList) examIds.push([uni, year]);
-	}
+	const examIdAndConfigs = await Promise.all(Object.entries(dbConfig.uniConfigs).flatMap( // 載入所有題本的 config. { uni, year, config }
+		([uni, { yearList }]) => yearList.map(
+			year => import(`../exam-db/${uni}/${year}/config.json`)
+				.then(module => ({ uni, year, examConfig: module.default }))
+		)
+	));
 	
-	const examIdAndConfigs = await Promise.all(examIds.map(async ([uni, year]) => { // 載入所有題本的 config. { uni, year, config }
-		return import(`../exam-db/${uni}/${year}/config.json`)
-			.then(module => ({ uni, year, examConfig: module.default }));
-	}));
-	
-	const datas = []; // 所有題目的 config. { uni, year, no, config }
-	for (const { uni, year, examConfig } of examIdAndConfigs) {
-		for (const [no, problemConfig] of Object.entries(examConfig.problemConfigs)) {
-			datas.push({ uni, year, no, config: problemConfig });
-		}
-	}
-	problemDatas = datas;
+	problemDatas = await Promise.all(examIdAndConfigs.flatMap(
+		({ uni, year, examConfig }) => Object.entries(examConfig.problemConfigs).map(
+			([no, problemConfig]) => ({ uni, year, no, problemConfig })
+			/*
+			import(`../exam-db/${uni}/${year}/sections/${no}.vue?raw`)
+				.then(module => ({ uni, year, no, problemConfig, problemText: module.default }))
+			*/
+		)
+	))
 	
 	isGettingDb.value = false; // 讀取完成
 }
@@ -85,14 +84,15 @@ function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋
 	
 	const searchResult = []; // 搜尋結果
 	for (const problemData of problemDatas) { // 篩選題目
-		const problemTags = problemData.config.tags ?? []; // 題目的 tag
-		if (problemTags.some(tag => searchTags.includes(tag))) searchResult.push(problemData);
+		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
+		// if (problemTags.some(tag => searchTags.includes(tag))) searchResult.push(problemData);
+		if (problemTags.length === 0) searchResult.push(problemData); // debug
 	}
 	return searchResult;
 }
 
 let debounceTimerId = null; // 防抖
-let problemDatas = []; // 所有題目的 config. { uni, year, no, config }
+let problemDatas = []; // 所有題目的 config. { uni, year, no, problemConfig, problemText }
 const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
