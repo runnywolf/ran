@@ -18,6 +18,7 @@
 		},
 		"2": {
 			"answerLatex": "(i^{j})^{n^m}",
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -45,30 +46,35 @@
 		},
 		"6": {
 			"answerLatex": "\\text{See prove}",
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "8, 1, 7, 0, 2",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "2, 1, 1, 0, 1",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "0, 0, 10, 4, 2",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "1, 2, 16, 1, 0",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans-1", "suffix": "(SVD 分解)" },
 				{ "type": "answer", "fileBaseName": "10-ans-2", "suffix": "(慢慢湊)" }
@@ -76,6 +82,7 @@
 		},
 		"11": {
 			"answerLatex": "12, 2, 0, 2, 0",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

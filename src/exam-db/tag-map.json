@@ -1,10 +1,10 @@
 {
 	"la": {
-		"en": "Linear Algebra", "zhtw": "線性代數",
+		"en": "Linear algebra", "zhtw": "線性代數",
 		"children": {
 			"m": { "en": "Matrix", "zhtw": "矩陣" },
-			"vs": { "en": "Vector Space", "zhtw": "向量空間" },
-			"ev": { "en": "Eigenvalues and Eigenvectors", "zhtw": "特徵值" },
+			"vs": { "en": "Vector space", "zhtw": "向量空間" },
+			"ev": { "en": "Eigenvalues and Eigenvectors", "zhtw": "特徵值與向量" },
 			"ips": { "en": "Inner product space", "zhtw": "內積空間" }
 		}
 	},
@@ -17,18 +17,21 @@
 					"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
 					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
 					"gf": { "en": "Generating function", "zhtw": "生成函數" },
-					"ic": { "en": "Integer Composition", "zhtw": "整數分解" }
+					"ic": { "en": "Integer composition", "zhtw": "整數分解" },
+					"bc": { "en": "Binomial coefficient", "zhtw": "二項式係數" }
 				}
 			},
 			"st": {
-				"en": "Set Theory", "zhtw": "集合論",
+				"en": "Set theory", "zhtw": "集合論",
 				"children": {
+					"f": { "en": "Function", "zhtw": "函數" },
 					"br": { "en": "Binary relation", "zhtw": "二元關係" }
 				}
 			},
+			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"gt": { "en": "Graph theory", "zhtw": "圖論" },
-			"fl": { "en": "Formal Logic", "zhtw": "形式邏輯" },
-			"as": { "en": "Algebraic Structures", "zhtw": "代數結構" },
+			"nt": { "en": "Number theory", "zhtw": "數論" },
+			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},

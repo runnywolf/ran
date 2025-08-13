@@ -54,6 +54,7 @@
 		},
 		"7": {
 			"answerLatex": "\\text{ABE}",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -63,18 +64,21 @@
 				"\\text{(A)}~ \\!\\begin{bmatrix} 2 & 0 & \\frac{2}{3} & 0 \\\\ 0 & \\frac{2}{3} & 0 & \\frac{2}{5} \\\\ \\frac{2}{3} & 0 & \\frac{2}{5} & 0 \\\\ 0 & \\frac{2}{5} & 0 & \\frac{2}{7} \\end{bmatrix}",
 				"\\text{(B)}~ \\dfrac{20}{9} \\rule{0em}{2em}"
 			],
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "(1-a^2)^n",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "2",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

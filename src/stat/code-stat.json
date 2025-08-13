@@ -21,13 +21,13 @@
 	"exam-db": {
 		"json": {
 			"number": 27,
-			"line": 2180,
-			"sizeByte": 53097
+			"line": 2254,
+			"sizeByte": 55231
 		},
 		"vue": {
 			"number": 593,
 			"line": 8372,
-			"sizeByte": 292061
+			"sizeByte": 292151
 		},
 		"webp": {
 			"number": 50,
@@ -81,8 +81,8 @@
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 239,
-			"sizeByte": 3182
+			"line": 249,
+			"sizeByte": 3316
 		},
 		"py": {
 			"number": 1,
@@ -112,8 +112,8 @@
 	"views": {
 		"vue": {
 			"number": 26,
-			"line": 1615,
-			"sizeByte": 70754
+			"line": 1616,
+			"sizeByte": 70840
 		},
 		"js": {
 			"number": 1,
