@@ -11,35 +11,35 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{B}",
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "\\text{C}",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "\\text{E}",
-			"tags": [ "gf" ],
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "\\text{A}",
-			"tags": [ "ic" ],
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\text{C}",
-			"tags": [ "br" ],
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

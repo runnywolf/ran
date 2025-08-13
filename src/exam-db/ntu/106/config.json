@@ -41,21 +41,21 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "br" ],
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "fl" ],
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
@@ -68,7 +68,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

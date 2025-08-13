@@ -11,14 +11,14 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{odd} ~~;~~ 2",
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "\\log_2{3}",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]

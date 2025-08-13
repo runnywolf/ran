@@ -1,10 +1,36 @@
 {
-	"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
-	"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
-	"gf": { "en": "Generating function", "zhtw": "生成函數" },
-	"ic": { "en": "Integer Composition", "zhtw": "整數分解" },
-	"fl": { "en": "Formal Logic", "zhtw": "形式邏輯" },
-	"gt": { "en": "Graph theory", "zhtw": "圖論" },
-	"br": { "en": "Binary relation", "zhtw": "二元關係" },
+	"la": {
+		"en": "Linear Algebra", "zhtw": "線性代數",
+		"children": {
+			"m": { "en": "Matrix", "zhtw": "矩陣" },
+			"vs": { "en": "Vector Space", "zhtw": "向量空間" },
+			"ev": { "en": "Eigenvalues and Eigenvectors", "zhtw": "特徵值" },
+			"ips": { "en": "Inner product space", "zhtw": "內積空間" }
+		}
+	},
+	"dm": {
+		"en": "Discrete mathematics", "zhtw": "離散數學",
+		"children": {
+			"c": {
+				"en": "Combinatorics", "zhtw": "排列組合",
+				"children": {
+					"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
+					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
+					"gf": { "en": "Generating function", "zhtw": "生成函數" },
+					"ic": { "en": "Integer Composition", "zhtw": "整數分解" }
+				}
+			},
+			"st": {
+				"en": "Set Theory", "zhtw": "集合論",
+				"children": {
+					"br": { "en": "Binary relation", "zhtw": "二元關係" }
+				}
+			},
+			"gt": { "en": "Graph theory", "zhtw": "圖論" },
+			"fl": { "en": "Formal Logic", "zhtw": "形式邏輯" },
+			"as": { "en": "Algebraic Structures", "zhtw": "代數結構" },
+			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
+		}
+	},
 	"?": { "en": "?", "zhtw": "待分類" }
 }

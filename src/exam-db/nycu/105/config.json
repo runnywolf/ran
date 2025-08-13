@@ -59,7 +59,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "fl", "?", "?" ],
+			"tags": [ "dm-fl", "?", "?" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -78,7 +78,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "gt", "?" ],
+			"tags": [ "dm-gt", "?" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
@@ -90,7 +90,7 @@
 				"\\text{(c) }~ a_n^{(p)} = {-n^2} + n^3",
 				"\\text{(d) }~ a_n = 5 + 5n - n^2 + n^3"
 			],
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]

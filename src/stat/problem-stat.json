@@ -4,13 +4,14 @@
 	"problemNumber": 276,
 	"problemHasAnswerNumber": 88,
 	"tagsNumber": {
-		"gt": 28,
-		"fl": 15,
-		"br": 12,
-		"rr": 15,
-		"gf": 14,
-		"ic": 7,
+		"dm-gt": 28,
+		"dm-fl": 15,
+		"dm-st-br": 12,
+		"dm-c-rr": 15,
+		"dm-c-gf": 14,
+		"dm-c-ic": 7,
 		"?": 8,
-		"rd": 2
+		"dm-c-rd": 2,
+		"dm-fsm": 2
 	}
 }

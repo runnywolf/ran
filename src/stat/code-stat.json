@@ -9,8 +9,8 @@
 	"components": {
 		"vue": {
 			"number": 18,
-			"line": 795,
-			"sizeByte": 35776
+			"line": 808,
+			"sizeByte": 36781
 		},
 		"js": {
 			"number": 1,
@@ -21,8 +21,8 @@
 	"exam-db": {
 		"json": {
 			"number": 27,
-			"line": 2152,
-			"sizeByte": 51877
+			"line": 2180,
+			"sizeByte": 53097
 		},
 		"vue": {
 			"number": 593,
@@ -81,8 +81,8 @@
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 156,
-			"sizeByte": 2127
+			"line": 157,
+			"sizeByte": 2140
 		},
 		"py": {
 			"number": 1,

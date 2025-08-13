@@ -17,7 +17,7 @@
 		},
 		"2": {
 			"answerLatex": "(1-x^{n+1})(1-x)^{-1}",
-			"tags": [ "gf" ],
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -30,7 +30,7 @@
 		},
 		"4": {
 			"answerLatex": "a_n = 1 + 2 \\cdot 3^n",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

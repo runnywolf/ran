@@ -15,14 +15,14 @@
 				"\\text{(b)}~ \\bigwedge\\limits_{i=1}^{7} ~ \\bigvee\\limits_{j=1}^{6} Y(j, i) \\rule{0em}{2em}",
 				"\\text{(c)}~ \\lnot B(i, j) \\to \\Big( R(i, j) \\land \\lnot Y(i, j) \\Big) \\lor \\Big( \\lnot R(i, j) \\land Y(i, j) \\Big) \\rule{0em}{1.8em}"
 			],
-			"tags": [ "fl" ],
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": [ "\\text{(a) } 1,2,5", "\\text{(b) See prove}" ],
-			"tags": [ "fl", "?" ],
+			"tags": [ "dm-fl", "?" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -35,14 +35,14 @@
 		},
 		"4": {
 			"answerLatex": [ "\\text{(a) No}", "\\text{(b) No}", "\\text{(c) No}", "\\text{(d) No},~ 10" ],
-			"tags": [ "br" ],
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": [ "\\text{(a) Yes}", "\\text{(b) See answer}" ],
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

@@ -62,7 +62,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "ic" ],
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -75,21 +75,21 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "gf" ],
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
 		},
 		"13": {
 			"answerLatex": "",
-			"tags": [ "gf" ],
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]
@@ -102,7 +102,7 @@
 		},
 		"15": {
 			"answerLatex": "",
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

@@ -17,7 +17,7 @@
 		},
 		"2": {
 			"answerLatex": "4",
-			"tags": [ "fl" ],
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -30,14 +30,14 @@
 		},
 		"4": {
 			"answerLatex": "a_n = (-4)^n + 2 \\cdot 3^n",
-			"tags": [ "rr" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "4 ~~;~~ 4 ~~;~~ \\text{no} ~~;~~ \\text{yes}",
-			"tags": [ "gt" ],
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans-1", "suffix": "(Chromatic number)" },
 				{ "type": "answer", "fileBaseName": "5-ans-2", "suffix": "(Maximum independent set)" },
