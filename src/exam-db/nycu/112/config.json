@@ -94,12 +94,14 @@
 		},
 		"9-1": {
 			"answerLatex": "",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-1-ans" }
 			]
 		},
 		"9-2": {
 			"answerLatex": "",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-2-ans" }
 			]

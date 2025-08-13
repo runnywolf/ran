@@ -3,7 +3,7 @@
 		題目統計
 		<span
 			class="ts-icon is-circle-exclamation-icon is-start-spaced"
-			data-tooltip="一題有可能有多個標籤，所以占比實際上是出現的機率。"
+			data-tooltip="一題有可能有多個標籤，所以占比實際上是出現的機率。請不要拿這份資料預測未來考題。"
 		></span>
 	</div>
 	<div class="ts-text" style="margin-bottom: 8px;">

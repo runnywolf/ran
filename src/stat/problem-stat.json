@@ -4,11 +4,12 @@
 	"problemNumber": 276,
 	"problemHasAnswerNumber": 88,
 	"tagsNumber": {
+		"gt": 28,
 		"fl": 15,
 		"rr": 15,
 		"gf": 14,
 		"ic": 7,
-		"?": 5,
+		"?": 7,
 		"rd": 2
 	}
 }

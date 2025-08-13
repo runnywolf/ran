@@ -37,6 +37,7 @@
 		},
 		"5": {
 			"answerLatex": "4 ~~;~~ 4 ~~;~~ \\text{no} ~~;~~ \\text{yes}",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans-1", "suffix": "(Chromatic number)" },
 				{ "type": "answer", "fileBaseName": "5-ans-2", "suffix": "(Maximum independent set)" },

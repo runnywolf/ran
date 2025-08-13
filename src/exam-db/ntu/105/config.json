@@ -102,6 +102,7 @@
 		},
 		"15": {
 			"answerLatex": "",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

@@ -25,6 +25,7 @@
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

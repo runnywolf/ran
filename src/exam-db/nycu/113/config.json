@@ -46,6 +46,7 @@
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

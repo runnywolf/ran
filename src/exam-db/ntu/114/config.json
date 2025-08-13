@@ -11,6 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{CD}",
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" },
 				{ "type": "default", "fileBaseName": "1-note" }

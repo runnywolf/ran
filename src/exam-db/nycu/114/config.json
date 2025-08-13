@@ -41,6 +41,7 @@
 		},
 		"5": {
 			"answerLatex": [ "\\text{(a) Yes}", "\\text{(b) See answer}" ],
+			"tags": [ "gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
