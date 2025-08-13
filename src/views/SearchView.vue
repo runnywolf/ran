@@ -24,23 +24,8 @@
 					</div>
 				</div>
 			</div>
-			<div v-else class="ts-wrap is-vertical is-center-aligned is-compact">
-				<template v-for="({ uni, year, no, problemConfig }, i) in searchResultProblemDatas" :key="`${uni}-${year}-${no}`">
-					<div v-if="i < maxResultProblemNumber" class="ts-box ts-content" style="width: 790px;">
-						
-						<div class="ts-wrap is-top-aligned">
-							<div class="problem-name"><!-- 題號 -->
-								<span>{{ dbConfig.uniConfigs[uni].shortName }} {{ year }} 第 {{ no }} 題</span>
-							</div>
-							<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag><!-- tags -->
-						</div>
-						
-						<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" showLink hideProblemScore>
-						</Problem><!-- 題目預覽 -->
-						
-					</div>
-				</template>
-			</div>
+			<SearchResults v-else :problemDatas="searchResultProblemDatas" :maxDisplayNumber="maxResultProblemNumber">
+			</SearchResults>
 			
 			<!-- 顯示更多的按鈕 -->
 			<button v-if="searchResultProblemDatas.length > maxResultProblemNumber"
@@ -55,12 +40,11 @@
 <script setup>
 import { ref } from "vue";
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
-import Problem from "@/components/problem/Problem.vue"; // 題目組件
-import Tag from "@/components/problem/Tag.vue"; // tag 組件
+import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
 import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
-const RESULT_LIMITS = 1e5; // 搜尋結果每次最多顯示幾題
+const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
 
 async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
@@ -121,15 +105,3 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	}, DEBOUNCE_TIME_MS);
 }
 </script>
-
-<style scoped>
-.problem-name { /* 某學校某年第幾題的樣式 */
-	margin-bottom: 10px;
-}
-.problem-name > span {
-	display: inline-block;
-	padding: 0 6px;
-	background-color: #bdf;
-	border-radius: 4px;
-}
-</style>
