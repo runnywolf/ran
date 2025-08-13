@@ -4,14 +4,95 @@
 	"problemNumber": 276,
 	"problemHasAnswerNumber": 88,
 	"tagsNumber": {
-		"dm-gt": 28,
-		"dm-fl": 15,
-		"dm-st-br": 12,
-		"dm-c-rr": 15,
-		"dm-c-gf": 14,
-		"dm-c-ic": 7,
-		"?": 8,
-		"dm-c-rd": 2,
-		"dm-fsm": 2
+		"la": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"la-m": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"la-vs": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"la-ev": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"la-ips": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"dm": {
+			"ntu": 42,
+			"nycu": 39,
+			"ncku": 14
+		},
+		"dm-c": {
+			"ntu": 25,
+			"nycu": 6,
+			"ncku": 7
+		},
+		"dm-c-rd": {
+			"ntu": 0,
+			"nycu": 2,
+			"ncku": 0
+		},
+		"dm-c-rr": {
+			"ntu": 10,
+			"nycu": 2,
+			"ncku": 3
+		},
+		"dm-c-gf": {
+			"ntu": 8,
+			"nycu": 2,
+			"ncku": 4
+		},
+		"dm-c-ic": {
+			"ntu": 7,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"dm-st": {
+			"ntu": 4,
+			"nycu": 8,
+			"ncku": 0
+		},
+		"dm-st-br": {
+			"ntu": 4,
+			"nycu": 8,
+			"ncku": 0
+		},
+		"dm-gt": {
+			"ntu": 9,
+			"nycu": 14,
+			"ncku": 5
+		},
+		"dm-fl": {
+			"ntu": 4,
+			"nycu": 11,
+			"ncku": 0
+		},
+		"dm-as": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"dm-fsm": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 2
+		},
+		"?": {
+			"ntu": 0,
+			"nycu": 6,
+			"ncku": 1
+		}
 	}
 }

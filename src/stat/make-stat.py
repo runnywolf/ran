@@ -38,7 +38,16 @@ def make_code_stat_json() -> None: # 生成程式碼的統計
 	with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
 		json.dump(all_stat, f, ensure_ascii=False, indent="\t")
 
-def update_problem_stat(stat: dict, exam_config: dict) -> None: # 根據 problem stat 的參考, 更新 stat 的值
+def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-map.json 扁平化為 tag arr
+	sub_tags = [prefix] if prefix else [] # 排除遞迴造成的空字串 tag
+	
+	for key, child_node in tag_node.get("children", {}).items():
+		new_prefix = f"{prefix}-{key}" if prefix else key # 防止 "-xxx-xxx" (開頭為 "-")
+		sub_tags.extend(get_flat_tags(new_prefix, child_node)) # 將父 tag node 的 tag 前綴接上所有子目錄的 sub tag
+	
+	return sub_tags
+
+def update_problem_stat(stat: dict, exam_config: dict, uni: str) -> None: # 根據 problem stat 的參考, 更新 stat 的值
 	stat["examNumber"] += 1
 	stat["answerCompleteExamNumber"] += 1 if exam_config["isAnswerComplete"] else 0
 	stat["problemNumber"] += len(exam_config["problemConfigs"])
@@ -49,25 +58,29 @@ def update_problem_stat(stat: dict, exam_config: dict) -> None: # 根據 problem
 	for problem_config in exam_config["problemConfigs"].values():
 		if "tags" not in problem_config: continue # 如果某個 problem config 內的 key "tags" 沒有被添加, 代表這題沒標籤, skip
 		
-		for tag in problem_config["tags"]: # 遍歷所有 tag
-			if tag not in stat["tagsNumber"]: stat["tagsNumber"][tag] = 0 # 如果 tag 沒在 dict 裡, 新建一個
-			stat["tagsNumber"][tag] += 1 # 計數器 +1
+		for stat_tag, dict_numbers in stat["tagsNumber"].items():
+			if any(stat_tag in tag for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-map 中
+				dict_numbers[uni] += 1 # 將該 tag 的學校計數 +1
 
 def make_problem_stat_json() -> None: # 生成題目的統計
 	with open(SRC_PATH/"exam-db"/"config.json", "r", encoding="utf-8") as f: # 讀取 db config
 		db_config = json.load(f)
+	
+	with open(SRC_PATH/"exam-db"/"tag-map.json", "r", encoding="utf-8") as f: # 讀取標籤映射
+		tag_map = json.load(f)
+		tags = get_flat_tags(tag_node={ "children": tag_map })
 	
 	stat = {
 		"examNumber": 0, # 題本數
 		"answerCompleteExamNumber": 0, # 完整詳解的題本數
 		"problemNumber": 0, # 題目數
 		"problemHasAnswerNumber": 0, # 有答案的題目數
-		"tagsNumber": {}, # 標籤數
+		"tagsNumber": { tag: dict.fromkeys(db_config["uniList"], 0) for tag in tags }, # 標籤數 (包含學校資訊)
 	}
 	for uni, uni_config in db_config["uniConfigs"].items():
 		for year in uni_config["yearList"]: # 讀取每份題本
 			with open(SRC_PATH/"exam-db"/uni/year/"config.json", "r", encoding="utf-8") as f: # 讀取題本設定檔
-				update_problem_stat(stat, json.load(f)) # 更新 stat
+				update_problem_stat(stat, json.load(f), uni) # 更新 stat
 	
 	with open(SRC_PATH/"stat"/"problem-stat.json", "w", encoding="utf-8") as f: # write json
 		json.dump(stat, f, ensure_ascii=False, indent="\t")
