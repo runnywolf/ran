@@ -25,13 +25,19 @@
 				</div>
 			</div>
 			<div v-else class="ts-wrap is-vertical is-center-aligned is-compact">
-				<template v-for="({ uni, year, no, config }, i) in searchResultProblemDatas" :key="`${uni}-${year}-${no}`">
+				<template v-for="({ uni, year, no, problemConfig }, i) in searchResultProblemDatas" :key="`${uni}-${year}-${no}`">
 					<div v-if="i < maxResultProblemNumber" class="ts-box ts-content" style="width: 790px;">
-						<div class="problem-name">
-							<span>{{ dbConfig.uniConfigs[uni].shortName }} {{ year }} 第 {{ no }} 題</span>
+						
+						<div class="ts-wrap is-top-aligned">
+							<div class="problem-name"><!-- 題號 -->
+								<span>{{ dbConfig.uniConfigs[uni].shortName }} {{ year }} 第 {{ no }} 題</span>
+							</div>
+							<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag><!-- tags -->
 						</div>
-						<Problem :uni="uni" :year="year" :no="no" :problemConfig="config" showLink hideProblemScore>
-						</Problem>
+						
+						<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" showLink hideProblemScore>
+						</Problem><!-- 題目預覽 -->
+						
 					</div>
 				</template>
 			</div>
@@ -50,6 +56,7 @@
 import { ref } from "vue";
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import Problem from "@/components/problem/Problem.vue"; // 題目組件
+import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
@@ -68,7 +75,7 @@ async function getProblemDatas() { // 所有題目的 config
 	problemDatas = await Promise.all(examIdAndConfigs.flatMap(
 		({ uni, year, examConfig }) => Object.entries(examConfig.problemConfigs).map(
 			([no, problemConfig]) => ({ uni, year, no, problemConfig })
-			/*
+			/* 目前不支援題目內容搜尋
 			import(`../exam-db/${uni}/${year}/sections/${no}.vue?raw`)
 				.then(module => ({ uni, year, no, problemConfig, problemText: module.default }))
 			*/
@@ -78,6 +85,10 @@ async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = false; // 讀取完成
 }
 
+function matchesAllSearchTags(problemTag, searchTags) { // 題目的某個 tag 是否符合搜尋 tag
+	return searchTags.some(tag => problemTag.includes(tag)); // 存在至少一個搜尋 tag 是題目 tag 的子目錄
+}
+
 function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋結果
 	if (!problemDatas) return []; // exam-db 未載入完成, return []
 	if (!searchText && searchTags.length === 0) return []; // 沒有搜尋條件, return []
@@ -85,8 +96,7 @@ function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋
 	const searchResult = []; // 搜尋結果
 	for (const problemData of problemDatas) { // 篩選題目
 		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
-		// if (problemTags.some(tag => searchTags.includes(tag))) searchResult.push(problemData);
-		if (problemTags.length === 0) searchResult.push(problemData); // debug
+		if (problemTags.some(tag => matchesAllSearchTags(tag, searchTags))) searchResult.push(problemData);
 	}
 	return searchResult;
 }

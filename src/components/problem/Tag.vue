@@ -35,7 +35,6 @@ function searchTagNode(segments, tagNode = { children: tagMap }) { // 消耗 seg
 }
 
 function whenTagClicked() { // 左側 tag 被點擊
-	console.log("test")
 	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 所以需要刪除 (這是一個機制)
 	if (props.clickToSearch && props.tag in tagMap) router.push(`/search/${props.tag}`); // 如果 tag 存在, 跳轉至搜尋頁面, 並自動選取這個 tag
 }

@@ -50,6 +50,14 @@ import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
 
+function getAllTagDatas(prefix = "", tagNode = { children: tagMap }) { // 將 tag-map.json 扁平化為 arr: { tag, enTag, zhtwTag }
+	const subTags = prefix ? [{ tag: prefix, enTag: tagNode.en, zhtwTag: tagNode.zhtw }] : []; // 排除遞迴造成的空字串 tag
+	Object.entries(tagNode.children ?? {}).forEach(([key, childNode]) => { // 將父 tag node 的 tag 前綴接上所有子目錄的 sub tag
+		subTags.push(...getAllTagDatas(prefix ? `${prefix}-${key}` : key, childNode)); // 防止 "-xxx-xxx" (開頭為 "-")
+	});
+	return subTags;
+}
+
 function strEqualIgnoreCase(str_a, str_b) { // 忽略大小寫的字串比較
 	return str_a.toLowerCase() === str_b.toLowerCase();
 }
@@ -103,7 +111,7 @@ function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square
 
 function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成建議列表的顯示資料 (依據 LCS-RSS 降序排列)
 	let lcsDataArr = [];
-	for (let [tag, { en: enTag, zhtw: zhtwTag }] of Object.entries(tagMap)) { // 遍歷所有 tag 的中/英文
+	for (let { tag, enTag, zhtwTag } of tagDatas) { // 遍歷所有 tag 的中/英文
 		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
 		
 		const enTagLcsSubstrs = getLcsSubstrs(enTag, lcs(enTag, searchText)); // 尋找 lcs 的子字串
@@ -126,6 +134,7 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 
 const emit = defineEmits([ "input-changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr
 
+const tagDatas = getAllTagDatas(); // 將 tag-map.json 扁平化為 arr: { tag, enTag, zhtwTag }
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
@@ -146,7 +155,7 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 
 const route = useRoute(); // 路由
 watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
-	selectedTags.value = (newTag in tagMap) ? [newTag] : [];
+	selectedTags.value = tagDatas.some(({ tag }) => tag === newTag) ? [newTag] : [];
 }, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
 
 watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
