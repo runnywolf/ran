@@ -5,5 +5,6 @@
 	"ic": { "en": "Integer Composition", "zhtw": "整數分解" },
 	"fl": { "en": "Formal Logic", "zhtw": "形式邏輯" },
 	"gt": { "en": "Graph theory", "zhtw": "圖論" },
+	"br": { "en": "Binary relation", "zhtw": "二元關係" },
 	"?": { "en": "?", "zhtw": "待分類" }
 }

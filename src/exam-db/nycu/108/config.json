@@ -68,6 +68,7 @@
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

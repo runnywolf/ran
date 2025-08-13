@@ -39,6 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

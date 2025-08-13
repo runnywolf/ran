@@ -11,6 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]

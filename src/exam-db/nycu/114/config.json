@@ -35,6 +35,7 @@
 		},
 		"4": {
 			"answerLatex": [ "\\text{(a) No}", "\\text{(b) No}", "\\text{(c) No}", "\\text{(d) No},~ 10" ],
+			"tags": [ "br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
