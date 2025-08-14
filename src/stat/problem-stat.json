@@ -6,38 +6,38 @@
 	"tagsNumber": {
 		"la": {
 			"ntu": 54,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 52,
+			"ncku": 22
 		},
 		"la-m": {
 			"ntu": 24,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 21,
+			"ncku": 3
 		},
 		"la-vs": {
 			"ntu": 18,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 13,
+			"ncku": 6
 		},
 		"la-ev": {
 			"ntu": 20,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 13,
+			"ncku": 8
 		},
 		"la-ips": {
 			"ntu": 10,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 16,
+			"ncku": 7
 		},
 		"dm": {
 			"ntu": 60,
-			"nycu": 39,
-			"ncku": 14
+			"nycu": 68,
+			"ncku": 22
 		},
 		"dm-c": {
 			"ntu": 32,
-			"nycu": 6,
-			"ncku": 7
+			"nycu": 17,
+			"ncku": 10
 		},
 		"dm-c-rd": {
 			"ntu": 0,
@@ -46,7 +46,7 @@
 		},
 		"dm-c-rr": {
 			"ntu": 10,
-			"nycu": 2,
+			"nycu": 5,
 			"ncku": 3
 		},
 		"dm-c-gf": {
@@ -61,22 +61,22 @@
 		},
 		"dm-c-bc": {
 			"ntu": 5,
-			"nycu": 0,
+			"nycu": 1,
 			"ncku": 0
 		},
 		"dm-st": {
 			"ntu": 9,
-			"nycu": 8,
-			"ncku": 0
+			"nycu": 16,
+			"ncku": 4
 		},
 		"dm-st-f": {
 			"ntu": 3,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 2,
+			"ncku": 2
 		},
 		"dm-st-br": {
 			"ntu": 5,
-			"nycu": 8,
+			"nycu": 10,
 			"ncku": 0
 		},
 		"dm-fl": {
@@ -91,8 +91,8 @@
 		},
 		"dm-nt": {
 			"ntu": 2,
-			"nycu": 0,
-			"ncku": 0
+			"nycu": 9,
+			"ncku": 3
 		},
 		"dm-as": {
 			"ntu": 2,
@@ -106,8 +106,8 @@
 		},
 		"?": {
 			"ntu": 0,
-			"nycu": 6,
-			"ncku": 1
+			"nycu": 0,
+			"ncku": 0
 		}
 	}
 }

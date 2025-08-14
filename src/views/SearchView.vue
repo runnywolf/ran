@@ -44,7 +44,7 @@ import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結�
 import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
-const RESULT_LIMITS = 1e5; // [debug] 搜尋結果每次最多顯示幾題
+const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
 
 async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
@@ -80,8 +80,7 @@ function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋
 	const searchResult = []; // 搜尋結果
 	for (const problemData of problemDatas) { // 篩選題目
 		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
-		if (problemTags.length === 0) searchResult.push(problemData);
-		// [debug] if (problemTags.some(tag => matchesAllSearchTags(tag, searchTags))) searchResult.push(problemData);
+		if (problemTags.some(tag => matchesAllSearchTags(tag, searchTags))) searchResult.push(problemData);
 	}
 	return searchResult;
 }

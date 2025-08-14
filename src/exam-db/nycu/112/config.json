@@ -14,35 +14,41 @@
 	"problemConfigs": {
 		"1-1": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-1-ans" }
 			]
 		},
 		"1-2": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-2-ans" }
 			]
 		},
 		"1-3": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-3-ans" }
 			]
 		},
 		"1-4": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-4-ans" }
 			]
 		},
 		"2-1": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-1-ans" }
 			]
 		},
 		"2-2": {
+			"tags": [ "la-ev" ],
 			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-2-ans" }
@@ -50,12 +56,14 @@
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
@@ -69,12 +77,14 @@
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
