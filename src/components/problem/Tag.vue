@@ -16,10 +16,10 @@ const props = defineProps({
 }); // 題目的標籤
 
 const router = useRouter(); // 路由器
-const tagNodeArr = computed(() => getTagTreeSearchPath(props.tag)); // tag 在 tag-tree 的路徑
+const tagNodeArr = computed(() => getTagTreeSearchPath(props.tag)); // tag 在 tag tree 的路徑
 const tagName = computed(() => { // 標籤顯示的中/英文
 	const arr = tagNodeArr.value;
-	if (arr.length === 0) return { en: "Unknown", zhtw: "未知" }; // tag 不存在於 tag-tree 目錄內
+	if (arr.length === 0) return { en: "Unknown", zhtw: "未知" }; // tag 不存在於 tag tree 目錄內
 	
 	let tagEnTooltip = arr[0].en;
 	for (let i = 1; i < arr.length; i++) tagEnTooltip += `\n${"-".repeat(i)} ${arr[i].en}`; // 英文 tag 名的目錄結構
