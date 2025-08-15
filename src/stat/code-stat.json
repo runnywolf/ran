@@ -24,6 +24,11 @@
 			"line": 2364,
 			"sizeByte": 58144
 		},
+		"js": {
+			"number": 1,
+			"line": 0,
+			"sizeByte": 0
+		},
 		"vue": {
 			"number": 593,
 			"line": 8372,
@@ -82,7 +87,7 @@
 		"json": {
 			"number": 2,
 			"line": 254,
-			"sizeByte": 3381
+			"sizeByte": 3391
 		},
 		"py": {
 			"number": 1,
@@ -112,8 +117,8 @@
 	"views": {
 		"vue": {
 			"number": 26,
-			"line": 1616,
-			"sizeByte": 70840
+			"line": 1615,
+			"sizeByte": 70754
 		},
 		"js": {
 			"number": 1,

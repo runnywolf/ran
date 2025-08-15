@@ -31,7 +31,7 @@
 					<td>{{ percent }}%</td>
 					<td>
 						<span v-for="[uni, uniCount] in uniCounts">
-							{{ dbConfig.uniConfigs[uni].shortName }}{{ uniCount }}&nbsp;&nbsp;&nbsp;
+							{{ getUniShortName(uni) }}{{ uniCount }}&nbsp;&nbsp;&nbsp;
 						</span>
 					</td>
 				</tr>
@@ -42,10 +42,10 @@
 </template>
 
 <script setup>
-import dbConfig from "@/exam-db/config.json"; // db config
-import Tag from "@/components/problem/Tag.vue"; // tag 組件
-import stat from "@/stat/problem-stat.json"; // 統計資料
+import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
 import { sum } from "ran-math";
+import stat from "@/stat/problem-stat.json"; // 統計資料
+import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const tagDatas = Object.entries(stat.tagsNumber).map(([tag, uniCountsDict]) => { // 轉 arr: { tag, 總題數, 比例, 各學校題數 }
 	const tagCount = sum(Object.values(uniCountsDict));

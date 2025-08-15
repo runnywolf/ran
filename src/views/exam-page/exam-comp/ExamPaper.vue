@@ -37,7 +37,7 @@
 		
 		<!-- 題本年份 -->
 		<div class="ts-text is-huge is-bold">
-			{{ dbConfig.uniConfigs[uni]?.shortName ?? "?" }}&nbsp;&nbsp;{{ year }}
+			{{ getUniShortName(uni) }}&nbsp;&nbsp;{{ year }}
 		</div>
 		
 		<!-- 考試建議 -->
@@ -79,7 +79,7 @@
 
 <script setup>
 import { watch } from "vue";
-import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
+import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
 const props = defineProps({

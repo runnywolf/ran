@@ -5,7 +5,7 @@
 				
 				<div class="ts-wrap is-top-aligned">
 					<div class="problem-name"><!-- 題號 -->
-						<span>{{ dbConfig.uniConfigs[uni].shortName }} {{ year }} 第 {{ no }} 題</span>
+						<span>{{ getUniShortName(uni) }} {{ year }} 第 {{ no }} 題</span>
 					</div>
 					<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag><!-- tags -->
 				</div>
@@ -19,9 +19,9 @@
 </template>
 
 <script setup>
+import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
 import Problem from "@/components/problem/Problem.vue"; // 題目組件
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
-import dbConfig from "@/exam-db/config.json"; // db config
 
 const props = defineProps({
 	problemDatas: { type: Array, default: [] }, // 搜尋結果的題目資料

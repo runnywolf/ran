@@ -6,19 +6,19 @@
 					
 					<thead>
 						<tr>
-							<th v-for="uni in config.uniList">
-								<span :data-tooltip="config.uniConfigs[uni].name" data-position="top">
-									{{ config.uniConfigs[uni].shortName }}
+							<th v-for="uni in dbConfig.uniList">
+								<span :data-tooltip="dbConfig.uniConfigs[uni].name" data-position="top">
+									{{ getUniShortName(uni) }}
 								</span>
 							</th>
 						</tr>
 					</thead>
 					
 					<tbody>
-						<tr v-for="year in tableYearList">
-							<td v-for="uni in config.uniList">
-								<RanLink v-if="yearSet[uni].has(year)" :to="`#/exam/${uni}-${year}`">
-									{{ config.uniConfigs[uni].shortName }}&nbsp;{{ year }}
+						<tr v-for="year in sortedAllYearArr">
+							<td v-for="uni in dbConfig.uniList">
+								<RanLink v-if="isExamExist[year][uni]" :to="`#/exam/${uni}-${year}`">
+									{{ `${getUniShortName(uni)} ${year}` }}
 								</RanLink>
 								<span v-else>&nbsp;</span><!-- 防止整個 row 都沒有 link 而塌陷 -->
 							</td>
@@ -32,28 +32,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import config from "@/exam-db/config.json"; // 保存題本資訊的設定檔
+import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import dbConfig from "@/exam-db/config.json"; // 保存題本資訊的設定檔
 
-const yearSet = ref({}); // 用於查詢學校的某個年份的題本是否存在
-const tableYearList = ref([]); // Array<number> ; 表格有哪些年份
-
-onMounted(() => { // 當組件載入時
-	let yearRange = [Infinity, -Infinity]; // 表格的年份跨度
-	
-	for (const uni of config.uniList) { // 遍歷所有學校
-		const yearArr = config.uniConfigs[uni].yearList.map(Number); // 題本年份 String[] 轉 Number[]
-		yearSet.value[uni] = new Set(yearArr); // 題本年份 Number[] 轉 Set
-		
-		if (yearArr.length == 0) continue; // 若學校的題本數為 0, 不處理
-		
-		yearRange[0] = Math.min(yearRange[0], Math.min(...yearArr)); // 求各校題本年份的最小值
-		yearRange[1] = Math.max(yearRange[1], Math.max(...yearArr)); // 求各校題本年份的最大值
+const isExamExist = {}; // { year: dict } ; 某一年有哪些學校的題本是存在的
+for (const [uni, { yearList }] of Object.entries(dbConfig.uniConfigs)) {
+	for (const year of yearList) {
+		if (!(year in isExamExist)) isExamExist[year] = {};
+		isExamExist[year][uni] = true; // 只是把 dict 當成 set 來用
 	}
-	
-	if (yearRange[0] === Infinity || yearRange[1] === -Infinity) return;
-	for (let i = yearRange[1]; i >= yearRange[0]; i--) tableYearList.value.push(i);
-});
+}
+const sortedAllYearArr = Object.keys(isExamExist).sort((a, b) => Number(b) - Number(a)); // 所有題本的年份 (降序排列)
 </script>
 
 <style scoped>

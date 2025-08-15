@@ -13,11 +13,8 @@
 			
 			<!-- 題本資訊的表格 -->
 			<div class="ts-content is-dense">
-				<ExamInfo
-					:uniShortName="dbConfig.uniConfigs[uni]?.shortName"
-					:examYear="year"
-					:examConfig="examConfig"
-				></ExamInfo>
+				<ExamInfo :uniShortName="getUniShortName(uni)" :examYear="year" :examConfig="examConfig">
+				</ExamInfo>
 			</div>
 			<div class="ts-divider"></div>
 			
@@ -76,8 +73,8 @@
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
-import { decodeExamIdAndGetConfig } from "./getExamConfig.js"; // 讀取題本設定檔
-import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
+import { getUniShortName, decodeExamIdAndGetConfig } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import { WrongIdFormatError, ExamConfigMissingError } from "@/exam-db/examLoader.js"; // error
 import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./exam-comp/ExamInfo.vue"; // 題本資訊的組件
 import ExamTimer from "./exam-comp/ExamTimer.vue"; // 計時器的組件
@@ -91,10 +88,20 @@ const year = ref(); // 題本的民國年份
 const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
-	const examData = await decodeExamIdAndGetConfig(newExamId, router); // 讀取題本設定檔
-	uni.value = examData.uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
-	year.value = examData.year;
-	examConfig.value = examData.examConfig;
+	try {
+		const examData = await decodeExamIdAndGetConfig(newExamId); // 讀取題本設定檔
+		uni.value = examData.uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
+		year.value = examData.year;
+		examConfig.value = examData.examConfig;
+	} catch (err) {
+		if (err instanceof WrongIdFormatError) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
+			showToast("題本編號的形式錯誤", ToastType.WARNING);
+		} else if (err instanceof ExamConfigMissingError) { // 若題本設定檔不存在或路徑錯誤
+			showToast(`題本 ${err.uni}-${err.year} 不存在`, ToastType.ERROR);
+		}
+		console.error(err.message); // 在 console 報錯
+		router.push("/exam"); // 轉址回題本清單
+	}
 }, { immediate: true }); // 組件載入時, 做一次
 // #endregion
 
