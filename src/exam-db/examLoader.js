@@ -5,30 +5,30 @@ export function getUniShortName(uni) { // 將 uni (學校英文縮寫) 轉為中
 	return dbConfig.uniConfigs?.[uni]?.shortName ?? "?"; // 若 key uni 或 "shortName" 不存在, 或值為空, 回傳 "?"
 }
 
-export async function getExamConfig(uni, year) { // 讀取題本設定檔
+export async function getExamConfig(uni, year) { // 讀取並回傳題本設定檔
 	return await import(`./${uni}/${year}/config.json`) // 讀取題本設定檔
 		.catch(() => { throw new ExamConfigMissingError(uni, year); }) // 若題本設定檔不存在或路徑錯誤
 		.then(module => module.default);
 }
 
 export async function getAllExamConfigs() { // 讀取所有題本設定檔: Array<{ uni, year, examConfig }>
-	return await Promise.all(Object.entries(dbConfig.uniConfigs).flatMap( // 載入所有題本的 config
+	return Promise.all(Object.entries(dbConfig.uniConfigs).flatMap( // 載入所有題本的 config
 		([uni, { yearList }]) => yearList.map(
-			async year => ({ uni, year, examConfig: await getExamConfig(uni, year) })
+			async year => ({ uni, year, examConfig: await getExamConfig(uni, year) }) // { uni, year, examConfig }
 		)
 	));
 }
 
-export async function decodeExamIdAndGetConfig(examId) { // 解碼題本 id, 並讀取題本設定檔
+export async function decodeExamIdAndGetConfig(examId) { // 解碼題本 id, 讀取並回傳題本設定檔
 	const examIdParams = examId.split("-"); // 將題本 id "<uni>-<year>" 拆分成 ["<uni>", "<year>"]
-	if (examIdParams.length != 2) throw new WrongIdFormatError(examId);
+	if (examIdParams.length != 2) throw new WrongIdFormatError(examId); // 參數只能 2 個
 	const [uni, year] = examIdParams; // 題本 id 的第一個參數為 uni, 第二個參數為 year
 	
 	const examConfig = await getExamConfig(uni, year); // 讀取題本設定檔
 	return { uni, year, examConfig };
 }
 
-export async function decodeExamIdAndGetProblemConfig(examId, no) { // 解碼題本 id, 並讀取題本設定檔內的某一個 problem config
+export async function decodeExamIdAndGetProblemConfig(examId, no) { // 解碼題本 id, 讀取並回傳題本設定檔內的某一個 problem config
 	const { uni, year, examConfig } = await decodeExamIdAndGetConfig(examId); // 讀取題本設定檔
 	
 	if (no in examConfig.problemConfigs) {
@@ -36,6 +36,31 @@ export async function decodeExamIdAndGetProblemConfig(examId, no) { // 解碼題
 	} else { // 題號不存在
 		throw new ProblemConfigMissingError(uni, year, no);
 	}
+}
+
+export async function getSectionComp(uni, year, no) { // 讀取並回傳區塊(題目)組件 (promise)
+	return import(`./${uni}/${year}/sections/${no}.vue`)
+		.catch(() => { throw new SectionCompMissingError(uni, year, no); }) // 若區塊組件不存在或路徑錯誤
+}
+
+export async function getAllContentComps(uni, year, no, problemConfig) { // 讀取並回傳內容(解答)組件 (promise arr)
+	const contentConfigs = problemConfig.contentConfigs; // 題目的內容區塊的設定
+	if (!contentConfigs || contentConfigs.length === 0) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
+		throw new ContentsEmptyError(uni, year, no);
+	}
+	
+	return contentConfigs.map(
+		({ fileBaseName }) => import(`./${uni}/${year}/contents/${fileBaseName}.vue`) // 讀取解答組件
+			.catch(() => { throw new ContentCompMissingError(uni, year, no, fileBaseName); })
+	);
+}
+
+function _getErrorSectionMessage(uni, year, no) { // 錯誤發生在哪一題的訊息
+	return `(section ${no} in exam ${uni}-${year})`;
+}
+
+function _getErrorConfigPath(uni, year) { // 有錯的設定檔路徑
+	return `src/exam-db/${uni}/${year}/config.json`;
 }
 
 export class WrongIdFormatError extends Error { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
@@ -57,10 +82,43 @@ export class ExamConfigMissingError extends Error { // 若題本設定檔不存�
 
 export class ProblemConfigMissingError extends Error { // 題號不存在
 	constructor(uni, year, no) {
-		super(`[examLoader] Problem ${no} is not exist. (exam "${uni}-${year}")".\n`);
+		super(`[examLoader] Problem ${no} config is not exist. (exam "${uni}-${year}")\n`);
 		this.uni = uni;
 		this.year = year;
 		this.no = no;
+	}
+}
+
+export class SectionCompMissingError extends Error { // 區塊(題目)組件不存在
+	constructor(uni, year, no) {
+		super(
+			`[examLoader] Section comp is not exist. ${_getErrorSectionMessage(uni, year, no)}\n`+
+			`-> Check if src/exam-db/${uni}/${year}/sections/${no}.vue exist?\n`+
+			`-> If ${no}.vue exist, check the "${no}" is in sectionFileBaseNames: [...]`+
+			` in ${_getErrorConfigPath(uni, year)}`
+		);
+	}
+}
+
+export class ContentsEmptyError extends Error { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
+	constructor(uni, year, no) {
+		super(
+			`Problem contents is undefined or empty. ${_getErrorSectionMessage(uni, year, no)}\n`+
+			`-> Add "contentConfigs": [ { "type": ?, "id": ? }, ... ] in `+
+			`problemConfigs.${no}: {...} in ${_getErrorConfigPath(uni, year)}`
+		);
+	}
+}
+
+export class ContentCompMissingError extends Error { // 內容(解答)組件不存在
+	constructor(uni, year, no, contentFileName) {
+		super(
+			`Content comp is not exist. ${_getErrorSectionMessage(uni, year, no)}\n`+
+			`-> Check if src/exam-db/${uni}/${year}/contents/${contentFileName}.vue exist?\n`+
+			`-> If ${contentFileName}.vue exist, check the elements in `+
+			`problemConfigs.${no}.contentConfigs: [...] in ${_getErrorConfigPath(uni, year)} , `+
+			`and one of element.fileBaseName must be "${contentFileName}".`
+		);
 	}
 }
 
