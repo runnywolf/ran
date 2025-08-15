@@ -45,18 +45,10 @@
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { sum } from "ran-math";
-import tagMap from "@/exam-db/tag-map.json"; // tag 映射
+import { getFlatTagNodes } from "@/exam-db/examLoader.js"; // 讀取題本資訊
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
-
-function getAllTagDatas(prefix = "", tagNode = { children: tagMap }) { // 將 tag-map.json 扁平化為 arr: { tag, enTag, zhtwTag }
-	const subTags = prefix ? [{ tag: prefix, enTag: tagNode.en, zhtwTag: tagNode.zhtw }] : []; // 排除遞迴造成的空字串 tag
-	Object.entries(tagNode.children ?? {}).forEach(([key, childNode]) => { // 將父 tag node 的 tag 前綴接上所有子目錄的 sub tag
-		subTags.push(...getAllTagDatas(prefix ? `${prefix}-${key}` : key, childNode)); // 防止 "-xxx-xxx" (開頭為 "-")
-	});
-	return subTags;
-}
 
 function strEqualIgnoreCase(str_a, str_b) { // 忽略大小寫的字串比較
 	return str_a.toLowerCase() === str_b.toLowerCase();
@@ -134,7 +126,7 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 
 const emit = defineEmits([ "input-changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr
 
-const tagDatas = getAllTagDatas(); // 將 tag-map.json 扁平化為 arr: { tag, enTag, zhtwTag }
+const tagDatas = getFlatTagNodes(); // 將 tag-tree.json 扁平化為 arr: { tag, enTag, zhtwTag }
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)

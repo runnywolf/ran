@@ -38,7 +38,7 @@ def make_code_stat_json() -> None: # 生成程式碼的統計
 	with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
 		json.dump(all_stat, f, ensure_ascii=False, indent="\t")
 
-def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-map.json 扁平化為 tag arr
+def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-tree.json 扁平化為 tag arr
 	sub_tags = [prefix] if prefix else [] # 排除遞迴造成的空字串 tag
 	
 	for key, child_node in tag_node.get("children", {}).items():
@@ -59,14 +59,14 @@ def update_problem_stat(stat: dict, exam_config: dict, uni: str) -> None: # 根�
 		if "tags" not in problem_config: continue # 如果某個 problem config 內的 key "tags" 沒有被添加, 代表這題沒標籤, skip
 		
 		for stat_tag, dict_numbers in stat["tagsNumber"].items():
-			if any(stat_tag in tag for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-map 中
+			if any(stat_tag in tag for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-tree 中
 				dict_numbers[uni] += 1 # 將該 tag 的學校計數 +1
 
 def make_problem_stat_json() -> None: # 生成題目的統計
 	with open(SRC_PATH/"exam-db"/"config.json", "r", encoding="utf-8") as f: # 讀取 db config
 		db_config = json.load(f)
 	
-	with open(SRC_PATH/"exam-db"/"tag-map.json", "r", encoding="utf-8") as f: # 讀取標籤映射
+	with open(SRC_PATH/"exam-db"/"tag-tree.json", "r", encoding="utf-8") as f: # 讀取標籤映射
 		tag_map = json.load(f)
 		tags = get_flat_tags(tag_node={ "children": tag_map })
 	

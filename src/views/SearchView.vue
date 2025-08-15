@@ -39,9 +39,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { getAllExamConfigs } from "@/exam-db/examLoader.js"; // 讀取題本資訊
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
-import dbConfig from "@/exam-db/config.json"; // db config
 
 const DEBOUNCE_TIME_MS = 500;
 const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
@@ -49,12 +49,7 @@ const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
 async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
 	
-	const examIdAndConfigs = await Promise.all(Object.entries(dbConfig.uniConfigs).flatMap( // 載入所有題本的 config. { uni, year, config }
-		([uni, { yearList }]) => yearList.map(
-			year => import(`../exam-db/${uni}/${year}/config.json`)
-				.then(module => ({ uni, year, examConfig: module.default }))
-		)
-	));
+	const examIdAndConfigs = await getAllExamConfigs(); // 載入所有題本的 config. { uni, year, config }
 	
 	problemDatas = await Promise.all(examIdAndConfigs.flatMap(
 		({ uni, year, examConfig }) => Object.entries(examConfig.problemConfigs).map(
