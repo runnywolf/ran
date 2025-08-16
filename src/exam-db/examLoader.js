@@ -28,16 +28,6 @@ export async function decodeExamIdAndGetConfig(examId) { // 解碼題本 id, 讀
 	return { uni, year, examConfig };
 }
 
-export async function decodeExamIdAndGetProblemConfig(examId, no) { // 解碼題本 id, 讀取並回傳題本設定檔內的某一個 problem config
-	const { uni, year, examConfig } = await decodeExamIdAndGetConfig(examId); // 讀取題本設定檔
-	
-	if (no in examConfig.problemConfigs) {
-		return { uni, year, no, problemConfig: examConfig.problemConfigs[no] };
-	} else { // 題號不存在
-		throw new ProblemConfigMissingError(uni, year, no);
-	}
-}
-
 export async function getSectionComp(uni, year, no) { // 讀取並回傳區塊(題目)組件 (promise)
 	return import(`./${uni}/${year}/sections/${no}.vue`)
 		.catch(() => { throw new SectionCompMissingError(uni, year, no); }) // 若區塊組件不存在或路徑錯誤
@@ -77,15 +67,6 @@ export class ExamConfigMissingError extends Error { // 若題本設定檔不存�
 		);
 		this.uni = uni;
 		this.year = year;
-	}
-}
-
-export class ProblemConfigMissingError extends Error { // 題號不存在
-	constructor(uni, year, no) {
-		super(`[examLoader] Problem ${no} config is not exist. (exam "${uni}-${year}")\n`);
-		this.uni = uni;
-		this.year = year;
-		this.no = no;
 	}
 }
 

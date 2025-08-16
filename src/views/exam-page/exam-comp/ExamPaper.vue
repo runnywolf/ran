@@ -108,7 +108,7 @@ watch(() => props.examConfig.sectionFileBaseNames, baseNames => {
 	document.head.appendChild(problemNoStyle); // 插入至 <head>
 
 	const sheet = problemNoStyle.sheet;
-	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length);
+	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length); // [bug] fuck safari
 	baseNames.filter(name => name[0] !== "-").map(name => { // 非說明區塊才有題號
 		const problemNoPaddingLeft = getTextWidth(name + ". ") + 5;
 		insertCss(`.problem-no-${name} > li::marker { content: "${name}. " }`); // 將自訂的題號 marker 加入到 <style>
