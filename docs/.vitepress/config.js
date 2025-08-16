@@ -12,7 +12,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "介紹", link: "/exam-page/intro" },
+			{ text: "介紹", link: "/intro/exam-page" },
 			{ text: "模擬室頁面", link: "/practice-page/recur-view" },
 			{ text: "組件", link: "/components/content" },
 			{ text: "函式庫", link: "/libs/toast" },
@@ -24,6 +24,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				collapsed: true,
 				items: [
 					{ text: "歷屆試題頁面", link: "/intro/exam-page" },
+					{ text: "架構", link: "/intro/arch" },
 				]
 			},
 			{

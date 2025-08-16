@@ -22,12 +22,12 @@
 		"json": {
 			"number": 27,
 			"line": 2364,
-			"sizeByte": 58144
+			"sizeByte": 58135
 		},
 		"js": {
 			"number": 1,
-			"line": 123,
-			"sizeByte": 6602
+			"line": 107,
+			"sizeByte": 5879
 		},
 		"vue": {
 			"number": 593,
@@ -117,20 +117,20 @@
 	"views": {
 		"vue": {
 			"number": 26,
-			"line": 1600,
-			"sizeByte": 69667
+			"line": 1631,
+			"sizeByte": 71208
 		}
 	},
 	"docs": {
 		"md": {
-			"number": 30,
-			"line": 3212,
-			"sizeByte": 114305
+			"number": 29,
+			"line": 3218,
+			"sizeByte": 116904
 		},
 		"webp": {
 			"number": 1,
 			"line": 0,
-			"sizeByte": 37168
+			"sizeByte": 27480
 		},
 		"png": {
 			"number": 10,
