@@ -12,7 +12,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "歷屆試題頁面", link: "/exam-page/create-exam" },
+			{ text: "介紹", link: "/exam-page/intro" },
 			{ text: "模擬室頁面", link: "/practice-page/recur-view" },
 			{ text: "組件", link: "/components/content" },
 			{ text: "函式庫", link: "/libs/toast" },
@@ -20,13 +20,10 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		],
 		sidebar: [
 			{
-				text: "Exam Page - 歷屆試題頁面",
+				text: "介紹",
 				collapsed: true,
 				items: [
-					{ text: "架構", link: "/exam-page/arch" },
-					{ text: "ExamMenu - 題本清單", link: "/exam-page/exam-menu" },
-					{ text: "Exam - 題本閱讀器", link: "/exam-page/exam" },
-					{ text: "如何新增題本", link: "/exam-page/create-exam" },
+					{ text: "歷屆試題頁面", link: "/intro/exam-page" },
 				]
 			},
 			{
