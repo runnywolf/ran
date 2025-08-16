@@ -1,6 +1,8 @@
 <template>
-	<div class="ts-text is-big is-bold">計算齊次 / 非齊次遞迴的一般式 ( 閉合形式 )</div>
-	<div class="ts-list is-unordered" style="margin-top: 4px;">
+	<div class="ts-text is-big is-bold" style="margin-top: -6px; margin-bottom: 4px;">
+		計算齊次 / 非齊次遞迴的一般式 ( 閉合形式 )
+	</div>
+	<div class="ts-list is-unordered">
 		<div class="item">
 			按下 [ 隨機生成 ] 的按鈕可以生成特定情況的遞迴式，用於練習。
 		</div>

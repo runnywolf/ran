@@ -1,19 +1,3 @@
-<!--
-	BodyLayout 用於建構 body 的 sidebar 與內容
-	
-	用法:
-	import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
-	
-	<BodyLayout>
-		<template #sidebar>
-			<span>sidebar</span>
-		</template>
-		<template #content>
-			<span>右側內容</span>
-		</template>
-	</BodyLayout>
--->
-
 <template>
 	<div class="ts-grid">
 		

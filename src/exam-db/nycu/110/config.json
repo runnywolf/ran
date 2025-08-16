@@ -2,6 +2,7 @@
 	"subjectCode": "1102",
 	"subjectName": "線性代數與離散數學",
 	"subjectShortName": "線代與離散",
+	"department": "資訊聯招",
 	"externalLink": "https://drive.google.com/drive/folders/1jqPtThYPBfcr0092RBYts7OHVLTDwngn",
 	"externalLinkTip": "Google Drive (mayjaylee1928)",
 	"timeMinutes": 100,
@@ -10,60 +11,70 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
+			"tags": [ "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-m", "la-vs", "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "la-m", "dm-c-rr", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

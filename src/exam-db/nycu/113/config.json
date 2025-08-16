@@ -2,6 +2,7 @@
 	"subjectCode": "8102",
 	"subjectName": "線性代數與離散數學",
 	"subjectShortName": "線代與離散",
+	"department": "資訊聯招",
 	"externalLink": "https://drive.google.com/drive/folders/1SAI745PNg4MfDWpy0I-AqMIAb2VfE5EB",
 	"externalLinkTip": "Google Drive (mayjaylee1928)",
 	"timeMinutes": 100,
@@ -10,6 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\footnotesize\\text{女護士}",
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -19,66 +21,77 @@
 				"\\text{(a) } \\frac{k(k+1)(2k+1)}{6} ~,~~ k = \\frac{n(n+1)(2n+1)}{6}",
 				"\\text{(b) } (a, b) = (41k^2 ,~ 41(7-k)^2) ~,~~ k = 0, \\cdots\\!, 7 \\rule{0em}{1.4em}"
 			],
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "dm-fl", "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "dm-c", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "\\text{See prove}",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

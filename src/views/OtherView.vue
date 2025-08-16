@@ -1,10 +1,48 @@
 <template>
-	<div class="ts-box ts-wrap is-center-aligned">
-		<div class="ts-content is-very-padded">
-			<div class="ts-wrap is-vertical is-middle-aligned is-compact">
-				<span class="ts-icon is-hammer-icon is-huge"></span>
-				<div class="ts-text is-huge">施工中...&nbsp;&nbsp;ฅ^⦁⩊⦁^ฅ ੭</div>
+	<BodyLayout>
+		
+		<!-- 左側的練習項目 -->
+		<template #sidebar>
+			<div class="ts-content is-compact ts-menu is-dense is-separated is-start-icon">
+				<router-link v-for="{ iconName, label, toPath } in sidebarOptionList"
+					class="item"
+					:class="{ 'is-active': route.path === toPath }"
+					:to="toPath"
+					data-position="right"
+				>
+					<span :class="`ts-icon is-${iconName}-icon`"></span>
+					<span>{{ label }}</span>
+				</router-link>
 			</div>
-		</div>
-	</div>
+		</template>
+		
+		<!-- 右側的模擬室區域 -->
+		<template #content>
+			<div class="ts-content">
+				<router-view></router-view>
+			</div>
+		</template>
+		
+	</BodyLayout>
 </template>
+
+<script setup>
+import { useRoute } from "vue-router";
+import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
+
+const route = useRoute(); // 路由
+
+const sidebarOptionList = [
+	{ iconName: "chart-simple", label: "統計", toPath: "/other/stat" },
+];
+</script>
+
+<style scoped>
+.ts-menu > a {
+	padding: 0 9px;
+	gap: 9px;
+}
+.ts-menu > a:not(.is-active):hover { /* 沒有被選取的項目被 hover 時, 將背景變灰 */
+	background-color: #eee;
+}
+</style>

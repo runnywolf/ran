@@ -2,6 +2,7 @@
 	"subjectCode": "1102",
 	"subjectName": "線性代數與離散數學",
 	"subjectShortName": "線代與離散",
+	"department": "資訊聯招",
 	"externalLink": "https://drive.google.com/drive/folders/1EXI-Oi0qx0WC_DZoK2JLxr3ZwHBTSrM5",
 	"externalLinkTip": "Google Drive (mayjaylee1928)",
 	"timeMinutes": 100,
@@ -10,12 +11,14 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "a_{n+1} = -a_n + 2 ~,~ a_1 = 0 \\quad;\\quad a_{n+1} = a_n + 2n + 2 ~,~ a_1 = 2",
+			"tags": [ "dm-c-rd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-a-ans", "suffix": "(a)" },
 				{ "type": "answer", "fileBaseName": "2-b-ans", "suffix": "(b)" }
@@ -23,60 +26,70 @@
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm-nt", "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "la-ev", "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

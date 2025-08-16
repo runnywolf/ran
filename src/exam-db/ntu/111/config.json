@@ -2,6 +2,7 @@
 	"subjectCode": "362",
 	"subjectName": "數學 (A)",
 	"subjectShortName": "數學 (A)",
+	"department": "資訊工程學研究所",
 	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/111/111-362.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,72 +11,84 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{B}",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "\\text{E}",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "\\text{A}",
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "\\text{E}",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "\\text{D}",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "\\text{B}",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\text{B}",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
 			"answerLatex": "\\text{C}",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "\\text{B}",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

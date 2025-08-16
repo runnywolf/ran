@@ -12,7 +12,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: "首頁", link: "/" },
-			{ text: "歷屆試題頁面", link: "/exam-page/create-exam" },
+			{ text: "介紹", link: "/intro/exam-page" },
 			{ text: "模擬室頁面", link: "/practice-page/recur-view" },
 			{ text: "組件", link: "/components/content" },
 			{ text: "函式庫", link: "/libs/toast" },
@@ -20,13 +20,16 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		],
 		sidebar: [
 			{
-				text: "Exam Page - 歷屆試題頁面",
+				text: "介紹",
+				collapsed: true,
 				items: [
-					{ text: "如何新增題本", link: "/exam-page/create-exam" },
+					{ text: "歷屆試題頁面", link: "/intro/exam-page" },
+					{ text: "架構", link: "/intro/arch" },
 				]
 			},
 			{
 				text: "Practice Page - 模擬室頁面",
+				collapsed: true,
 				items: [
 					{ text: "遞迴", link: "/practice-page/recur-view" },
 					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
@@ -35,6 +38,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			},
 			{
 				text: "Components - 組件",
+				collapsed: true,
 				items: [
 					{ text: "Content - 內容區塊", link: "/components/content" },
 					{ text: "RanLink - 超連結", link: "/components/ran-link" },
@@ -46,12 +50,14 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			},
 			{
 				text: "Libraries - 函式庫",
+				collapsed: true,
 				items: [
 					{ text: "Toast - 彈出式訊息", link: "/libs/toast" },
 				]
 			},
 			{
 				text: "RanMath.js",
+				collapsed: true,
 				items: [
 					{ text: "介紹", link: "/ran-math/intro" },
 					{ text: "簡單數學運算", link: "/ran-math/simple-method" },
@@ -69,6 +75,7 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 			},
 			{
 				text: "RanMath.js 實作細節",
+				collapsed: true,
 				items: [
 					{ text: "SolveCubic", link: "/ran-math-details/solve-cubic" },
 				]

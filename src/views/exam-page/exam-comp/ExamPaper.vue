@@ -15,7 +15,8 @@
 						:year="year"
 						:no="sectionBaseName"
 						:problemConfig="examConfig.problemConfigs[sectionBaseName]"
-						:displayMode="state === 0 ? 1 : 0"
+						:showAnswer="state === 0"
+						:showLink="state === 0"
 					></Problem>
 				</li>
 			</ol>
@@ -36,7 +37,7 @@
 		
 		<!-- 題本年份 -->
 		<div class="ts-text is-huge is-bold">
-			{{ dbConfig.uniConfigs[uni]?.shortName ?? "?" }}&nbsp;&nbsp;{{ year }}
+			{{ getUniShortName(uni) }}&nbsp;&nbsp;{{ year }}
 		</div>
 		
 		<!-- 考試建議 -->
@@ -78,7 +79,7 @@
 
 <script setup>
 import { watch } from "vue";
-import dbConfig from "@/exam-db/config.json"; // 保存所有題本資訊的設定檔
+import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
 const props = defineProps({
@@ -107,7 +108,7 @@ watch(() => props.examConfig.sectionFileBaseNames, baseNames => {
 	document.head.appendChild(problemNoStyle); // 插入至 <head>
 
 	const sheet = problemNoStyle.sheet;
-	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length);
+	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length); // [bug] fuck safari
 	baseNames.filter(name => name[0] !== "-").map(name => { // 非說明區塊才有題號
 		const problemNoPaddingLeft = getTextWidth(name + ". ") + 5;
 		insertCss(`.problem-no-${name} > li::marker { content: "${name}. " }`); // 將自訂的題號 marker 加入到 <style>

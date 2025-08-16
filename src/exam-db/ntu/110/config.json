@@ -2,6 +2,7 @@
 	"subjectCode": "398",
 	"subjectName": "數學",
 	"subjectShortName": "數學",
+	"department": "資訊工程學研究所",
 	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/110/398.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,30 +11,35 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{odd} ~~;~~ 2",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "\\log_2{3}",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "\\frac{2}{n} \\binom{2n-2}{n-1}",
+			"tags": [ "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "n+1 ~~;~~ m+1",
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\text{Prove} \\to",
+			"tags": [ "dm-as" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -43,30 +49,35 @@
 				"\\text{(a)}~ 4 ~\\text{or}~ 5",
 				"\\text{(b)}~ 2"
 			],
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "-\\frac{1}{a_0} (A^{r-1} + a_{r-1} A^{r-2} + \\cdots + a_2 A + a_1 I)",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "2, 2, 4, 4, 5",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "\\text{ac}",
+			"tags": [ "la-m", "la-vs", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\text{ce}",
+			"tags": [ "la-m", "la-vs", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

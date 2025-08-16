@@ -2,6 +2,7 @@
 	"subjectCode": "414",
 	"subjectName": "數學",
 	"subjectShortName": "數學",
+	"department": "資訊工程學研究所",
 	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/108/108_graduate_414.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,72 +11,84 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
+			"tags": [ "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": [ "A ~=~ 2n+2", "B ~=~ n+1" ],
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": [ "A ~=~ 2n", "B ~=~ n-1" ],
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-vs", "dm-st", "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "la-m", "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "la-m", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

@@ -2,6 +2,7 @@
 	"subjectCode": "198",
 	"subjectName": "計算機數學",
 	"subjectShortName": "計算機數學",
+	"department": "電機資訊學院 - 資訊聯招",
 	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_113_3.pdf",
 	"externalLinkTip": "國立成功大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,60 +11,70 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "a_n = 2900 + 100n + 100 \\cdot 3^n",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "dm-fsm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "la" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\text{ae}",
+			"tags": [ "la-m", "la-ev", "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

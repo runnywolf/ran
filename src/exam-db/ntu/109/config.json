@@ -2,6 +2,7 @@
 	"subjectCode": "408",
 	"subjectName": "數學",
 	"subjectShortName": "數學",
+	"department": "資訊工程學研究所",
 	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/109/408_graduate-109.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,60 +11,70 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "(1 - x^{b-a+1})^n (1 - x)^{-n} x^a",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "(i^{j})^{n^m}",
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "330",
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "a_n = \\frac{-3}{4} + \\frac{-1}{2} n + \\frac{7}{4} \\cdot 3^n",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\frac{-1}{4} \\cdot \\frac{1}{1-x} + \\frac{-1}{2} \\cdot \\frac{1}{(1-x)^2} + \\frac{7}{4} \\cdot \\frac{1}{1-3x}",
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "\\text{See prove}",
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "8, 1, 7, 0, 2",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "2, 1, 1, 0, 1",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "0, 0, 10, 4, 2",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "1, 2, 16, 1, 0",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans-1", "suffix": "(SVD 分解)" },
 				{ "type": "answer", "fileBaseName": "10-ans-2", "suffix": "(慢慢湊)" }
@@ -71,6 +82,7 @@
 		},
 		"11": {
 			"answerLatex": "12, 2, 0, 2, 0",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

@@ -2,6 +2,7 @@
 	"subjectCode": "1002",
 	"subjectName": "線性代數與離散數學",
 	"subjectShortName": "線代與離散",
+	"department": "資訊聯招",
 	"externalLink": "",
 	"externalLinkTip": "",
 	"timeMinutes": 100,
@@ -10,78 +11,96 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
+			"tags": [ "dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
+			"tags": [ "la-m", "la-vs", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
+			"tags": [ "dm-fl", "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
 			"answerLatex": "",
+			"tags": [ "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
+			"tags": [ "dm-gt", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
 		},
 		"13": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) }~ t^2 - 2t + 1 = 0",
+				"\\text{(b) }~ a_n^{(h)} = h_1 + h_2 n",
+				"\\text{(c) }~ a_n^{(p)} = {-n^2} + n^3",
+				"\\text{(d) }~ a_n = 5 + 5n - n^2 + n^3"
+			],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]

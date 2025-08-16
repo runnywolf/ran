@@ -2,6 +2,7 @@
 	"subjectCode": "313",
 	"subjectName": "數學 (A)",
 	"subjectShortName": "數學 (A)",
+	"department": "資訊工程學研究所",
 	"externalLink": "https://exam.lib.ntu.edu.tw/sites/default/files/exam/graduate/113/113-313.pdf",
 	"externalLinkTip": "國立臺灣大學圖書館 考古題",
 	"timeMinutes": 100,
@@ -10,30 +11,35 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "2",
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "4",
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "24",
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "a_n = (-4)^n + 2 \\cdot 3^n",
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "4 ~~;~~ 4 ~~;~~ \\text{no} ~~;~~ \\text{yes}",
+			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans-1", "suffix": "(Chromatic number)" },
 				{ "type": "answer", "fileBaseName": "5-ans-2", "suffix": "(Maximum independent set)" },
@@ -43,30 +49,35 @@
 		},
 		"6": {
 			"answerLatex": "\\frac{1}{3}",
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "\\text{span}\\{ ( 0, 0, 0, 1 ) \\}",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "(2, 1, 0)",
+			"tags": [ "dm-as" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "\\text{rank}(T)",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\frac{1}{540} ?",
+			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

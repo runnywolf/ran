@@ -1,0 +1,113 @@
+{
+	"examNumber": 25,
+	"answerCompleteExamNumber": 7,
+	"problemNumber": 276,
+	"problemHasAnswerNumber": 88,
+	"tagsNumber": {
+		"la": {
+			"ntu": 54,
+			"nycu": 52,
+			"ncku": 22
+		},
+		"la-m": {
+			"ntu": 24,
+			"nycu": 21,
+			"ncku": 3
+		},
+		"la-vs": {
+			"ntu": 18,
+			"nycu": 13,
+			"ncku": 6
+		},
+		"la-ev": {
+			"ntu": 20,
+			"nycu": 13,
+			"ncku": 8
+		},
+		"la-ips": {
+			"ntu": 10,
+			"nycu": 16,
+			"ncku": 7
+		},
+		"dm": {
+			"ntu": 60,
+			"nycu": 68,
+			"ncku": 22
+		},
+		"dm-c": {
+			"ntu": 32,
+			"nycu": 17,
+			"ncku": 10
+		},
+		"dm-c-rd": {
+			"ntu": 0,
+			"nycu": 2,
+			"ncku": 0
+		},
+		"dm-c-rr": {
+			"ntu": 10,
+			"nycu": 4,
+			"ncku": 3
+		},
+		"dm-c-gf": {
+			"ntu": 8,
+			"nycu": 2,
+			"ncku": 4
+		},
+		"dm-c-ic": {
+			"ntu": 7,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"dm-c-bc": {
+			"ntu": 5,
+			"nycu": 1,
+			"ncku": 0
+		},
+		"dm-st": {
+			"ntu": 9,
+			"nycu": 16,
+			"ncku": 4
+		},
+		"dm-st-f": {
+			"ntu": 3,
+			"nycu": 2,
+			"ncku": 2
+		},
+		"dm-st-br": {
+			"ntu": 5,
+			"nycu": 10,
+			"ncku": 0
+		},
+		"dm-fl": {
+			"ntu": 4,
+			"nycu": 11,
+			"ncku": 0
+		},
+		"dm-gt": {
+			"ntu": 10,
+			"nycu": 14,
+			"ncku": 5
+		},
+		"dm-nt": {
+			"ntu": 2,
+			"nycu": 9,
+			"ncku": 3
+		},
+		"dm-as": {
+			"ntu": 2,
+			"nycu": 0,
+			"ncku": 0
+		},
+		"dm-fsm": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 2
+		},
+		"?": {
+			"ntu": 0,
+			"nycu": 0,
+			"ncku": 0
+		}
+	}
+}
