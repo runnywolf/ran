@@ -5,7 +5,7 @@ const routes = [
 	{ path: "/notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", component: () => import("@/views/exam-page/ExamMenuView.vue") },
 	{ path: "/exam/:id", component: () => import("@/views/exam-page/ExamView.vue") }, // 題本編號 :id 的格式範例: "ntu-110"
-	{ path: "/exam/:id/:prob", component: () => import("@/views/exam-page/ProblemView.vue") },
+	{ path: "/exam/:id/:prob", component: () => import("@/views/exam-page/ProblemView.vue") }, // 題號 :prob
 	{ path: "/search", component: () => import("@/views/SearchView.vue") },
 	{ path: "/search/:tag", component: () => import("@/views/SearchView.vue") }, // 若使用此路徑, 會自動新增一個 tag 在搜尋欄下方
 	{
@@ -38,5 +38,10 @@ const router = createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
 	routes,
 });
+
+router.beforeEach((to, from, next) => { // 當路由切換前
+	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
+  next(); // 繼續跳轉到其他頁面
+})
 
 export default router;
