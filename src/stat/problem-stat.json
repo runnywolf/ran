@@ -1,43 +1,43 @@
 {
-	"examNumber": 25,
+	"examNumber": 27,
 	"answerCompleteExamNumber": 7,
-	"problemNumber": 276,
+	"problemNumber": 290,
 	"problemHasAnswerNumber": 88,
 	"tagsNumber": {
 		"la": {
 			"ntu": 54,
 			"nycu": 52,
-			"ncku": 22
+			"ncku": 31
 		},
 		"la-m": {
 			"ntu": 24,
 			"nycu": 21,
-			"ncku": 3
+			"ncku": 5
 		},
 		"la-vs": {
 			"ntu": 18,
 			"nycu": 13,
-			"ncku": 6
+			"ncku": 9
 		},
 		"la-ev": {
 			"ntu": 20,
 			"nycu": 13,
-			"ncku": 8
+			"ncku": 10
 		},
 		"la-ips": {
 			"ntu": 10,
 			"nycu": 16,
-			"ncku": 7
+			"ncku": 10
 		},
 		"dm": {
 			"ntu": 60,
 			"nycu": 68,
-			"ncku": 22
+			"ncku": 28
 		},
 		"dm-c": {
 			"ntu": 32,
 			"nycu": 17,
-			"ncku": 10
+			"ncku": 13
 		},
 		"dm-c-rd": {
 			"ntu": 0,
@@ -47,7 +47,7 @@
 		"dm-c-rr": {
 			"ntu": 10,
 			"nycu": 4,
-			"ncku": 3
+			"ncku": 5
 		},
 		"dm-c-gf": {
 			"ntu": 8,
@@ -67,7 +67,7 @@
 		"dm-st": {
 			"ntu": 9,
 			"nycu": 16,
-			"ncku": 4
+			"ncku": 5
 		},
 		"dm-st-f": {
 			"ntu": 3,
@@ -77,7 +77,7 @@
 		"dm-st-br": {
 			"ntu": 5,
 			"nycu": 10,
-			"ncku": 0
+			"ncku": 1
 		},
 		"dm-fl": {
 			"ntu": 4,
@@ -87,7 +87,7 @@
 		"dm-gt": {
 			"ntu": 10,
 			"nycu": 14,
-			"ncku": 5
+			"ncku": 6
 		},
 		"dm-nt": {
 			"ntu": 2,

@@ -20,9 +20,9 @@
 	},
 	"exam-db": {
 		"json": {
-			"number": 27,
-			"line": 2364,
-			"sizeByte": 58135
+			"number": 29,
+			"line": 2489,
+			"sizeByte": 61120
 		},
 		"js": {
 			"number": 1,
@@ -30,9 +30,9 @@
 			"sizeByte": 5879
 		},
 		"vue": {
-			"number": 593,
-			"line": 8372,
-			"sizeByte": 292168
+			"number": 625,
+			"line": 8683,
+			"sizeByte": 302222
 		},
 		"webp": {
 			"number": 50,
@@ -58,8 +58,8 @@
 		},
 		"txt": {
 			"number": 1,
-			"line": 41,
-			"sizeByte": 2672
+			"line": 0,
+			"sizeByte": 0
 		}
 	},
 	"libs": {
@@ -87,7 +87,7 @@
 		"json": {
 			"number": 2,
 			"line": 254,
-			"sizeByte": 3392
+			"sizeByte": 3396
 		},
 		"py": {
 			"number": 1,
