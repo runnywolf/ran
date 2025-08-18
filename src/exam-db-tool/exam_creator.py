@@ -37,14 +37,16 @@ def create_exam_config(section_base_names: list[str]) -> None: # 建立題本設
 	)
 	
 	content_config_str = lambda no: f'{{ "type": "answer", "fileBaseName": "{no}-ans" }}'
-	problem_config = lambda no: { "answerLatex": "", "contentConfigs": [ f"@CONTENT_CONFIG_{no}@" ] }
+	problem_config = lambda no: { "answerLatex": "", "tags": "@tags@", "contentConfigs": [ f"@CONTENT_CONFIG_{no}@" ] }
 	problem_configs = { no: problem_config(no) for no in section_base_names if no[0] != "-" } # 說明區塊開頭是 "-", 沒有 config
 	problem_configs = { "problemConfigs": problem_configs }
 	problem_configs_str = json.dumps(problem_configs, ensure_ascii=False, indent="\t") # 多個題目設定的 json str
 	problem_configs_str = problem_configs_str.lstrip("{\n\t").rstrip("\n}") + "}"
-	for no in section_base_names:
+	
+	for no in section_base_names: # 利用 str 替換, 防止 json 對 arr 或 dict 換行, 使 .json 保持可讀性
 		problem_configs_str = problem_configs_str.replace(f'"@CONTENT_CONFIG_{no}@"', content_config_str(no))
 	config_temp_str = config_temp_str.replace('"problemConfigs": {}', problem_configs_str)
+	config_temp_str = config_temp_str.replace('"@tags@"', '[ "?" ]')
 	
 	with open(EXAM_PATH/"config.json", "w", encoding="utf-8") as f: # 建立題本設定檔
 		f.write(config_temp_str)

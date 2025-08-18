@@ -1,0 +1,55 @@
+{
+	"subjectCode": "205",
+	"subjectName": "計算機數學",
+	"subjectShortName": "計算機數學",
+	"department": "電機資訊學院 - 資訊聯招",
+	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_109_3.pdf",
+	"externalLinkTip": "國立成功大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [ "-notice", "-before-1", "1", "2", "3", "-before-4", "4", "5", "6" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "la-vs" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "la-ips" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "la-ev" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "dm" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "la-m", "dm-c-rr" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "dm-gt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		}
+	}
+}
