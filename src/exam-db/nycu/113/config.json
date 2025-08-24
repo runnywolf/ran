@@ -27,28 +27,32 @@
 			]
 		},
 		"3": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) } \\forall n \\in \\mathbb{Z}^+ \\Big( n > 2 ~\\land~ n/2*2 = n ~\\to~ \\exist p_1, p_2 \\in P~ (n = p_1 + p_2) \\Big) ~,",
+				"\\quad~~ P = \\{ x \\in \\mathbb{Z}^+ \\mid x \\gt 1 ~\\land~ \\forall d \\in \\mathbb{Z}^+ ( x/d*d = x ~\\to~ d = 1 ~\\lor~ d = x ) \\}",
+				"\\text{(b) } 222"
+			],
 			"tags": [ "dm-fl", "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "",
+			"answerLatex": [ "\\text{(a) } 210", "\\text{(b) } 110", "\\text{(c) } \\text{No}" ],
 			"tags": [ "dm-c", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
-			"answerLatex": "",
-			"tags": [ "dm-st-br" ],
+			"answerLatex": "\\text{(a) } 6 \\quad \\text{(b) } 42",
+			"tags": [ "dm-st-br", "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See prove}",
 			"tags": [ "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
