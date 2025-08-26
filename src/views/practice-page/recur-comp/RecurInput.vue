@@ -12,7 +12,7 @@
 					<span contenteditable class="number-input" @input="handleInputChanged($event.target, recurCoefInput, i)">
 						{{ coef }}
 					</span>
-					<vl :exp="`a_{n-${i}}` + (i === recurCoefInput.length-1 ? '' : '~+')" />
+					<vl :exp="`a_{n-${i+1}}` + (i === recurCoefInput.length-1 ? '' : '~+')" />
 				</template>
 			</div>
 			
