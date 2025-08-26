@@ -20,24 +20,19 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		],
 		sidebar: [
 			{
-				text: "介紹",
+				text: "Introduce - 介紹",
 				collapsed: true,
 				items: [
 					{ text: "歷屆試題頁面", link: "/intro/exam-page" },
+					{ text: "搜尋頁面", link: "/intro/search-page" },
+					{ text: "模擬室頁面", link: "/intro/practice-page" },
+					{ text: "其他頁面", link: "/intro/other-page" },
 					{ text: "架構", link: "/intro/arch" },
 				]
 			},
+			
 			{
-				text: "Practice Page - 模擬室頁面",
-				collapsed: true,
-				items: [
-					{ text: "遞迴", link: "/practice-page/recur-view" },
-					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
-					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
-				]
-			},
-			{
-				text: "Components - 組件",
+				text: "Components - 輕型組件",
 				collapsed: true,
 				items: [
 					{ text: "Content - 內容區塊", link: "/components/content" },
@@ -46,6 +41,15 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "MultiOption - 多選題", link: "/components/multi-option" },
 					{ text: "vl - 數學公式", link: "/components/vl" },
 					{ text: "VueKatex - 語法渲染", link: "/components/vue-katex" },
+				]
+			},
+			{
+				text: "Answer Comp - 詳解產生器",
+				collapsed: true,
+				items: [
+					{ text: "遞迴", link: "/practice-page/recur-view" },
+					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
+					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
 				]
 			},
 			{

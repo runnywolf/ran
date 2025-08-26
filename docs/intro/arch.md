@@ -9,4 +9,4 @@ head:
 # 架構
 [xmind](https://xmind.ai/share/aE7Y4SpX?xid=D92zHEbP)
 
-<img src="./ran.webp">
+<img src="./img/ran.webp">

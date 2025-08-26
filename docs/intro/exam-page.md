@@ -1,9 +1,5 @@
 ---
 outline: [2, 3] # 顯示 h2, h3
-head:
-  - - link
-    - rel: stylesheet
-      href: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css # katex 語法支援
 ---
 
 # 歷屆試題頁面
@@ -96,6 +92,8 @@ App 頁面網址 ( 範例 )：[#/exam/ntu-114/2](https://runnywolf.github.io/ran
 
 而 Vue 可以用 CSS 統一字體、用組件統一排版，搭配 [KaTex](https://katex.org/) 高效的渲染，<br>
 至於 LaTex 語法修正跟題目糾錯就我來做吧。
+
+> hackmd 放一堆公式就開始掉幀，懷疑是用了效能很差的 MathJax，<br>但 VitePress 要引入 KaTex 是真的麻煩，還沒有最新版本可以用。
 
 ### 題目模塊化
 網路資源都是「 題本 」為單位 (一個一個檔案)，<br>
