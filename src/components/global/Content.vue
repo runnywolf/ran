@@ -1,8 +1,7 @@
 <template>
 	<div
-		class="ts-box is-start-indicated box"
-		:class="collapsed ? 'is-collapsed' : ''"
-		:style="{ '--border-color': getBorderColor(), 'background-color': getBgColor() }"
+		class="ts-box is-start-indicated box" :class="{ 'is-collapsed': collapsed }"
+		:style="{ '--border-color': borderColorShowed, '--bg-color': bgColorShowed }"
 	>
 		<div class="ts-content is-dense">
 			<slot></slot>
@@ -10,7 +9,9 @@
 	</div>
 </template>
 
-<script setup> // 內容區塊的組件
+<script setup>
+import { computed } from "vue";
+
 const style = {
 	gray: { border: "#aaa", bg: "#eee" },
 	blue: { border: "#7af", bg: "#def" },
@@ -25,20 +26,21 @@ const props = defineProps({
 	collapsed: { type: Boolean, default: false }, // 若啟用, 內容區塊不會自動水平延伸
 });
 
-const getBorderColor = () => { // 決定邊框和分隔線的顏色
-	if (props.colorStyle in style) return style[props.colorStyle].border; // "錯誤"風格的邊框顏色
+const borderColorShowed = computed(() => {
+	if (props.colorStyle in style) return style[props.colorStyle].border; // 若風格存在, 會無視參數 borderColor 的邊框顏色
 	return props.borderColor;
-};
+});
 
-const getBgColor = () => { // 決定背景的顏色
-	if (props.colorStyle in style) return style[props.colorStyle].bg; // "錯誤"風格的背景顏色
+const bgColorShowed = computed(() => {
+	if (props.colorStyle in style) return style[props.colorStyle].bg; // 若風格存在, 會無視參數 borderColor 的邊框顏色
 	return props.bgColor;
-};
+});
 </script>
 
 <style scoped>
 .box {
 	border-color: var(--border-color);
+	background-color: var(--bg-color);
 	font-family: "noto sans tc"; font-size: 15px;
 }
 .box:deep(.ts-divider) { /* 如果內容含有分隔線(ts-divider), 將分隔線塗成邊框的顏色 */

@@ -47,9 +47,9 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 				text: "Answer Comp - 詳解產生器",
 				collapsed: true,
 				items: [
-					{ text: "遞迴", link: "/practice-page/recur-view" },
-					{ text: "RecurNonHomog", link: "/practice-page/recur-non-homog" },
-					{ text: "RecurNonHomogExp", link: "/practice-page/recur-non-homog-exp" },
+					{ text: "遞迴", link: "/answer-comp/recur-view" },
+					{ text: "RecurNonHomog", link: "/answer-comp/recur-non-homog" },
+					{ text: "RecurNonHomogExp", link: "/answer-comp/recur-non-homog-exp" },
 				]
 			},
 			{

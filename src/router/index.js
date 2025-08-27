@@ -30,7 +30,7 @@ const routes = [
 			{ path: ":pathMatch(.*)", redirect: "/other" },
 		]
 	},
-	{ path: "/test", component: () => import("@/tests/TestView.vue"), redirect: "/" }, // 測試用
+	{ path: "/test", component: () => import("@/tests/TestView.vue") }, // 測試用
 	{ path: "/:pathMatch(.*)", redirect: "/" },
 ];
 
