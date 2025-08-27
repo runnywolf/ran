@@ -1,5 +1,5 @@
 <template>
-	<BodyLayout>
+	<SidebarContent>
 		
 		<!-- 左側的資訊板 -->
 		<template #sidebar>
@@ -53,7 +53,7 @@
 			</div>
 		</template>
 		
-	</BodyLayout>
+	</SidebarContent>
 </template>
 
 <script setup>
@@ -61,7 +61,7 @@ import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
 import { getUniShortName, decodeExamIdAndGetConfig } from "@/exam-db/examLoader.js"; // 讀取題本資料
-import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
+import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
