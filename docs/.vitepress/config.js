@@ -30,13 +30,14 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "架構", link: "/intro/arch" },
 				]
 			},
-			
 			{
 				text: "Components - 輕型組件",
 				collapsed: true,
 				items: [
 					{ text: "Content - 內容區塊", link: "/components/content" },
 					{ text: "RanLink - 超連結", link: "/components/ran-link" },
+					{ text: "SidebarContent - 側邊欄佈局", link: "/components/sidebar-content" },
+					{ text: "MenuContent - 左側清單佈局", link: "/components/menu-content" },
 					{ text: "MakeProblem - 題目模板", link: "/components/make-problem" },
 					{ text: "MultiOption - 多選題", link: "/components/multi-option" },
 					{ text: "vl - 數學公式", link: "/components/vl" },
