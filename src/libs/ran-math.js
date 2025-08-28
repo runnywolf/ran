@@ -343,7 +343,9 @@ export class EF { // Extension Field (a + b√s)
 	}
 	
 	copy() { // 回傳一個相同值的 EF 實例
-		return new EF(this.nf_a, this.nf_b, this.s, true);
+		const nf_a = Frac.isFrac(this.nf_a) ? this.nf_a.copy() : this.nf_a;
+		const nf_b = Frac.isFrac(this.nf_b) ? this.nf_b.copy() : this.nf_b;
+		return new EF(nf_a, nf_b, this.s, true);
 	}
 	
 	toStr() { // 轉 debug 字串
