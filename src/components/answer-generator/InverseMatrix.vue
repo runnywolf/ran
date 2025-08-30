@@ -13,7 +13,7 @@ import { EF, Matrix, MakeLatex as ml } from "ran-math";
 
 const props = defineProps({
 	n: { type: Number, default: 0 }, // n 階方陣
-	arr: { type: Array, default: [] }, // 要求逆矩陣的 arr, 不能傳 EF 元素
+	arr: { type: Array, default: [] }, // 要求逆矩陣的 arr
 });
 
 const errorMessage = ref(null); // 錯誤訊息

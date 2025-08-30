@@ -6,7 +6,7 @@
 	"externalLink": "https://drive.google.com/drive/folders/1SAI745PNg4MfDWpy0I-AqMIAb2VfE5EB",
 	"externalLinkTip": "Google Drive (mayjaylee1928)",
 	"timeMinutes": 100,
-	"isAnswerComplete": false,
+	"isAnswerComplete": true,
 	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
 	"problemConfigs": {
 		"1": {
@@ -30,7 +30,7 @@
 			"answerLatex": [
 				"\\text{(a) } \\forall n \\in \\mathbb{Z}^+ \\Big( n > 2 ~\\land~ n/2*2 = n ~\\to~ \\exist p_1, p_2 \\in P~ (n = p_1 + p_2) \\Big) ~,",
 				"\\quad~~ P = \\{ x \\in \\mathbb{Z}^+ \\mid x \\gt 1 ~\\land~ \\forall d \\in \\mathbb{Z}^+ ( x/d*d = x ~\\to~ d = 1 ~\\lor~ d = x ) \\}",
-				"\\text{(b) } 222"
+				"\\text{(b) } 222 \\rule{0em}{1.2em}"
 			],
 			"tags": [ "dm-fl", "dm-c" ],
 			"contentConfigs": [
@@ -69,7 +69,7 @@
 			]
 		},
 		"8": {
-			"answerLatex": "",
+			"answerLatex": "20",
 			"tags": [ "la-ips" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
@@ -83,22 +83,26 @@
 			]
 		},
 		"10": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) } 1, 2, 3",
+				"\\text{(b) } \\!\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\end{bmatrix}\\! , \\!\\begin{bmatrix} 1 \\\\ 1 \\\\ 0 \\end{bmatrix}\\! , \\!\\begin{bmatrix} 1 \\\\ 1 \\\\ 1 \\end{bmatrix}\\! \\rule{0em}{2.4em}",
+				"\\text{(c) } 1, 2, 3, 4, 8, 12 \\rule{0em}{1.2em}"
+			],
 			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
 		},
 		"11": {
-			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"answerLatex": "\\begin{bmatrix} 3 & 0 & 0 \\\\ 1 & \\sqrt{3} & 0 \\\\ -2 & \\sqrt{3} & 0 \\end{bmatrix}",
+			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
-			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"answerLatex": "\\begin{bmatrix} 2 & 0 & 0 \\\\ 0 & 0 & 0 \\\\ 0 & 1 & i \\end{bmatrix}",
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
