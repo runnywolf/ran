@@ -97,7 +97,7 @@
 		},
 		"13": {
 			"answerLatex": "",
-			"tags": [ "dm" ],
+			"tags": [ "la-ev-mc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]

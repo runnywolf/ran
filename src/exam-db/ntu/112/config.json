@@ -48,7 +48,7 @@
 		},
 		"6": {
 			"answerLatex": "\\text{D}",
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-mc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

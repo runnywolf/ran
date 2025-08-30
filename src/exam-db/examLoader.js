@@ -111,7 +111,7 @@ function _searchTagTree(segments, tagNode = { children: tagTree }) { // 消耗 s
 	return [tagNode];
 }
 
-export function getTagTreeSearchPath(tag) { // 回傳遍歷 tag-tree 得到的 Array<{ en, zhtw }>
+export function getTagTreeSearchPath(tag) { // 回傳搜尋 tag-tree 得到的 Array<{ en, zhtw }>
 	const tagNodeArr = _searchTagTree(tag.split("-")); // 根據 "-" 切分 tag, 在 tag-tree 內搜尋 tag 目錄
 	return tagNodeArr.slice(1); // [0] 是 root tag node, 沒有資訊
 }
