@@ -40,5 +40,6 @@
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},
+	"ag": { "en": "Algorithm", "zhtw": "演算法" },
 	"?": { "en": "?", "zhtw": "待分類" }
 }
