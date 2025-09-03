@@ -1,4 +1,4 @@
-# 🦊 Ran 0.5
+# 🦊 Ran
 ![](https://img.shields.io/badge/Ran-v0.5-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.2-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
