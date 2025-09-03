@@ -49,7 +49,7 @@
 			<!-- 更多資訊的按鈕 -->
 			<tr>
 				<td>
-					<span class="ts-icon is-info-icon" style="pointer-events: none"></span>
+					<span class="ts-icon is-info-icon more-info-icon"></span>
 				</td>
 				<td>
 					<button class="ts-text more-info-button" popovertarget="more-info">更多資訊</button>
@@ -97,7 +97,12 @@ const props = defineProps({
 .sidebar-table > tbody > tr > td:not(:first-child) {
 	padding-left: 8px; /* 學校下拉選單跟 icon 的距離 */
 }
-.more-info-button {
+.more-info-icon { /* "更多資訊" 左側的 icon */
+	pointer-events: none;
+	position: relative;
+	z-index: 1; /* v0.5-hotfix.2 (firefox 的 icon 會被灰色按鈕蓋住) */
+}
+.more-info-button { /* "更多資訊" 的灰色按鈕 */
 	margin-left: -34px;
 	padding: 4px 10px 6px 34px;
 	background-color: #ddda;
