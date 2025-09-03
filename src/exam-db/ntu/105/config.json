@@ -105,7 +105,7 @@
 		},
 		"14": {
 			"answerLatex": "",
-			"tags": [ "dm" ],
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "14-ans" }
 			]

@@ -5,7 +5,7 @@
 			"m": { "en": "Matrix", "zhtw": "矩陣" },
 			"vs": { "en": "Vector space", "zhtw": "向量空間" },
 			"ev": {
-				"en": "Eigenvalues and Eigenvectors", "zhtw": "特徵值與向量",
+				"en": "Eigenvalues & Eigenvectors", "zhtw": "特徵值與向量",
 				"children": {
 					"mc": { "en": "Markov chain", "zhtw": "馬可夫鏈" }
 				}
@@ -17,7 +17,7 @@
 		"en": "Discrete mathematics", "zhtw": "離散數學",
 		"children": {
 			"c": {
-				"en": "Combinatorics", "zhtw": "排列組合",
+				"en": "Combinatorics", "zhtw": "組合數學",
 				"children": {
 					"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
 					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
@@ -33,7 +33,13 @@
 					"br": { "en": "Binary relation", "zhtw": "二元關係" }
 				}
 			},
-			"gt": { "en": "Graph theory", "zhtw": "圖論" },
+			"gt": {
+				"en": "Graph theory", "zhtw": "圖論",
+				"children": {
+					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
+					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" }
+				}
+			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
 			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
