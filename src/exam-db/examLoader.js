@@ -1,5 +1,11 @@
+// 若需要存取 exam-db, 必須經過這層 api
+
 import dbConfig from "./config.json";
 import tagTree from "./tag-tree.json";
+
+export function getDbConfig() { // 回傳 db config, 主要是紀錄學校資訊以及學校有哪些年份
+	return dbConfig;
+}
 
 export function getUniShortName(uni) { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	return dbConfig.uniConfigs?.[uni]?.shortName ?? "?"; // 若 key uni 或 "shortName" 不存在, 或值為空, 回傳 "?"
@@ -33,7 +39,7 @@ export async function getSectionComp(uni, year, no) { // 讀取並回傳區塊(�
 		.catch(() => { throw new SectionCompMissingError(uni, year, no); }) // 若區塊組件不存在或路徑錯誤
 }
 
-export async function getAllContentComps(uni, year, no, problemConfig) { // 讀取並回傳內容(解答)組件 (promise arr)
+export async function getAllContentComps(uni, year, no, problemConfig) { // 讀取並回傳多個內容(解答)組件 (promise arr)
 	const contentConfigs = problemConfig.contentConfigs; // 題目的內容區塊的設定
 	if (!contentConfigs || contentConfigs.length === 0) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
 		throw new ContentsEmptyError(uni, year, no);
@@ -103,7 +109,9 @@ export class ContentCompMissingError extends Error { // 內容(解答)組件不�
 	}
 }
 
-function _searchTagTree(segments, tagNode = { children: tagTree }) { // 消耗 segments, 回傳遍歷 tag-tree 得到的 node arr 路徑
+// 以下負責 tag tree 的處理, 例如樹搜尋和扁平化
+
+function _searchTagTree(segments, tagNode = { children: tagTree }) { // 消耗 segments 搜尋 tag-tree, 得到 node arr 路徑
 	if (segments[0] in (tagNode.children ?? {})) { // 若子路徑/子節點存在, 往下搜尋
 		const childNode = tagNode.children[segments.shift()];
 		return [tagNode, ..._searchTagTree(segments, childNode)];
@@ -111,7 +119,7 @@ function _searchTagTree(segments, tagNode = { children: tagTree }) { // 消耗 s
 	return [tagNode];
 }
 
-export function getTagTreeSearchPath(tag) { // 回傳搜尋 tag-tree 得到的 Array<{ en, zhtw }>
+export function getTagTreeSearchPath(tag) { // 用 tag 在 tag-tree 內搜尋, 得到 Array<{ en, zhtw }>
 	const tagNodeArr = _searchTagTree(tag.split("-")); // 根據 "-" 切分 tag, 在 tag-tree 內搜尋 tag 目錄
 	return tagNodeArr.slice(1); // [0] 是 root tag node, 沒有資訊
 }
