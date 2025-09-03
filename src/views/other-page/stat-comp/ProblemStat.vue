@@ -60,7 +60,13 @@ const tagDatas = Object.entries(stat.tagsNumber).map(([tag, uniCountsDict]) => {
 </script>
 
 <style scoped>
-.stat-table > tbody > tr > :nth-child(2), :nth-child(3) {
-	text-align: right; /* 表格元素靠右排列 */
+.stat-table > tbody > tr > :nth-child(2), :nth-child(3) { /* "題目數" 和 "占比" 的值因為是數字, 所以靠右排列 */
+	text-align: right;
+}
+.stat-table tr > :nth-child(1) { /* 減少 "標籤" 與 "題目數" 的間距 */
+	padding-right: 0;
+}
+.stat-table tr > :nth-child(2) { /* 減少 "標籤" 與 "題目數" 的間距 */
+	padding-left: 0;
 }
 </style>
