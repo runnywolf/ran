@@ -41,7 +41,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-gi" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

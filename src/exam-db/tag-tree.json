@@ -37,7 +37,9 @@
 				"en": "Graph theory", "zhtw": "圖論",
 				"children": {
 					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
-					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" }
+					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
+					"gi": { "en": "Graph isomorphism", "zhtw": "圖同構問題" },
+					"t": { "en": "Tree", "zhtw": "樹" }
 				}
 			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },

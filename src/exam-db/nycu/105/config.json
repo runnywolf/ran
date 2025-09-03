@@ -88,7 +88,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "dm-gt", "dm-st-br" ],
+			"tags": [ "dm-gt-gi", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
