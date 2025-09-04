@@ -1,77 +1,37 @@
 <template>
 	<vk>
-		分別對分塊矩陣 $[4]$ 和 $\begin{bmatrix} 1 & i \\ -i & 1 \end{bmatrix}$ 做么正對角化，其中
-		$[4] = [1][4]{[1]}^H$。<br>
-		因為
+		對 $D$ 進行 Cholesky 分解，由於 $D$ 是由左上的 $1 \times 1$ 分塊矩陣和右下的 $2 \times 2$ 分塊矩陣組成，<br>
+		令下三角矩陣 $L = \!\begin{bmatrix} a & 0 & 0 \\ 0 & b & 0 \\ 0 & c & d \end{bmatrix}\!$，則
 		$$
-		\text{tr}(\begin{bmatrix} 1 & i \\ -i & 1 \end{bmatrix}) = \lambda_1 + \lambda_2 = 2 \\
-		\det(\begin{bmatrix} 1 & i \\ -i & 1 \end{bmatrix}) = \lambda_1 \lambda_2 = 0
-		$$
-		，所以 $\lambda_1 = 0 ,~ \lambda_2 = 2$。<br>
-		<br>
-		求特徵值 $\lambda_1 = 0$ 對應的特徵向量 $x_1$：
-		$$
-		(A - 0 I) x_1 = \!\begin{bmatrix} 1 & i \\ -i & 1 \end{bmatrix}\! x_1 = 0 ~~,~~
-		\text{choose}~~ x_1 = \!\begin{bmatrix} 1 \\ i \end{bmatrix}
-		$$
-		求特徵值 $\lambda_2 = 2$ 對應的特徵向量 $x_2$：
-		$$
-		(A - 2 I) x_2 = \!\begin{bmatrix} -1 & i \\ -i & -1 \end{bmatrix}\! x_2 = 0 ~~,~~
-		\text{choose}~~ x_2 = \!\begin{bmatrix} 1 \\ -i \end{bmatrix}
-		$$
-		厄米特矩陣的相異特徵值對應的特徵向量天然正交，因此可以省略正交化。<br>
-		由於么正矩陣 $U$ 必須由單範化的行組成，使 $U^H U = I$，所以： ( ex: 複數域向量的範數記得取共軛。)
-		$$
-		\begin{cases}
-		u_1 = \dfrac{1}{\| x_1 \|} x_1 = \dfrac{1}{\sqrt{1 \cdot 1 + i (-i)}} x_1
-		= \dfrac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ i \end{bmatrix} \\
-		u_2 = \dfrac{1}{\| x_2 \|} x_2 = \dfrac{1}{\sqrt{1 \cdot 1 + (-i) i}} x_2
-		= \dfrac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ -i \end{bmatrix}
-		\rule{0em}{2em}
-		\end{cases}
-		$$
-		$$
-		\def\arraystretch{1.3}
-		U = [u_1~~u_2] = \!\begin{bmatrix}
-		\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{i}{\sqrt{2}} & \frac{-i}{\sqrt{2}}
+		D = L L^H = \!\begin{bmatrix} a & 0 & 0 \\ 0 & b & 0 \\ 0 & c & d \end{bmatrix}\!
+		\!\begin{bmatrix} \overline{a} & 0 & 0 \\ 0 & \overline{b} & \overline{c} \\ 0 & 0 & \overline{d} \end{bmatrix}\!
+		= \!\begin{bmatrix}
+		a \overline{a} & 0 & 0 \\
+		0 & b \overline{b} & b \overline{c} \\
+		0 & c \overline{b} & c \overline{c} + d \overline{d}
 		\end{bmatrix}\!
-		$$
-		
-		
-		
-		因此
-		$$
-		\!\begin{bmatrix} 1 & i \\ -i & 1 \end{bmatrix}\!
-		= \def\arraystretch{1.35} \!\begin{bmatrix}
-		\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{i}{\sqrt{2}} & \frac{-i}{\sqrt{2}}
-		\end{bmatrix}\!
-		\def\arraystretch{1} \!\begin{bmatrix} 0 & 0 \\ 0 & 2 \end{bmatrix}\! U^H
-		$$
-		<br>
-		將兩個分塊矩陣的結果合併為矩陣 $D$ 的么正對角化：
-		$$
-		\begin{split}
-		D &= P \Lambda P^H
-		= \def\arraystretch{1.3} \!\begin{bmatrix}
-		1 & & \\ & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ & \frac{i}{\sqrt{2}} & \frac{-i}{\sqrt{2}}
-		\end{bmatrix}\!
-		\def\arraystretch{1} \!\begin{bmatrix} 4 & & \\ & 0 & \\ & & 2 \end{bmatrix}\! P^H \\
-		&= P \Lambda^{1/2} \Lambda^{1/2} P^H \\
-		&= P \Lambda^{1/2} (\Lambda^{1/2})^H P^H \\
-		&= P \Lambda^{1/2} (P \Lambda^{1/2})^H \\
-		&= F^H F ~~,~~ F = (P \Lambda^{1/2})^H
-		\end{split}
+		= \!\begin{bmatrix} 4 & 0 & 0 \\ 0 & 1 & i \\ 0 & -i & 1 \end{bmatrix}
 		$$
 		$$
 		\begin{split}
-		F &= (P \Lambda^{1/2})^H \\
-		&= ( \def\arraystretch{1.3} \!\begin{bmatrix}
-		1 & & \\ & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ & \frac{i}{\sqrt{2}} & \frac{-i}{\sqrt{2}}
-		\end{bmatrix}\!
-		\def\arraystretch{1} \!\begin{bmatrix} 4^{1/2} & & \\ & 0^{1/2} & \\ & & 2^{1/2} \end{bmatrix}\! )^H \\
-		&= { \!\begin{bmatrix} 2 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & -i \end{bmatrix}\! }^H \\
-		&= \boxed{ \!\begin{bmatrix} 2 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 1 & i \end{bmatrix}\! }
+		a = 2 \quad &\implies \quad
+		L L^H = \!\begin{bmatrix}
+		4 & 0 & 0 \\
+		0 & b \overline{b} & b \overline{c} \\
+		0 & c \overline{b} & c \overline{c} + d \overline{d}
+		\end{bmatrix} \\
+		b = 1 \quad &\implies \quad
+		L L^H = \!\begin{bmatrix} 4 & 0 & 0 \\ 0 & 1 & \overline{c} \\ 0 & c & c \overline{c} + d \overline{d} \end{bmatrix} \\
+		c = -i \quad &\implies \quad
+		L L^H = \!\begin{bmatrix} 4 & 0 & 0 \\ 0 & 1 & i \\ 0 & -i & 1 + d \overline{d} \end{bmatrix} \\
+		d = 0 \quad &\implies \quad
+		L L^H = \!\begin{bmatrix} 4 & 0 & 0 \\ 0 & 1 & i \\ 0 & -i & 1 \end{bmatrix}
 		\end{split}
+		$$
+		$D = F^H F = L L^H$，所以
+		$$
+		F = L^H = {\!\begin{bmatrix} 2 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & -i & 0 \end{bmatrix}\!}^H
+		= \boxed{ \!\begin{bmatrix} 2 & 0 & 0 \\ 0 & 1 & i \\ 0 & 0 & 0 \end{bmatrix} }
 		$$
 	</vk>
 </template>
