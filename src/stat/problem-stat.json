@@ -11,7 +11,7 @@
 		},
 		"la-m": {
 			"ntu": 24,
-			"nycu": 22,
+			"nycu": 23,
 			"ncku": 6
 		},
 		"la-vs": {
@@ -21,8 +21,13 @@
 		},
 		"la-ev": {
 			"ntu": 20,
-			"nycu": 16,
+			"nycu": 15,
 			"ncku": 17
+		},
+		"la-ev-d": {
+			"ntu": 6,
+			"nycu": 8,
+			"ncku": 5
 		},
 		"la-ev-mc": {
 			"ntu": 1,

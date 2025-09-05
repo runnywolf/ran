@@ -21,8 +21,8 @@
 	"exam-db": {
 		"json": {
 			"number": 32,
-			"line": 2707,
-			"sizeByte": 67902
+			"line": 2708,
+			"sizeByte": 68090
 		},
 		"js": {
 			"number": 1,
@@ -31,8 +31,8 @@
 		},
 		"vue": {
 			"number": 678,
-			"line": 9472,
-			"sizeByte": 331705
+			"line": 9436,
+			"sizeByte": 330276
 		},
 		"webp": {
 			"number": 52,
@@ -86,8 +86,8 @@
 	"stat": {
 		"json": {
 			"number": 2,
-			"line": 264,
-			"sizeByte": 3520
+			"line": 284,
+			"sizeByte": 3785
 		},
 		"py": {
 			"number": 1,

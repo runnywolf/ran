@@ -81,7 +81,7 @@
 		},
 		"11": {
 			"answerLatex": "\\text{C}",
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

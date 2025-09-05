@@ -48,7 +48,7 @@
 			]
 		},
 		"2-2": {
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-d" ],
 			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-2-ans" }
