@@ -1,42 +1,65 @@
 import json
 from pathlib import Path
+from typing import Self
 
-SRC_PATH = Path(__file__).parent.parent # 路徑 src
+SRC_PATH = Path(__file__).parent.parent # src
+RAN_PATH = SRC_PATH.parent # 專案的路徑
+DB_PATH = SRC_PATH/"exam-db" # src/exam-db
 
-def create_empty_type_stat() -> dict:
-	return { "number": 0, "line": 0, "sizeByte": 0 }
-
-def get_code_stat(path: Path, only=[]) -> dict: # 遞迴計算某個路徑下的所有檔案的統計資料
-	all_files = [ path ] if path.is_file() else path.rglob("*")
-	if len(only) > 0: all_files = [f for f in all_files if f.suffix in only]
+class CodeStat: # 程式碼的統計資料
+	def __init__(self, path: Path, only=[]) -> Self:
+		all_files = [ path ] if path.is_file() else path.rglob("*") # 如果 path 是資料夾, 把資料夾下的檔案路徑找出來
+		if (len(only) > 0): all_files = [f for f in all_files if f.suffix in only] # 篩選特定附檔名
+		
+		stat = {}
+		for f in all_files: # 遍歷路徑下的所有檔案
+			if not f.is_file(): continue # 跳過不是檔案的東西
+			
+			file_type = f.suffix.lstrip(".") # 檔案類型
+			if file_type not in stat:
+				stat[file_type] = { "number": 0, "line": 0, "sizeByte": 0 } # 如果某個檔案類型沒有統計資料, 新增一個
+			type_stat = stat[file_type] # 某個檔案類型的統計
+			
+			type_stat["number"] += 1 # 檔案數
+			type_stat["sizeByte"] += f.stat().st_size # 檔案大小 (Byte)
+			
+			try:
+				with f.open("r", encoding="utf-8") as file:
+					file_text = file.read()
+					type_stat["line"] += len([l for l in file_text.split("\n") if l.strip()]) # 行數, 忽略空白行
+			except Exception as e: # 圖片沒有行數, 無視它
+				pass
+		
+		self.stat = stat # key 為附檔名, value 為 { number, line, sizeByte }
 	
-	stat = {}
-	for f in all_files: # 遍歷路徑下的所有檔案
-		if not f.is_file(): continue # 跳過不是檔案的東西
+	def merge(self, code_stat: Self) -> Self: # 合併兩個統計資料
+		for suffix, suffix_stat in code_stat.stat.items():
+			if suffix in self.stat: # 如果 self 已經有某個副檔名的資料, 加總
+				for k in ["number", "line", "sizeByte"]: self.stat[suffix][k] += suffix_stat[k]
+			else: # 如果 self 沒有某個副檔名的資料, 複製過去
+				self.stat[suffix] = suffix_stat
 		
-		file_type = f.suffix.lstrip(".") # 檔案類型
-		if file_type not in stat: stat[file_type] = create_empty_type_stat() # 如果某個檔案類型沒有統計資料, 新增一個
-		type_stat = stat[file_type] # 某個檔案類型的統計
-		
-		type_stat["number"] += 1 # 檔案數
-		type_stat["sizeByte"] += f.stat().st_size # 檔案大小 (Byte)
-		
-		try:
-			with f.open("r", encoding="utf-8") as file:
-				file_text = file.read()
-				type_stat["line"] += len([l for l in file_text.split("\n") if l.strip()]) # 行數, 忽略空白行
-		except Exception as e:
-			pass
+		return self # chaining
 	
-	return stat
+	def to_stat(self) -> dict:
+		return self.stat
 
 def make_code_stat_json() -> None: # 生成程式碼的統計
-	all_stat = {}
-	for dir in SRC_PATH.iterdir(): all_stat[dir.name] = get_code_stat(SRC_PATH/dir.name)
-	all_stat["docs"] = get_code_stat(SRC_PATH.parent/"docs", only=[".md", ".png", ".webp"]) # docs 只統計 md/png
-
+	code_stat_app = CodeStat(RAN_PATH/"index.html") # app 範圍的統計
+	for i in ["components", "libs", "router", "styles", "views", "App.vue", "main.js"]:
+		code_stat_app.merge(CodeStat(SRC_PATH/i))
+	code_stat_app.merge(CodeStat(DB_PATH/"examLoader.js")) # 也包含 exam-db 的 api
+	
+	stat = {
+		"app": code_stat_app.to_stat(),
+		"exam": CodeStat(DB_PATH, only=[".webp", ".vue", ".json"]).to_stat(),
+		"test": CodeStat(SRC_PATH/"tests").to_stat(),
+		"docs": CodeStat(RAN_PATH/"docs", only=[".md", ".png", ".webp"]).to_stat(),
+		"tool": CodeStat(SRC_PATH/"exam-db-tool").merge(CodeStat(SRC_PATH/"stat"/"make-stat.py")).to_stat()
+	}
+	
 	with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
-		json.dump(all_stat, f, ensure_ascii=False, indent="\t")
+		json.dump(stat, f, ensure_ascii=False, indent="\t")
 
 def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-tree.json 扁平化為 tag arr
 	sub_tags = [prefix] if prefix else [] # 排除遞迴造成的空字串 tag
