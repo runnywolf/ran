@@ -1,10 +1,14 @@
 <template>
 	<div class="ts-text is-big is-bold" style="margin-top: -6px; margin-bottom: 8px;">
 		程式碼
-		<span
-			class="ts-icon is-circle-exclamation-icon is-start-spaced"
-			data-tooltip="以下所有的統計資料都並非動態，而是依賴開發環境的手動更新，可以參考 src/stat/make-stat.py。"
-		></span>
+		<button class="ts-icon is-circle-exclamation-icon is-start-spaced" popovertarget="other-page-code-stat">
+		</button>
+		<div class="ts-popover" id="other-page-code-stat" popover>
+			<div class="ts-content is-dense ts-text is-medium" style="font-weight: initial;">
+				以下所有的統計資料並非動態，而是依賴開發環境的手動更新，<br>
+				可以參考 <code>src/stat/make-stat.py</code>。
+			</div>
+		</div>
 	</div>
 	<div class="ts-box is-collapsed">
 		<table class="ts-table is-collapsed stat-table">
