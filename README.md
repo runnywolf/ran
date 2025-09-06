@@ -1,5 +1,5 @@
 # 🦊 Ran
-![](https://img.shields.io/badge/Ran-v0.5-55f?style=flat)
+![](https://img.shields.io/badge/Ran-v0.5.1-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.3-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -18,7 +18,7 @@
 > [!NOTE]
 > 使用電腦版網頁以獲得最佳體驗。
 
-這個網頁是靜態的，因此你可以 `git clone` 到 `local` 作為離線版使用。
+這個網頁是靜態的，因此你可以 `git clone` 到 `local`，建構完成後作為離線版使用。
 
 ## ✨ 功能
 ### 歷屆試題頁面
@@ -38,8 +38,8 @@
 
 ## 📄 已收錄題本
 - 台大 114~105 (108\~ 無詳解)
-- 交大 114~105 (113\~ 無詳解)
-- 成大 114~110 (無詳解)
+- 交大 114~105 (112\~ 無詳解)
+- 成大 114~105 (無詳解)
 
 ## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
