@@ -14,7 +14,7 @@
 	"problemConfigs": {
 		"1-1": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-1-ans" }
 			]
@@ -28,7 +28,7 @@
 		},
 		"1-3": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-3-ans" }
 			]
@@ -42,7 +42,7 @@
 		},
 		"2-1": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-qrd", "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-1-ans" }
 			]

@@ -7,8 +7,8 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2508,
-			"sizeByte": 111860
+			"line": 2554,
+			"sizeByte": 115274
 		},
 		"js": {
 			"number": 7,
@@ -24,8 +24,8 @@
 	"exam": {
 		"json": {
 			"number": 32,
-			"line": 2708,
-			"sizeByte": 68106
+			"line": 2722,
+			"sizeByte": 68786
 		},
 		"vue": {
 			"number": 678,

@@ -2,7 +2,12 @@
 	"la": {
 		"en": "Linear algebra", "zhtw": "線性代數",
 		"children": {
-			"m": { "en": "Matrix", "zhtw": "矩陣" },
+			"m": {
+				"en": "Matrix", "zhtw": "矩陣",
+				"children": {
+					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" }
+				}
+			},
 			"vs": { "en": "Vector space", "zhtw": "向量空間" },
 			"ev": {
 				"en": "Eigenvalues & Eigenvectors", "zhtw": "特徵值與向量",
@@ -11,7 +16,16 @@
 					"mc": { "en": "Markov chain", "zhtw": "馬可夫鏈" }
 				}
 			},
-			"ips": { "en": "Inner product space", "zhtw": "內積空間" }
+			"ips": {
+				"en": "Inner product space", "zhtw": "內積空間",
+				"children": {
+					"gsp": { "en": "Gram-Schmidt process", "zhtw": "正交化" },
+					"qrd": { "en": "QR decomposition", "zhtw": "QR 分解" },
+					"svd": { "en": "Singular value decomposition", "zhtw": "奇異值分解" },
+					"p": { "en": "Projection / Inconsistent system", "zhtw": "投影 / 矛盾方程" },
+					"dm": { "en": "Definite matrix", "zhtw": "定性矩陣" }
+				}
+			}
 		}
 	},
 	"dm": {

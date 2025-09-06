@@ -112,7 +112,7 @@
 		},
 		"15": {
 			"answerLatex": "",
-			"tags": [ "la-ips", "la-ev" ],
+			"tags": [ "la-ips-p", "la-ips-gsp", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

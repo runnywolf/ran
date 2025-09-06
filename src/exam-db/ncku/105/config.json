@@ -32,14 +32,14 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "la-ev", "la-ev-d", "la-ips" ],
+			"tags": [ "la-ev", "la-ev-d", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

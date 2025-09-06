@@ -63,14 +63,14 @@
 				"\\text{(a) } \\def\\arraystretch{1.4} \\begin{bmatrix} \\frac{-1}{3} & 2 & 1 & -1 \\\\ \\frac{1}{3} & \\frac{-4}{3} & \\frac{-4}{3} & 1 \\\\ \\frac{5}{12} & \\frac{-13}{12} & \\frac{-11}{6} & 1 \\\\ \\frac{1}{12} & \\frac{-1}{12} & \\frac{1}{6} & 0 \\end{bmatrix}",
 				"\\text{(b) } \\begin{bmatrix} 0 & 1 & 0 & 0 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 0 & 0 & 1 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix}\\! A = \\!\\def\\arraystretch{1.4}\\begin{bmatrix} 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ \\frac{1}{2} & \\frac{-1}{2} & 1 & 0 \\\\ \\frac{4}{3} & -2 & 0 & 1 \\end{bmatrix} \\!\\! \\begin{bmatrix} 2 & 3 & -1 & 1 \\\\ 0 & -3 & 3 & 9 \\\\ 0 & 0 & 1 & 11 \\\\ 0 & 0 & 0 & 6 \\end{bmatrix}"
 			],
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-lud" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "20",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { shallowRef, watchEffect, defineAsyncComponent, computed } from "vue";
+import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
 import { getSectionComp, getAllContentComps } from "@/exam-db/examLoader.js"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件

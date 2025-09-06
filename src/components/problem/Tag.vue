@@ -38,6 +38,7 @@ watch(() => props.tag, tag => {
 }, { immediate: true });
 
 function whenTagClicked() { // 左側 tag 被點擊
+	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 刪除 tag 後需要清除 tooltip
 	if (props.clickToSearch && isTagExist.value) router.push(`/search/${props.tag}`); // 如果 tag 存在, 跳轉至搜尋頁面, 並自動選取這個 tag
 }
 </script>
