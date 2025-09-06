@@ -1,10 +1,14 @@
 <template>
 	<div class="ts-text is-big is-bold" style="margin-top: -6px; margin-bottom: 8px;">
 		程式碼
-		<span
-			class="ts-icon is-circle-exclamation-icon is-start-spaced"
-			data-tooltip="以下所有的統計資料都並非動態，而是依賴開發環境的手動更新，可以參考 src/stat/make-stat.py。"
-		></span>
+		<button class="ts-icon is-circle-exclamation-icon is-start-spaced" popovertarget="other-page-code-stat">
+		</button>
+		<div class="ts-popover" id="other-page-code-stat" popover>
+			<div class="ts-content is-dense ts-text is-medium" style="font-weight: initial;">
+				以下所有的統計資料並非動態，而是依賴開發環境的手動更新，<br>
+				可以參考 <code>src/stat/make-stat.py</code>。
+			</div>
+		</div>
 	</div>
 	<div class="ts-box is-collapsed">
 		<table class="ts-table is-collapsed stat-table">
@@ -14,12 +18,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="item in displayList">
-					<td>{{ item.rangeName }}</td>
+				<tr v-for="rowStat in rowStats">
+					<td>{{ rowStat.name }}</td>
 					<td v-for="valueName in ['number', 'line', 'sizeByte']">
-						<span>{{ item.cs.sum[valueName].toLocaleString() }}</span>
+						<span>{{ rowStat.statSum[valueName].toLocaleString() }}</span>
 						<div class="stacked-bar">
-							<div v-for="[fileTypeName, value, percent] in item.cs.getFileTypePercent(valueName)"
+							<div v-for="[fileTypeName, value, percent] in rowStat.getFileTypePercent(valueName)"
 								:class="`bg-color-${fileTypeName}`"
 								:style="{ '--t': percent }"
 								:data-tooltip="`${fileTypeName} - ${value.toLocaleString()} ( ${percent.toFixed(2)}% )`"
@@ -35,63 +39,37 @@
 <script setup>
 import codeStatData from "@/stat/code-stat.json"; // 統計資料
 
-class CodeStat { // 統計資料
-	static getEmptyFileTypeStat() {
-		return { number: 0, line: 0, sizeByte: 0 };
-	}
-	
-	static fileTypeStatAdd(a, b) { // 將 b 的資料加到 a
-		for (const key of ["number", "line", "sizeByte"]) a[key] += b[key];
-	}
-	
-	constructor(dict = null) {
-		this.data = {};
-		this.sum = CodeStat.getEmptyFileTypeStat();
-		if (dict) this.add({ data: dict });
-	}
-	
-	add(cs) { // 與另一個 CodeStat 合併
-		for (const [fileType, fileTypeStat] of Object.entries(cs.data)) {
-			if (!(fileType in this.data)) { // 沒有某個檔案類型的統計資料, 新建一個
-				this.data[fileType] = CodeStat.getEmptyFileTypeStat();
-			}
-			CodeStat.fileTypeStatAdd(this.data[fileType], fileTypeStat);
-			CodeStat.fileTypeStatAdd(this.sum, fileTypeStat);
-		}
+class RowStat { // 每一列的統計資料
+	constructor(name, stat) {
+		this.name = name; // 範圍名稱
+		this.stat = stat; // 統計資料
+		this.statSum = Object.values(this.stat).reduce((acc, fileTypeStat) => { // 所有檔案類型的加總
+			acc.number += fileTypeStat.number;
+			acc.line += fileTypeStat.line;
+			acc.sizeByte += fileTypeStat.sizeByte;
+			return acc;
+		}, { number: 0, line: 0, sizeByte: 0 });
 	}
 	
 	getFileTypePercent(valueName) { // 回傳排序過的檔案統計數字
 		let ratios = [];
-		for (const [fileType, fileTypeStat] of Object.entries(this.data)) {
+		for (const [fileType, fileTypeStat] of Object.entries(this.stat)) {
 			ratios.push([
 				fileType, // 副檔名
 				fileTypeStat[valueName], // 數字
-				fileTypeStat[valueName] / this.sum[valueName] * 100 // 數字佔的比例 (%)
+				fileTypeStat[valueName] / this.statSum[valueName] * 100 // 數字佔的比例 (%)
 			]);
 		}
 		return ratios.sort((a, b) => b[1] - a[1]); // 降序排列
 	}
 }
 
-const dict_cs_srcItems = {}; // 每一個 src 下的資料夾/檔案的統計資料
-for (const [rangeName, rangeStat] of Object.entries(codeStatData)) {
-	dict_cs_srcItems[rangeName] = new CodeStat(rangeStat);
-}
-
-const cs_app = new CodeStat(); // app 的統計資料
-for (const rangeName of [ "components", "libs", "router", "styles", "views", "App.vue", "main.js" ]) {
-	cs_app.add(dict_cs_srcItems[rangeName]);
-}
-
-const cs_tool = new CodeStat({ py: dict_cs_srcItems["stat"].data.py }); // stat 資料夾內只統計 make_stat.py
-cs_tool.add(dict_cs_srcItems["exam-db-tool"]); // 加入 exam-db 的小工具
-
-const displayList = [ // 要顯示的統計資料
-	{ rangeName: "App", cs: cs_app },
-	{ rangeName: "歷屆試題", cs: dict_cs_srcItems["exam-db"] },
-	{ rangeName: "測試", cs: dict_cs_srcItems["tests"] },
-	{ rangeName: "Docs", cs: dict_cs_srcItems["docs"] },
-	{ rangeName: "小工具", cs: cs_tool },
+const rowStats = [ // 要顯示的統計資料
+	new RowStat("App", codeStatData.app),
+	new RowStat("歷屆試題", codeStatData.exam),
+	new RowStat("測試", codeStatData.test),
+	new RowStat("Docs", codeStatData.docs),
+	new RowStat("小工具", codeStatData.tool),
 ];
 </script>
 
@@ -127,6 +105,9 @@ const displayList = [ // 要顯示的統計資料
 .stacked-bar:hover > div:not(:hover) { /* 當某一個色塊被 hover 時, 使其他色塊變不透明 */
 	opacity: 0.2;
 	transition: opacity 0.2s ease-in-out;
+}
+.bg-color-html {
+	background-color: #e34c26 !important;
 }
 .bg-color-vue {
 	background-color: #42b883 !important;

@@ -1,46 +1,73 @@
 {
-	"App.vue": {
-		"vue": {
+	"app": {
+		"html": {
 			"number": 1,
-			"line": 21,
-			"sizeByte": 555
-		}
-	},
-	"components": {
+			"line": 22,
+			"sizeByte": 1009
+		},
 		"vue": {
-			"number": 18,
-			"line": 769,
-			"sizeByte": 34474
+			"number": 47,
+			"line": 2554,
+			"sizeByte": 115274
 		},
 		"js": {
-			"number": 1,
-			"line": 537,
-			"sizeByte": 33248
+			"number": 7,
+			"line": 1458,
+			"sizeByte": 83964
+		},
+		"css": {
+			"number": 2,
+			"line": 89,
+			"sizeByte": 2927
 		}
 	},
-	"exam-db": {
+	"exam": {
 		"json": {
-			"number": 27,
-			"line": 2364,
-			"sizeByte": 58135
-		},
-		"js": {
-			"number": 1,
-			"line": 107,
-			"sizeByte": 5879
+			"number": 32,
+			"line": 2722,
+			"sizeByte": 68786
 		},
 		"vue": {
-			"number": 593,
-			"line": 8372,
-			"sizeByte": 292168
+			"number": 678,
+			"line": 9461,
+			"sizeByte": 331137
 		},
 		"webp": {
-			"number": 50,
+			"number": 52,
 			"line": 0,
-			"sizeByte": 408632
+			"sizeByte": 432404
 		}
 	},
-	"exam-db-tool": {
+	"test": {
+		"vue": {
+			"number": 4,
+			"line": 194,
+			"sizeByte": 5296
+		},
+		"js": {
+			"number": 13,
+			"line": 1822,
+			"sizeByte": 77506
+		}
+	},
+	"docs": {
+		"md": {
+			"number": 34,
+			"line": 3310,
+			"sizeByte": 120628
+		},
+		"png": {
+			"number": 9,
+			"line": 0,
+			"sizeByte": 279326
+		},
+		"webp": {
+			"number": 3,
+			"line": 0,
+			"sizeByte": 57246
+		}
+	},
+	"tool": {
 		"vue": {
 			"number": 3,
 			"line": 38,
@@ -52,90 +79,14 @@
 			"sizeByte": 338
 		},
 		"py": {
-			"number": 1,
-			"line": 71,
-			"sizeByte": 4583
+			"number": 2,
+			"line": 160,
+			"sizeByte": 10121
 		},
 		"txt": {
 			"number": 1,
 			"line": 0,
 			"sizeByte": 0
-		}
-	},
-	"libs": {
-		"js": {
-			"number": 2,
-			"line": 742,
-			"sizeByte": 41018
-		}
-	},
-	"main.js": {
-		"js": {
-			"number": 1,
-			"line": 20,
-			"sizeByte": 1007
-		}
-	},
-	"router": {
-		"js": {
-			"number": 1,
-			"line": 39,
-			"sizeByte": 2064
-		}
-	},
-	"stat": {
-		"json": {
-			"number": 2,
-			"line": 254,
-			"sizeByte": 3392
-		},
-		"py": {
-			"number": 1,
-			"line": 68,
-			"sizeByte": 4222
-		}
-	},
-	"styles": {
-		"css": {
-			"number": 2,
-			"line": 89,
-			"sizeByte": 2927
-		}
-	},
-	"tests": {
-		"vue": {
-			"number": 4,
-			"line": 192,
-			"sizeByte": 5264
-		},
-		"js": {
-			"number": 13,
-			"line": 1821,
-			"sizeByte": 77439
-		}
-	},
-	"views": {
-		"vue": {
-			"number": 26,
-			"line": 1631,
-			"sizeByte": 71208
-		}
-	},
-	"docs": {
-		"md": {
-			"number": 29,
-			"line": 3218,
-			"sizeByte": 116904
-		},
-		"webp": {
-			"number": 1,
-			"line": 0,
-			"sizeByte": 27480
-		},
-		"png": {
-			"number": 10,
-			"line": 0,
-			"sizeByte": 310604
 		}
 	}
 }

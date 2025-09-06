@@ -2,17 +2,37 @@
 	"la": {
 		"en": "Linear algebra", "zhtw": "線性代數",
 		"children": {
-			"m": { "en": "Matrix", "zhtw": "矩陣" },
+			"m": {
+				"en": "Matrix", "zhtw": "矩陣",
+				"children": {
+					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" }
+				}
+			},
 			"vs": { "en": "Vector space", "zhtw": "向量空間" },
-			"ev": { "en": "Eigenvalues and Eigenvectors", "zhtw": "特徵值與向量" },
-			"ips": { "en": "Inner product space", "zhtw": "內積空間" }
+			"ev": {
+				"en": "Eigenvalues & Eigenvectors", "zhtw": "特徵值與向量",
+				"children": {
+					"d": { "en": "Diagonalization", "zhtw": "對角化" },
+					"mc": { "en": "Markov chain", "zhtw": "馬可夫鏈" }
+				}
+			},
+			"ips": {
+				"en": "Inner product space", "zhtw": "內積空間",
+				"children": {
+					"gsp": { "en": "Gram-Schmidt process", "zhtw": "正交化" },
+					"qrd": { "en": "QR decomposition", "zhtw": "QR 分解" },
+					"svd": { "en": "Singular value decomposition", "zhtw": "奇異值分解" },
+					"p": { "en": "Projection / Inconsistent system", "zhtw": "投影 / 矛盾方程" },
+					"dm": { "en": "Definite matrix", "zhtw": "定性矩陣" }
+				}
+			}
 		}
 	},
 	"dm": {
 		"en": "Discrete mathematics", "zhtw": "離散數學",
 		"children": {
 			"c": {
-				"en": "Combinatorics", "zhtw": "排列組合",
+				"en": "Combinatorics", "zhtw": "組合數學",
 				"children": {
 					"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
 					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
@@ -28,12 +48,21 @@
 					"br": { "en": "Binary relation", "zhtw": "二元關係" }
 				}
 			},
-			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
-			"gt": { "en": "Graph theory", "zhtw": "圖論" },
+			"gt": {
+				"en": "Graph theory", "zhtw": "圖論",
+				"children": {
+					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
+					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
+					"gi": { "en": "Graph isomorphism", "zhtw": "圖同構問題" },
+					"t": { "en": "Tree", "zhtw": "樹" }
+				}
+			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
+			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},
+	"ag": { "en": "Algorithm", "zhtw": "演算法" },
 	"?": { "en": "?", "zhtw": "待分類" }
 }

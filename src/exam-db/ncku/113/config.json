@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-t" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -52,7 +52,7 @@
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "(-1)^{n-1} (n-1)",
 			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
@@ -74,7 +74,7 @@
 		},
 		"10": {
 			"answerLatex": "\\text{ae}",
-			"tags": [ "la-m", "la-ev", "la-ips" ],
+			"tags": [ "la-ips-dm", "la-m", "la-ev", "la-ips-p", "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

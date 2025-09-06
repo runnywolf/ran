@@ -79,6 +79,7 @@ const testData = {
 		testFunc: input => input.copy(),
 		tests: [ // 測資
 			{ input: new EF(1, 2, 3), output: new EF(1, 2, 3) },
+			{ input: new EF(1.2, 2.4, -1), output: new EF(1.2, 2.4, -1) },
 		],
 	},
 	".toLatex": {

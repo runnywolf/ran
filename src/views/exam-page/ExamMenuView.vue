@@ -32,10 +32,11 @@
 </template>
 
 <script setup>
-import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
-import dbConfig from "@/exam-db/config.json"; // 保存題本資訊的設定檔
+import { getDbConfig, getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
 
-const isExamExist = {}; // { year: dict } ; 某一年有哪些學校的題本是存在的
+const dbConfig = getDbConfig(); // 同 src/exam-db/config.json ; 主要是紀錄學校資訊以及學校有哪些年份
+
+const isExamExist = {}; // { year: dict } ; 某一年有哪些學校的題本是存在的. (這一頁不會變動, 不需要用 ref 變數)
 for (const [uni, { yearList }] of Object.entries(dbConfig.uniConfigs)) {
 	for (const year of yearList) {
 		if (!(year in isExamExist)) isExamExist[year] = {};

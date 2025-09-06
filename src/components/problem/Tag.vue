@@ -1,12 +1,12 @@
 <template>
-	<div class="ts-chip is-circular is-start-icon tag" :data-tooltip="tagName.en" @click="whenTagClicked">
+	<div class="ts-chip is-circular is-start-icon tag" :data-tooltip="tagNameEn" @click="whenTagClicked">
 		<span class="ts-icon is-hashtag-icon is-small"></span>
-		<span>{{ tagName.zhtw }}</span>
+		<span>{{ tagNameZhtw }}</span>
 	</div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { getTagTreeSearchPath } from "@/exam-db/examLoader.js"; // 用於將 tag 縮寫映射到英文/中文全名
 
@@ -15,20 +15,31 @@ const props = defineProps({
 	clickToSearch: { type: Boolean, default: false }, // 是否要啟用: 點擊後跳轉至搜尋頁面
 }); // 題目的標籤
 
+function getEnTooltip(tagNodeArr) { // 繪製 tag 的英文目錄
+	let enTooltip = "";
+	tagNodeArr.forEach((tagNode, i) => {
+		if (i > 0) enTooltip += `\n${"　".repeat(i-1)}└ `; // 縮排階層結構
+		enTooltip += tagNode.en;
+	});
+	return enTooltip;
+}
+
 const router = useRouter(); // 路由器
-const tagNodeArr = computed(() => getTagTreeSearchPath(props.tag)); // tag 在 tag tree 的路徑
-const tagName = computed(() => { // 標籤顯示的中/英文
-	const arr = tagNodeArr.value;
-	if (arr.length === 0) return { en: "Unknown", zhtw: "未知" }; // tag 不存在於 tag tree 目錄內
+const isTagExist = ref(false); // tag 是否在 tag tree 裡
+const tagNameEn = ref("?"); // 標籤顯示的英文 (因為太長, 所以以 tooltip 顯示)
+const tagNameZhtw = ref("?"); // 標籤顯示的中文
+
+watch(() => props.tag, tag => {
+	const tagNodeArr = getTagTreeSearchPath(tag); // tag 在 tag tree 的路徑
 	
-	let tagEnTooltip = arr[0].en;
-	for (let i = 1; i < arr.length; i++) tagEnTooltip += `\n${"-".repeat(i)} ${arr[i].en}`; // 英文 tag 名的目錄結構
-	return { en: tagEnTooltip, zhtw: arr.at(-1).zhtw }; // 中文名只顯示最底層目錄名
-});
+	isTagExist.value = tagNodeArr.length > 0; // tag 是否存在
+	tagNameEn.value = isTagExist.value ? getEnTooltip(tagNodeArr) : "Unknown"; // 英文會顯示目錄階層結構 (tooltip)
+	tagNameZhtw.value = isTagExist.value ? tagNodeArr.at(-1).zhtw : "未知"; // 中文名只顯示最底層目錄名
+}, { immediate: true });
 
 function whenTagClicked() { // 左側 tag 被點擊
-	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 所以需要刪除 (這是一個機制)
-	if (props.clickToSearch && tagNodeArr.value.length > 0) router.push(`/search/${props.tag}`); // 如果 tag 存在, 跳轉至搜尋頁面, 並自動選取這個 tag
+	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 刪除 tag 後需要清除 tooltip
+	if (props.clickToSearch && isTagExist.value) router.push(`/search/${props.tag}`); // 如果 tag 存在, 跳轉至搜尋頁面, 並自動選取這個 tag
 }
 </script>
 

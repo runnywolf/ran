@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{D}",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-ehg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -48,7 +48,7 @@
 		},
 		"6": {
 			"answerLatex": "\\text{D}",
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-mc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -76,7 +76,7 @@
 		},
 		"10": {
 			"answerLatex": "\\text{ABE}",
-			"tags": [ "la-m", "la-vs", "la-ev", "la-ips" ],
+			"tags": [ "la-vs", "la-m", "la-ev-d", "la-ev", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

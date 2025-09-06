@@ -1,5 +1,5 @@
 <template>
-	<BodyLayout>
+	<SidebarContent>
 		
 		<!-- 左側的資訊板 -->
 		<template #sidebar>
@@ -66,7 +66,7 @@
 			></ExamPaper>
 		</template>
 		
-	</BodyLayout>
+	</SidebarContent>
 </template>
 
 <script setup>
@@ -75,7 +75,7 @@ import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
 import { getUniShortName, decodeExamIdAndGetConfig } from "@/exam-db/examLoader.js"; // 讀取題本資料
 import { WrongIdFormatError, ExamConfigMissingError } from "@/exam-db/examLoader.js"; // error
-import BodyLayout from "@/components/BodyLayout.vue"; // 用於建構 body 的 sidebar 與內容
+import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./exam-comp/ExamInfo.vue"; // 題本資訊的組件
 import ExamTimer from "./exam-comp/ExamTimer.vue"; // 計時器的組件
 import ExamPaper from "./exam-comp/ExamPaper.vue"; // 考卷的組件

@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-gi" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -112,7 +112,7 @@
 		},
 		"15": {
 			"answerLatex": "",
-			"tags": [ "la-ev", "la-ips" ],
+			"tags": [ "la-ips-p", "la-ips-gsp", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

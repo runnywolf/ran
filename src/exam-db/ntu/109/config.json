@@ -74,7 +74,7 @@
 		},
 		"10": {
 			"answerLatex": "1, 2, 16, 1, 0",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-svd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans-1", "suffix": "(SVD 分解)" },
 				{ "type": "answer", "fileBaseName": "10-ans-2", "suffix": "(慢慢湊)" }

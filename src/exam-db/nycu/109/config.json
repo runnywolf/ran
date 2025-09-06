@@ -26,7 +26,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-ehg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
@@ -75,7 +75,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "la-ev", "la-ips" ],
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
@@ -89,7 +89,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

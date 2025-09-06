@@ -14,7 +14,7 @@
 	"problemConfigs": {
 		"1-1": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-1-ans" }
 			]
@@ -28,7 +28,7 @@
 		},
 		"1-3": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-3-ans" }
 			]
@@ -42,13 +42,13 @@
 		},
 		"2-1": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-qrd", "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-1-ans" }
 			]
 		},
 		"2-2": {
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-d" ],
 			"answerLatex": "",
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-2-ans" }
@@ -112,7 +112,7 @@
 		},
 		"9-2": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-t" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-2-ans" }
 			]

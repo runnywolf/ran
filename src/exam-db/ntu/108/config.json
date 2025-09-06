@@ -74,7 +74,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "la-m", "la-ev" ],
+			"tags": [ "la-ev-d", "la-ev", "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

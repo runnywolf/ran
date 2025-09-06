@@ -33,7 +33,7 @@ export default defineConfig({
 ## 測試
 `RanMath.js (v2.0.2)` 已通過測試，表中的 `Recur.js` 可以忽略，因為我懶得測。
 
-<img src="./img/coverage.png" style="border: 1px #aaa solid; border-radius: 2px;">
+<img src="./img/coverage.webp" style="border: 1px #aaa solid; border-radius: 2px;">
 
 ```py
 RanMath.js (v2.0.2) coverage report from v8

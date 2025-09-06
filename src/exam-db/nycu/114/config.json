@@ -43,7 +43,7 @@
 		},
 		"5": {
 			"answerLatex": [ "\\text{(a) Yes}", "\\text{(b) See answer}" ],
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-gi" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -67,7 +67,7 @@
 		},
 		"8": {
 			"answerLatex": "Q = \\def\\arraystretch{1.35}\\!\\begin{bmatrix} \\frac{4}{5} & \\frac{-3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\! ,~ D = \\def\\arraystretch{1}\\!\\begin{bmatrix} 15 & 0 \\\\ 0 & -10 \\end{bmatrix}\\!",
-			"tags": [ "la-ev" ],
+			"tags": [ "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
