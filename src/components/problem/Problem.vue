@@ -6,7 +6,9 @@
 			<component :is="sectionComp"></component>
 		</div>
 		
-		<div v-if="props.no[0] !== '-'" class="ts-wrap is-compact is-vertical content"><!-- 開頭為 "-" 的 section 不是題目, 無詳解 -->
+		<div v-if="props.no[0] !== '-' && (showAnswer || showLink || showContent)"
+			class="ts-wrap is-compact is-vertical content"
+		><!-- 開頭為 "-" 的 section 不是題目, 無詳解 -->
 			
 			<!-- 綠色答案框 & 詳解連結 -->
 			<div class="ts-wrap">
