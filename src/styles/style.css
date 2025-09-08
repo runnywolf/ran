@@ -8,6 +8,9 @@
 span.ran-neko::before { /* 貓咪 */
 	content: "ฅ^⦁⩊⦁^ฅ ੭";
 }
+span.ran-ciallo::before { /* ciallo */
+	content: "(∠・ω < )⌒☆";
+}
 
 details.ts-accordion[open] details.ts-accordion:not([open]) summary::before { /* tocas ui bug */
 	transform: rotate(270deg);
