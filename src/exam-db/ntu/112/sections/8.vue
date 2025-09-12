@@ -4,13 +4,13 @@
 			Assume that A, B, and C are $n \times n$ matrices.
 		</template>
 		<template #A>
-			$\! \text{trace}((A+B)C) = \text{trace}(AC) + \text{trace}(BC)$
+			$\text{trace}((A+B)C) = \text{trace}(AC) + \text{trace}(BC)$
 		</template>
 		<template #B>
-			$\! \text{trace}(AB) = \text{trace}(A)\text{trace}(B)$
+			$\text{trace}(AB) = \text{trace}(A)\text{trace}(B)$
 		</template>
 		<template #C>
-			$\! \text{trace}(AB) = \text{trace}(BA)$
+			$\text{trace}(AB) = \text{trace}(BA)$
 		</template>
 		<template #D>
 			Given a $2 \times 2$ matrix, $\left[ \begin{array}{cc} a & b+c \\ b-c & -a \end{array} \right]$

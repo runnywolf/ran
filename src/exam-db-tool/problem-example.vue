@@ -40,7 +40,8 @@ https://katex.org/docs/supported.html
 		listEndLabel="多選題或多個子題, 如果編號是 (a), (b), (c); 那這個參數就輸入 c; 支援英文大小寫"
 		:listItemScoreTexts="['選項 (a) 的配分', '', '']"
 		useSpanList
-	><!-- useSpanList 如果被添加, 答案不會用有序列表呈現, 而是一般的 span 區塊; 很適合用於這種情況: "(a) 0 (b) 1 (c) 2" -->
+		spanListTopLabel
+	>
 		<template #problem>題目</template>
 		<template #extra-slot>題目之下, 額外的區塊; 想要多加幾個就在 extraSlotNames arr 新增 vue slot name</template>
 		<template #a>第 (a) 個選項或子題的內容</template>
@@ -48,3 +49,5 @@ https://katex.org/docs/supported.html
 		<template #c>第 (c) 個選項或子題的內容</template>
 	</MakeProblem>
 </template>
+<!-- useSpanList 如果被添加, 答案不會用有序列表呈現, 而是一般的 span 區塊; 很適合用於這種情況: "(a) 0 (b) 1 (c) 2" -->
+<!-- spanListTopLabel: span list 模式下, 將選項編號靠上對齊 (推薦用在圖片) -->
