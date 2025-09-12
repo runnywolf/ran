@@ -16,7 +16,7 @@
 			where $k$ is a positive integer. We just want to find the maximum value and the minimum value in this set $G$
 			and develop an algorithm in the following.
 			<div class="ts-wrap is-center-aligned" style="margin: 20px 0;">
-				<code>
+				<span class="ran-code-font">
 					FindMaxMin(G)<br>
 					If G contains only two numbers:<br>
 					&nbsp; Compare these two numbers<br>
@@ -28,7 +28,7 @@
 					&nbsp; Apply FindMaxMin(G2) to get M2 and m2<br>
 					&nbsp; M=max(M1,M2), m=min(m1,m2)<br>
 					Return M,m
-				</code>
+				</span>
 			</div>
 			We use $T(N)$ to represent the number of comparisons
 			when the set size is equal to $N$. $N=2^k$. Please find $T(N)$ in terms of $N$.

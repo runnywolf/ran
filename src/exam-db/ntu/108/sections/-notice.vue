@@ -1,5 +1,5 @@
 <template>
-	<span class="ran-biaukai ran-bold">請在答案卷可作答部分的第一頁繪製十二列的表格如下並填入各題的答案</span>
+	<span class="ran-biaukai-font ran-bold">請在答案卷可作答部分的第一頁繪製十二列的表格如下並填入各題的答案</span>
 	<table class="ran-native-table notice-table" style="margin: 12px 0 0 6px; text-align: center;">
 		<tbody>
 			<tr>
