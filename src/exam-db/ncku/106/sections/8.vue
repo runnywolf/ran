@@ -4,11 +4,13 @@
 			Let $(\mathbb{Q}, \oplus, \otimes)$ denote the <span class="ran-bold">field</span>,
 			where $\oplus$ and $\otimes$ are defined by
 			$$
+			\begin{gather*}
 			\begin{split}
 			a \oplus b &= a + b - k, \\
 			a \otimes b &= a + b - (ab/m),
 			\end{split} \\
 			\text{for fixed elements } k, m ~ (\neq 0) \text{ of } \mathbb{Q}.
+			\end{gather*}
 			$$
 			Determine the values for $k$ and $m$ in each of the following:
 		</template>

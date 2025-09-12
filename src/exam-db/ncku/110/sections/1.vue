@@ -10,8 +10,10 @@
 			We can show that the set $\{(x, y) \mid x, y \in \mathbb{Z}^+ \}$ is countable by finding a 1‑1 mapping
 			from $(x, y)$ to an integer. Given
 			$$
+			\begin{gather*}
 			(1,1) \to 1 ,~~ (1,2) \to 2 ,~~ (1,3) \to 4 ,~~ (1,4) \to 7 ,~~ (2,1) \to 3 ,~~ \\
 			(2,2) \to 5 ,~~ (2,3) \to 8 ,~~ (3,1) \to 6 ,~~ (3,2) \to 9 ,~~ (4,1) \to 10 ,
+			\end{gather*}
 			$$
 			please find which $(x,y)$ maps to $465$?
 		</template>
