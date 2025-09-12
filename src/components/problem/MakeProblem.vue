@@ -15,7 +15,7 @@
 			
 			<!-- 有序列表 (通常用作子題或選擇題) -->
 			<template v-if="orderListLabels.length > 0">
-				<div v-if="useSpanList" class="ts-grid is-compact grid-extra-y-gap">
+				<div v-if="useSpanList" class="ts-grid is-compact span-list">
 					<span v-for="slotName in orderListLabels">
 						<span>{{ `(${slotName}) ` }}</span>
 						<slot :name="slotName"></slot>
@@ -23,7 +23,7 @@
 				</div>
 				<ol v-else class="ran-order-list" :class="orderListStyle">
 					<li v-for="(slotName, i) in orderListLabels">
-						<span v-if="listItemScoreTexts[i]" class="problem-score extra-margin">
+						<span v-if="listItemScoreTexts[i]" class="problem-score">
 							{{ listItemScoreTexts[i] + " " }}
 						</span>
 						<slot :name="slotName"></slot>
@@ -76,7 +76,11 @@ const orderListLabels = computed(() => { // 根據最後一個編號, 判斷有�
 </script>
 
 <style scoped>
-.grid-extra-y-gap { /* 增加水平選項的間距 */
-	column-gap: 16px; /* 8 -> 16 */
+.span-list {
+	row-gap: 8px;
+	column-gap: 16px; /* 水平元素間距: 8 -> 16 */
+}
+.span-list span {
+	vertical-align: top; /* 當文字跟圖片水平排列時, 文字靠上 */
 }
 </style>

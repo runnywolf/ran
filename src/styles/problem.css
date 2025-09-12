@@ -9,10 +9,11 @@
 	word-spacing: 0.06em; /* 單詞之間空白的距離 */
 	line-height: 1.2em; /* 行距 (倍) */
 }
-.ran-tocas-font {
+.ran-tocas-font { /* todo: ran-app-font */
 	font-size: 16px;
 	font-family: "noto sans tc";
 }
+/* ran-code-font */
 .ran-biaukai { /* 標楷體, 用於考卷的說明文字 */
 	font-family: DFKai-sb;
 }
