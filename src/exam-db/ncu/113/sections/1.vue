@@ -1,12 +1,13 @@
 <template>
 	<MakeProblem listEndLabel="e" useSpanList>
 		<template #problem>
-			Let <vl exp="A = \!\begin{bmatrix} 2 & 1 - i \\ 1 + i & 1 \end{bmatrix}\!" />
-			and the unitary matrix that diagonalizes $A$ be
-			<vl style="line-height: 60px;" exp="
-			U = \frac{1}{\sqrt{3}} \!\begin{bmatrix} a + ib & c + id \\ e + if & g + ih \end{bmatrix}\!
-			" />,
-			what is $\lfloor ~\! | a + c + e + g | ~\! \rfloor \% 5$?
+			Let $A = \!\begin{bmatrix} 2 & 4 & 2 \\ 1 & 5 & 2 \\ 4 & -1 & 9 \end{bmatrix}\!$,
+			and the $LU$ decomposition of $A$ be
+			$
+			\!\begin{bmatrix} 1 & 0 & 0 \\ a & 1 & 0 \\ b & c & 1 \end{bmatrix}\!
+			\!\begin{bmatrix} d & e & f \\ 0 & g & h \\ 0 & 0 & i \end{bmatrix}\!
+			$.
+			What is $\lfloor a + b + c + d + e + f + g + h + i \rfloor \% 5$?
 			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
 		</template>
 		<template #a>0</template>

@@ -14,9 +14,7 @@
 			\def\arraystretch{1} \!\begin{bmatrix} a & b & c \\ 0 & d & e \\ 0 & 0 & f \end{bmatrix}\!
 			" />.
 			What is $\lfloor ~\! | a + b + c + d + e + f | ~\! \rfloor \% 5$?
-			<span class="ran-no-break">
-				($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
-			</span>
+			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
 		</template>
 		<template #a>0</template>
 		<template #b>1</template>

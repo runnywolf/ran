@@ -24,9 +24,7 @@
 			{ \!\begin{bmatrix} a & b \\ c & d \\ e & f \end{bmatrix}\! }_{B_1 : B_2}
 			" />,
 			what is $\lfloor ~\! | a + b + c + d + e + f | ~\! \rfloor \% 5$?
-			<span class="ran-no-break">
-				($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
-			</span>
+			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
 		</template>
 		<template #a>0</template>
 		<template #b>1</template>
