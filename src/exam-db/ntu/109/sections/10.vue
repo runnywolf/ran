@@ -7,7 +7,7 @@
 			0 & -0.5 & 0 & 0 & 0 \\
 			0 & 0 & 0 & 0 & 0 \\
 			0.5 & 0 & 0 & 0 & -0.5 \\
-			0 & 0 & 0 & -1 & 0 
+			0 & 0 & 0 & -1 & 0
 			\end{bmatrix} ,
 			$$
 			then the numbers of elements $-2, -1, 0, 1, 2$ in a matrix $B$ with
