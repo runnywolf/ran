@@ -73,7 +73,7 @@ const getAsyncComp = (promise, notFoundComp) => defineAsyncComponent({ // 生成
 	timeout: 5000
 });
 
-const sectionComp = shallowRef(null); // shallowRef 優化效能
+const sectionComp = shallowRef(null); // shallowRef 優化效能 (因為題目組件是動態載入的)
 const contentComps = shallowRef([]);
 watchEffect(async () => {
 	const { uni, year, no, problemConfig } = props;
