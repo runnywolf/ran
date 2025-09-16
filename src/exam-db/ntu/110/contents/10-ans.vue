@@ -1,6 +1,5 @@
 <template>
-	<vk>
-		<MultiOption :optionNames="[ 'a', 'b', 'c', 'd', 'e' ]" :optionAnswers="[false, false, true, false, true]">
+	<MultiOption :optionNames="[ 'a', 'b', 'c', 'd', 'e' ]" :optionAnswers="[false, false, true, false, true]">
 		<template #a>
 			令 $f = a \sin t + b \cos t$，則
 			$$
@@ -65,6 +64,5 @@
 			$$(P^{-1} T P)^m = P^{-1} T^m P = D^m$$
 			由上式可知 $T^m$ 可對角化。
 		</template>
-		</MultiOption>
-	</vk>
+	</MultiOption>
 </template>

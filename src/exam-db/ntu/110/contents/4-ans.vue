@@ -1,21 +1,19 @@
 <template>
-	<vk>
-		用巴斯卡定理
-		$$ \binom{n}{m} + \binom{n}{m+1} = \binom{n+1}{m+1} $$
-		合併下面的式子：
-		$$
-		\begin{split}
-		\sum\limits_{k=m}^n \binom{k}{m} &= \binom{m}{m} + \binom{m+1}{m} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
-		&= \binom{m+1}{m+1} + \binom{m+1}{m} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
-		&= \binom{m+2}{m+1} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
-		&= \binom{m+3}{m+1} + \cdots + \binom{n}{m} \\
-		& ~~ \vdots \\
-		&= \binom{n}{m+1} + \binom{n}{m} \\
-		&= \binom{n+1}{m+1} \\
-		&= \binom{A}{B}
-		\end{split}
-		$$
-		得到
-		$$ A = \boxed{ n+1 } \quad;\quad B = \boxed{ m+1 } $$
-	</vk>
+	用巴斯卡定理
+	$$ \binom{n}{m} + \binom{n}{m+1} = \binom{n+1}{m+1} $$
+	合併下面的式子：
+	$$
+	\begin{split}
+	\sum\limits_{k=m}^n \binom{k}{m} &= \binom{m}{m} + \binom{m+1}{m} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
+	&= \binom{m+1}{m+1} + \binom{m+1}{m} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
+	&= \binom{m+2}{m+1} + \binom{m+2}{m} + \cdots + \binom{n}{m} \\
+	&= \binom{m+3}{m+1} + \cdots + \binom{n}{m} \\
+	& ~~ \vdots \\
+	&= \binom{n}{m+1} + \binom{n}{m} \\
+	&= \binom{n+1}{m+1} \\
+	&= \binom{A}{B}
+	\end{split}
+	$$
+	得到
+	$$ A = \boxed{ n+1 } \quad;\quad B = \boxed{ m+1 } $$
 </template>
