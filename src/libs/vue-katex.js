@@ -2,11 +2,59 @@ import katex from "katex"; // KaTex
 import "katex/dist/katex.min.css"; // KaTex css
 import "@/styles/vue-katex.css";
 
+const matrixMacro = (mode, exp) => { // 矩陣專用巨集, 注意: 會強制把 "," 轉為 "&", ";" -> "\\"
+	exp = exp.replaceAll(",", "&").replaceAll(";", "\\\\");
+	return `\\begin{${mode}matrix}${exp}\\end{${mode}matrix}`;
+};
+
+const katexMacros = { // @<ins>{...} -> fn(...)
+	"m": exp => matrixMacro("", exp),
+	"pm": exp => matrixMacro("p", exp),
+	"bm": exp => matrixMacro("b", exp),
+	"vm": exp => matrixMacro("v", exp),
+};
+
+function throwIdiotError() {
+	throw new Error('[vue-katex][replaceMacro] You idiot, use "@...{...}".'); // @... 後必須接 {...}
+}
+
+function splitByBraces(str) { // 將 "<a>{<b>}<c>" 轉為 ["<a>", "<b>", "<c>"]
+	const leftBraceIndex = str.indexOf("{");
+	
+	let depth = 0; // 巢狀 {} 的深度, 為了取出 {...} 內的 ...
+	for (let i = leftBraceIndex; i < str.length; i++) {
+		if (str[i] === "{") depth++;
+		if (str[i] === "}") {
+			depth--;
+			if (depth === 0) return [
+				str.slice(0, leftBraceIndex), // a
+				str.slice(leftBraceIndex + 1, i), // b
+				str.slice(i+1) // c
+			];
+		}
+	}
+	throwIdiotError();
+}
+
+function replaceMacro(exp) { // 將 ran 的自訂語法替換掉: @<ins>{...} -> fn(...)
+	const expArr = exp.split("@"); // 根據指令符 "@" 切分
+	const resultExpArr = [ expArr.shift() ]; // 第一個子字串一定不是指令區域
+	
+	expArr.forEach(subExp => {
+		if (!subExp.includes("{") || !subExp.includes("}")) throwIdiotError(); // @<ins> 後必須接 {...}
+		
+		const [ins, innerBraces, outerBraces] = splitByBraces(subExp); // @<ins>{<innerBraces>}<outerBraces>
+		if (ins in katexMacros) resultExpArr.push(katexMacros[ins](innerBraces)); // replace macro
+		resultExpArr.push(outerBraces); // 不在指令作用範圍內的 latex 表達式
+	});
+	return resultExpArr.join(""); // 合併 substr
+}
+
 function makeKatexNode(exp, isCenter) { // 生成一個內有 katex html 的 node
 	const node = document.createElement(isCenter ? "div" : "span"); // 置中語法必須用 div 將 katex html 包起來
 	node.className = "ran-vk";
 	
-	katex.render(exp, node, { displayMode: isCenter, throwOnError: false }); // 渲染 katex 元素
+	katex.render(replaceMacro(exp), node, { displayMode: isCenter, throwOnError: false }); // 渲染 katex 元素
 	return node;
 }
 

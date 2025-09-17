@@ -7,35 +7,35 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2554,
-			"sizeByte": 115274
+			"line": 2542,
+			"sizeByte": 114550
 		},
 		"js": {
-			"number": 7,
-			"line": 1458,
-			"sizeByte": 83964
+			"number": 8,
+			"line": 1499,
+			"sizeByte": 86302
 		},
 		"css": {
-			"number": 2,
-			"line": 89,
-			"sizeByte": 2927
+			"number": 4,
+			"line": 111,
+			"sizeByte": 3614
 		}
 	},
 	"exam": {
 		"json": {
-			"number": 32,
-			"line": 2722,
-			"sizeByte": 68786
+			"number": 34,
+			"line": 3043,
+			"sizeByte": 76109
 		},
 		"vue": {
-			"number": 678,
-			"line": 9461,
-			"sizeByte": 331137
+			"number": 764,
+			"line": 9848,
+			"sizeByte": 358346
 		},
 		"webp": {
-			"number": 52,
+			"number": 60,
 			"line": 0,
-			"sizeByte": 432404
+			"sizeByte": 496172
 		}
 	},
 	"test": {
@@ -52,9 +52,9 @@
 	},
 	"docs": {
 		"md": {
-			"number": 34,
-			"line": 3310,
-			"sizeByte": 120628
+			"number": 33,
+			"line": 3291,
+			"sizeByte": 120040
 		},
 		"png": {
 			"number": 9,
@@ -70,8 +70,8 @@
 	"tool": {
 		"vue": {
 			"number": 3,
-			"line": 38,
-			"sizeByte": 1236
+			"line": 56,
+			"sizeByte": 2313
 		},
 		"json": {
 			"number": 1,
@@ -81,7 +81,7 @@
 		"py": {
 			"number": 2,
 			"line": 160,
-			"sizeByte": 10121
+			"sizeByte": 10119
 		},
 		"txt": {
 			"number": 1,
