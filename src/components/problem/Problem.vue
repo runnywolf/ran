@@ -3,8 +3,7 @@
 		
 		<!-- 題目 -->
 		<div class="ran-problem-font">
-			<AutoKatexRenderer :asyncCompPromise="sectionCompPromise" :notFoundComp="SectionNotFound">
-			</AutoKatexRenderer>
+			<component :is="sectionComp"></component>
 		</div>
 		
 		<div v-if="props.no[0] !== '-'" class="ts-wrap is-compact is-vertical content"><!-- 開頭為 "-" 的 section 不是題目, 無詳解 -->
@@ -25,15 +24,13 @@
 				<Content v-if="type === 'answer'" colorStyle="blue">
 					<details class="ts-accordion">
 						<summary>詳解 {{ suffix }}</summary>
-						<AutoKatexRenderer :asyncCompPromise="contentCompPromises[i]" :notFoundComp="ContentNotFound">
-						</AutoKatexRenderer><!-- 詳解 -->
+						<component :is="contentComps[i]"></component><!-- 詳解 -->
 					</details>
 				</Content>
 				
 				<!-- 預設的內容區塊 -->
 				<Content v-else-if="type === 'default'">
-					<AutoKatexRenderer :asyncCompPromise="contentCompPromises[i]" :notFoundComp="ContentNotFound">
-					</AutoKatexRenderer>
+					<component :is="contentComps[i]"></component>
 				</Content>
 				
 				<!-- 若內容區塊的類型填錯, 顯示錯誤訊息 -->
@@ -47,12 +44,12 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, computed } from "vue";
+import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
 import { getSectionComp, getAllContentComps } from "@/exam-db/examLoader.js"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
-import AutoKatexRenderer from "./problem-comp/AutoKatexRenderer.vue"; // 產生動態組件, 並在組件載入時自動渲染 katex node
-import SectionNotFound from "./problem-comp/SectionNotFound.vue";
-import ContentNotFound from "./problem-comp/ContentNotFound.vue";
+import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
+import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
+import ContentNotFoundComp from "./problem-comp/ContentNotFound.vue"; // 題目的內容載入失敗時, 顯示的錯誤訊息組件
 
 const props = defineProps({
 	uni: String, // 題本的學校英文縮寫
@@ -65,27 +62,41 @@ const props = defineProps({
 	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)
 });
 
-const sectionCompPromise = computed(() => { // 區塊(題目)組件 (promise)
-	const { uni, year, no } = props;
-	if (!(uni && year && no)) return null;
-	return getSectionComp(uni, year, no);
+const getAsyncComp = (promise, notFoundComp) => defineAsyncComponent({ // 生成一個動態組件
+	loader: () => promise.catch(err => {
+		console.error(err.message); // 如果 import 失敗, 在 console 報錯
+		return notFoundComp; // 回傳錯誤組件
+	}),
+	loadingComponent: LoadingComp,
+	delay: 200, // 顯示"加載組件"前的延遲時間 (防抖動), 預設為 200ms
+	errorComponent: notFoundComp,
+	timeout: 5000
 });
 
-const contentCompPromises = ref([]); // 內容(解答)組件 (promise arr)
+const sectionComp = shallowRef(null); // shallowRef 優化效能 (因為題目組件是動態載入的)
+const contentComps = shallowRef([]);
 watchEffect(async () => {
 	const { uni, year, no, problemConfig } = props;
-	
-	if (!(uni && year && no) || !props.showContent) { // 不顯示 contents, 不用載入
-		contentCompPromises.value = [];
+	if (!uni || !year || !no) {
+		sectionComp.value = null;
+		contentComps.value = [];
 		return;
 	}
 	
+	sectionComp.value = getAsyncComp(getSectionComp(uni, year, no), SectionNotFoundComp); // 動態載入區塊組件
+	
+	if (!props.showContent) return; // 不顯示 contents, 不用載入
+	
+	let contentCompsPromise = [];
 	try {
-		contentCompPromises.value = await getAllContentComps(uni, year, no, problemConfig);
-	} catch (err) {
+		contentCompsPromise = await getAllContentComps(uni, year, no, problemConfig);
+	} catch (err) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
 		console.error(err.message); // 在 console 報錯
-		contentCompPromises.value = [];
 	}
+	
+	contentComps.value = contentCompsPromise.map( // 讀取內容(解答)組件
+		promise => getAsyncComp(promise, ContentNotFoundComp)
+	);
 });
 </script>
 

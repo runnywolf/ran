@@ -1,39 +1,41 @@
 <template>
-	<div class="ts-wrap is-vertical is-compact">
-		
-		<!-- 預設的題目區塊 (會包含配分) -->
-		<div v-if="$slots.problem || (scoreText && !isProblemScoreHided)">
-			<span v-if="scoreText" class="problem-score">{{ scoreText + " " }}</span>
-			<slot name="problem"></slot>
-		</div>
-		
-		<!-- 額外的題目區塊 -->
-		<div v-for="slotName in extraSlotNames">
-			<slot :name="slotName"></slot>
-		</div>
-		
-		<!-- 有序列表 (通常用作子題或選擇題) -->
-		<template v-if="orderListLabels.length > 0">
+	<vk>
+		<div class="ts-wrap is-vertical is-compact">
 			
-			<div v-if="useSpanList" class="ts-grid grid-list" :class="{ 'top-label': spanListTopLabel }">
-				<div v-for="slotName in orderListLabels" class="ts-wrap is-compact is-middle-aligned">
-					<div>{{ `(${slotName}) ` }}</div>
-					<slot :name="slotName"></slot>
-				</div>
+			<!-- 預設的題目區塊 (會包含配分) -->
+			<div v-if="$slots.problem || (scoreText && !isProblemScoreHided)">
+				<span v-if="scoreText" class="problem-score">{{ scoreText + " " }}</span>
+				<slot name="problem"></slot>
 			</div>
 			
-			<ol v-else class="ran-order-list" :class="orderListStyle">
-				<li v-for="(slotName, i) in orderListLabels">
-					<span v-if="listItemScoreTexts[i]" class="problem-score">
-						{{ listItemScoreTexts[i] + " " }}
-					</span>
-					<slot :name="slotName"></slot>
-				</li>
-			</ol>
+			<!-- 額外的題目區塊 -->
+			<div v-for="slotName in extraSlotNames">
+				<slot :name="slotName"></slot>
+			</div>
 			
-		</template>
-		
-	</div>
+			<!-- 有序列表 (通常用作子題或選擇題) -->
+			<template v-if="orderListLabels.length > 0">
+				
+				<div v-if="useSpanList" class="ts-grid grid-list" :class="{ 'top-label': spanListTopLabel }">
+					<div v-for="slotName in orderListLabels" class="ts-wrap is-compact is-middle-aligned">
+						<div>{{ `(${slotName}) ` }}</div>
+						<slot :name="slotName"></slot>
+					</div>
+				</div>
+				
+				<ol v-else class="ran-order-list" :class="orderListStyle">
+					<li v-for="(slotName, i) in orderListLabels">
+						<span v-if="listItemScoreTexts[i]" class="problem-score">
+							{{ listItemScoreTexts[i] + " " }}
+						</span>
+						<slot :name="slotName"></slot>
+					</li>
+				</ol>
+				
+			</template>
+			
+		</div>
+	</vk>
 </template>
 
 <script setup>

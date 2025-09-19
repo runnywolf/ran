@@ -101,8 +101,6 @@ function splitStrToKatexNodeAndStr(str) { // 將字串 str 根據分隔符 $$...
 }
 
 export function walkAndRenderKatex(node) { // 對節點遞迴遍歷, 將 text node 內的 $$...$$ and $...$ 區段渲染為 katex node
-	if (!(node && node.replaceChildren)) return; // node 必須可以操作子元素
-	
 	const nodeOrStrArr = []; // 使用 nodeOrStrArr 可以一次插入多個 node, 只會觸發一次 repaint
 	for (const childNode of node.childNodes) {
 		if (childNode.nodeType === Node.TEXT_NODE && childNode.nodeValue.trim() !== "") { // 對非空 text node 切分並渲染
@@ -112,5 +110,5 @@ export function walkAndRenderKatex(node) { // 對節點遞迴遍歷, 將 text no
 			nodeOrStrArr.push(childNode); // 若不是 text node, 往 child node 搜尋
 		}
 	}
-	node.replaceChildren(...nodeOrStrArr); // 取代舊的 node
+	if (node.replaceChildren) node.replaceChildren(...nodeOrStrArr); // 取代舊的 node
 }
