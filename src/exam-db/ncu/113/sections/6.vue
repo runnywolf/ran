@@ -1,8 +1,7 @@
 <template>
 	<MakeProblem listEndLabel="e" useSpanList>
 		<template #problem>
-			$A = \!\begin{bmatrix} 5 & 2 & 2 \\ 3 & 6 & 3 \\ 6 & 6 & 9 \end{bmatrix}\!$,
-			$B = A^3 - 20A^2 + 92A - 120 I_3$. What is $|\det(B)| \% 5$?
+			$A = @bm{ 5, 2, 2; 3, 6, 3; 6, 6, 9 }$, $B = A^3 - 20A^2 + 92A - 120 I_3$. What is $|\det(B)| \% 5$?
 			<br>($\%$ is the modulo operation. $|\cdot|$ is the absolute value.)
 		</template>
 		<template #a>0</template>

@@ -1,7 +1,7 @@
 <template>
 	<MakeProblem listEndLabel="e" useSpanList>
 		<template #problem>
-			Let $A = \!\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 3 \\ 0 & 0 & 1 & 2 \\ 0 & 0 & 0 & 1 \end{bmatrix}\!$.
+			Let $A = @bm{ 1, 2, 3, 4; 0, 1, 2, 3; 0, 0, 1, 2; 0, 0, 0, 1 }$.
 			What is the dimension spanned by the eigenvectors of $A$?
 		</template>
 		<template #a>0</template>

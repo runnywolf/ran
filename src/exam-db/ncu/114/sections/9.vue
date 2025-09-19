@@ -1,21 +1,19 @@
 <template>
 	<MakeProblem listEndLabel="e">
 		<template #problem>
-			$\!\begin{bmatrix} a_1 & b_1 & c_1 & d_1 \\ a_2 & b_2 & c_2 & d_2 \\ a_3 & b_3 & c_3 & d_3 \end{bmatrix}\!$
-			is processed by row operations to form
-			$\!\begin{bmatrix} 1 & 2 & 3 & 5 \\ 2 & 5 & 7 & 13 \\ 0 & 0 & 1 & 0 \end{bmatrix}\!$.
+			$@bm{ a_1, b_1, c_1, d_1; a_2, b_2, c_2, d_2; a_3, b_3, c_3, d_3 }$
+			is processed by row operations to form $@bm{ 1, 2, 3, 5; 2, 5, 7, 13; 0, 0, 1, 0 }$.
 			Which of the following are true?
 		</template>
 		<template #a>
 			$
-			\begin{vmatrix} d_1 & d_2 & d_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3 \end{vmatrix}
-			= \begin{vmatrix} b_1 & b_2 & b_3 \\ a_1 & a_2 & a_3 \\ c_1 & c_2 & c_3 \end{vmatrix}
+			@vm{ d_1, d_2, d_3; b_1, b_2, b_3; c_1, c_2, c_3 }
+			= @vm{ b_1, b_2, b_3; a_1, a_2, a_3; c_1, c_2, c_3 }
 			$
 		</template>
 		<template #b>
-			After row operations,
-			$\!\begin{bmatrix} a_1 & b_1 & c_1 & d_1 \\ a_2 & b_2 & c_2 & d_2 \\ a_3 & b_3 & c_3 & d_3 \end{bmatrix}\!$
-			can become $\!\begin{bmatrix} 2 & -1 & 0 & -5 \\ 3 & 0 & -1 & -3 \\ 0 & 3 & -2 & 9 \end{bmatrix}\!$.
+			After row operations, $@bm{ a_1, b_1, c_1, d_1; a_2, b_2, c_2, d_2; a_3, b_3, c_3, d_3 }$
+			can become $@bm{ 2, -1, 0, -5; 3, 0, -1, -3; 0, 3, -2, 9 }$.
 		</template>
 		<template #c>
 			If

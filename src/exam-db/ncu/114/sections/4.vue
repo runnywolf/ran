@@ -1,12 +1,9 @@
 <template>
 	<MakeProblem listEndLabel="e" useSpanList>
 		<template #problem>
-			Let <vl exp="A = \!\begin{bmatrix} 2 & 1 - i \\ 1 + i & 1 \end{bmatrix}\!" />
-			and the unitary matrix that diagonalizes $A$ be
-			<vl style="line-height: 60px;" exp="
-			U = \frac{1}{\sqrt{3}} \!\begin{bmatrix} a + ib & c + id \\ e + if & g + ih \end{bmatrix}\!
-			" />,
-			what is $\lfloor ~\! | a + c + e + g | ~\! \rfloor \% 5$?
+			Let $A = @bm{ 2, 1-i; 1+i, 1 }$ and the unitary matrix that diagonalizes $A$ be
+			$U = \frac{1}{\sqrt{3}} @bm{ a + ib, c + id; e + if, g + ih }$,
+			what is the $\lfloor ~\! | a + c + e + g | ~\! \rfloor \% 5$?
 			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
 		</template>
 		<template #a>0</template>

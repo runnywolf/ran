@@ -1,5 +1,5 @@
 <template>
-	is eulerian <vl exp="\equiv" /> contains euler cycle/circuit<br>
+	is eulerian $\equiv$ contains euler cycle/circuit<br>
 	euler cycle/circuit 的定義：一筆畫經過所有邊，並且回到出發點。<br>
 	因此每個點的入邊和出邊的數量必須相等。<br>
 	<br>
