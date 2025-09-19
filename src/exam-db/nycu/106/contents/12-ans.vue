@@ -1,3 +1,5 @@
 <template>
-	第 12 題的解答
+	<vk>
+		第 12 題的解答
+	</vk>
 </template>
