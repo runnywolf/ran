@@ -18,7 +18,7 @@ const katexMacros = { // @<ins>{...} -> fn(...)
 	"()": exp => `\\left(${exp}\\right)`, // 括號會隨著內容大小變化: "@(){ ... }" -> "\left( ... \right)"
 };
 
-const MATRIX_EXTRA_V_MARGIN_EM = 0.3; // 為矩陣語法額外添加的垂直間距, 上下各添加所以是 0.3*2 em
+const MATRIX_EXTRA_V_MARGIN_EM = 0.3; // 為矩陣語法額外添加垂直間距, 上下各添加所以是 0.3*2 em
 
 function throwIdiotError() {
 	throw new Error('[vue-katex][replaceMacro] You idiot, use "@...{...}".'); // @... 後必須接 {...}
@@ -69,7 +69,7 @@ function makeKatexNode(exp, isCenter) { // 生成一個內有 katex html 的 nod
 	
 	exp = replaceMacro(exp); // 替換掉 @<ins>{...} 語法
 	katex.render(exp, node, { displayMode: isCenter, throwOnError: false }); // 渲染 katex 元素
-	if (!isCenter && exp.includes("matrix")) addExtraMarginToKatexNode(node); // 增加矩陣的垂直 margin
+	if (!isCenter && exp.includes("matrix")) addExtraMarginToKatexNode(node); // 增加 span katex 的矩陣語法的垂直 margin
 	
 	return node;
 }

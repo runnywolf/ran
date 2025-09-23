@@ -23,13 +23,13 @@ https://katex.org/docs/supported.html
 
 <!-- 多選題或數個子題, extraSlotNames -->
 <template>
-	<MakeProblem scoreText="" listEndLabel="e" :listItemScoreTexts="['', '', '']">
+	<MakeProblem listEndLabel="E">
 		<template #problem></template>
-		<template #a></template>
-		<template #b></template>
-		<template #c></template>
-		<template #d></template>
-		<template #e></template>
+		<template #A></template>
+		<template #B></template>
+		<template #C></template>
+		<template #D></template>
+		<template #E></template>
 	</MakeProblem>
 </template>
 
@@ -54,3 +54,4 @@ https://katex.org/docs/supported.html
 
 - 盡量避免 <br>, 因為可能要做響應式
 - 盡量避免 [vector]^T
+- 記得加句點, 開頭大寫.
