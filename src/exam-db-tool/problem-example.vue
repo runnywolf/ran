@@ -23,7 +23,7 @@ https://katex.org/docs/supported.html
 
 <!-- 多選題或數個子題, extraSlotNames -->
 <template>
-	<MakeProblem listEndLabel="E">
+	<MakeProblem listEndLabel="E" useSpanList>
 		<template #problem></template>
 		<template #A></template>
 		<template #B></template>
@@ -52,6 +52,8 @@ https://katex.org/docs/supported.html
 <!-- useSpanList 如果被添加, 答案不會用有序列表呈現, 而是一般的 span 區塊; 很適合用於這種情況: "(a) 0 (b) 1 (c) 2" -->
 <!-- spanListTopLabel: span list 模式下, 將選項編號靠上對齊 (推薦用在圖片) -->
 
+- 與題目內容無關的配分, 必須以 span.problem-score 包裹
 - 盡量避免 <br>, 因為可能要做響應式
-- 盡量避免 [vector]^T
+- 盡量避免 [vector]^T, 請用矩陣語法表示向量
 - 記得加句點, 開頭大寫.
+- 單行不超過 120 字元為佳
