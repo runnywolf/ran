@@ -42,7 +42,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-c-rd" ],
+			"tags": [ "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
