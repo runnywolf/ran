@@ -64,8 +64,14 @@ async function getProblemDatas() { // 所有題目的 config
 	isGettingDb.value = false; // 讀取完成
 }
 
-function matchesAllSearchTags(problemTag, searchTags) { // 題目的某個 tag 是否符合搜尋 tag
-	return searchTags.some(tag => problemTag.includes(tag)); // 存在至少一個搜尋 tag 是題目 tag 的子目錄
+function isSubtag(tag, subtag) { // subtag 是否是 tag 的子標籤
+	const splited_tag = tag.split("-");
+	const splited_subtag = subtag.split("-");
+	return splited_subtag.every((a, i) => a === splited_tag[i]); // subtag 每一階層都必須跟 tag 的相同, 才算子標籤
+}
+
+function someSearchTagIsSubtag(searchTags, tag) { // 存在一個篩選標籤是 tag 的子標籤
+	return searchTags.some(searchTag => isSubtag(tag, searchTag));
 }
 
 function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋結果
@@ -75,7 +81,7 @@ function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋
 	const searchResult = []; // 搜尋結果
 	for (const problemData of problemDatas) { // 篩選題目
 		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
-		if (problemTags.some(tag => matchesAllSearchTags(tag, searchTags))) searchResult.push(problemData);
+		if (problemTags.some(tag => someSearchTagIsSubtag(searchTags, tag))) searchResult.push(problemData);
 	}
 	return searchResult;
 }

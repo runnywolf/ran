@@ -83,9 +83,9 @@
 			"ncu": 0
 		},
 		"dm": {
-			"ntu": 61,
-			"nycu": 67,
-			"ncku": 43,
+			"ntu": 60,
+			"nycu": 66,
+			"ncku": 37,
 			"ncu": 27
 		},
 		"dm-c": {
@@ -95,10 +95,10 @@
 			"ncu": 7
 		},
 		"dm-c-r": {
-			"ntu": 10,
-			"nycu": 6,
-			"ncku": 8,
-			"ncu": 4
+			"ntu": 0,
+			"nycu": 2,
+			"ncku": 0,
+			"ncu": 1
 		},
 		"dm-c-rr": {
 			"ntu": 10,
