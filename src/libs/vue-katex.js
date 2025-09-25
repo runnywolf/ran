@@ -15,7 +15,8 @@ const katexMacros = { // @<ins>{...} -> fn(...)
 	"pm": exp => matrixMacro("p", exp), // "@?m{ a, b; c, d }" -> "\begin{?matrix} a & b \\ c & d \end{?matrix}"
 	"bm": exp => matrixMacro("b", exp),
 	"vm": exp => matrixMacro("v", exp),
-	"()": exp => `\\left(${exp}\\right)`, // 括號會隨著內容大小變化: "@(){ ... }" -> "\left( ... \right)"
+	"()": exp => `\\left(${exp}\\right)`, // 括號會隨著內容大小變化的語法: "@(){ ... }" -> "\left( ... \right)"
+	"f": exp => { const [n, d] = exp.split(";"); return `\\frac{${n}}{${d}}`; }, // "@f{<n>;<d>}" -> "\frac{<n>}{<d>}"
 };
 
 const MATRIX_EXTRA_V_MARGIN_EM = 0.3; // 為矩陣語法額外添加垂直間距, 上下各添加所以是 0.3*2 em
@@ -25,7 +26,7 @@ function throwIdiotError() {
 }
 
 function splitByBraces(str) { // 將 "<a>{<b>}<c>" 轉為 ["<a>", "<b>", "<c>"]
-	const leftBraceIndex = str.indexOf("{");
+	const leftBraceIndex = str.indexOf("{"); // 找出字串中第一個 {
 	
 	let depth = 0; // 巢狀 {} 的深度, 為了取出 {...} 內的 ...
 	for (let i = leftBraceIndex; i < str.length; i++) {
@@ -42,18 +43,16 @@ function splitByBraces(str) { // 將 "<a>{<b>}<c>" 轉為 ["<a>", "<b>", "<c>"]
 	throwIdiotError();
 }
 
-function replaceMacro(exp) { // 將 ran 的自訂語法替換掉, 不支援嵌套: @<ins>{...} -> fn(...)
-	const expArr = exp.split("@"); // 根據指令符 "@" 切分
-	const resultExpArr = [ expArr.shift() ]; // 第一個子字串一定不是指令區域
+function replaceMacro(exp) { // 將 ran 的自訂語法替換掉: @<ins>{...} -> fn(...)
+	const firstAtSignIndex = exp.indexOf("@"); // 找出字串中第一個 @
+	if (firstAtSignIndex === -1) return exp; // 沒有出現 @ 代表沒有要替換的巨集
 	
-	expArr.forEach(subExp => {
-		if (!subExp.includes("{") || !subExp.includes("}")) throwIdiotError(); // @<ins> 後必須接 {...}
-		
-		const [ins, innerBraces, outerBraces] = splitByBraces(subExp); // @<ins>{<innerBraces>}<outerBraces>
-		if (ins in katexMacros) resultExpArr.push(katexMacros[ins](innerBraces)); // replace macro
-		resultExpArr.push(outerBraces); // 不在指令作用範圍內的 latex 表達式
-	});
-	return resultExpArr.join(""); // 合併 substr
+	let resultExp = exp.slice(0, firstAtSignIndex); // @ 左側的語法與自訂語法無關, 不需要處理, 直接放到替換結果
+	
+	const atSignRightExp = exp.slice(firstAtSignIndex + 1); // @ 右側的語法, 形式為 "<ins>{<in>}<out>"
+	const [ins, innerBraces, outerBraces] = splitByBraces(atSignRightExp); // 將 "<ins>{<in>}<out>" 切分成 [ins, in, out]
+	if (ins in katexMacros) resultExp += katexMacros[ins](replaceMacro(innerBraces)); // 替換掉 inner 的巨集, 然後將結果插入到巨集之中
+	return resultExp + replaceMacro(outerBraces); // ...@<ins>{<inner>}<outer>
 }
 
 function addExtraMarginToKatexNode(node) { // 為矩陣語法額外添加的垂直間距, 僅修改 katex node 的行高, 不回傳 node
@@ -63,14 +62,16 @@ function addExtraMarginToKatexNode(node) { // 為矩陣語法額外添加的垂�
 	node.style.lineHeight = `${lineHeightEm}em`;
 }
 
-function makeKatexNode(exp, isCenter) { // 生成一個內有 katex html 的 node
-	const node = document.createElement(isCenter ? "div" : "span"); // 置中語法必須用 div 將 katex html 包起來
-	node.className = "ran-vk";
-	
+export function renderKatex(node, exp, isCenter) { // 在 node 之下渲染 katex 語法
 	exp = replaceMacro(exp); // 替換掉 @<ins>{...} 語法
 	katex.render(exp, node, { displayMode: isCenter, throwOnError: false }); // 渲染 katex 元素
 	if (!isCenter && exp.includes("matrix")) addExtraMarginToKatexNode(node); // 增加 span katex 的矩陣語法的垂直 margin
-	
+}
+
+function makeKatexNode(exp, isCenter) { // 生成一個內有 katex html 的 node
+	const node = document.createElement(isCenter ? "div" : "span"); // 置中語法必須用 div 將 katex html 包起來
+	node.className = "ran-vk";
+	renderKatex(node, exp, isCenter); // 在 node 之下渲染 katex 語法
 	return node;
 }
 

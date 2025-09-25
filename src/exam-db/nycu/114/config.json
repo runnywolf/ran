@@ -66,14 +66,14 @@
 			]
 		},
 		"8": {
-			"answerLatex": "Q = \\def\\arraystretch{1.35}\\!\\begin{bmatrix} \\frac{4}{5} & \\frac{-3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\! ,~ D = \\def\\arraystretch{1}\\!\\begin{bmatrix} 15 & 0 \\\\ 0 & -10 \\end{bmatrix}\\!",
+			"answerLatex": "Q = @bm{ @f{4;5}, @f{-3;5}; @f{3;5}, @f{4;5} } ,~~ D = @bm{ 15, 0; 0, -10 }",
 			"tags": [ "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "\\begin{bmatrix} 4 & 0 \\\\ 7 & -5 \\\\ -5 & 2 \\end{bmatrix}",
+			"answerLatex": "@bm{ 4, 0; 7, -5; -5, 2 }",
 			"tags": [ "dm-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }

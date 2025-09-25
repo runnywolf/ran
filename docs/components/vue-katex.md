@@ -28,9 +28,6 @@ head:
 如果想要新增巨集，可以修改 `src/libs/vue-katex.js` 內的 `const katexMacros`。<br>
 `key` 為 `<ins>`，`value` 為 `exp => ...`。
 
-> [!WARNING]
-> 不支援嵌套，因此不可以使用 `@<ins>{ @<ins>{ ... } }`。
-
 ### 指令
 | 替換前語法 | 替換後語法 (KaTex 標準語法) |
 | - | - |
@@ -39,18 +36,19 @@ head:
 | `@bm{ ... }` | `\begin{bmatrix} ... \end{bmatrix}` |
 | `@vm{ ... }` | `\begin{vmatrix} ... \end{vmatrix}` |
 | `@(){ ... }` | `\left( ... \right)` |
+| `@f{<n>;<d>}` | `\frac{<n>}{<d>}` |
 
 ### 矩陣特殊語法
 - 指令 `m` `pm` `bm` `vm` 會強制把 `...` 內的 `,` 轉為 `&`，`;` 轉為換行符 `\\`。
 - 因為 KaTex 語法的 `bmatrix` 的兩側的間距太大，所以指令 `bm` 會在語法兩側加上 `\!` 降低間距。
 - 指令 `bm` 內的 `...` 如果出現 `frac` (分數)，會自動加上 `\def\arraystretch{1.35}`，使每一列的分數不會擠在一起。
 
-因此你可以用 `@bm{ \frac{1}{2} , 6 ; \frac{1}{2} , 5 }` 代替以下複雜語法：
+因此你可以用 `@bm{ @f{1;2} , 6 ; @f{1;2} , 5 }` 代替以下複雜語法：
 ```latex
 \def\arraystretch{1.35}
-\begin{bmatrix}
+\!\begin{bmatrix}
 \frac{1}{2} & 6 \\
 \frac{1}{2} & 5
-\end{bmatrix}
+\end{bmatrix}\!
 \def\arraystretch{1}
 ```
