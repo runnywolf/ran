@@ -53,7 +53,7 @@
 		},
 		"6": {
 			"answerLatex": "\\text{See prove}",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-pg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

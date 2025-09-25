@@ -22,7 +22,7 @@
 		},
 		"2": {
 			"answerLatex": [ "\\text{(a) } 1,2,5", "\\text{(b) See prove}" ],
-			"tags": [ "dm-fl", "dm-nt" ],
+			"tags": [ "dm-fl", "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]

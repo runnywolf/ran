@@ -128,7 +128,7 @@
 		},
 		"17": {
 			"answerLatex": "",
-			"tags": [ "dm" ],
+			"tags": [ "dm-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "17-ans" }
 			]

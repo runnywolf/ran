@@ -7,13 +7,13 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2534,
-			"sizeByte": 113903
+			"line": 2521,
+			"sizeByte": 113510
 		},
 		"js": {
 			"number": 8,
-			"line": 1554,
-			"sizeByte": 89496
+			"line": 1556,
+			"sizeByte": 89956
 		},
 		"css": {
 			"number": 4,
@@ -23,14 +23,14 @@
 	},
 	"exam": {
 		"json": {
-			"number": 34,
-			"line": 3043,
-			"sizeByte": 76109
+			"number": 35,
+			"line": 3204,
+			"sizeByte": 79173
 		},
 		"vue": {
-			"number": 764,
-			"line": 10433,
-			"sizeByte": 362541
+			"number": 808,
+			"line": 10926,
+			"sizeByte": 378745
 		},
 		"webp": {
 			"number": 60,
@@ -53,8 +53,8 @@
 	"docs": {
 		"md": {
 			"number": 34,
-			"line": 3337,
-			"sizeByte": 121946
+			"line": 3336,
+			"sizeByte": 121893
 		},
 		"png": {
 			"number": 9,
@@ -70,8 +70,8 @@
 	"tool": {
 		"vue": {
 			"number": 3,
-			"line": 58,
-			"sizeByte": 2329
+			"line": 61,
+			"sizeByte": 2466
 		},
 		"json": {
 			"number": 1,
