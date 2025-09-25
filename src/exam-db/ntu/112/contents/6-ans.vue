@@ -1,12 +1,8 @@
 <template>
 	<vk>
 		$A$ 的 row sum 均為 1<br>
-		$\Rightarrow$ 存在特徵向量 $x_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\!$ 使
-		$
-		Ax_1 = \!\def\arraystretch{1.35}\begin{bmatrix} \frac{3}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{3}{5} \end{bmatrix}\!
-		\!\def\arraystretch{1}\begin{bmatrix} 1 \\ 1 \end{bmatrix}\!
-		= \!\begin{bmatrix} 1 \\ 1 \end{bmatrix}\! = 1 x_1
-		$<br>
+		$\Rightarrow$ 存在特徵向量 $x_1 = @bm{1; 1}$ 使
+		$Ax_1 = @bm{ @f{3;5}, @f{2;5}; @f{2;5}, @f{3;5} } @bm{1; 1} = @bm{1; 1} = 1 x_1$<br>
 		$\Rightarrow ~ \lambda_1 = 1$<br>
 		<br>
 		用 $\text{tr}(A)$ 求 $A$ 的最後一個特徵值：<br>
@@ -15,12 +11,8 @@
 		$\Rightarrow ~ \lambda_2 = \frac{1}{5}$<br>
 		<br>
 		求特徵向量 $x_2$：
-		$$
-		(A - \lambda_2 I) x_2
-		= \!\def\arraystretch{1.35}\begin{bmatrix} \frac{2}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{2}{5} \end{bmatrix}\! x_2
-		= 0
-		$$
-		取 $x_2 = \!\begin{bmatrix} 1 \\ -1 \end{bmatrix}\!$<br>
+		$$ (A - \lambda_2 I) x_2 = @bm{ @f{2;5} & @f{2;5} \\ @f{2;5} & @f{2;5} } x_2 = 0 $$
+		取 $x_2 = @bm{1; -1}$<br>
 		<br>
 		$A$ 可對角化<br>
 		$\Rightarrow ~ A$ 的特徵向量組成的對角化矩陣 $P$ 必可逆<br>
@@ -44,7 +36,7 @@
 		&= x_1 + \lim\limits_{n \to \infty} (\tfrac{1}{5})^n x_2 \\
 		&= x_1 + 0 x_2 \\
 		&= x_1 \\
-		&= \!\begin{bmatrix} 1 \\ 1 \end{bmatrix}\! = \!\begin{bmatrix} a \\ b \end{bmatrix}\!
+		&= @bm{1; 1} = @bm{a; b}
 		\end{split}
 		$$
 		$2a + b = 3$<br>
