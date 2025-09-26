@@ -16,6 +16,18 @@
 			"ncku": 6,
 			"ncu": 9
 		},
+		"la-m-im": {
+			"ntu": 12,
+			"nycu": 2,
+			"ncku": 0,
+			"ncu": 2
+		},
+		"la-m-d": {
+			"ntu": 6,
+			"nycu": 7,
+			"ncku": 4,
+			"ncu": 2
+		},
 		"la-m-lud": {
 			"ntu": 0,
 			"nycu": 1,
@@ -47,7 +59,7 @@
 			"ncu": 0
 		},
 		"la-ips": {
-			"ntu": 9,
+			"ntu": 10,
 			"nycu": 13,
 			"ncku": 12,
 			"ncu": 5
@@ -77,7 +89,7 @@
 			"ncu": 2
 		},
 		"la-ips-dm": {
-			"ntu": 1,
+			"ntu": 2,
 			"nycu": 1,
 			"ncku": 6,
 			"ncu": 0

@@ -60,7 +60,7 @@
 		},
 		"7": {
 			"answerLatex": "40",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

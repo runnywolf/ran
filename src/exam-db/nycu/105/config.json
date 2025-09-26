@@ -60,7 +60,7 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

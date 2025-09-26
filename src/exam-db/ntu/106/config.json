@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

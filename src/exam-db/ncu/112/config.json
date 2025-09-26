@@ -109,14 +109,14 @@
 		},
 		"14": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "14-ans" }
 			]
 		},
 		"15": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

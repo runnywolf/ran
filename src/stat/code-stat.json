@@ -13,7 +13,7 @@
 		"js": {
 			"number": 8,
 			"line": 1556,
-			"sizeByte": 89956
+			"sizeByte": 89992
 		},
 		"css": {
 			"number": 4,
@@ -24,13 +24,13 @@
 	"exam": {
 		"json": {
 			"number": 35,
-			"line": 3207,
-			"sizeByte": 79449
+			"line": 3209,
+			"sizeByte": 79693
 		},
 		"vue": {
 			"number": 808,
 			"line": 10926,
-			"sizeByte": 378745
+			"sizeByte": 378747
 		},
 		"webp": {
 			"number": 60,

@@ -71,7 +71,7 @@
 		},
 		"9": {
 			"answerLatex": "(1-a^2)^n",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

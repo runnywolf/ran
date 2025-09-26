@@ -1,7 +1,7 @@
 <template>
 	<MakeProblem scoreText="(5 points)" listEndLabel="5">
 		<template #problem>
-			A $n \times n$ matrix A is said to be nonsingular, if
+			A $n \times n$ matrix $A$ is said to be nonsingular, if
 		</template>
 		<template #1>
 			$A$ is non‑invertible.

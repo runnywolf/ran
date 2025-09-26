@@ -77,7 +77,7 @@
 		},
 		"9": {
 			"answerLatex": "\\text{See prove}",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

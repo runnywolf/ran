@@ -52,7 +52,7 @@ function replaceMacro(exp) { // 將 ran 的自訂語法替換掉: @<ins>{...} ->
 	const atSignRightExp = exp.slice(firstAtSignIndex + 1); // @ 右側的語法, 形式為 "<ins>{<in>}<out>"
 	const [ins, innerBraces, outerBraces] = splitByBraces(atSignRightExp); // 將 "<ins>{<in>}<out>" 切分成 [ins, in, out]
 	if (ins in katexMacros) resultExp += katexMacros[ins](replaceMacro(innerBraces)); // 替換掉 inner 的巨集, 然後將結果插入到巨集之中
-	return resultExp + replaceMacro(outerBraces); // ...@<ins>{<inner>}<outer>
+	return resultExp + replaceMacro(outerBraces); // outer 也需要替換巨集, 因為可能會出現下一個 @
 }
 
 function addExtraMarginToKatexNode(node) { // 為矩陣語法額外添加的垂直間距, 僅修改 katex node 的行高, 不回傳 node

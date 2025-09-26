@@ -5,6 +5,8 @@
 			"m": {
 				"en": "Matrix", "zhtw": "矩陣",
 				"children": {
+					"im": { "en": "Invertible matrix", "zhtw": "逆矩陣" },
+					"d": { "en": "Determinant", "zhtw": "行列式" },
 					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" }
 				}
 			},
