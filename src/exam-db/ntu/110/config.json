@@ -25,7 +25,7 @@
 		},
 		"3": {
 			"answerLatex": "\\frac{2}{n} \\binom{2n-2}{n-1}",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

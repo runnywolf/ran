@@ -21,7 +21,7 @@
 		},
 		"2": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -56,7 +56,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

@@ -34,11 +34,13 @@
 			"c": {
 				"en": "Combinatorics", "zhtw": "組合數學",
 				"children": {
+					"pc": { "en": "Permutation & Combination", "zhtw": "排列組合" },
 					"r": { "en": "Recursion", "zhtw": "遞迴" },
 					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係式" },
 					"gf": { "en": "Generating function", "zhtw": "生成函數" },
 					"ic": { "en": "Integer composition", "zhtw": "整數分解" },
-					"bc": { "en": "Binomial coefficient", "zhtw": "二項式係數" }
+					"bc": { "en": "Binomial coefficient", "zhtw": "二項式係數" },
+					"pp": { "en": "Pigeonhole principle", "zhtw": "鴿籠原理" }
 				}
 			},
 			"st": {
@@ -59,6 +61,7 @@
 				}
 			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
+			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
 			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }

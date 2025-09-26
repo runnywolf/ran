@@ -29,7 +29,7 @@
 		},
 		"3": {
 			"answerLatex": [ "\\text{(a) } 1094", "\\text{(b) } 966", "\\text{(c) } 770", "\\text{(d) } 4620" ],
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

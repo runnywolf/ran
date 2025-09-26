@@ -32,21 +32,21 @@
 				"\\quad~~ P = \\{ x \\in \\mathbb{Z}^+ \\mid x \\gt 1 ~\\land~ \\forall d \\in \\mathbb{Z}^+ ( x/d*d = x ~\\to~ d = 1 ~\\lor~ d = x ) \\}",
 				"\\text{(b) } 222 \\rule{0em}{1.2em}"
 			],
-			"tags": [ "dm-fl", "dm-c" ],
+			"tags": [ "dm-fl", "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": [ "\\text{(a) } 210", "\\text{(b) } 110", "\\text{(c) } \\text{No}" ],
-			"tags": [ "dm-c", "dm-st-br" ],
+			"tags": [ "dm-c-pc", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "\\text{(a) } 6 \\quad \\text{(b) } 42",
-			"tags": [ "dm-st-br", "dm-c" ],
+			"tags": [ "dm-st-br", "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
