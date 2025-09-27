@@ -18,8 +18,10 @@
 				
 				<div v-if="useSpanList" class="ts-grid grid-list" :class="{ 'top-label': spanListTopLabel }">
 					<div v-for="slotName in orderListLabels" class="ts-wrap is-compact is-middle-aligned">
-						<div>{{ `(${slotName}) ` }}</div>
-						<slot :name="slotName"></slot>
+						<div>{{ `(${slotName})` }}</div>
+						<div><!-- 這個空的 div 用於產生編號與內容的間距 -->
+							<slot :name="slotName"></slot>
+						</div>
 					</div>
 				</div>
 				

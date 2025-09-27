@@ -23,7 +23,7 @@ https://katex.org/docs/supported.html
 
 <!-- 多選題或數個子題, extraSlotNames -->
 <template>
-	<MakeProblem listEndLabel="E" useSpanList>
+	<MakeProblem listEndLabel="E">
 		<template #problem></template>
 		<template #A></template>
 		<template #B></template>
