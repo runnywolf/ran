@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "\\text{ac}",
-			"tags": [ "la-m-im", "la-vs", "la-ev" ],
+			"tags": [ "la-m-im", "la-vs", "la-m-shm", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

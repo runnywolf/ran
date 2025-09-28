@@ -5,9 +5,14 @@
 			"m": {
 				"en": "Matrix", "zhtw": "矩陣",
 				"children": {
-					"im": { "en": "Invertible matrix", "zhtw": "逆矩陣" },
+					"t": { "en": "Trace", "zhtw": "跡" },
 					"d": { "en": "Determinant", "zhtw": "行列式" },
-					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" }
+					"shm": { "en": "Symmetric & Hermitian matrix", "zhtw": "對稱矩陣" },
+					"oum": { "en": "Orthogonal & Unitary matrix", "zhtw": "正交矩陣" },
+					"im": { "en": "Invertible matrix", "zhtw": "逆矩陣" },
+					"mro": { "en": "Matrix row operations", "zhtw": "矩陣列運算" },
+					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" },
+					"cd": { "en": "Cholesky decomposition", "zhtw": "Cholesky 分解" }
 				}
 			},
 			"vs": { "en": "Vector space", "zhtw": "向量空間" },

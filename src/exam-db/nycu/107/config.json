@@ -77,7 +77,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
@@ -91,7 +91,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

@@ -67,14 +67,14 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-m-im", "la-vs" ],
+			"tags": [ "la-vs", "la-m-im", "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "la-ev-d", "la-ev", "la-m" ],
+			"tags": [ "la-ev-d", "la-ev", "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

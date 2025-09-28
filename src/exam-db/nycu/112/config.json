@@ -35,7 +35,7 @@
 		},
 		"1-4": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-shm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-4-ans" }
 			]

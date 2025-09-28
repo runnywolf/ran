@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "\\text{rank}(T)",
-			"tags": [ "la-m" ],
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

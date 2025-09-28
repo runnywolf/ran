@@ -61,14 +61,14 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-m-d" ],
+			"tags": [ "la-m-mro", "la-m-lud" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro", "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -82,7 +82,7 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-shm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

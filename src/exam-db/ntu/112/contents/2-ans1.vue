@@ -9,7 +9,7 @@
 		$$
 		\left\{
 		\begin{align*}
-		a_0 &= h_1 + h_2      &= A \\
+		a_0 &= h_1 + h_2 &= A \\
 		a_1 &= -3 h_1 + 2 h_2 &= B
 		\end{align*}
 		\right.

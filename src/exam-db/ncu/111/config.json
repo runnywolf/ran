@@ -84,14 +84,14 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "la-m", "la-ev", "la-ev-d" ],
+			"tags": [ "la-m", "la-m-shm", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-m-d", "la-m", "la-ev-d", "la-ev" ],
+			"tags": [ "la-m-d", "la-m-shm", "la-m-oum", "la-m-lud", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

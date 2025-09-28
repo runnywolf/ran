@@ -28,7 +28,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

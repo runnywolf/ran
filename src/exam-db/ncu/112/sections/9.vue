@@ -1,7 +1,7 @@
 <template>
 	<MakeProblem listEndLabel="E" useSpanList>
 		<template #problem>
-			An alphabet set $\{ \alpha_1 , \alpha_2 , \cdots\!, \alpha_8  \}$ is used to form a string.
+			An alphabet set $\{ \alpha_1 , \alpha_2 , \cdots\!, \alpha_8 \}$ is used to form a string.
 			A legal string cannot have consecutive
 			$\{\alpha_1 \alpha_1 ,~ \alpha_1 \alpha_2 ,~ \alpha_2 \alpha_1 ,~ \alpha_2 \alpha_2 \}$
 			in any part of the string.

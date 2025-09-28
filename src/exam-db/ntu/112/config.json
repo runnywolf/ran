@@ -62,21 +62,21 @@
 		},
 		"8": {
 			"answerLatex": "\\text{ACD}",
-			"tags": [ "la-m", "la-ev" ],
+			"tags": [ "la-m-t", "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "\\text{A}",
-			"tags": [ "la-m", "la-vs" ],
+			"tags": [ "la-m-shm", "la-m", "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\text{ABE}",
-			"tags": [ "la-vs", "la-m-im", "la-ev-d", "la-ev", "la-ips-dm" ],
+			"tags": [ "la-vs", "la-m-oum", "la-ev-d", "la-ev", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
