@@ -1,23 +1,16 @@
 <template>
-	<MakeProblem scoreText="">
+	<MakeProblem listEndLabel="E" useSpanList>
 		<template #problem>
-			The determinant of the following matrix $A$ is $M$.
-			$$A = \begin{bmatrix}
-			1 & -1 & 8 & 4 & 2 \\
-			2 & 6 & 0 & -4 & 3 \\
-			2 & 0 & 2 & 6 & 2 \\
-			0 & 2 & 8 & 0 & 0 \\
-			0 & 1 & 1 & 2 & 2
-			\end{bmatrix}$$
-			The determinant of the following matrix $B$ is $N$.
-			$$B = \begin{bmatrix}
-			1.25 & 1 & 1 & 1 \\
-			1 & 1.2 & 1 & 1 \\
-			1 & 1 & 1.1 & 1 \\
-			1 & 1 & 1 & 1.5
-			\end{bmatrix}$$
-			$K = \frac{|M|}{|N|} \times \frac{1}{10000}$. Which of the following is the range of $K$?
-			(A) $0 \leq K < 1$ (B) $1 \leq K < 2$ (C) $2 \leq K < 3$ (D) $4 \leq K < 5$ (E) $5 \leq K$
+			The determinant of the following matrix $A$ is $m$.
+			$$ A = @bm{ 1, -1, 8, 4, 2; 2, 6, 0, -4, 3; 2, 0, 2, 6, 2; 0, 2, 8, 0, 0; 0, 1, 1, 2, 2 } $$
+			The determinant of the following matrix $B$ is $n$.
+			$$ B = @bm{ 1.25, 1, 1, 1; 1, 1.2, 1, 1; 1, 1, 1.1, 1; 1, 1, 1, 1.5 } $$
+			$k = \frac{1}{10000} |\frac{m}{n}|$. Which of the following is the range of $k$?
 		</template>
+		<template #A>$0 \le k \lt 1$</template>
+		<template #B>$1 \le k \lt 2$</template>
+		<template #C>$2 \le k \lt 3$</template>
+		<template #D>$4 \le k \lt 5$</template>
+		<template #E>$5 \le k$</template>
 	</MakeProblem>
 </template>

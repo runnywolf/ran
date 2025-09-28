@@ -1,23 +1,37 @@
 <template>
-	<MakeProblem scoreText="">
+	<MakeProblem listEndLabel="E" useSpanList>
 		<template #problem>
 			First, consider the linear system
-			$$\begin{cases}
-			kx + y + z = 1 \\
-			x + ky + z = 1 \\
-			x + y + kz = 1
-			\end{cases}$$
-			If $k = a$, the system has more than one solution. If $k = b$, the system has no solution. The closest integer of $|a-b|$ is $c$. $M=\text{mod}(c,5)$, where $\text{mod}(\cdot)$ is the modulo operation.
+			$$
+			\left\{
+			\begin{alignat*}{4}
+			k&x~+~& &y~+~& &z=~& 1 \\
+			&x~+~& k&y~+~& &z=~& 1 \\
+			&x~+~& &y~+~& k&z=~& 1
+			\end{alignat*}
+			\right.
+			$$
+			If $k = a$, the system has more than one solution. If $k = b$, the system has no solution.
+			The closest integer of $|a-b|$ is $c$. $m = \text{mod}(c, 5)$,
+			where $\text{mod}(\cdot)$ is the modulo operation.<br>
 			Next, consider the linear system
-			$$\begin{cases}
-			x + y + z = 4 \\
-			2x + y + 2z = 7 \\
-			x - 2z = 3 \\
-			y + 2z = 4
-			\end{cases}$$
-			Its least squares solution is $\{x, y, z\}$. The closest integer of $(y \times 50)$ is $N$.
-			What is the value of $\text{mod}(M+N,5)$?
-			(A) 0 (B) 1 (C) 2 (D) 3 (E) 4
+			$$
+			\left\{
+			\begin{alignat*}{4}
+			&x~+~& &y~+~& &z=~& 4 \\
+			2&x~+~& &y~+~& 2&z=~& 7 \\
+			&x& &\,~~-& 2&z=~& 3 \\
+			&& &y~+~& 2&z=~& 4
+			\end{alignat*}
+			\right.
+			$$
+			Its least squares solution is $\{ \~{x}, \~{y}, \~{z} \}$. The closest integer of $50 \~{y}$ is $n$.<br>
+			What is the value of $\text{mod}(m+n,~ 5)$?
 		</template>
+		<template #A>0</template>
+		<template #B>1</template>
+		<template #C>2</template>
+		<template #D>3</template>
+		<template #E>4</template>
 	</MakeProblem>
 </template>
