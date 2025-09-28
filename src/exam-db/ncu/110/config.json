@@ -1,0 +1,156 @@
+{
+	"subjectCode": "?",
+	"subjectName": "離散數學與線性代數",
+	"subjectShortName": "離散與線代",
+	"department": "資工類聯合招生",
+	"externalLink": "https://rapid.lib.ncu.edu.tw/cexamn/exam/EC02_110_03.pdf",
+	"externalLinkTip": "國立中央大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-before-1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "-before-11", "11-15",
+		"-before-16", "16-20", "21-25", "26-30", "31-35", "-before-36", "36", "37", "38", "39", "40"
+	],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		},
+		"11-15": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-15-ans" }
+			]
+		},
+		"16-20": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "16-20-ans" }
+			]
+		},
+		"21-25": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "21-25-ans" }
+			]
+		},
+		"26-30": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "26-30-ans" }
+			]
+		},
+		"31-35": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "31-35-ans" }
+			]
+		},
+		"36": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "36-ans" }
+			]
+		},
+		"37": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "37-ans" }
+			]
+		},
+		"38": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "38-ans" }
+			]
+		},
+		"39": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "39-ans" }
+			]
+		},
+		"40": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "40-ans" }
+			]
+		}
+	}
+}
