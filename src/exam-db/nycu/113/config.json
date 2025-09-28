@@ -28,7 +28,7 @@
 		},
 		"3": {
 			"answerLatex": [
-				"\\text{(a) } \\forall n \\in \\mathbb{Z}^+ \\Big( n > 2 ~\\land~ n/2*2 = n ~\\to~ \\exist p_1, p_2 \\in P~ (n = p_1 + p_2) \\Big) ~,",
+				"\\text{(a) } \\forall n \\in \\mathbb{Z}^+ \\Big( n \\gt 2 ~\\land~ n/2*2 = n ~\\to~ \\exist p_1, p_2 \\in P~ (n = p_1 + p_2) \\Big) ~,",
 				"\\quad~~ P = \\{ x \\in \\mathbb{Z}^+ \\mid x \\gt 1 ~\\land~ \\forall d \\in \\mathbb{Z}^+ ( x/d*d = x ~\\to~ d = 1 ~\\lor~ d = x ) \\}",
 				"\\text{(b) } 222 \\rule{0em}{1.2em}"
 			],

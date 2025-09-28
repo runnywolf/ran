@@ -18,7 +18,7 @@
 			$\{(0,0,0)\}$ is the orthogonal complement of $\R^3$ in $\R^3$.
 		</template>
 		<template #d>
-			Let $A$ be a $m \times n$ real matrix, where $m < n$, with full row rank.
+			Let $A$ be a $m \times n$ real matrix, where $m \lt n$, with full row rank.
 			$Ax = b$ has either 0 or 1 solution.
 		</template>
 		<template #e>
