@@ -1,17 +1,26 @@
 <template>
-	<MakeProblem scoreText="">
+	<MakeProblem>
 		<template #problem>
-			$A$ is a $m \times n$ matrix; $A x = b$ is an inconsistent system and has a least-square solution $\hat{x}$.
-			26. $b$ is exactly not in Col $A$.
-			(A) True. (B) False.
-			27. $\hat{x}$ is not a unique solution.
-			(A) True. (B) False.
-			28. If $A^T A$ is not invertible, then the system has no solution.
-			(A) True. (B) False.
-			29. $A \hat{x}$ is not always in Col $A$.
-			(A) True. (B) False.
-			30. $b - A \hat{x}$ is always in Nul $A^T$.
-			(A) True. (B) False.
+			If $A$ is a $m \times n$ matrix; $Ax = b$ is an inconsistent system and has a least‑square solution $\hat{x}$.
+			<table>
+				<tbody>
+					<tr><td>26. $b$ is exactly not in $\text{Col}(A)$.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>27. $\hat{x}$ is not a unique solution.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>28. If $A^T A$ is not invertible, then the system has no solution.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>29. $A \hat{x}$ is not always in $\text{Col}(A)$.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>30. $b - A \hat{x}$ is always in $\text{Nul}(A^T)$.</td><td>(A) True &nbsp; (B) False</td></tr>
+				</tbody>
+			</table>
 		</template>
 	</MakeProblem>
 </template>
+
+<style scoped>
+table, tr, td, th {
+  border: none;
+	padding: 0;
+}
+table > tbody > tr > td:not(:first-child) {
+	padding-left: 30px;
+}
+</style>

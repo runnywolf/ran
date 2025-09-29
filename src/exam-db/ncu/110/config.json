@@ -76,7 +76,7 @@
 			]
 		},
 		"10": {
-			"answerLatex": "",
+			"answerLatex": "\\text{BDE}",
 			"tags": [ "?" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }

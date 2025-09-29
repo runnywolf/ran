@@ -1,12 +1,10 @@
 <template>
-	<MakeProblem scoreText="">
-		<template #problem>
-			"About algorithm complexity, which of the following claims are true?
-			A. merge sort is $\theta(n \log n)$.
-			B. Euclid's algorithm to find gcd$(a,b)$ is $\theta(\log \max(a,b))$.
-			C. bubble sort is $\theta(n \log n)$.
-			D. Roy-Warshall Algorithm to compute transitive closure is $\theta(n^2)$ (bit operations).
-			E. traveling sales problem is a NP-hard problem."
-		</template>
+	<MakeProblem listEndLabel="E">
+		<template #problem>About algorithm complexity, which of the following claims are true?</template>
+		<template #A>Merge sort is $\Theta(n \log n)$.</template>
+		<template #B>Euclid’s algorithm to find $\gcd(a, b)$ is $\Theta(\log \max(a, b))$.</template>
+		<template #C>Bubble sort is $\Theta(n \log n)$.</template>
+		<template #D>Roy‑Warshall algorithm to compute transitive closure is $\Theta(n^2)$ (bit operations).</template>
+		<template #E>Traveling sales problem is a NP‑hard problem.</template>
 	</MakeProblem>
 </template>

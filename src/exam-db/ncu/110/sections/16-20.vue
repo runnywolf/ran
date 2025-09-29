@@ -1,17 +1,26 @@
 <template>
-	<MakeProblem scoreText="">
+	<MakeProblem>
 		<template #problem>
-			$n \times n$ matrix $A$ is diagonalizable, then
-			16. 0 is not the eigenvalue of $A$.
-			(A) True. (B) False.
-			17. $A$ has $n$ distinct eigenvalues.
-			(A) True. (B) False.
-			18. $A$ is invertible.
-			(A) True. (B) False.
-			19. $A^T$ is also diagonalizable.
-			(A) True. (B) False.
-			20. The diagonalization is unique.
-			(A) True. (B) False.
+			If $n \times n$ matrix $A$ is diagonalizable, then
+			<table>
+				<tbody>
+					<tr><td>16. $0$ is not the eigenvalue of $A$.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>17. $A$ has $n$ distinct eigenvalues.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>18. $A$ is invertible.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>19. $A^T$ is also diagonalizable.</td><td>(A) True &nbsp; (B) False</td></tr>
+					<tr><td>20. The diagonalization is unique.</td><td>(A) True &nbsp; (B) False</td></tr>
+				</tbody>
+			</table>
 		</template>
 	</MakeProblem>
 </template>
+
+<style scoped>
+table, tr, td, th {
+  border: none;
+	padding: 0;
+}
+table > tbody > tr > td:not(:first-child) {
+	padding-left: 30px;
+}
+</style>
