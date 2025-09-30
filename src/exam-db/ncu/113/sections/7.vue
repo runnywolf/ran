@@ -9,11 +9,11 @@
 			$$
 			Use the Gram‑Schmidt process to find the orthonormal basis of $U$:
 			$$
-			t_1 = @bm{ \frac{1}{2}; -\frac{1}{2}; -\frac{1}{2}; \frac{1}{2} } ,~~
+			t_1 = @bm{ @f{1;2}; -@f{1;2}; -@f{1;2}; @f{1;2} } ,~~
 			t_2 = @bm{ m; n; p; q } ,~~
 			t_3 = @bm{ r; s; x; y } .
 			$$
-			$ d = @(){ \text{Round} \left\{ \cfrac{1}{n^2 s^2} \right\} } \% 5$. What is $d$?
+			$ d = @(){ \text{Round} \left\{ @cf{1; n^2 s^2} \right\} } \% 5$. What is $d$?
 			<br>($\%$ is the modulo operation. $\text{Round}\{ z \}$ rounds $z$ to the nearest integer.)
 		</template>
 		<template #a>0</template>

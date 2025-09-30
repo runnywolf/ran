@@ -6,7 +6,7 @@
 		</template>
 		<template #a>The characteristic polynomial for this equation is $6x^2 - 7x + 2 = 0$.</template>
 		<template #b>Using generating function, we have $2G(z) - 7zG(z) + 6z^2 G(z) = 0$.</template>
-		<template #c>Using generating function, we have $G(z) = \cfrac{3 - 5z}{2 - 7z + 6z^2}$.</template>
+		<template #c>Using generating function, we have $G(z) = @cf{3 - 5z; 2 - 7z + 6z^2}$.</template>
 		<template #d>$a_n = (1/2)(3/2)^n + 2^n$</template>
 		<template #e>$a_n = (1/2)^{n+1} + 2^n$</template>
 	</MakeProblem>

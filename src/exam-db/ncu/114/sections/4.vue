@@ -2,7 +2,7 @@
 	<MakeProblem listEndLabel="e" useSpanList>
 		<template #problem>
 			Let $A = @bm{ 2, 1-i; 1+i, 1 }$ and the unitary matrix that diagonalizes $A$ be
-			$U = \frac{1}{\sqrt{3}} @bm{ a + ib, c + id; e + if, g + ih }$,
+			$U = @f{1; \sqrt{3}} @bm{ a + ib, c + id; e + if, g + ih }$,
 			what is the $\lfloor ~\! | a + c + e + g | ~\! \rfloor \% 5$?
 			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
 		</template>

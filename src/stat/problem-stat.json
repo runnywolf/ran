@@ -1,20 +1,20 @@
 {
-	"examNumber": 34,
+	"examNumber": 35,
 	"answerCompleteExamNumber": 8,
-	"problemNumber": 392,
-	"problemHasAnswerNumber": 98,
+	"problemNumber": 412,
+	"problemHasAnswerNumber": 99,
 	"tagsNumber": {
 		"la": {
 			"ntu": 54,
 			"nycu": 54,
 			"ncku": 43,
-			"ncu": 40
+			"ncu": 50
 		},
 		"la-m": {
 			"ntu": 23,
 			"nycu": 23,
 			"ncku": 6,
-			"ncu": 13
+			"ncu": 17
 		},
 		"la-m-t": {
 			"ntu": 2,
@@ -26,7 +26,7 @@
 			"ntu": 7,
 			"nycu": 6,
 			"ncku": 3,
-			"ncu": 6
+			"ncu": 7
 		},
 		"la-m-shm": {
 			"ntu": 3,
@@ -50,37 +50,37 @@
 			"ntu": 1,
 			"nycu": 4,
 			"ncku": 1,
-			"ncu": 2
+			"ncu": 4
 		},
 		"la-m-lud": {
 			"ntu": 0,
 			"nycu": 2,
 			"ncku": 1,
-			"ncu": 2
+			"ncu": 4
 		},
 		"la-m-cd": {
 			"ntu": 0,
 			"nycu": 2,
 			"ncku": 0,
-			"ncu": 0
+			"ncu": 1
 		},
 		"la-vs": {
 			"ntu": 17,
 			"nycu": 15,
 			"ncku": 14,
-			"ncu": 10
+			"ncu": 14
 		},
 		"la-ev": {
 			"ntu": 22,
 			"nycu": 14,
 			"ncku": 17,
-			"ncu": 15
+			"ncu": 18
 		},
 		"la-ev-d": {
 			"ntu": 6,
 			"nycu": 8,
 			"ncku": 4,
-			"ncu": 7
+			"ncu": 9
 		},
 		"la-ev-mc": {
 			"ntu": 1,
@@ -92,7 +92,7 @@
 			"ntu": 11,
 			"nycu": 13,
 			"ncku": 12,
-			"ncu": 7
+			"ncu": 9
 		},
 		"la-ips-gsp": {
 			"ntu": 0,
@@ -104,7 +104,7 @@
 			"ntu": 0,
 			"nycu": 2,
 			"ncku": 2,
-			"ncu": 1
+			"ncu": 2
 		},
 		"la-ips-svd": {
 			"ntu": 2,
@@ -116,7 +116,7 @@
 			"ntu": 3,
 			"nycu": 8,
 			"ncku": 5,
-			"ncu": 4
+			"ncu": 5
 		},
 		"la-ips-dm": {
 			"ntu": 2,
@@ -128,13 +128,13 @@
 			"ntu": 60,
 			"nycu": 66,
 			"ncku": 37,
-			"ncu": 36
+			"ncu": 45
 		},
 		"dm-c": {
 			"ntu": 32,
 			"nycu": 18,
 			"ncku": 19,
-			"ncu": 10
+			"ncu": 12
 		},
 		"dm-c-pc": {
 			"ntu": 2,
@@ -146,19 +146,19 @@
 			"ntu": 0,
 			"nycu": 5,
 			"ncku": 0,
-			"ncu": 3
+			"ncu": 4
 		},
 		"dm-c-rr": {
 			"ntu": 10,
 			"nycu": 4,
 			"ncku": 8,
-			"ncu": 4
+			"ncu": 5
 		},
 		"dm-c-gf": {
 			"ntu": 8,
 			"nycu": 2,
 			"ncku": 5,
-			"ncu": 4
+			"ncu": 5
 		},
 		"dm-c-ic": {
 			"ntu": 7,
@@ -182,7 +182,7 @@
 			"ntu": 10,
 			"nycu": 18,
 			"ncku": 7,
-			"ncu": 14
+			"ncu": 18
 		},
 		"dm-st-f": {
 			"ntu": 4,
@@ -194,19 +194,19 @@
 			"ntu": 5,
 			"nycu": 10,
 			"ncku": 2,
-			"ncu": 12
+			"ncu": 14
 		},
 		"dm-gt": {
 			"ntu": 10,
 			"nycu": 14,
 			"ncku": 6,
-			"ncu": 14
+			"ncu": 16
 		},
 		"dm-gt-ehg": {
 			"ntu": 4,
 			"nycu": 3,
 			"ncku": 0,
-			"ncu": 5
+			"ncu": 6
 		},
 		"dm-gt-pg": {
 			"ntu": 0,
@@ -236,7 +236,7 @@
 			"ntu": 2,
 			"nycu": 6,
 			"ncku": 3,
-			"ncu": 2
+			"ncu": 3
 		},
 		"dm-ba": {
 			"ntu": 0,
@@ -254,7 +254,7 @@
 			"ntu": 4,
 			"nycu": 11,
 			"ncku": 0,
-			"ncu": 4
+			"ncu": 5
 		},
 		"dm-fsm": {
 			"ntu": 0,
@@ -266,7 +266,7 @@
 			"ntu": 0,
 			"nycu": 0,
 			"ncku": 1,
-			"ncu": 5
+			"ncu": 6
 		},
 		"?": {
 			"ntu": 0,

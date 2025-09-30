@@ -49,7 +49,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br" ],
+			"tags": [ "dm-st-br", "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
