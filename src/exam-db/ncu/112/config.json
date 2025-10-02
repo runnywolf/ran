@@ -73,14 +73,14 @@
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "\\text{B}",
 			"tags": [ "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
-			"answerLatex": "",
+			"answerLatex": "\\text{DE}",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }

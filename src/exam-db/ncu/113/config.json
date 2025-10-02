@@ -146,7 +146,7 @@
 			]
 		},
 		"20": {
-			"answerLatex": "",
+			"answerLatex": "\\text{cd}",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "20-ans" }

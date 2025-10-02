@@ -2,7 +2,7 @@
 	<MakeProblem listEndLabel="E" useSpanList>
 		<template #problem>
 			For the following Matlab code:
-			<table style="margin: 20px 0;">
+			<table style="margin: 20px 0;"><tbody>
 				<tr>
 					<td class="ran-code-font">a = 11;</td>
 					<td>%Set ‘a’ as the number of rows/cols. in a square matrix $A$</td>
@@ -33,7 +33,7 @@
 					<td class="ran-code-font">answer = mod(c,5);</td>
 					<td>% <span class="ran-code-font">mod(.)</span> is the modulo operation.</td>
 				</tr>
-			</table>
+			</tbody></table>
 			What is the value of “answer”?
 		</template>
 		<template #A>0</template>

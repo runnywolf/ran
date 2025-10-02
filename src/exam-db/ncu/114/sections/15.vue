@@ -21,3 +21,4 @@
 		</template>
 	</MakeProblem>
 </template>
+<!-- [fix problem error] 答案的特徵根應該是 -1, 2, 2; 但是出題者想降低難度卻忘記改選項 -->

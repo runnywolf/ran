@@ -113,7 +113,7 @@
 			]
 		},
 		"15": {
-			"answerLatex": "",
+			"answerLatex": "\\times",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
