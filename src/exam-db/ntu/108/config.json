@@ -38,7 +38,12 @@
 			]
 		},
 		"5": {
-			"answerLatex": "",
+			"answerLatex": [
+				"A ~=~ @f{2;3} a_0 + @f{-1;3} a_1",
+				"B ~=~ @f{1;3} a_0 + @f{1;3} a_1",
+				"X \\,=~ 1",
+				"Y ~=~ 2"
+			],
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }

@@ -2,7 +2,7 @@
 	<vk>
 		遞迴關係式為 $a_n + a_{n-1} - 6a_{n-2} = 0$<br>
 		$\Rightarrow$ 特徵方程式為 $\lambda^2 + \lambda - 6 = 0$<br>
-		$\Rightarrow$ 特徵值 $\lambda = -3, 2$<br>
+		$\Rightarrow$ 特徵值 $\lambda = -3,~ 2$<br>
 		$\Rightarrow$ 設一般式為 $a_n = h_1(-3)^n + h_2 2^n$<br>
 		<br>
 		觀察每個選項的特徵值 ($\lambda^n$部分 )<br>

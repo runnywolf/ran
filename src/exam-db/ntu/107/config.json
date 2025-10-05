@@ -17,7 +17,7 @@
 			]
 		},
 		"2": {
-			"answerLatex": "",
+			"answerLatex": "@f{1;2} (-1)^n + @f{1;2} \\cdot 3^n",
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }

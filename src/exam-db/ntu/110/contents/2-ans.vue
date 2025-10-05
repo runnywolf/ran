@@ -15,7 +15,7 @@
 		&= \log_2 \left( \frac{-1}{2} + \frac{3}{2} \cdot 3^{\log_2{n}} \right) \\
 		&\approx \log_2 \left( \frac{3}{2} \cdot 3^{\log_2{n}} \right) \\
 		&= \log_2 { \frac{3}{2} } + \log_2 { 3^{\log_2{n}} } \\
-		&= \log_2{3} \cdot \log_2{n} + ( \log_2{3} - 1 ) \\
+		&= ( \log_2{3} - 1 ) + \log_2{n} \cdot \log_2{3} \\
 		&\approx \boxed{\log_2{3}} \times \log_2{n}
 		\end{split}
 		$$
