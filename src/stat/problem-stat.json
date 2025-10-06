@@ -2,7 +2,7 @@
 	"examNumber": 35,
 	"answerCompleteExamNumber": 8,
 	"problemNumber": 412,
-	"problemHasAnswerNumber": 104,
+	"problemHasAnswerNumber": 113,
 	"tagsNumber": {
 		"la": {
 			"ntu": 54,
@@ -264,7 +264,7 @@
 		},
 		"ag": {
 			"ntu": 0,
-			"nycu": 0,
+			"nycu": 1,
 			"ncku": 1,
 			"ncu": 6
 		},

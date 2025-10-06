@@ -45,14 +45,18 @@
 			]
 		},
 		"6": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(a) }~ |D_1| = 2 ~,~~ |D_2| = 3 ~,~~ |D_n| = 2 |D_{n-1}| - |D_{n-2}| ~,~~ n \\ge 2",
+				"\\text{(b) }~ |D_n| = 2 + n",
+				"\\text{(c) }~ 102"
+			],
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "a_n = -2 \\cdot 3^{-n} + 3 \\cdot 2^{-n}",
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }

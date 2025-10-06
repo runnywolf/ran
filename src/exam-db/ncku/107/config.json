@@ -52,7 +52,7 @@
 			]
 		},
 		"7": {
-			"answerLatex": "",
+			"answerLatex": "a_n = @f{3;2}(-1)^n + @f{-5;2} + 2 \\cdot 2^n",
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }

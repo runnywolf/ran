@@ -12,16 +12,14 @@
 		</template>
 		<template #c>
 			Find the value of $D_n$ as a function of $n$, when $y=2x$.
-			$$
-			A_{n \times n} = \!\begin{bmatrix}
-			y & x & 0 & \cdots & 0 & 0 \\
-			x & y & x & \ddots & \vdots & \vdots \\
-			0 & x & y & \ddots & 0 & 0 \rule{0em}{1.2em} \\
-			\vdots & \ddots & \ddots & \ddots & x & 0 \rule{0em}{1.2em} \\
-			0 & \cdots & 0 & x & y & x \rule{0em}{1.2em} \\
-			0 & \cdots & 0 & 0 & x & y \rule{0em}{1.2em} \\
-			\end{bmatrix}
-			$$
+			$$ A_{n \times n} = @bm{
+			y, x, 0, \cdots, 0, 0;
+			x, y, x, \ddots, \vdots, \vdots;
+			0, x, y, \ddots, 0, 0 \rule{0em}{1.2em};
+			\vdots, \ddots, \ddots, \ddots, x, 0 \rule{0em}{1.2em};
+			0, \cdots, 0, x, y, x \rule{0em}{1.2em};
+			0, \cdots, 0, 0, x, y \rule{0em}{1.2em};
+			} $$
 		</template>
 	</MakeProblem>
 </template>

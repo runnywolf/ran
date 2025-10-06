@@ -4,16 +4,16 @@
 			Let
 			$
 			\def\arraystretch{1.2}
-			D = @bm{
+			D_n = { @bm{
 			2, -1 \\
 			-1, 2, -1,, 0 \\
 			, -1, 2, \ddots \\
 			,, -1, \ddots, -1 \\
 			, 0,, \ddots, 2, -1 \\
 			,,,, -1, 2
-			}
+			} }_{n \times n}
 			\text{, i.e., }
-			D(i, j) = \begin{cases}
+			D_n(i, j) = \begin{cases}
 			2, & \text{if } i = j. \\
 			-1, & \text{if } |i - j| = 1. \\
 			0, & \text{elsewhere}.
@@ -21,7 +21,7 @@
 			$
 		</template>
 		<template #a>
-			Use recurrence relations to express determinant of $D \text{, i.e., } |D|$.
+			Use recurrence relations to express determinant of $D_n$, i.e., $|D_n|$.
 		</template>
 		<template #b>
 			Find the general solution for $|D_n|$.
@@ -32,3 +32,4 @@
 		</template>
 	</MakeProblem>
 </template>
+<!-- [fix problem error] 這一題沒有說明方陣 $D$ 的長寬, 應改為 D_n 較合適 -->
