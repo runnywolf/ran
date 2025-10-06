@@ -1,28 +1,26 @@
 <template>
-	<MakeProblem scoreText="(10%)" :extraSlotNames="['img-options']">
-		<template #problem>
-			Which one of the following graphs has an Eulerian cycle?
+	<MakeProblem scoreText="(10%)" listEndLabel="E" useSpanList spanListTopLabel>
+		<template #problem>Which one of the following graphs has no Hamiltonian cycles?</template>
+		<template #A>
+			<img src="./img/1-a.webp">
 		</template>
-		<template #img-options>
-			<div class="ts-wrap is-compact is-top-aligned opt">
-				<span>(A)</span>
-				<img src="./img/1-a.webp">
-				<span>(B)</span>
-				<img src="./img/1-b.webp">
-				<span>(C)</span>
-				<img src="./img/1-c.webp">
-				<span>(D)</span>
-				<img src="./img/1-d.webp">
-				<span>(E)</span>
-				<img src="./img/1-e.webp">
-			</div>
+		<template #B>
+			<img src="./img/1-b.webp">
+		</template>
+		<template #C>
+			<img src="./img/1-c.webp">
+		</template>
+		<template #D>
+			<img src="./img/1-d.webp">
+		</template>
+		<template #E>
+			<img src="./img/1-e.webp">
 		</template>
 	</MakeProblem>
 </template>
 
 <style scoped>
-.opt > img { /* 選項圖片 */
+img { /* 選項圖片 */
 	width: 100px;
-	align-self: center; /* 只有圖片垂直置中 */
 }
 </style>

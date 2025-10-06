@@ -5,8 +5,7 @@
 			$$ a_{n+2} = a_{n+1} + a_n $$
 			is of the form:
 			$$
-			a_n = \left( \frac{A}{2\sqrt{5}} \right) \left( \frac{B}{2} \right)^n
-			+ \left( \frac{C}{2\sqrt{5}} \right) \left( \frac{D}{2} \right)^n .
+			a_n = @(){ @f{ A; 2 \sqrt{5} } } @(){ @f{B; 2} }^n + @(){ @f{ C; 2 \sqrt{5} } } @(){ @f{D; 2} }^n .
 			$$
 			Derive
 			$$

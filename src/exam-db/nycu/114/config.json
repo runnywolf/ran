@@ -22,14 +22,14 @@
 		},
 		"2": {
 			"answerLatex": [ "\\text{(a) } 1,2,5", "\\text{(b) See prove}" ],
-			"tags": [ "dm-fl", "dm-nt" ],
+			"tags": [ "dm-fl", "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": [ "\\text{(a) } 1094", "\\text{(b) } 966", "\\text{(c) } 770", "\\text{(d) } 4620" ],
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
@@ -60,20 +60,20 @@
 		},
 		"7": {
 			"answerLatex": "40",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
-			"answerLatex": "Q = \\def\\arraystretch{1.35}\\!\\begin{bmatrix} \\frac{4}{5} & \\frac{-3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\! ,~ D = \\def\\arraystretch{1}\\!\\begin{bmatrix} 15 & 0 \\\\ 0 & -10 \\end{bmatrix}\\!",
+			"answerLatex": "Q = @bm{ @f{4;5}, @f{-3;5}; @f{3;5}, @f{4;5} } ,~~ D = @bm{ 15, 0; 0, -10 }",
 			"tags": [ "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "\\begin{bmatrix} 4 & 0 \\\\ 7 & -5 \\\\ -5 & 2 \\end{bmatrix}",
+			"answerLatex": "@bm{ 4, 0; 7, -5; -5, 2 }",
 			"tags": [ "dm-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }

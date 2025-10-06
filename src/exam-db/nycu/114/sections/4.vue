@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem 
+	<MakeProblem
 		scoreText="(7 points)"
 		listEndLabel="d"
 		:listItemScoreTexts="['(1 point)', '(1 point)', '(1 point)', '(4 points)']"

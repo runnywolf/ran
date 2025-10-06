@@ -70,6 +70,12 @@ def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-tree.json 扁�
 	
 	return sub_tags
 
+def is_subtag(tag: str, subtag: str) -> bool: # 判斷 subtag 是不是 tag 的子標籤
+	splited_tag = tag.split("-")
+	splited_subtag = subtag.split("-")
+	if len(splited_subtag) > len(splited_tag): return False # 如果 subtag 深度 > tag 的深度, 那一定不是子標籤
+	return all(x == y for x, y in zip(splited_tag, splited_subtag)) # 有一層不同, 那一定不是子標籤
+
 def update_problem_stat(stat: dict, exam_config: dict, uni: str) -> None: # 根據 problem stat 的參考, 更新 stat 的值
 	stat["examNumber"] += 1
 	stat["answerCompleteExamNumber"] += 1 if exam_config["isAnswerComplete"] else 0
@@ -82,7 +88,7 @@ def update_problem_stat(stat: dict, exam_config: dict, uni: str) -> None: # 根�
 		if "tags" not in problem_config: continue # 如果某個 problem config 內的 key "tags" 沒有被添加, 代表這題沒標籤, skip
 		
 		for stat_tag, dict_numbers in stat["tagsNumber"].items():
-			if any(stat_tag in tag for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-tree 中
+			if any(is_subtag(tag, stat_tag) for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-tree 中
 				dict_numbers[uni] += 1 # 將該 tag 的學校計數 +1
 
 def make_problem_stat_json() -> None: # 生成題目的統計

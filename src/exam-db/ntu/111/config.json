@@ -53,14 +53,14 @@
 		},
 		"7": {
 			"answerLatex": "\\text{D}",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "\\text{B}",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

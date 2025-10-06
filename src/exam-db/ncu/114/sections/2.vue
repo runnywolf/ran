@@ -1,0 +1,25 @@
+<template>
+	<MakeProblem listEndLabel="e" useSpanList>
+		<template #problem>
+			Let the Gram‑Schmidt QR factorization of the matrix
+			$@bm{ 1, -2, -1; 2, 0, 1; 2, -4, 2; 4, 0, 0 }$
+			be
+			$
+			@bm{
+			@f{1;5} , @f{-2;5} , @f{-4;5} ;
+			@f{2;5} , @f{1;5} , @f{2;5} ;
+			@f{2;5} , @f{-4;5} , @f{2;5} ;
+			@f{4;5} , @f{2;5} , @f{-1;5}
+			}
+			@bm{ a, b, c; 0, d, e; 0, 0, f }
+			$.
+			What is $\lfloor ~\! | a + b + c + d + e + f | ~\! \rfloor \% 5$?
+			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
+		</template>
+		<template #a>0</template>
+		<template #b>1</template>
+		<template #c>2</template>
+		<template #d>3</template>
+		<template #e>4</template>
+	</MakeProblem>
+</template>

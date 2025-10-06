@@ -4,7 +4,7 @@
 			
 			<!-- 預設的題目區塊 (會包含配分) -->
 			<div v-if="$slots.problem || (scoreText && !isProblemScoreHided)">
-				<span v-if="scoreText" class="problem-score">{{ scoreText }}</span>
+				<span v-if="scoreText" class="problem-score">{{ scoreText + " " }}</span>
 				<slot name="problem"></slot>
 			</div>
 			
@@ -15,20 +15,25 @@
 			
 			<!-- 有序列表 (通常用作子題或選擇題) -->
 			<template v-if="orderListLabels.length > 0">
-				<div v-if="useSpanList" class="ts-grid is-compact grid-extra-y-gap">
-					<span v-for="slotName in orderListLabels">
-						<span>{{ `(${slotName}) ` }}</span>
-						<slot :name="slotName"></slot>
-					</span>
+				
+				<div v-if="useSpanList" class="ts-grid grid-list" :class="{ 'top-label': spanListTopLabel }">
+					<div v-for="slotName in orderListLabels" class="ts-wrap is-compact is-middle-aligned">
+						<div>{{ `(${slotName})` }}</div>
+						<div><!-- 這個空的 div 用於產生編號與內容的間距 -->
+							<slot :name="slotName"></slot>
+						</div>
+					</div>
 				</div>
+				
 				<ol v-else class="ran-order-list" :class="orderListStyle">
 					<li v-for="(slotName, i) in orderListLabels">
-						<span v-if="listItemScoreTexts[i]" class="problem-score extra-margin">
+						<span v-if="listItemScoreTexts[i]" class="problem-score">
 							{{ listItemScoreTexts[i] + " " }}
 						</span>
 						<slot :name="slotName"></slot>
 					</li>
 				</ol>
+				
 			</template>
 			
 		</div>
@@ -43,7 +48,8 @@ const props = defineProps({
 	extraSlotNames: { type: Array, default: [] }, // 額外的題目區塊名 (會顯示在預設題目區塊下, 選項之上)
 	listEndLabel: { type: String, default: null }, // 有序列表的最後一個編號, 主要用於子題或多選題的選項
 	listItemScoreTexts: { type: Array, default: [] }, // 列表的配分字串 (不適用於 span list)
-	useSpanList: { type: Boolean, default: false }, // 如果為 false, 使用 ul 來排版有序清單; 反之則用 grid 排版 (例如某些選項長度很短的選擇題)
+	useSpanList: { type: Boolean, default: false }, // 如果為 false, 使用 ol 來排版有序清單; 反之則用 grid 排版 (例如某些選項長度很短的選擇題)
+	spanListTopLabel: { type: Boolean, default: false }, // span list 模式下, 將選項編號靠上對齊 (推薦用在圖片)
 });
 
 // 當配分被隱藏, 同時 slot.problem 是空的 -> 不顯示預設的題目區塊.
@@ -76,7 +82,14 @@ const orderListLabels = computed(() => { // 根據最後一個編號, 判斷有�
 </script>
 
 <style scoped>
-.grid-extra-y-gap { /* 增加水平選項的間距 */
-	column-gap: 16px; /* 8 -> 16 */
+.grid-list {
+	row-gap: 8px;
+	column-gap: 24px; /* 水平元素間距: 8 -> 24 */
+}
+.grid-list.top-label {
+	column-gap: 16px; /* 降低水平元素間距 */
+}
+.grid-list.top-label > div > div:first-child { /* 此模式會使選項編號靠上對齊 */
+	align-self: flex-start;
 }
 </style>

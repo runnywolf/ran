@@ -2,8 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
 
-import "./styles/style.css"; // 全域樣式
-import "./styles/problem.css"; // 題目樣式
+import "./styles/main.css";
 
 import Content from "./components/global/Content.vue"; // 內容區塊組件
 import RanLink from "./components/global/RanLink.vue"; // ran 的超連結

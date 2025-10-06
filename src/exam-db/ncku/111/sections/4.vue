@@ -5,7 +5,7 @@
 		</template>
 		<template #b>
 			How many if no side of the polygon is to be a side of any quadrilateral? ($n \geq 8$)<br>
-			Note: quadrilateral <span class="ran-tocas-font">(四邊形)</span>
+			Note: quadrilateral <span class="ran-app-font">(四邊形)</span>
 		</template>
 	</MakeProblem>
 </template>

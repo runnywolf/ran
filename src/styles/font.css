@@ -1,0 +1,22 @@
+/* 這些字體的實際大小會調整至相同, 主要用於撰寫題目 */
+/* 大小的妥協關係: 其他字體 -> Times -> KaTex font */
+
+.ran-problem-font, .ran-problem-font::marker { /* 題目的標準字體 */
+	font-family: "Times New Roman", Times, serif;
+	font-size: 18px; /* 字體大小 */
+	letter-spacing: 0.02em; /* 字母之間的距離 */
+	word-spacing: 0.06em; /* 單詞之間空白的距離 */
+	line-height: 1.2em; /* 行距 (倍) */
+}
+.ran-app-font { /* app 的字體 */
+	font-size: 16px;
+	font-family: "noto sans tc";
+}
+.ran-biaukai-font { /* 標楷體, 用於考卷的說明文字 */
+	font-size: 18px;
+	font-family: DFKai-sb;
+}
+.ran-code-font { /* 等寬字體 */
+	font-size: 16px;
+	font-family: monospace;
+}

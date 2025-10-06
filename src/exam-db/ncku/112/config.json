@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-ba" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -74,7 +74,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "la-m", "la-ev", "la-ev-d" ],
+			"tags": [ "la-ev", "la-m-mro", "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

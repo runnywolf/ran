@@ -13,7 +13,7 @@
 			The linear transformation $T(f) = f'$ from $P_n$ to $P_n$ has rank $n$ for all positive integers $n$.
 		</template>
 		<template #b>
-			For an $m \times n$ matrix $A,~ m > n,$ the nullity of $A^T$ must be larger than the nullity of $A$.
+			For an $m \times n$ matrix $A,~ m \gt n,$ the nullity of $A^T$ must be larger than the nullity of $A$.
 		</template>
 		<template #c>
 			If $U, V,$ and $W$ are subspaces of $\mathbb{R}^3,~ U \perp V,$ and $V \perp W,$ then $U \perp W$.

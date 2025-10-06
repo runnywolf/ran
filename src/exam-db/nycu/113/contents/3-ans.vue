@@ -6,7 +6,7 @@
 				整除符號可以用 $x / d * d = x$ 代替，定義一個質數集合：
 				$$ P = \{ x \in \mathbb{Z}^+ \mid x \gt 1 ~\land~ \forall d \in \mathbb{Z}^+ ( x/d*d = x ~\to~ d = 1 ~\lor~ d = x ) \} $$
 				歌德巴赫猜想：「 任何大於 2 的偶數，都可以表示成兩個質數之和 」，可以表示成：
-				$$ \forall n \in \mathbb{Z}^+ \Big( n > 2 ~\land~ n/2*2 = n ~\to~ \exist p_1, p_2 \in P~ (n = p_1 + p_2) \Big) $$
+				$$ \forall n \in \mathbb{Z}^+ \Big( n \gt 2 ~\land~ n/2*2 = n ~\to~ \exist p_1, p_2 \in P~ (n = p_1 + p_2) \Big) $$
 			</template>
 			<template #b>
 				設 $S_n$ 為長度 $n$ 的位元字串 (包含 5 個連續同位元) 的集合。<br>

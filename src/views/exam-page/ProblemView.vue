@@ -14,22 +14,25 @@
 			<div class="ts-divider"></div>
 			
 			<!-- 上一題和下一題的連結 -->
-			<div class="ts-content is-dense ts-text is-center-aligned">
-				
-				<!-- 上一題的連結 -->
-				<RanLink v-if="prevNo" :to="`#/exam/${uni}-${year}/${prevNo}`">
-					<span>{{ prevNo }}</span>
-					<span class="ts-icon is-arrow-left-icon is-spaced" style="color: #000;"></span>
-				</RanLink>
-				
-				<span>{{ no }}</span>
-				
-				<!-- 下一題的連結 -->
-				<RanLink v-if="nextNo" :to="`#/exam/${uni}-${year}/${nextNo}`">
-					<span class="ts-icon is-arrow-right-icon is-spaced" style="color: #000;"></span>
-					<span>{{ nextNo }}</span>
-				</RanLink>
-				
+			<div class="ts-content is-dense">
+				<div class="ts-grid is-center-aligned is-compact" style="row-gap: 0">
+					
+					<!-- 上一題的連結 -->
+					<RanLink v-if="prevNo" :to="`#/exam/${uni}-${year}/${prevNo}`">
+						<span>{{ prevNo }}</span>
+						<span class="ts-icon is-arrow-left-icon is-start-spaced" style="color: black"></span>
+					</RanLink>
+					
+					<!-- 目前題目的題號 -->
+					<span>{{ no }}</span>
+					
+					<!-- 下一題的連結 -->
+					<RanLink v-if="nextNo" :to="`#/exam/${uni}-${year}/${nextNo}`">
+						<span class="ts-icon is-arrow-right-icon is-end-spaced" style="color: black"></span>
+						<span>{{ nextNo }}</span>
+					</RanLink>
+					
+				</div>
 			</div>
 			<div class="ts-divider"></div>
 			

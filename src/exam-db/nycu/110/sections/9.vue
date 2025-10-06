@@ -41,7 +41,7 @@
 		</template>
 		<template #c>
 			Let $\hat{B} = \begin{bmatrix} (i) \\ (ii) \end{bmatrix} \in \mathbb{R}^2$
-			be the least-squares solution that minimize $\|Y-XB\|^2$ where 
+			be the least-squares solution that minimize $\|Y-XB\|^2$ where
 			$$
 			X = \begin{bmatrix} 2 & 0 \\ -1 & 1 \\ 0 & 2 \end{bmatrix}
 			\quad \text{and} \quad
@@ -60,7 +60,7 @@
 		</template>
 		<template #e>
 			Let $\!\begin{bmatrix} (i) \\ (ii) \\ (iii) \end{bmatrix}\!$
-			be the closest point to $y$ in the subspace $W$ spanned by $u_1$ and $u_2$, where 
+			be the closest point to $y$ in the subspace $W$ spanned by $u_1$ and $u_2$, where
 			$$
 			y = \!\begin{bmatrix} 12 \\ -1 \\ 2 \end{bmatrix} \quad , \quad
 			u_1 = \!\begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix} \quad , \quad

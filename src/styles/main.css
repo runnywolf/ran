@@ -1,3 +1,6 @@
+@import "./font.css";
+@import "./problem.css";
+
 .ran-native-table { /* html 原生的表格樣式 */
 	border-collapse: collapse; border-spacing: 0;
 }
@@ -7,6 +10,9 @@
 
 span.ran-neko::before { /* 貓咪 */
 	content: "ฅ^⦁⩊⦁^ฅ ੭";
+}
+span.ran-ciallo::before { /* ciallo */
+	content: "(∠・ω < )⌒☆";
 }
 
 details.ts-accordion[open] details.ts-accordion:not([open]) summary::before { /* tocas ui bug */

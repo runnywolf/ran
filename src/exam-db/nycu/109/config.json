@@ -18,7 +18,7 @@
 		},
 		"2": {
 			"answerLatex": "a_{n+1} = -a_n + 2 ~,~ a_1 = 0 \\quad;\\quad a_{n+1} = a_n + 2n + 2 ~,~ a_1 = 2",
-			"tags": [ "dm-c-rd" ],
+			"tags": [ "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-a-ans", "suffix": "(a)" },
 				{ "type": "answer", "fileBaseName": "2-b-ans", "suffix": "(b)" }
@@ -54,21 +54,21 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro", "la-m-lud" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-mro", "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -82,7 +82,7 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-shm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

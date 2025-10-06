@@ -5,7 +5,14 @@
 			"m": {
 				"en": "Matrix", "zhtw": "矩陣",
 				"children": {
-					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" }
+					"t": { "en": "Trace", "zhtw": "跡" },
+					"d": { "en": "Determinant", "zhtw": "行列式" },
+					"shm": { "en": "Symmetric & Hermitian matrix", "zhtw": "對稱矩陣" },
+					"oum": { "en": "Orthogonal & Unitary matrix", "zhtw": "正交矩陣" },
+					"im": { "en": "Invertible matrix", "zhtw": "逆矩陣" },
+					"mro": { "en": "Matrix row operations", "zhtw": "矩陣列運算" },
+					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" },
+					"cd": { "en": "Cholesky decomposition", "zhtw": "Cholesky 分解" }
 				}
 			},
 			"vs": { "en": "Vector space", "zhtw": "向量空間" },
@@ -34,11 +41,13 @@
 			"c": {
 				"en": "Combinatorics", "zhtw": "組合數學",
 				"children": {
-					"rd": { "en": "Recursive definition", "zhtw": "遞迴定義" },
-					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係" },
+					"pc": { "en": "Permutation & Combination", "zhtw": "排列組合" },
+					"r": { "en": "Recursion", "zhtw": "遞迴" },
+					"rr": { "en": "Recurrence relation", "zhtw": "遞迴關係式" },
 					"gf": { "en": "Generating function", "zhtw": "生成函數" },
 					"ic": { "en": "Integer composition", "zhtw": "整數分解" },
-					"bc": { "en": "Binomial coefficient", "zhtw": "二項式係數" }
+					"bc": { "en": "Binomial coefficient", "zhtw": "二項式係數" },
+					"pp": { "en": "Pigeonhole principle", "zhtw": "鴿籠原理" }
 				}
 			},
 			"st": {
@@ -52,12 +61,14 @@
 				"en": "Graph theory", "zhtw": "圖論",
 				"children": {
 					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
+					"pg": { "en": "Planar graph", "zhtw": "平面圖" },
 					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
 					"gi": { "en": "Graph isomorphism", "zhtw": "圖同構問題" },
 					"t": { "en": "Tree", "zhtw": "樹" }
 				}
 			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
+			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
 			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }

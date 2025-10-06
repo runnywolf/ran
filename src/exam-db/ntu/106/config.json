@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -59,7 +59,12 @@
 			]
 		},
 		"8": {
-			"answerLatex": "",
+			"answerLatex": [
+				"A ~=~ (\\sqrt{5} + 1) a_0 - 2 a_1",
+				"B ~=~ 1 - \\sqrt{5}",
+				"C ~=~ (\\sqrt{5} - 1) a_0 + 2 a_1",
+				"D ~=~ 1 + \\sqrt{5}"
+			],
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }

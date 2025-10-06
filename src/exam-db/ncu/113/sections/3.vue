@@ -1,0 +1,17 @@
+<template>
+	<MakeProblem listEndLabel="e" useSpanList>
+		<template #problem>
+			Let $A$ be a $4 \times 4$ matrix with reduced row echelon form given by
+			$U = @bm{ 1, 0, -1, 1; 0, 1, 3, 2; 0, 0, 0, 0; 0, 0, 0, 0 }$.
+			Let the first two columns of $A$ be $@bm{ 3; 2; -1; 2 }$ and $@bm{ 1; 1; -2; 3 }$,
+			and denote the third column of $A$ as $@bm{ a; b; c; d }$.
+			What is $\lfloor a + b + c + d \rfloor \% 5$?
+			<br>($\%$ is the modulo operation. $\lfloor z \rfloor$ rounds $z$ to the smaller nearest integer.)
+		</template>
+		<template #a>0</template>
+		<template #b>1</template>
+		<template #c>2</template>
+		<template #d>3</template>
+		<template #e>4</template>
+	</MakeProblem>
+</template>

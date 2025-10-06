@@ -106,7 +106,7 @@ watch(() => props.examConfig.sectionFileBaseNames, baseNames => {
 	
 	const problemNoStyle = document.createElement("style"); // 用 js 建立一個用於顯示 marker 題號的 style 區塊 (因為 vue 不允許動態修改 marker)
 	document.head.appendChild(problemNoStyle); // 插入至 <head>
-
+	
 	const sheet = problemNoStyle.sheet;
 	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length); // [bug] fuck safari
 	baseNames.filter(name => name[0] !== "-").map(name => { // 非說明區塊才有題號

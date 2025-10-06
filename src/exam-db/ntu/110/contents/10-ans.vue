@@ -24,7 +24,7 @@
 			= \begin{bmatrix} -b \\ a \end{bmatrix}
 			$$
 			<br>
-			線性算子 $D$ 的特徵值與 $D', A$ 相同，因為它們只是基底不同而已。<br> 
+			線性算子 $D$ 的特徵值與 $D', A$ 相同，因為它們只是基底不同而已。<br>
 			矩陣 $A$ 的特徵值是 $\pm i$ 而非 $\pm 1$，因此選項 (a) 錯誤。
 		</template>
 		<template #b>

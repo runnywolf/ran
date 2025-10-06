@@ -20,14 +20,14 @@
 		},
 		"2": {
 			"answerLatex": "",
-			"tags": [ "dm-c-rr" ],
+			"tags": [ "ag", "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pp", "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
@@ -47,7 +47,7 @@
 			]
 		},
 		"6": {
-			"answerLatex": "",
+			"answerLatex": "a_n = (4 - 2n) 2^n",
 			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
@@ -55,7 +55,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-shm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -90,7 +90,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

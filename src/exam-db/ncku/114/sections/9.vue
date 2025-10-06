@@ -15,7 +15,7 @@
 			$U = (u_1, u_2, \cdots\!, u_k)$, then $UU^T = I_n$ (the $n \times n$ identity matrix).
 		</template>
 		<template #d>
-			If $A$ is symmetric and $\det(A) > 0$, then $A$ is positive definite.
+			If $A$ is symmetric and $\det(A) \gt 0$, then $A$ is positive definite.
 		</template>
 		<template #e>
 			If $A$ is symmetric positive definite, then the diagonal elements of $A$ must all be positive.

@@ -49,7 +49,7 @@
 		},
 		"6": {
 			"answerLatex": "\\frac{1}{3}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "\\text{rank}(T)",
-			"tags": [ "la-m" ],
+			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

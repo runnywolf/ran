@@ -32,14 +32,18 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-pp" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
-			"answerLatex": "",
-			"tags": [ "la-m", "dm-c-rr" ],
+			"answerLatex": [
+				"\\text{(a) }~ D_1 = y ~,~~ D_2 = y^2 - x^2 ~,~~ D_n = y D_{n-1} - x^2 D_{n-2} ~,~~ n \\ge 2",
+				"\\text{(b) }~ D_n = @cf{x^n; 2} \\, \\Big( \\sqrt{3} \\cos\\Big( @cf{n\\pi;3} \\Big) - \\sin\\Big( @cf{n\\pi;3} \\Big) \\Big) \\rule{0em}{1.8em}",
+				"\\text{(c) }~ D_n = x^n (1+n) \\rule{0em}{1.5em}"
+			],
+			"tags": [ "la-m-d", "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

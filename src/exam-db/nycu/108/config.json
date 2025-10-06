@@ -81,7 +81,7 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "dm-c" ],
+			"tags": [ "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

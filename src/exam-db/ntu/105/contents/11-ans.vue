@@ -1,5 +1,7 @@
 <template>
-	<vk>
-		第 11 題的解答
-	</vk>
+	<Recur :recurCoef="[2]" :nonHomogFunc="[[1, 1, 1]]" :initConst="[4]"></Recur>
 </template>
+
+<script setup>
+import Recur from "@/components/answer-generator/Recur.vue"; // 遞迴解答產生器
+</script>
