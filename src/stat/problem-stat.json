@@ -65,10 +65,28 @@
 			"ncu": 1
 		},
 		"la-vs": {
-			"ntu": 17,
+			"ntu": 15,
 			"nycu": 15,
 			"ncku": 14,
 			"ncu": 14
+		},
+		"la-vs-bd": {
+			"ntu": 8,
+			"nycu": 0,
+			"ncku": 0,
+			"ncu": 0
+		},
+		"la-vs-ss": {
+			"ntu": 10,
+			"nycu": 0,
+			"ncku": 0,
+			"ncu": 0
+		},
+		"la-vs-cb": {
+			"ntu": 3,
+			"nycu": 0,
+			"ncku": 0,
+			"ncu": 0
 		},
 		"la-ev": {
 			"ntu": 22,
@@ -113,7 +131,7 @@
 			"ncu": 0
 		},
 		"la-ips-p": {
-			"ntu": 3,
+			"ntu": 4,
 			"nycu": 8,
 			"ncku": 5,
 			"ncu": 5

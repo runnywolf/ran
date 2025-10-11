@@ -15,7 +15,14 @@
 					"cd": { "en": "Cholesky decomposition", "zhtw": "Cholesky 分解" }
 				}
 			},
-			"vs": { "en": "Vector space", "zhtw": "向量空間" },
+			"vs": {
+				"en": "Vector space", "zhtw": "向量空間",
+				"children": {
+					"bd": { "en": "Basis & Dimension", "zhtw": "基底與維度" },
+					"ss": { "en": "Subspace", "zhtw": "子空間" },
+					"cb": { "en": "Change of basis", "zhtw": "基底變換" }
+				}
+			},
 			"ev": {
 				"en": "Eigenvalues & Eigenvectors", "zhtw": "特徵值與向量",
 				"children": {

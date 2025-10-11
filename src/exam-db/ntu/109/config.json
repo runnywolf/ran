@@ -67,7 +67,7 @@
 		},
 		"9": {
 			"answerLatex": "0, 0, 10, 4, 2",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

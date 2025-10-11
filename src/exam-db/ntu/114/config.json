@@ -54,7 +54,7 @@
 		},
 		"7": {
 			"answerLatex": "\\text{ABE}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

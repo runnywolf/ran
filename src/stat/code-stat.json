@@ -7,13 +7,18 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2531,
-			"sizeByte": 113953
+			"line": 2533,
+			"sizeByte": 114004
 		},
 		"js": {
-			"number": 9,
-			"line": 1565,
-			"sizeByte": 90406
+			"number": 8,
+			"line": 1514,
+			"sizeByte": 87449
+		},
+		"ts": {
+			"number": 1,
+			"line": 52,
+			"sizeByte": 3125
 		},
 		"css": {
 			"number": 4,
@@ -24,13 +29,13 @@
 	"exam": {
 		"json": {
 			"number": 37,
-			"line": 3544,
-			"sizeByte": 88498
+			"line": 3552,
+			"sizeByte": 88945
 		},
 		"vue": {
-			"number": 895,
-			"line": 12303,
-			"sizeByte": 429980
+			"number": 896,
+			"line": 12317,
+			"sizeByte": 430262
 		},
 		"webp": {
 			"number": 62,
@@ -53,8 +58,8 @@
 	"docs": {
 		"md": {
 			"number": 34,
-			"line": 3336,
-			"sizeByte": 121905
+			"line": 3339,
+			"sizeByte": 122028
 		},
 		"png": {
 			"number": 9,

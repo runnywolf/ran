@@ -28,14 +28,14 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "la-m-im", "la-ips-dm", "la-vs", "la-ev" ],
+			"tags": [ "la-m-im", "la-ips-dm", "la-vs-bd", "la-ev", "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

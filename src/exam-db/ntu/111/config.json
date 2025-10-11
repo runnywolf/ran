@@ -67,9 +67,10 @@
 		},
 		"9": {
 			"answerLatex": "\\text{C}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
+				{ "type": "answer", "fileBaseName": "9-ans-1", "suffix": "(泰勒展開)" },
+				{ "type": "answer", "fileBaseName": "9-ans-2", "suffix": "(神奇的方法)" }
 			]
 		},
 		"10": {
@@ -88,7 +89,7 @@
 		},
 		"12": {
 			"answerLatex": "\\text{B}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
