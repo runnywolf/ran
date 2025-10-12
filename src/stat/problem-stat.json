@@ -12,9 +12,9 @@
 		},
 		"la-m": {
 			"ntu": 23,
-			"nycu": 23,
-			"ncku": 6,
-			"ncu": 17
+			"nycu": 24,
+			"ncku": 9,
+			"ncu": 19
 		},
 		"la-m-t": {
 			"ntu": 2,
@@ -36,8 +36,8 @@
 		},
 		"la-m-oum": {
 			"ntu": 4,
-			"nycu": 2,
-			"ncku": 0,
+			"nycu": 3,
+			"ncku": 2,
 			"ncu": 1
 		},
 		"la-m-im": {
@@ -49,8 +49,8 @@
 		"la-m-mro": {
 			"ntu": 1,
 			"nycu": 4,
-			"ncku": 1,
-			"ncu": 4
+			"ncku": 2,
+			"ncu": 6
 		},
 		"la-m-lud": {
 			"ntu": 0,
@@ -66,39 +66,39 @@
 		},
 		"la-vs": {
 			"ntu": 15,
-			"nycu": 15,
-			"ncku": 14,
-			"ncu": 14
+			"nycu": 16,
+			"ncku": 13,
+			"ncu": 12
 		},
 		"la-vs-bd": {
 			"ntu": 8,
-			"nycu": 0,
-			"ncku": 0,
-			"ncu": 0
+			"nycu": 6,
+			"ncku": 3,
+			"ncu": 2
 		},
 		"la-vs-ss": {
 			"ntu": 10,
-			"nycu": 0,
-			"ncku": 0,
-			"ncu": 0
+			"nycu": 12,
+			"ncku": 10,
+			"ncu": 6
 		},
 		"la-vs-cb": {
 			"ntu": 3,
-			"nycu": 0,
+			"nycu": 3,
 			"ncku": 0,
-			"ncu": 0
+			"ncu": 5
 		},
 		"la-ev": {
 			"ntu": 22,
 			"nycu": 14,
 			"ncku": 17,
-			"ncu": 18
+			"ncu": 19
 		},
 		"la-ev-d": {
 			"ntu": 6,
 			"nycu": 8,
 			"ncku": 4,
-			"ncu": 9
+			"ncu": 10
 		},
 		"la-ev-mc": {
 			"ntu": 1,
@@ -108,8 +108,8 @@
 		},
 		"la-ips": {
 			"ntu": 11,
-			"nycu": 13,
-			"ncku": 12,
+			"nycu": 11,
+			"ncku": 14,
 			"ncu": 9
 		},
 		"la-ips-gsp": {
@@ -127,13 +127,13 @@
 		"la-ips-svd": {
 			"ntu": 2,
 			"nycu": 1,
-			"ncku": 0,
+			"ncku": 1,
 			"ncu": 0
 		},
 		"la-ips-p": {
 			"ntu": 4,
 			"nycu": 8,
-			"ncku": 5,
+			"ncku": 6,
 			"ncu": 5
 		},
 		"la-ips-dm": {

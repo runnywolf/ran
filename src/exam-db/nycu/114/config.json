@@ -53,7 +53,7 @@
 				"\\text{(a) False} \\quad \\text{(b) True} \\quad \\text{(c) True} \\quad \\text{(d) False}",
 				"\\text{(e) 4} \\quad \\text{(f) 4} \\quad \\text{(g) 6}"
 			],
-			"tags": [ "la-vs", "la-ev" ],
+			"tags": [ "la-ev", "la-vs-ss", "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

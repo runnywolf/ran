@@ -21,7 +21,7 @@
 		},
 		"1-2": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-2-ans" }
 			]

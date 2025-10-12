@@ -60,14 +60,14 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-m-shm", "la-vs", "la-ips" ],
+			"tags": [ "la-m-shm", "la-vs-ss", "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-ips", "la-ips-p" ],
+			"tags": [ "la-vs-ss", "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

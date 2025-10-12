@@ -95,7 +95,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss", "la-vs-bd", "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
@@ -123,7 +123,7 @@
 		},
 		"16": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-ans" }
 			]

@@ -98,14 +98,14 @@
 		},
 		"21-25": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "21-25-ans" }
 			]
 		},
 		"26-30": {
 			"answerLatex": "",
-			"tags": [ "la-ips-p", "la-vs" ],
+			"tags": [ "la-ips-p", "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
 			]
@@ -133,14 +133,14 @@
 		},
 		"38": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "38-ans" }
 			]
 		},
 		"39": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "39-ans" }
 			]

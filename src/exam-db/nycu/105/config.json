@@ -11,28 +11,28 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
@@ -46,7 +46,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "la-vs", "la-ev", "la-m-oum", "la-m-shm", "la-ev-d" ],
+			"tags": [ "la-vs-ss", "la-ev", "la-m-oum", "la-m-shm", "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
