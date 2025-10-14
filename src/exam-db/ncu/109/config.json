@@ -1,0 +1,135 @@
+{
+	"subjectCode": "科目代號",
+	"subjectName": "科目全名",
+	"subjectShortName": "科目縮寫",
+	"department": "系所名稱",
+	"externalLink": "題本來源連結",
+	"externalLinkTip": "題本來源連結的提示",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-group-1", "1-10", "11-15", "16-20", "21-25", "26-30", "-group-2", "31-35", "36-40",
+		"-group-3", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50"
+	],
+	"problemConfigs": {
+		"1-10": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-10-ans" }
+			]
+		},
+		"11-15": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-15-ans" }
+			]
+		},
+		"16-20": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "16-20-ans" }
+			]
+		},
+		"21-25": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "21-25-ans" }
+			]
+		},
+		"26-30": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "26-30-ans" }
+			]
+		},
+		"31-35": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "31-35-ans" }
+			]
+		},
+		"36-40": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "36-40-ans" }
+			]
+		},
+		"41": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "41-ans" }
+			]
+		},
+		"42": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "42-ans" }
+			]
+		},
+		"43": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "43-ans" }
+			]
+		},
+		"44": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "44-ans" }
+			]
+		},
+		"45": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "45-ans" }
+			]
+		},
+		"46": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "46-ans" }
+			]
+		},
+		"47": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "47-ans" }
+			]
+		},
+		"48": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "48-ans" }
+			]
+		},
+		"49": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "49-ans" }
+			]
+		},
+		"50": {
+			"answerLatex": "",
+			"tags": [ "?" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "50-ans" }
+			]
+		}
+	}
+}
