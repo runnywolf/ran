@@ -85,6 +85,7 @@
 		"11-15": {
 			"answerLatex": "",
 			"tags": [ "la-ev-d", "la-ips-qrd", "la-m-cd" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-15-ans" }
 			]
@@ -92,6 +93,7 @@
 		"16-20": {
 			"answerLatex": "",
 			"tags": [ "la-ev-d" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-20-ans" }
 			]
@@ -99,6 +101,7 @@
 		"21-25": {
 			"answerLatex": "",
 			"tags": [ "la-vs-cb" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "21-25-ans" }
 			]
@@ -106,6 +109,7 @@
 		"26-30": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p", "la-vs-ss" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
 			]
@@ -113,6 +117,7 @@
 		"31-35": {
 			"answerLatex": "",
 			"tags": [ "la-ev" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "31-35-ans" }
 			]

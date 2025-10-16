@@ -94,25 +94,39 @@ const emit = defineEmits([
 	"click-reset-button" // 按下 "重設計時器" 的按鈕會觸發
 ]);
 
-const getTextWidth = (text) => { // 計算題號的寬度, 用於向右修正 (by gpt-4.1-mini)
-	const canvas = document.createElement('canvas');
-	const ctx = canvas.getContext('2d');
+function getTextWidth(text) { // 計算題號的寬度, 用於向右修正 (by gpt-4.1-mini)
+	const canvas = document.createElement("canvas");
+	const ctx = canvas.getContext("2d");
 	ctx.font = '16px "Times New Roman", Times, serif';
 	return ctx.measureText(text).width;
-};
+}
+
+function insertCss(sheet, cssStr) { // 將一個樣式字串插入到 style 區塊
+	sheet.insertRule(cssStr, sheet.cssRules.length); // [bug] fuck safari
+}
+
+function addProblemNoStyle(sheet, no) { // 將題號的樣式插入到 style
+	const problemNoText = `${no}. `;
+	const problemNoPaddingLeft = getTextWidth(problemNoText) + 5;
+	insertCss(sheet, `.problem-no-${no} > li::marker { content: "${problemNoText}" }`); // 將自訂的題號 marker 加入到 <style>
+	insertCss(sheet, `.problem-no-${no} { padding-left: ${problemNoPaddingLeft}px }`); // 因為 li 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
+}
+
+function addEmptyNoStyle(sheet, no) { // 不顯示題號, 需要在 problem config 內加上 "hideProblemNo": true
+	insertCss(sheet, `.problem-no-${no} > li::marker { content: none }`);
+	insertCss(sheet, `.problem-no-${no} { padding-left: 0px }`);
+}
 
 watch(() => props.examConfig.sectionFileBaseNames, baseNames => {
 	if (!baseNames) return;
 	
 	const problemNoStyle = document.createElement("style"); // 用 js 建立一個用於顯示 marker 題號的 style 區塊 (因為 vue 不允許動態修改 marker)
 	document.head.appendChild(problemNoStyle); // 插入至 <head>
-	
 	const sheet = problemNoStyle.sheet;
-	const insertCss = (css) => sheet.insertRule(css, sheet.cssRules.length); // [bug] fuck safari
+	
 	baseNames.filter(name => name[0] !== "-").map(name => { // 非說明區塊才有題號
-		const problemNoPaddingLeft = getTextWidth(name + ". ") + 5;
-		insertCss(`.problem-no-${name} > li::marker { content: "${name}. " }`); // 將自訂的題號 marker 加入到 <style>
-		insertCss(`.problem-no-${name} { padding-left: ${problemNoPaddingLeft}px }`); // 因為 li 的編號文字是右側對齊的, 需要向右偏移 (加上 padding-left)
+		if (props.examConfig.problemConfigs[name].hideProblemNo) addEmptyNoStyle(sheet, name); // 不顯示題號
+		else addProblemNoStyle(sheet, name);
 	});
 });
 </script>

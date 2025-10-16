@@ -15,6 +15,7 @@
 		"1-10": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-10-ans" }
 			]
@@ -22,6 +23,7 @@
 		"11-15": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-15-ans" }
 			]
@@ -29,6 +31,7 @@
 		"16-20": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-20-ans" }
 			]
@@ -36,6 +39,7 @@
 		"21-25": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "21-25-ans" }
 			]
@@ -43,6 +47,7 @@
 		"26-30": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
 			]
@@ -50,6 +55,7 @@
 		"31-35": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "31-35-ans" }
 			]
@@ -57,6 +63,7 @@
 		"36-40": {
 			"answerLatex": "",
 			"tags": [ "?" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "36-40-ans" }
 			]

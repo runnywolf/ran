@@ -57,3 +57,5 @@ https://katex.org/docs/supported.html
 - 盡量避免 [vector]^T, 請用矩陣語法表示向量
 - 記得加句點, 開頭大寫.
 - 單行不超過 120 字元為佳
+
+如果不想顯示題號, 可以在 problem config 內加上 "hideProblemNo": true
