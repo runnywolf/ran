@@ -7,9 +7,6 @@
 <!-- 控制配分顯示與否 -->
 <span class="problem-score"></span>
 
-<!-- 普通中文字 -->
-<span style="font-size: 16px;">普通中文字</span>
-
 <!-- tocas ui -->
 https://tocas-ui.com/5.0/zh-tw/getting-started.html
 

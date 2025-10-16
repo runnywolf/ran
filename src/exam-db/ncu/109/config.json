@@ -1,10 +1,10 @@
 {
-	"subjectCode": "科目代號",
-	"subjectName": "科目全名",
-	"subjectShortName": "科目縮寫",
-	"department": "系所名稱",
-	"externalLink": "題本來源連結",
-	"externalLinkTip": "題本來源連結的提示",
+	"subjectCode": "?",
+	"subjectName": "離散數學與線性代數",
+	"subjectShortName": "離散與線代",
+	"department": "資工類聯合招生",
+	"externalLink": "https://rapid.lib.ncu.edu.tw/cexamn/exam/EC02_109_03.pdf",
+	"externalLinkTip": "國立中央大學圖書館 考古題",
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
 	"sectionFileBaseNames": [
@@ -14,7 +14,7 @@
 	"problemConfigs": {
 		"1-10": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-m", "la-m-shm", "la-m-im", "la-m-d" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-10-ans" }
@@ -22,7 +22,7 @@
 		},
 		"11-15": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-vs-ss" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-15-ans" }
@@ -30,7 +30,7 @@
 		},
 		"16-20": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-vs-cb" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-20-ans" }
@@ -38,7 +38,7 @@
 		},
 		"21-25": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-ev-d" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "21-25-ans" }
@@ -46,7 +46,7 @@
 		},
 		"26-30": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-vs-ss" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
@@ -54,7 +54,7 @@
 		},
 		"31-35": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-vs-cb" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "31-35-ans" }
@@ -62,7 +62,7 @@
 		},
 		"36-40": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "la-ips-qrd" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "36-40-ans" }
@@ -70,70 +70,70 @@
 		},
 		"41": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "41-ans" }
 			]
 		},
 		"42": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "42-ans" }
 			]
 		},
 		"43": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "43-ans" }
 			]
 		},
 		"44": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "44-ans" }
 			]
 		},
 		"45": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-gt-gi" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "45-ans" }
 			]
 		},
 		"46": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "46-ans" }
 			]
 		},
 		"47": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-as" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "47-ans" }
 			]
 		},
 		"48": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "ag" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "48-ans" }
 			]
 		},
 		"49": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-c-rr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "49-ans" }
 			]
 		},
 		"50": {
 			"answerLatex": "",
-			"tags": [ "?" ],
+			"tags": [ "dm-gt", "dm-c-pp", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "50-ans" }
 			]

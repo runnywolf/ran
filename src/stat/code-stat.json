@@ -7,8 +7,8 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2533,
-			"sizeByte": 114004
+			"line": 2544,
+			"sizeByte": 114604
 		},
 		"js": {
 			"number": 8,
@@ -28,14 +28,14 @@
 	},
 	"exam": {
 		"json": {
-			"number": 37,
-			"line": 3552,
-			"sizeByte": 89199
+			"number": 38,
+			"line": 3700,
+			"sizeByte": 92725
 		},
 		"vue": {
-			"number": 896,
-			"line": 12317,
-			"sizeByte": 430262
+			"number": 934,
+			"line": 12645,
+			"sizeByte": 443325
 		},
 		"webp": {
 			"number": 62,
@@ -75,8 +75,8 @@
 	"tool": {
 		"vue": {
 			"number": 3,
-			"line": 61,
-			"sizeByte": 2454
+			"line": 60,
+			"sizeByte": 2457
 		},
 		"json": {
 			"number": 1,
