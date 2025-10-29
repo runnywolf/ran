@@ -1,17 +1,13 @@
 <template>
 	<MakeProblem listEndLabel="E">
 		<template #problem>
-			8. For integers $i$ and $j$ define $i \sim j$ if $2a + 3b = 5n$ for some integer $n$. What of the following claims about relation “$\sim$” are true?
-			A. $\sim$ is not reflexive.
-			B. $\sim$ is not symmetric.
-			C. $\sim$ is not transitive.
-			D. $\sim$ is an equivalence relation.
-			E. $\sim$ is a partial order.
+			For integers $i$ and $j$ define $i \sim j$ if $2a + 3b = 5n$ for some integer $n$.
+			What of the following claims about relation “$\sim$” are true?
 		</template>
-		<template #A></template>
-		<template #B></template>
-		<template #C></template>
-		<template #D></template>
-		<template #E></template>
+		<template #A>$\sim$ is not reflexive.</template>
+		<template #B>$\sim$ is not symmetric.</template>
+		<template #C>$\sim$ is not transitive.</template>
+		<template #D>$\sim$ is an equivalence relation.</template>
+		<template #E>$\sim$ is a partial order.</template>
 	</MakeProblem>
 </template>

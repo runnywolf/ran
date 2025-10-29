@@ -1,10 +1,10 @@
 {
-	"subjectCode": "科目代號",
-	"subjectName": "科目全名",
-	"subjectShortName": "科目縮寫",
-	"department": "系所名稱",
-	"externalLink": "題本來源連結",
-	"externalLinkTip": "題本來源連結的提示",
+	"subjectCode": "?",
+	"subjectName": "離散數學與線性代數",
+	"subjectShortName": "離散與線代",
+	"department": "資工類聯合招生",
+	"externalLink": "https://rapid.lib.ncu.edu.tw/cexamn/exam/EC02_108_03.pdf",
+	"externalLinkTip": "國立中央大學圖書館 考古題",
 	"timeMinutes": 100,
 	"isAnswerComplete": false,
 	"sectionFileBaseNames": [
