@@ -41,7 +41,7 @@ outline: [2, 3] # 顯示 h2, h3
 	<template #E>4</template>
 </MakeProblem>
 ```
-<img src="./img/make-problem-example.png" width="50%">
+<img src="./img/make-problem-example.webp" width="50%">
 
 ## 範例 2
 ```html
@@ -54,7 +54,7 @@ outline: [2, 3] # 顯示 h2, h3
 	<template #C>2</template>
 </MakeProblem>
 ```
-<img src="./img/make-problem-example-2.png" width="20%">
+<img src="./img/make-problem-example-2.webp" width="20%">
 
 ## 組件參數
 | `props.` | Type | Default | Description |

@@ -211,14 +211,14 @@ src/exam-db/ncu/108
 添加 `{ "type": "answer", "id": "<檔名>", "suffix": "<後綴>" }` 至 `contentConfigs`。
 
 `suffix` 不是必填，效果如下：( 沒有 `suffix` 就只會顯示「詳解」兩字 )
-<img src="./img/answer-content.png" width="40%">
+<img src="./img/answer-content.webp" width="40%">
 
 #### 預設類型的內容區塊
 生成一個灰色的內容區塊。
 
 添加 `{ "type": "default", "id": "<檔名>" }` 至 `contentConfigs`。
 
-<img src="./img/default-content.png" width="60%">
+<img src="./img/default-content.webp" width="60%">
 
 ## 4. 資料庫設定檔 (db config)
 雖然題本檔案已經建構完成了，但需要將題本註冊到 `src/exam-db/config.json`。
@@ -254,7 +254,7 @@ src/exam-db/ncu/108
 
 #### 實際效果
 其中 `uniList` 的排列順序會影響題本選單頁面內，表格橫軸的學校順序：
-![](./img/uni-table.png)
+![](./img/uni-table.webp)
 
 中文縮寫被 hover 時，會顯示學校中文全名。
 

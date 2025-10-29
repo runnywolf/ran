@@ -28,14 +28,14 @@
 	},
 	"exam": {
 		"json": {
-			"number": 38,
-			"line": 3700,
-			"sizeByte": 92725
+			"number": 39,
+			"line": 3856,
+			"sizeByte": 96099
 		},
 		"vue": {
-			"number": 934,
-			"line": 12645,
-			"sizeByte": 443325
+			"number": 979,
+			"line": 13120,
+			"sizeByte": 458769
 		},
 		"webp": {
 			"number": 62,
@@ -57,36 +57,21 @@
 	},
 	"docs": {
 		"md": {
-			"number": 34,
-			"line": 3339,
-			"sizeByte": 122028
-		},
-		"png": {
-			"number": 9,
-			"line": 0,
-			"sizeByte": 279326
+			"number": 35,
+			"line": 3418,
+			"sizeByte": 127002
 		},
 		"webp": {
-			"number": 3,
+			"number": 9,
 			"line": 0,
-			"sizeByte": 57246
+			"sizeByte": 97282
 		}
 	},
 	"tool": {
-		"vue": {
-			"number": 3,
-			"line": 60,
-			"sizeByte": 2457
-		},
-		"json": {
-			"number": 1,
-			"line": 12,
-			"sizeByte": 338
-		},
 		"py": {
 			"number": 2,
-			"line": 165,
-			"sizeByte": 10521
+			"line": 210,
+			"sizeByte": 12424
 		},
 		"txt": {
 			"number": 1,
