@@ -104,7 +104,7 @@ def createAnswerVueFile(sectionName: str) -> None:
 		"</template>"
 	]
 	
-	with open(EXAM_PATH/"contents"/f"{sectionName}.vue", "w", encoding="utf-8") as f: # 新增 vue 檔
+	with open(EXAM_PATH/"contents"/f"{sectionName}-ans.vue", "w", encoding="utf-8") as f: # 新增 vue 檔
 		f.write("\n".join(textArr) + "\n")
 
 def createAllVueFile( # 建立所有區塊 vue 檔 (sections 資料夾下)

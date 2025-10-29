@@ -10,9 +10,13 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 		config: (md) => { md.use(markdownItKatex); }
 	},
 	themeConfig: { // docs 的樣式, 範例 -> https://vitepress.dev/reference/default-theme-config
+		outline: {
+			level: [2, 3], // 顯示 h2, h3
+		},
 		nav: [
 			{ text: "首頁", link: "/" },
 			{ text: "介紹", link: "/intro/exam-page" },
+			{ text: "新增題本", link: "/add-exam/create" },
 			{ text: "模擬室頁面", link: "/practice-page/recur-view" },
 			{ text: "組件", link: "/components/content" },
 			{ text: "函式庫", link: "/libs/toast" },
@@ -28,6 +32,14 @@ export default defineConfig({ // https://vitepress.dev/reference/site-config
 					{ text: "模擬室頁面", link: "/intro/practice-page" },
 					{ text: "其他頁面", link: "/intro/other-page" },
 					{ text: "架構", link: "/intro/arch" },
+				]
+			},
+			{
+				text: "Add Exam - 新增題本",
+				collapsed: true,
+				items: [
+					{ text: "建立題本", link: "/add-exam/create" },
+					{ text: "標籤樹", link: "/add-exam/tag-tree" },
 				]
 			},
 			{
