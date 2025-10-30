@@ -30,17 +30,17 @@
 		"json": {
 			"number": 39,
 			"line": 3856,
-			"sizeByte": 96099
+			"sizeByte": 96356
 		},
 		"vue": {
 			"number": 979,
-			"line": 13120,
-			"sizeByte": 458769
+			"line": 13069,
+			"sizeByte": 458282
 		},
 		"webp": {
-			"number": 62,
+			"number": 63,
 			"line": 0,
-			"sizeByte": 514410
+			"sizeByte": 521454
 		}
 	},
 	"test": {

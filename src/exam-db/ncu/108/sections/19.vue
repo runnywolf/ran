@@ -1,17 +1,12 @@
 <template>
 	<MakeProblem listEndLabel="E">
 		<template #problem>
-			19. What are the necessary conditions for a matrix can be Cholesky factorization.
-			A. square matrix.
-			B. linearly independent columns.
-			C. enough linearly independent eigenvectors.
-			D. all eigenvalues are positive.
-			E. symmetric matrix.
+			What are the necessary conditions for a matrix can be Cholesky factorization.
 		</template>
-		<template #A></template>
-		<template #B></template>
-		<template #C></template>
-		<template #D></template>
-		<template #E></template>
+		<template #A>square matrix.</template>
+		<template #B>linearly independent columns.</template>
+		<template #C>enough linearly independent eigenvectors.</template>
+		<template #D>all eigenvalues are positive.</template>
+		<template #E>symmetric matrix.</template>
 	</MakeProblem>
 </template>
