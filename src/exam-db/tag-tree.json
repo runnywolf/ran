@@ -81,6 +81,11 @@
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},
-	"ag": { "en": "Algorithm", "zhtw": "演算法" },
+	"ag": {
+		"en": "Algorithm", "zhtw": "演算法",
+		"children": {
+			"tc": { "en": "Time complexity", "zhtw": "時間複雜度" }
+		}
+	},
 	"?": { "en": "?", "zhtw": "待分類" }
 }

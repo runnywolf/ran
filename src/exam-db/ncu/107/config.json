@@ -49,14 +49,14 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-st", "dm-st-br", "dm-gt-gi", "ag" ],
+			"tags": [ "dm-st", "dm-st-br", "dm-gt-gi", "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

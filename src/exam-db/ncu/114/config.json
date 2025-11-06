@@ -107,7 +107,7 @@
 		},
 		"14": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "14-ans" }
 			]

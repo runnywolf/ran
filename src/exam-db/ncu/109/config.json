@@ -119,7 +119,7 @@
 		},
 		"48": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "48-ans" }
 			]

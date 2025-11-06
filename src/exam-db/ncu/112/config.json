@@ -46,7 +46,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt-ehg", "ag", "dm-st-br", "dm-st", "dm-fl" ],
+			"tags": [ "dm-gt-ehg", "ag-tc", "dm-st-br", "dm-st", "dm-fl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -60,14 +60,14 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
