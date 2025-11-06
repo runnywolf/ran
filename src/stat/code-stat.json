@@ -22,25 +22,25 @@
 		},
 		"css": {
 			"number": 4,
-			"line": 111,
-			"sizeByte": 3614
+			"line": 114,
+			"sizeByte": 3682
 		}
 	},
 	"exam": {
 		"json": {
-			"number": 39,
-			"line": 3856,
-			"sizeByte": 96356
+			"number": 40,
+			"line": 4012,
+			"sizeByte": 99977
 		},
 		"vue": {
-			"number": 979,
-			"line": 13069,
-			"sizeByte": 458282
+			"number": 1022,
+			"line": 13514,
+			"sizeByte": 474624
 		},
 		"webp": {
-			"number": 63,
+			"number": 64,
 			"line": 0,
-			"sizeByte": 521454
+			"sizeByte": 527036
 		}
 	},
 	"test": {
