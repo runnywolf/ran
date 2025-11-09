@@ -49,7 +49,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-gt" ],
+			"tags": [ "dm-st-br", "dm-gt-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-ehg", "dm-gt-bg", "dm-gt-c", "dm-gt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

@@ -30,7 +30,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-gt", "dm-gt-ehg" ],
+			"tags": [ "dm-gt-c", "dm-gt", "dm-st-br", "dm-gt-ehg" ],
 			"contentConfigs": [
 				{ "type": "default", "fileBaseName": "1-4-prob-set" },
 				{ "type": "answer", "fileBaseName": "3-ans" }
@@ -53,7 +53,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-gt", "dm-st-br" ],
+			"tags": [ "dm-gt-c", "dm-gt", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

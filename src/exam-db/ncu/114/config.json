@@ -142,7 +142,7 @@
 		},
 		"19": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "19-ans" }
 			]

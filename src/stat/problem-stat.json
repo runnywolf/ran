@@ -220,29 +220,41 @@
 			"ncku": 6,
 			"ncu": 25
 		},
-		"dm-gt-ehg": {
-			"ntu": 4,
-			"nycu": 3,
+		"dm-gt-c": {
+			"ntu": 0,
+			"nycu": 0,
 			"ncku": 0,
-			"ncu": 6
+			"ncu": 7
 		},
 		"dm-gt-pg": {
 			"ntu": 0,
 			"nycu": 3,
 			"ncku": 0,
-			"ncu": 2
+			"ncu": 3
 		},
-		"dm-gt-gc": {
-			"ntu": 1,
-			"nycu": 1,
-			"ncku": 1,
-			"ncu": 0
+		"dm-gt-bg": {
+			"ntu": 2,
+			"nycu": 2,
+			"ncku": 0,
+			"ncu": 1
+		},
+		"dm-gt-ehg": {
+			"ntu": 4,
+			"nycu": 3,
+			"ncku": 0,
+			"ncu": 7
 		},
 		"dm-gt-gi": {
 			"ntu": 0,
 			"nycu": 4,
 			"ncku": 0,
 			"ncu": 5
+		},
+		"dm-gt-gc": {
+			"ntu": 1,
+			"nycu": 1,
+			"ncku": 1,
+			"ncu": 0
 		},
 		"dm-gt-t": {
 			"ntu": 1,

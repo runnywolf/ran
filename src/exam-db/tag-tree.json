@@ -67,10 +67,12 @@
 			"gt": {
 				"en": "Graph theory", "zhtw": "圖論",
 				"children": {
-					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
+					"c": { "en": "Connectivity", "zhtw": "連通性" },
 					"pg": { "en": "Planar graph", "zhtw": "平面圖" },
-					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
+					"bg": { "en": "Bipartite graph", "zhtw": "二分圖" },
+					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
 					"gi": { "en": "Graph isomorphism", "zhtw": "圖同構問題" },
+					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
 					"t": { "en": "Tree", "zhtw": "樹" }
 				}
 			},

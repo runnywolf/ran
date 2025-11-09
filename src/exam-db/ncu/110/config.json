@@ -42,14 +42,14 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt", "dm-gt-ehg" ],
+			"tags": [ "dm-gt-c", "dm-gt-ehg", "dm-gt-pg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-gt" ],
+			"tags": [ "dm-st-br", "dm-gt-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
