@@ -60,6 +60,7 @@
 			"st": {
 				"en": "Set theory", "zhtw": "集合論",
 				"children": {
+					"c": { "en": "Countability", "zhtw": "可數 & 不可數" },
 					"f": { "en": "Function", "zhtw": "函數" },
 					"br": { "en": "Binary relation", "zhtw": "二元關係" }
 				}

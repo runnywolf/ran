@@ -84,7 +84,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

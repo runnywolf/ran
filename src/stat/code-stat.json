@@ -29,13 +29,13 @@
 	"exam": {
 		"json": {
 			"number": 42,
-			"line": 4339,
-			"sizeByte": 107834
+			"line": 4340,
+			"sizeByte": 107933
 		},
 		"vue": {
 			"number": 1106,
 			"line": 14364,
-			"sizeByte": 505396
+			"sizeByte": 505372
 		},
 		"webp": {
 			"number": 65,

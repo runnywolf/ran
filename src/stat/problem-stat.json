@@ -202,11 +202,17 @@
 			"ncku": 7,
 			"ncu": 37
 		},
+		"dm-st-c": {
+			"ntu": 0,
+			"nycu": 1,
+			"ncku": 1,
+			"ncu": 2
+		},
 		"dm-st-f": {
 			"ntu": 4,
 			"nycu": 2,
 			"ncku": 2,
-			"ncu": 10
+			"ncu": 13
 		},
 		"dm-st-br": {
 			"ntu": 5,
