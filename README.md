@@ -1,5 +1,5 @@
 # 🦊 Ran
-![](https://img.shields.io/badge/Ran-v0.5.2-55f?style=flat)
+![](https://img.shields.io/badge/Ran-v0.5.3-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.3-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -40,7 +40,7 @@
 - 台大 114~105 (108\~ 無詳解)
 - 交大 114~105 (112\~ 無詳解)
 - 成大 114~105 (無詳解)
-- 中央 114~110 (無詳解)
+- 中央 114~105 (無詳解)
 
 ## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
