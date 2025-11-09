@@ -28,19 +28,19 @@
 	},
 	"exam": {
 		"json": {
-			"number": 40,
-			"line": 4017,
-			"sizeByte": 100106
+			"number": 42,
+			"line": 4329,
+			"sizeByte": 107208
 		},
 		"vue": {
-			"number": 1022,
-			"line": 13514,
-			"sizeByte": 474624
+			"number": 1106,
+			"line": 14364,
+			"sizeByte": 505396
 		},
 		"webp": {
-			"number": 64,
+			"number": 65,
 			"line": 0,
-			"sizeByte": 527036
+			"sizeByte": 530348
 		}
 	},
 	"test": {

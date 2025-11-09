@@ -1,0 +1,156 @@
+{
+	"subjectCode": "?",
+	"subjectName": "離散數學與線性代數",
+	"subjectShortName": "離散與線代",
+	"department": "資工類聯合招生",
+	"externalLink": "https://rapid.lib.ncu.edu.tw/cexamn/exam/EC02_105_03.pdf",
+	"externalLinkTip": "國立中央大學圖書館 考古題",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-before-1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+		"-before-11", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
+	],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "dm-ba" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "dm-st-f" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "dm-gt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "dm-fl" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "ag-tc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "dm-fl", "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"tags": [ "dm-fl" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "",
+			"tags": [ "dm-c-rr", "dm-c-gf" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		},
+		"11": {
+			"answerLatex": "",
+			"tags": [ "la-vs-ss" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "11-ans" }
+			]
+		},
+		"12": {
+			"answerLatex": "",
+			"tags": [ "la-vs-ss" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "12-ans" }
+			]
+		},
+		"13": {
+			"answerLatex": "",
+			"tags": [ "la-vs-cb" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "13-ans" }
+			]
+		},
+		"14": {
+			"answerLatex": "",
+			"tags": [ "la-m-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "14-ans" }
+			]
+		},
+		"15": {
+			"answerLatex": "",
+			"tags": [ "la-m" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "15-ans" }
+			]
+		},
+		"16": {
+			"answerLatex": "",
+			"tags": [ "la-ev" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "16-ans" }
+			]
+		},
+		"17": {
+			"answerLatex": "",
+			"tags": [ "la-vs-ss" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "17-ans" }
+			]
+		},
+		"18": {
+			"answerLatex": "",
+			"tags": [ "la-ev", "la-ev-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "18-ans" }
+			]
+		},
+		"19": {
+			"answerLatex": "",
+			"tags": [ "la-ips-p", "la-ips-qrd" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "19-ans" }
+			]
+		},
+		"20": {
+			"answerLatex": "",
+			"tags": [ "la-ips-svd" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "20-ans" }
+			]
+		}
+	}
+}
