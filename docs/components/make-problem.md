@@ -15,7 +15,7 @@ outline: [2, 3] # 顯示 h2, h3
 
 > [!NOTE]
 > 本組件會自動生成 `span.problem-score` 包裹配分，<br>
-> 符合 [新增題本 Step 4-3](../exam-page/create-exam#step-4-3-編寫題目) 的規範。
+> 符合 [建立題本 5-2](../add-exam/create#_5-2-注意事項) 的規範。
 
 ## 範例 1
 ```html
