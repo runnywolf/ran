@@ -67,7 +67,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-fl", "dm-st-f" ],
+			"tags": [ "dm-l-ppl", "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

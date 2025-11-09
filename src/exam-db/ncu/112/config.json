@@ -46,7 +46,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt-ehg", "ag-tc", "dm-st-br", "dm-st", "dm-fl" ],
+			"tags": [ "dm-gt-ehg", "ag-tc", "dm-st-br", "dm-st", "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

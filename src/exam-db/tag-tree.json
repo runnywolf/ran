@@ -74,10 +74,18 @@
 					"t": { "en": "Tree", "zhtw": "樹" }
 				}
 			},
+			"l": {
+				"en": "Logic", "zhtw": "邏輯",
+				"children": {
+					"ppl": { "en": "Propositional logic", "zhtw": "命題邏輯" },
+					"pdl": { "en": "Predicate logic", "zhtw": "謂詞邏輯" },
+					"lr": { "en": "Logical reasoning", "zhtw": "邏輯推理" },
+					"c": { "en": "Completeness", "zhtw": "完備性" }
+				}
+			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
 			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
-			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},

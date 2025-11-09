@@ -28,7 +28,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

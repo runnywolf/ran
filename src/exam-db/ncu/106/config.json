@@ -14,7 +14,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -56,7 +56,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -77,7 +77,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "dm-st", "dm-fl", "dm-gt" ],
+			"tags": [ "dm-st", "dm-gt-gi", "dm-l-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

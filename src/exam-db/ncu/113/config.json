@@ -140,7 +140,7 @@
 		},
 		"19": {
 			"answerLatex": "",
-			"tags": [ "dm-nt", "dm-gt-ehg", "dm-st-br", "dm-st-f", "dm-fl" ],
+			"tags": [ "dm-nt", "dm-gt-ehg", "dm-st-br", "dm-st-f", "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "19-ans" }
 			]

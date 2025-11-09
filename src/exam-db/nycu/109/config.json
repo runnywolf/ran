@@ -40,7 +40,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-nt", "dm-fl" ],
+			"tags": [ "dm-nt", "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

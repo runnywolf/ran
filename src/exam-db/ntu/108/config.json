@@ -58,7 +58,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

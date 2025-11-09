@@ -49,7 +49,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-st-br", "dm-gt-gi", "dm-st-f", "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -63,14 +63,14 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "dm-fl", "dm-c-pc" ],
+			"tags": [ "dm-l-ppl", "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
