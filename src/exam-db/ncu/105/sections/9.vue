@@ -3,7 +3,7 @@
 		<template #problem>
 			The predicate $G(x, y)$ means student $x$ and $y$ have the same grade.
 			What can be the correct English statements for the logic expression
-			$$“~ \exists x, y, \forall z, (x \neq y) \land G(x, y) \land (G(x, z) \to (x = y) \lor (x = z)) ~”$$
+			$$\text{“}~ \exists x, y, \forall z, (x \neq y) \land G(x, y) \land (G(x, z) \to (x = y) \lor (x = z)) ~\text{”}$$
 		</template>
 		<template #a>Some student has the same grade with exactly one other student.</template>
 		<template #b>
