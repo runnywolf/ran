@@ -14,14 +14,14 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -42,21 +42,21 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt", "dm-gt-ehg" ],
+			"tags": [ "dm-gt-c", "dm-gt-ehg", "dm-gt-pg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-gt" ],
+			"tags": [ "dm-st-br", "dm-gt-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st", "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -70,7 +70,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
@@ -85,6 +85,7 @@
 		"11-15": {
 			"answerLatex": "",
 			"tags": [ "la-ev-d", "la-ips-qrd", "la-m-cd" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-15-ans" }
 			]
@@ -92,20 +93,23 @@
 		"16-20": {
 			"answerLatex": "",
 			"tags": [ "la-ev-d" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-20-ans" }
 			]
 		},
 		"21-25": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "21-25-ans" }
 			]
 		},
 		"26-30": {
 			"answerLatex": "",
-			"tags": [ "la-ips-p", "la-vs" ],
+			"tags": [ "la-ips-p", "la-vs-ss" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
 			]
@@ -113,6 +117,7 @@
 		"31-35": {
 			"answerLatex": "",
 			"tags": [ "la-ev" ],
+			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "31-35-ans" }
 			]
@@ -133,14 +138,14 @@
 		},
 		"38": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "38-ans" }
 			]
 		},
 		"39": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "39-ans" }
 			]

@@ -55,7 +55,7 @@
 		},
 		"7": {
 			"answerLatex": "\\text{B}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -76,7 +76,7 @@
 		},
 		"10": {
 			"answerLatex": "\\text{ABE}",
-			"tags": [ "la-vs", "la-m-oum", "la-ev-d", "la-ev", "la-ips-dm" ],
+			"tags": [ "la-vs-ss", "la-m-oum", "la-ev-d", "la-ev", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

@@ -14,7 +14,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -56,14 +56,14 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-fl", "dm-st-br" ],
+			"tags": [ "dm-l-pdl", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
@@ -105,7 +105,7 @@
 		},
 		"14": {
 			"answerLatex": "",
-			"tags": [ "la-vs", "la-ips-p" ],
+			"tags": [ "la-m-mro", "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "14-ans" }
 			]
@@ -119,7 +119,7 @@
 		},
 		"16": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-ans" }
 			]
@@ -133,7 +133,7 @@
 		},
 		"18": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "18-ans" }
 			]

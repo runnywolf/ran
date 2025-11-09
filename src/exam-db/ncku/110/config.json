@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-gt-t", "dm-st" ],
+			"tags": [ "dm-gt-t", "dm-st-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -32,7 +32,7 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-ips-p" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

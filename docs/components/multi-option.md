@@ -5,7 +5,7 @@ outline: [2, 3] # 顯示 h2, h3
 # MultiOption - 多選題
 將每個選項的詳解摺疊起來，提升可讀性。
 
-<img src="./img/multi-option.png" width="70%">
+<img src="./img/multi-option.webp" width="70%">
 
 > [!TIP]
 > 組件 `MultiOption` 為全域組件，不須 `import` 即可直接使用。

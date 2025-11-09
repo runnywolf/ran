@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\text{odd} ~~;~~ 2",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-bg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -49,7 +49,7 @@
 				"\\text{(a)}~ 4 ~\\text{or}~ 5",
 				"\\text{(b)}~ 2"
 			],
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-bd", "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -70,14 +70,14 @@
 		},
 		"9": {
 			"answerLatex": "\\text{ac}",
-			"tags": [ "la-m-im", "la-vs", "la-m-shm", "la-ev" ],
+			"tags": [ "la-m-im", "la-vs-ss", "la-m-shm", "la-ev", "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]
 		},
 		"10": {
 			"answerLatex": "\\text{ce}",
-			"tags": [ "la-ev", "la-vs", "la-ev-d", "la-m-d" ],
+			"tags": [ "la-ev", "la", "la-ev-d", "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

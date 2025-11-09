@@ -8,6 +8,9 @@ outline: [2, 3] # 顯示 h2, h3
 不一定要用這個組件編寫題目。
 
 > [!TIP]
+> 本組件已包含 `<vk> ... </vk>` ( 自動渲染 katex )，不需要再額外包一層。
+
+> [!TIP]
 > 組件 `MakeProblem` 為全域組件，不須 `import` 即可直接使用。
 
 > [!NOTE]
@@ -38,7 +41,7 @@ outline: [2, 3] # 顯示 h2, h3
 	<template #E>4</template>
 </MakeProblem>
 ```
-<img src="./img/make-problem-example.png" width="50%">
+<img src="./img/make-problem-example.webp" width="50%">
 
 ## 範例 2
 ```html
@@ -51,13 +54,14 @@ outline: [2, 3] # 顯示 h2, h3
 	<template #C>2</template>
 </MakeProblem>
 ```
-<img src="./img/make-problem-example-2.png" width="20%">
+<img src="./img/make-problem-example-2.webp" width="20%">
 
 ## 組件參數
 | `props.` | Type | Default | Description |
 | :- | :- | :- | :- |
-| `scoreText` | `String` | `null` | 配分字串 |
-| `extraSlotNames` | `Array` | `[]` | 額外的題目區塊名<br>( 會顯示在預設題目區塊下，選項之上 ) |
-| `listEndLabel` | `String` | `null` | 有序列表的最後一個編號，<br>主要用於子題或多選題的選項。<br>接受 `int number`、`[a-z]`、`[A-Z]` 這三種編號的列表。 |
-| `listItemScoreTexts` | `Array` | `[]` | 列表的配分字串 ( 不適用於 span list ) | 
-| `useSpanList` | `Boolean` | `false` | 如果為 `false`，使用 ul 來排版有序清單<br>如果為 `true`，使用 grid 排版<br>( 例如某些選項長度很短的選擇題 ) |
+| `scoreText` | `string` | `null` | 配分字串 |
+| `extraSlotNames` | `array<string>` | `[]` | 額外的題目區塊名<br>( 會顯示在預設題目區塊下，選項之上 ) |
+| `listEndLabel` | `string` | `null` | 有序列表的最後一個編號，<br>主要用於子題或多選題的選項。<br>接受 `int number`、`[a-z]`、`[A-Z]` 這三種編號的列表。 |
+| `listItemScoreTexts` | `array<string>` | `[]` | 列表的配分字串 ( 不適用於 span list ) | 
+| `useSpanList` | `bool` | `false` | 如果為 `false`，使用 ul 來排版有序清單<br>如果為 `true`，使用 grid 排版<br>( 例如某些選項長度很短的選擇題 ) |
+| `spanListTopLabel` | `bool` | `false` | span list 模式下，將選項編號靠上對齊 (推薦用在圖片) |

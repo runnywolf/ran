@@ -10,7 +10,7 @@
 			where $O$ is the origin $(0,0)$.
 			The particle is then reflected and reaches $P_1$ on the unit circle with $\angle OBA = \angle OBP_1$.
 			The particle keeps reflecting and reaches point $P_2$ on the unit circle and so on.
-			The coordinate of $P_{120}$ is $(\frac{1}{2}, -\frac{\sqrt{3}}{2})$.
+			The coordinate of $P_{120}$ is $(@f{1;2}, -@f{\sqrt{3}; 2})$.
 		</template>
 		<template #b>
 			The point $A(0,-1)$ is linearly transformed by $J = @bm{ 1, 2; 2, -1 }$.
@@ -20,7 +20,7 @@
 		</template>
 		<template #c>
 			Following (b), the distance between $Q_{1000}$ and $Q_{1001}$ is $m$.
-			The distance between $Q_{999}$ and $Q_{1000}$ is $n$. $\frac{m}{n} \gt 2.3$.
+			The distance between $Q_{999}$ and $Q_{1000}$ is $n$. $@f{m;n} \gt 2.3$.
 		</template>
 		<template #d>
 			$R_k = @bm{ \cos(k^\circ), -\sin(k^\circ); \sin(k^\circ), \cos(k^\circ) }$,

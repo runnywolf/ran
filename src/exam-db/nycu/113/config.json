@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "\\footnotesize\\text{女護士}",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-lr" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
@@ -32,7 +32,7 @@
 				"\\quad~~ P = \\{ x \\in \\mathbb{Z}^+ \\mid x \\gt 1 ~\\land~ \\forall d \\in \\mathbb{Z}^+ ( x/d*d = x ~\\to~ d = 1 ~\\lor~ d = x ) \\}",
 				"\\text{(b) } 222 \\rule{0em}{1.2em}"
 			],
-			"tags": [ "dm-fl", "dm-c-r" ],
+			"tags": [ "dm-l-pdl", "dm-c-r" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

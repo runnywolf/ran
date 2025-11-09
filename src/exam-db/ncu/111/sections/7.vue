@@ -5,11 +5,11 @@
 			Suppose all following statements are true:
 			$$
 			\begin{gather*}
-			\forall i,~ p(i, i); \\
-			\forall i, j,~ (i \neq j),~ p(i, j) \to \lnot p(j, i); \\
-			\forall i, j, k,~ \big( p(i, j) \land p(j, k) \big) \to p(i, k); \\
-			\forall i, j,~ p(i, j) \lor p(j, i); \\
-			\exists ! \, k,~ \forall i \neq k,~ p(k, i);
+			\forall i,~ P(i, i); \\
+			\forall i, j,~ (i \neq j),~ P(i, j) \to \lnot P(j, i); \\
+			\forall i, j, k,~ \big( P(i, j) \land P(j, k) \big) \to P(i, k); \\
+			\forall i, j,~ P(i, j) \lor P(j, i); \\
+			\exists ! \, k,~ \forall i \neq k,~ P(k, i);
 			\end{gather*}
 			$$
 			($\exists !$ means “exist one and only one”)<br>

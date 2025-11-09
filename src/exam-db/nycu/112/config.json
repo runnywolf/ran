@@ -21,7 +21,7 @@
 		},
 		"1-2": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-2-ans" }
 			]
@@ -70,7 +70,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-fl" ],
+			"tags": [ "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -84,7 +84,7 @@
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]

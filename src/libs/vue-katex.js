@@ -1,5 +1,5 @@
 import katex from "katex"; // KaTex
-import { replaceMacro } from "./katex-macro.js";
+import { replaceMacro } from "./katex-macro.ts";
 
 import "katex/dist/katex.min.css"; // KaTex css
 import "@/styles/vue-katex.css";

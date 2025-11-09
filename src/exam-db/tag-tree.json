@@ -15,7 +15,14 @@
 					"cd": { "en": "Cholesky decomposition", "zhtw": "Cholesky 分解" }
 				}
 			},
-			"vs": { "en": "Vector space", "zhtw": "向量空間" },
+			"vs": {
+				"en": "Vector space", "zhtw": "向量空間",
+				"children": {
+					"bd": { "en": "Basis & Dimension", "zhtw": "基底與維度" },
+					"ss": { "en": "Subspace", "zhtw": "子空間" },
+					"cb": { "en": "Change of basis", "zhtw": "基底變換" }
+				}
+			},
 			"ev": {
 				"en": "Eigenvalues & Eigenvectors", "zhtw": "特徵值與向量",
 				"children": {
@@ -53,6 +60,7 @@
 			"st": {
 				"en": "Set theory", "zhtw": "集合論",
 				"children": {
+					"c": { "en": "Countability", "zhtw": "可數 & 不可數" },
 					"f": { "en": "Function", "zhtw": "函數" },
 					"br": { "en": "Binary relation", "zhtw": "二元關係" }
 				}
@@ -60,20 +68,35 @@
 			"gt": {
 				"en": "Graph theory", "zhtw": "圖論",
 				"children": {
-					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
+					"c": { "en": "Connectivity", "zhtw": "連通性" },
 					"pg": { "en": "Planar graph", "zhtw": "平面圖" },
-					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
+					"bg": { "en": "Bipartite graph", "zhtw": "二分圖" },
+					"ehg": { "en": "Euler & Hamilton graph", "zhtw": "一筆畫問題" },
 					"gi": { "en": "Graph isomorphism", "zhtw": "圖同構問題" },
+					"gc": { "en": "Graph coloring", "zhtw": "圖著色問題" },
 					"t": { "en": "Tree", "zhtw": "樹" }
+				}
+			},
+			"l": {
+				"en": "Logic", "zhtw": "邏輯",
+				"children": {
+					"ppl": { "en": "Propositional logic", "zhtw": "命題邏輯" },
+					"pdl": { "en": "Predicate logic", "zhtw": "謂詞邏輯" },
+					"lr": { "en": "Logical reasoning", "zhtw": "邏輯推理" },
+					"c": { "en": "Completeness", "zhtw": "完備性" }
 				}
 			},
 			"nt": { "en": "Number theory", "zhtw": "數論" },
 			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" },
 			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
-			"fl": { "en": "Formal logic", "zhtw": "形式邏輯" },
 			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},
-	"ag": { "en": "Algorithm", "zhtw": "演算法" },
+	"ag": {
+		"en": "Algorithm", "zhtw": "演算法",
+		"children": {
+			"tc": { "en": "Time complexity", "zhtw": "時間複雜度" }
+		}
+	},
 	"?": { "en": "?", "zhtw": "待分類" }
 }

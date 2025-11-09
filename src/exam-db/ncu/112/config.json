@@ -30,7 +30,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-gt", "dm-gt-ehg" ],
+			"tags": [ "dm-gt-c", "dm-gt", "dm-st-br", "dm-gt-ehg" ],
 			"contentConfigs": [
 				{ "type": "default", "fileBaseName": "1-4-prob-set" },
 				{ "type": "answer", "fileBaseName": "3-ans" }
@@ -46,28 +46,28 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-gt-ehg", "ag", "dm-st-br", "dm-st", "dm-fl" ],
+			"tags": [ "dm-gt-ehg", "ag-tc", "dm-st-br", "dm-st", "dm-l-ppl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-gt", "dm-st-br" ],
+			"tags": [ "dm-gt-c", "dm-gt", "dm-st-br" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
 		},
 		"7": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "ag" ],
+			"tags": [ "ag-tc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
@@ -95,7 +95,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss", "la-vs-bd", "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
@@ -123,7 +123,7 @@
 		},
 		"16": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "16-ans" }
 			]

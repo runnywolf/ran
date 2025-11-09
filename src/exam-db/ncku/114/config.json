@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
@@ -53,7 +53,7 @@
 		},
 		"7": {
 			"answerLatex": "\\text{D}",
-			"tags": [ "la-vs" ],
+			"tags": [ "la-vs-ss", "la-m-oum", "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "7-ans" }
 			]
@@ -67,7 +67,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-ips", "la-ips-p", "la-ips-dm" ],
+			"tags": [ "la-m-oum", "la-ips-p", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

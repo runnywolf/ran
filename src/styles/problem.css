@@ -4,6 +4,9 @@
 .ran-bold { /* 粗體 */
 	font-weight: bold;
 }
+.ran-underline { /* 底線 */
+	border-bottom: 1px solid black;
+}
 
 .hide-problem-score .problem-score { /* 用於控制題目的配分是否要顯示 */
 	display: none;
