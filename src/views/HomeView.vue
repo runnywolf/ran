@@ -4,7 +4,7 @@
 		<!-- 標題 -->
 		<div class="title">
 			<div class="ts-wrap is-center-aligned is-middle-aligned" style="gap: 16px;">
-				<img class="title-logo" src="./ran.png">
+				<img class="title-logo" src="@/assets/ran.png">
 				<span class="ts-text is-bold title-gradient-text" data-tooltip="Yakumo Ran (neta)" data-position="right">
 					Ran
 				</span>

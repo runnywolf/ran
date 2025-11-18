@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
-	{ path: "/", component: () => import("@/views/home-page/HomeView.vue") },
+	{ path: "/", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", component: () => import("@/views/exam-page/ExamMenuView.vue") },
 	{ path: "/exam/:id", component: () => import("@/views/exam-page/ExamView.vue") }, // 題本編號 :id 的格式範例: "ntu-110"
