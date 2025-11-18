@@ -30,12 +30,12 @@
 		"json": {
 			"number": 42,
 			"line": 4340,
-			"sizeByte": 107933
+			"sizeByte": 107972
 		},
 		"vue": {
 			"number": 1106,
-			"line": 14364,
-			"sizeByte": 505372
+			"line": 14430,
+			"sizeByte": 508627
 		},
 		"webp": {
 			"number": 65,
@@ -59,7 +59,7 @@
 		"md": {
 			"number": 35,
 			"line": 3418,
-			"sizeByte": 127002
+			"sizeByte": 126987
 		},
 		"webp": {
 			"number": 9,

@@ -76,7 +76,7 @@
 			]
 		},
 		"10": {
-			"answerLatex": "",
+			"answerLatex": "\\text{BC}",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }

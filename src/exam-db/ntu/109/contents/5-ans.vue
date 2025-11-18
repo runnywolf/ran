@@ -1,15 +1,11 @@
 <template>
 	<vk>
 		注意：
-		$$\sum\limits_{n=0}^{\infty} (kx)^n = \frac{1}{1-kx}$$
-		$$
-		\frac{d}{dx} \left( \sum\limits_{n=0}^{\infty} (kx)^n \right)
-		= k \sum\limits_{n=1}^{\infty} n(kx)^{n-1} = \frac{k}{(1-kx)^2}
-		$$
-		$$
-		\sum\limits_{n=0}^{\infty} nx^n = \sum\limits_{n=1}^{\infty} nx^n = x \sum\limits_{n=1}^{\infty} nx^{n-1}
-		= x \cdot \frac{1}{(1-x)^2}
-		$$
+		$$ \sum\limits_{n=0}^{\infty} (kx)^n = @f{1; 1-kx} $$
+		$$ @f{d;dx} @(){ \sum\limits_{n=0}^{\infty} (kx)^n } = @f{d;dx} @(){ @f{1; 1-kx} }
+		~~\implies~~ k \sum\limits_{n=1}^{\infty} n(kx)^{n-1} = @f{k; (1-kx)^2} $$
+		$$ \sum\limits_{n=0}^{\infty} n(kx)^n = \sum\limits_{n=1}^{\infty} n(kx)^n
+		= kx \sum\limits_{n=1}^{\infty} n(kx)^{n-1} = @f{kx; (1-kx)^2} $$
 		可以根據<RanLink to="#/exam/ntu-109/4" newTab>上一題</RanLink>的一般項，繼續推導出生成函數的部分分式分解：
 		$$
 		\begin{split}
