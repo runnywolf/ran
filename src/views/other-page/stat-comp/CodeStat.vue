@@ -106,28 +106,14 @@ const rowStats = [ // 要顯示的統計資料
 	opacity: 0.2;
 	transition: opacity 0.2s ease-in-out;
 }
-.bg-color-html {
-	background-color: #e34c26 !important;
-}
-.bg-color-vue {
-	background-color: #42b883 !important;
-}
-.bg-color-js {
-	background-color: #f7df1e !important;
-}
-.bg-color-json {
-	background-color: #0bb !important;
-}
-.bg-color-css {
-	background-color: #264de4 !important;
-}
-.bg-color-py {
-	background-color: #3776ab !important;
-}
-.bg-color-md {
-	background-color: #444 !important;
-}
-.bg-color-webp, .bg-color-png {
-	background-color: #c4c !important;
-}
+
+.bg-color-html { background-color: #e34c26 !important; }
+.bg-color-vue { background-color: #42b883 !important; }
+.bg-color-js { background-color: #f7df1e !important; }
+.bg-color-ts { background-color: #0bb !important; }
+.bg-color-json { background-color: #8c0 !important; }
+.bg-color-css { background-color: #264de4 !important; }
+.bg-color-py { background-color: #3776ab !important; }
+.bg-color-md { background-color: #444 !important; }
+.bg-color-webp, .bg-color-png { background-color: #c4c !important; }
 </style>
