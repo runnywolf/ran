@@ -3,9 +3,9 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
 	{ path: "/", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", component: () => import("@/views/NotesView.vue") },
-	{ path: "/exam", component: () => import("@/views/exam-page/ExamMenuView.vue") },
-	{ path: "/exam/:id", component: () => import("@/views/exam-page/ExamView.vue") }, // 題本編號 :id 的格式範例: "ntu-110"
-	{ path: "/exam/:id/:prob", component: () => import("@/views/exam-page/ProblemView.vue") }, // 題號 :prob
+	{ path: "/exam", component: () => import("@/views/ExamMenuView.vue") },
+	{ path: "/exam/:id", component: () => import("@/views/ExamView.vue") }, // 題本編號 :id 的格式範例: "ntu-110"
+	{ path: "/exam/:id/:prob", component: () => import("@/views/ProblemView.vue") }, // 題號 :prob
 	{ path: "/search", component: () => import("@/views/SearchView.vue") },
 	{ path: "/search/:tag", component: () => import("@/views/SearchView.vue") }, // 若使用此路徑, 會自動新增一個 tag 在搜尋欄下方
 	{
