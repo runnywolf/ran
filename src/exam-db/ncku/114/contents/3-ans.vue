@@ -1,5 +1,6 @@
 <template>
 	<vk>
-		第 3 題的解答
+		$$ |2^S| = 2^{|S|} = 2^6 = 64 $$
+		Ans: (c)
 	</vk>
 </template>

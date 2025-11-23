@@ -6,25 +6,25 @@
 	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_114_3.pdf",
 	"externalLinkTip": "國立成功大學圖書館 考古題",
 	"timeMinutes": 100,
-	"isAnswerComplete": false,
+	"isAnswerComplete": true,
 	"sectionFileBaseNames": [ "-before-1", "1", "2", "3", "4", "-before-5", "5", "6", "7", "8", "9" ],
 	"problemConfigs": {
 		"1": {
-			"answerLatex": "",
-			"tags": [ "dm-fsm" ],
+			"answerLatex": "\\text{(I) a} \\quad \\text{(II) b}",
+			"tags": [ "dm-fsm", "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]
 		},
 		"2": {
-			"answerLatex": "",
-			"tags": [ "dm-c-gf" ],
+			"answerLatex": "\\text{a}",
+			"tags": [ "dm-c-ic" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "",
+			"answerLatex": "\\text{c}",
 			"tags": [ "dm-st" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
@@ -38,15 +38,15 @@
 			]
 		},
 		"5": {
-			"answerLatex": "",
+			"answerLatex": "\\text{C}",
 			"tags": [ "la-vs-ss" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
-			"answerLatex": "",
-			"tags": [ "la-m" ],
+			"answerLatex": "\\text{B}",
+			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
@@ -59,14 +59,14 @@
 			]
 		},
 		"8": {
-			"answerLatex": "",
+			"answerLatex": "\\text{B}",
 			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "\\text{abe}",
 			"tags": [ "la-m-oum", "la-ips-p", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }

@@ -3,17 +3,17 @@
 		"html": {
 			"number": 1,
 			"line": 22,
-			"sizeByte": 1009
+			"sizeByte": 1016
 		},
 		"vue": {
 			"number": 47,
-			"line": 2544,
-			"sizeByte": 114604
+			"line": 2540,
+			"sizeByte": 114913
 		},
 		"js": {
 			"number": 8,
 			"line": 1514,
-			"sizeByte": 87449
+			"sizeByte": 87419
 		},
 		"ts": {
 			"number": 1,
@@ -30,12 +30,12 @@
 		"json": {
 			"number": 42,
 			"line": 4340,
-			"sizeByte": 107972
+			"sizeByte": 108075
 		},
 		"vue": {
 			"number": 1106,
-			"line": 14430,
-			"sizeByte": 508627
+			"line": 14515,
+			"sizeByte": 513018
 		},
 		"webp": {
 			"number": 65,
