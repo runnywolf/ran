@@ -6,7 +6,7 @@
 	"externalLink": "https://exam.lib.ncku.edu.tw/exam/EC24_113_3.pdf",
 	"externalLinkTip": "國立成功大學圖書館 考古題",
 	"timeMinutes": 100,
-	"isAnswerComplete": false,
+	"isAnswerComplete": true,
 	"sectionFileBaseNames": [ "-notice", "-before-1", "1", "2", "3", "4", "5", "-before-6", "6", "7", "8", "9", "10" ],
 	"problemConfigs": {
 		"1": {
@@ -17,35 +17,39 @@
 			]
 		},
 		"2": {
-			"answerLatex": "",
-			"tags": [ "dm-c-gf" ],
+			"answerLatex": "1 ~,~~ @cf{1;2} ~,~~ @cf{-1;8} ~,~~ @cf{1;16} ~,~~ @cf{-5;128}",
+			"tags": [ "dm-c-gf", "dm-c-bc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(A) }~ 3G(x)",
+				"\\text{(B) }~ x^2 \\Big( {-a_0} - a_1 x + G(x) \\Big)",
+				"\\text{(C) }~ @cf{d;dx} ~ G(x)"
+			],
 			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
 		},
 		"4": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See solution}",
 			"tags": [ "dm-fsm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
-			"answerLatex": "",
+			"answerLatex": "\\text{0}",
 			"tags": [ "dm-gt-t" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See solution}",
 			"tags": [ "la-vs-bd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
@@ -59,14 +63,14 @@
 			]
 		},
 		"8": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See solution}",
 			"tags": [ "la-ev" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
-			"answerLatex": "",
+			"answerLatex": "(-1, -1, 5)",
 			"tags": [ "la" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
