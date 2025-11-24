@@ -74,7 +74,7 @@
 		},
 		"9": {
 			"answerLatex": "@bm{ 4, 0; 7, -5; -5, 2 }",
-			"tags": [ "dm-vs" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

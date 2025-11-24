@@ -8,7 +8,7 @@
 			with basis $\{ \sin t, \cos t \}$. The eigenvalues of $D$ are $\pm 1$.
 		</template>
 		<template #b>
-			$F$ is linear if $F: \mathbb{R}^3 \to \mathbb{R}^2$ is defined by $F(x, y, z) = (x + 1 , y + z)$.
+			$F$ is linear if $F: \mathbb{R}^3 \to \mathbb{R}^2$ is defined by $F(x, y, z) = (x + 1 ,~ y + z)$.
 		</template>
 		<template #c>
 			Assume that $A \in M_{n \times n}(F)$ has two distinct eigenvalues, $\lambda_1$ and $\lambda_2$.
