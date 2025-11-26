@@ -29,18 +29,18 @@
 	"exam": {
 		"json": {
 			"number": 42,
-			"line": 4340,
-			"sizeByte": 108075
+			"line": 4344,
+			"sizeByte": 108363
 		},
 		"vue": {
 			"number": 1106,
-			"line": 14515,
-			"sizeByte": 513018
+			"line": 14578,
+			"sizeByte": 516018
 		},
 		"webp": {
-			"number": 65,
+			"number": 66,
 			"line": 0,
-			"sizeByte": 530348
+			"sizeByte": 542574
 		}
 	},
 	"test": {
@@ -70,8 +70,8 @@
 	"tool": {
 		"py": {
 			"number": 2,
-			"line": 210,
-			"sizeByte": 12424
+			"line": 223,
+			"sizeByte": 13318
 		},
 		"txt": {
 			"number": 1,

@@ -91,28 +91,45 @@ def update_problem_stat(stat: dict, exam_config: dict, uni: str) -> None: # 根�
 			if any(is_subtag(tag, stat_tag) for tag in problem_config["tags"]): # 題目存在至少一個 tag 的子字串在 tag-tree 中
 				dict_numbers[uni] += 1 # 將該 tag 的學校計數 +1
 
+def check_valid_tag(stat: dict, exam_config: dict, uni: str, year: str) -> None: # 檢查是否有 tag 不合法
+	for no, problem_config in exam_config["problemConfigs"].items():
+		if "tags" not in problem_config: # 如果某個 problem config 沒有 tags 欄位
+			print(f'[{uni}-{year}/{no}] Key "tags" not found in problem config.')
+			continue
+		
+		if len(problem_config["tags"]) == 0: # 如果某個 problem config 沒有任何 tag (make-exam-v2.py 會生成一個預設 tag "?")
+			print(f'[{uni}-{year}/{no}] Value of "tags" is empty.')
+		
+		for tag in problem_config["tags"]: # 檢查所有 tag 是否在 tag tree 內 (合法 tag)
+			if tag not in stat["tagsNumber"]:
+				print(f'[{uni}-{year}/{no}] Tag "{tag}" is invalid.')
+
 def make_problem_stat_json() -> None: # 生成題目的統計
 	with open(SRC_PATH/"exam-db"/"config.json", "r", encoding="utf-8") as f: # 讀取 db config
 		db_config = json.load(f)
 	
 	with open(SRC_PATH/"exam-db"/"tag-tree.json", "r", encoding="utf-8") as f: # 讀取標籤映射
-		tag_map = json.load(f)
-		tags = get_flat_tags(tag_node={ "children": tag_map })
+		tag_tree = json.load(f)
+		flat_tags = get_flat_tags(tag_node={ "children": tag_tree })
 	
 	stat = {
 		"examNumber": 0, # 題本數
 		"answerCompleteExamNumber": 0, # 完整詳解的題本數
 		"problemNumber": 0, # 題目數
 		"problemHasAnswerNumber": 0, # 有答案的題目數
-		"tagsNumber": { tag: dict.fromkeys(db_config["uniList"], 0) for tag in tags }, # 標籤數 (包含學校資訊)
+		"tagsNumber": { tag: dict.fromkeys(db_config["uniList"], 0) for tag in flat_tags }, # 標籤數 (包含學校資訊)
 	}
 	for uni, uni_config in db_config["uniConfigs"].items():
 		for year in uni_config["yearList"]: # 讀取每份題本
 			with open(SRC_PATH/"exam-db"/uni/year/"config.json", "r", encoding="utf-8") as f: # 讀取題本設定檔
-				update_problem_stat(stat, json.load(f), uni) # 更新 stat
+				exam_config = json.load(f)
+				check_valid_tag(stat, exam_config, uni, year) # 檢查是否有 tag 不合法
+				update_problem_stat(stat, exam_config, uni) # 更新 stat
 	
 	with open(SRC_PATH/"stat"/"problem-stat.json", "w", encoding="utf-8") as f: # write json
 		json.dump(stat, f, ensure_ascii=False, indent="\t")
 
 make_code_stat_json() # 生成程式碼的統計
 make_problem_stat_json() # 生成題目的統計
+
+print("Finish!")
