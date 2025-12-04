@@ -76,7 +76,7 @@
 		},
 		"10": {
 			"answerLatex": "\\text{ABE}",
-			"tags": [ "la-vs-ss", "la-m-oum", "la-ev-d", "la-ev", "la-ips-dm" ],
+			"tags": [ "la-vs-rk", "la-m-oum", "la-ev-d", "la-ev", "la-ips-dm" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

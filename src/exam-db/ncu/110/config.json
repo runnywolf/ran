@@ -108,7 +108,7 @@
 		},
 		"26-30": {
 			"answerLatex": "",
-			"tags": [ "la-ips-p", "la-vs-ss" ],
+			"tags": [ "la-ips-p", "la-vs-rk" ],
 			"hideProblemNo": true,
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "26-30-ans" }
@@ -145,7 +145,7 @@
 		},
 		"39": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "39-ans" }
 			]

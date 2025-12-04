@@ -68,7 +68,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-m-mro", "la-vs-ss" ],
+			"tags": [ "la-m-mro", "la-vs-rn", "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

@@ -18,8 +18,10 @@
 			"vs": {
 				"en": "Vector space", "zhtw": "向量空間",
 				"children": {
-					"bd": { "en": "Basis & Dimension", "zhtw": "基底與維度" },
+					"bd": { "en": "Basis", "zhtw": "基底" },
 					"ss": { "en": "Subspace", "zhtw": "子空間" },
+					"rk": { "en": "Range & Kernel", "zhtw": "值域 & 核空間" },
+					"rn": { "en": "Rank & Nullity", "zhtw": "秩 & 零化度" },
 					"cb": { "en": "Change of basis", "zhtw": "基底變換" }
 				}
 			},
@@ -33,6 +35,7 @@
 			"ips": {
 				"en": "Inner product space", "zhtw": "內積空間",
 				"children": {
+					"oc": { "en": "Orthogonal complement", "zhtw": "正交補空間" },
 					"gsp": { "en": "Gram-Schmidt process", "zhtw": "正交化" },
 					"qrd": { "en": "QR decomposition", "zhtw": "QR 分解" },
 					"svd": { "en": "Singular value decomposition", "zhtw": "奇異值分解" },

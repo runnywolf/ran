@@ -32,7 +32,7 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
@@ -46,7 +46,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss", "la-ev", "la-m-oum", "la-m-shm", "la-ev-d" ],
+			"tags": [ "la-vs-rn", "la-vs-ss", "la-ev", "la-m-oum", "la-m-shm", "la-ev-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

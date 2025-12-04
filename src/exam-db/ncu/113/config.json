@@ -63,7 +63,7 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-ips-oc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

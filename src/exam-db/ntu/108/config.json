@@ -65,14 +65,14 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss", "dm-st", "la-vs-bd" ],
+			"tags": [ "la-vs-ss", "dm-st", "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss", "la-m-im", "la-vs-bd", "la-m-d" ],
+			"tags": [ "la-vs-rk", "la-m-im", "la-vs-rn", "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

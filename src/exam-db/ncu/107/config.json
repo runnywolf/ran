@@ -98,7 +98,7 @@
 		},
 		"13": {
 			"answerLatex": "",
-			"tags": [ "la-vs-bd", "la-vs-ss" ],
+			"tags": [ "la-ips-oc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]
@@ -140,7 +140,7 @@
 		},
 		"19": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "19-ans" }
 			]

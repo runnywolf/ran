@@ -133,7 +133,7 @@
 		},
 		"18": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-ips-qrd", "la-ips-oc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "18-ans" }
 			]

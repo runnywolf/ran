@@ -28,7 +28,7 @@
 		},
 		"3": {
 			"answerLatex": "",
-			"tags": [ "la-m-im", "la-ips-dm", "la-vs-bd", "la-ev", "la-vs-ss" ],
+			"tags": [ "la-m-im", "la-ips-dm", "la-vs-bd", "la-ev", "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

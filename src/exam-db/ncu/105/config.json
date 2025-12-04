@@ -91,7 +91,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]
@@ -126,7 +126,7 @@
 		},
 		"17": {
 			"answerLatex": "",
-			"tags": [ "la-vs-ss" ],
+			"tags": [ "la-ips-oc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "17-ans" }
 			]

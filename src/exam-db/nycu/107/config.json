@@ -105,7 +105,7 @@
 		},
 		"14": {
 			"answerLatex": "",
-			"tags": [ "la-vs-bd", "la-vs-ss" ],
+			"tags": [ "la-vs-bd", "la-vs-rk", "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "14-ans" }
 			]

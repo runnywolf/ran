@@ -22,7 +22,7 @@
 		},
 		"2": {
 			"answerLatex": [ "\\text{(a) } 1,2,5", "\\text{(b) See prove}" ],
-			"tags": [ "dm-l-pdl", "dm-st" ],
+			"tags": [ "dm-l-pdl", "dm-st-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
@@ -53,7 +53,7 @@
 				"\\text{(a) False} \\quad \\text{(b) True} \\quad \\text{(c) True} \\quad \\text{(d) False}",
 				"\\text{(e) 4} \\quad \\text{(f) 4} \\quad \\text{(g) 6}"
 			],
-			"tags": [ "la-ev", "la-vs-ss", "la-vs-bd" ],
+			"tags": [ "la-ev", "la-ips-oc", "la-vs-rk", "la-vs-bd", "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

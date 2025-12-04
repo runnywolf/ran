@@ -46,7 +46,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "la-ips-p", "la-ips-gsp", "la-vs-ss" ],
+			"tags": [ "la-ips-p", "la-ips-gsp", "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]
