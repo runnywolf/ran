@@ -3,11 +3,13 @@
 		<template v-for="({ uni, year, no, problemConfig }, i) in problemDatas" :key="`${uni}-${year}-${no}`">
 			<div v-if="i < maxDisplayNumber" class="ts-box ts-content" style="width: 790px;">
 				
-				<div class="ts-wrap is-top-aligned">
-					<div class="problem-name"><!-- 題號 -->
+				<div class="ts-grid" style="margin-bottom: 10px;">
+					<div class="column problem-name"><!-- 題號 -->
 						<span>{{ getUniShortName(uni) }} {{ year }} 第 {{ no }} 題</span>
 					</div>
-					<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag><!-- tags -->
+					<div class="column is-fluid ts-grid is-top-aligned" style="row-gap: 10px;">
+						<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag><!-- tags -->
+					</div>
 				</div>
 				
 				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig" showLink hideProblemScore>
@@ -30,9 +32,6 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.problem-name { /* 某學校某年第幾題的樣式 */
-	margin-bottom: 10px;
-}
 .problem-name > span {
 	display: inline-block;
 	padding: 0 6px;
