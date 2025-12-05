@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
@@ -24,6 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Delete all workflows # 刪除舊的 workflow
+        run: |
+          gh run list --limit 1000 --json databaseId --jq ".[].databaseId" \
+          | while read id; do gh run delete $id --confirm; done
+      
       - name: Checkout
         uses: actions/checkout@v4
       
@@ -42,7 +47,7 @@ jobs:
       - name: Build VitePress docs
         run: npm run docs:build
       
-      - name: Move docs to ./dist/docs
+      - name: Move docs to ./dist/docs # 這樣 docs 路徑就會在 https://runnywolf.github.io/ran/docs/
         run: |
           mkdir -p dist/docs
           mv docs/.vitepress/dist/* dist/docs/
@@ -53,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: "./dist"
       
       - name: Deploy to GitHub Pages
         id: deployment
