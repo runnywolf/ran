@@ -1,6 +1,7 @@
 name: Deploy
 
 on: # push main branch 會觸發部署
+  workflow_dispatch:  # 允許手動觸發
   push:
     branches: main
     paths-ignore:
@@ -58,3 +59,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+# [OS win] remove all workflow
+# gh run list --limit 1000 --json databaseId --jq ".[].databaseId" | ForEach-Object { gh run delete $_ }
