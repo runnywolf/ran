@@ -1,0 +1,16 @@
+name: Cleanup old workflow runs
+
+on:
+  schedule:
+    - cron: "5 17 * * *" # 每天清理一次
+  workflow_dispatch:    # 允許手動觸發
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+    steps:
+      - name: Cleanup old workflow runs
+        uses: actions/cleanup-logs@v2
