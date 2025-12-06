@@ -1,0 +1,8 @@
+$ACCEPT_HEADER = "Accept: application/vnd.github+json"
+$DEPLOYS_DIR = "repos/runnywolf/ran/deployments"
+
+$deploys = gh api "repos/runnywolf/ran/deployments?per_page=100" | ConvertFrom-Json
+foreach ($deploy in $deploys) {
+  gh api --method POST -H $ACCEPT_HEADER "$DEPLOYS_DIR/$($deploy.id)/statuses" -f state=inactive
+  gh api --method DELETE -H $ACCEPT_HEADER "$DEPLOYS_DIR/$($deploy.id)"
+}

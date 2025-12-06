@@ -60,5 +60,5 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-# [OS win] remove all workflow
+# [for windows shell] remove all workflow, run it in git folder
 # gh run list --limit 1000 --json databaseId --jq ".[].databaseId" | ForEach-Object { gh run delete $_ }
