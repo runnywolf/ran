@@ -1,11 +1,11 @@
 name: Deploy
 
 on: # push main branch 會觸發部署
-  workflow_dispatch:  # 允許手動觸發
+  workflow_dispatch: # 允許手動觸發
   push:
     branches: main
     paths-ignore:
-      - "README.md"
+      - "README.md" # 更改 readme 並不會觸發 deploy
 
 permissions:
   contents: read
