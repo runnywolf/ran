@@ -5,8 +5,9 @@ export default defineConfig({
 	base: "/ran/", // ran 的路徑
 	plugins: [vue()],
 	resolve: {
-		alias: { // import js 的路徑別名 (ts 的好像只要設 tsconfig.json)
+		alias: { // import js 的路徑別名
 			"@": "/src", // @ 代表 /src
+			"@lib": "/src/libs",
 			"ran-math": "/src/libs/ran-math.js", // 可以直接 import { ... } from "ran-math"
 			"toast": "/src/libs/toast.js"
 		}
