@@ -208,7 +208,7 @@ src/exam-db/ncu/108
 #### 詳解類型的內容區塊
 生成一個藍色的摺疊式詳解。
 
-添加 `{ "type": "answer", "id": "<檔名>", "suffix": "<後綴>" }` 至 `contentConfigs`。
+添加 `{ "type": "answer", "fileBaseName": "<檔名>", "suffix": "<後綴>" }` 至 `contentConfigs`。
 
 `suffix` 不是必填，效果如下：( 沒有 `suffix` 就只會顯示「詳解」兩字 )
 <img src="./img/answer-content.webp" width="40%">
@@ -216,7 +216,7 @@ src/exam-db/ncu/108
 #### 預設類型的內容區塊
 生成一個灰色的內容區塊。
 
-添加 `{ "type": "default", "id": "<檔名>" }` 至 `contentConfigs`。
+添加 `{ "type": "default", "fileBaseName": "<檔名>" }` 至 `contentConfigs`。
 
 <img src="./img/default-content.webp" width="60%">
 
