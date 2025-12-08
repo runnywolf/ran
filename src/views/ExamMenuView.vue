@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { dbConfig, getUniShortName } from "../libs/exam-db"; // 讀取題本資料
+import { dbConfig, getUniShortName } from "@lib/exam-db"; // 讀取題本資料
 
 const isExamExist: Record<string, Record<string, boolean>> = {}; // 某一年有哪些學校的題本是存在的. (這一頁不會變動, 不需要用 ref 變數)
 for (const [uni, { yearList }] of Object.entries(dbConfig.uniConfigs)) {

@@ -1,11 +1,11 @@
-import { defineConfig } from "vite"
-import vue from "@vitejs/plugin-vue"
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
 export default defineConfig({
 	base: "/ran/", // ran 的路徑
 	plugins: [vue()],
 	resolve: {
-		alias: { // 路徑別名
+		alias: { // import js 的路徑別名 (ts 的好像只要設 tsconfig.json)
 			"@": "/src", // @ 代表 /src
 			"ran-math": "/src/libs/ran-math.js", // 可以直接 import { ... } from "ran-math"
 			"toast": "/src/libs/toast.js"

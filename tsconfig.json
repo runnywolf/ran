@@ -11,7 +11,12 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "useDefineForClassFields": true,
-    "types": ["node", "vite/client"]
+    "types": [ "node", "vite/client" ],
+		"baseUrl": ".",
+		"paths": { // import ts 的路徑別名
+			"@/*": [ "./src/*" ],
+			"@lib/*": [ "./src/libs/*" ]
+		}
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+  "include": [ "src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue" ] // ts 編譯檔案
 }
