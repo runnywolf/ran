@@ -37,16 +37,13 @@ interface ContentConfig { // content config 型別宣告
 	suffix?: string, // 後綴, only for 詳解類型的內容區塊
 }
 
-import c from "../exam-db/nycu/114/config.json" // [debug]
-const cc = c as ExamConfig; // [debug]
-
 import _dbConfig from "../exam-db/config.json" with { type: "json" };
 import tagTree from "../exam-db/tag-tree.json" with { type: "json" };
 
 const DB_PATH = "../exam-db"; // db 相對於 exam-db.ts 的位置
 export const dbConfig = _dbConfig as DbConfig; // 檢查 db config 型態, 如果報錯代表格式錯誤
 
-export function getUniShortName(uni: string) { // 將 uni (學校英文縮寫) 轉為中文縮寫
+export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;
 	return "?"; // 若 key uni 不存在, 回傳 "?"
 }

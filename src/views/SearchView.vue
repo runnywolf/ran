@@ -39,7 +39,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAllExamConfigs } from "@/exam-db/examLoader.js"; // 讀取題本資訊
+import { getAllExamConfigs } from "@lib/exam-db"; // 讀取題本資訊
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
 
