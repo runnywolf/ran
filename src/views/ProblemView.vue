@@ -63,7 +63,8 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
-import { getUniShortName, decodeExamIdAndGetConfig } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import { getUniShortName, decodeExamId, getProblemConfig, getPrevAndNextNo } from "@lib/exam-db"; // 讀取題本資料
+import { ProblemConfigMissingError } from "@lib/exam-db"; // error
 import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
@@ -77,38 +78,19 @@ const problemConfig = ref({}); // 題目設定
 const prevNo = ref(null); // 上一題的題號
 const nextNo = ref(null); // 下一題的題號
 
-function getPrevAndNextNo(examConfig, no) { // 取得目前題號的上一題號 & 下一題號
-	const problemNoList = examConfig.sectionFileBaseNames.filter(no_ => no_[0] !== "-"); // 題本的題號 (有序)
-	const noIndex = problemNoList.indexOf(no);
-	if (noIndex === -1) return [null, null]; // 題號不存在
-	
-	return [problemNoList[noIndex-1], problemNoList[noIndex+1]];
-}
-
 watch(() => [route.params.id, route.params.prob], async ([newExamId, newNo]) => { // 當路由改變時, 嘗試解碼題本 id
-	let examData = null;
 	try {
-		examData = await decodeExamIdAndGetConfig(newExamId); // 讀取題本設定檔內的 problem config
+		[uni.value, year.value] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		no.value = newNo;
+		problemConfig.value = await getProblemConfig(uni.value, year.value, no.value); // 讀取題本設定檔
+		[prevNo.value, nextNo.value] = await getPrevAndNextNo(uni.value, year.value, no.value); // 取得上一題 & 下一題的題號
 	} catch (err) {
-		router.push(`/exam/${newExamId}`); // 轉址回題本頁面
-		return;
+		if (err instanceof ProblemConfigMissingError) { // 如果題號不存在
+			showToast(`題本 ${err.uni}-${err.year} 的第 ${err.no} 題不存在`, ToastType.ERROR);
+		}
+		console.error(err.message); // 在 console 報錯
+		router.push(`/exam/${newExamId}`); // 轉址回題本頁面, 由 ExamView.vue 處理 exam config 的報錯
 	}
-	uni.value = examData.uni;
-	year.value = examData.year;
-	no.value = newNo;
-	const examConfig = examData.examConfig; // 題本設定檔
-	
-	if (!(no.value in examConfig.problemConfigs)) { // 題號不存在
-		console.error(
-			`[examLoader] Problem ${no.value} config is not exist. (exam "${uni.value}-${year.value}")\n`
-		);
-		showToast(`題本 ${uni.value}-${year.value} 的第 ${no.value} 題不存在`, ToastType.ERROR);
-		router.push(`/exam/${newExamId}`); // 轉址回題本頁面
-		return;
-	}
-	problemConfig.value = examConfig.problemConfigs[no.value]; // problem config
-	
-	[prevNo.value, nextNo.value] = getPrevAndNextNo(examConfig, no.value); // 取得目前題號的上一題號 & 下一題號
 }, { immediate: true }); // 組件載入時, 做一次
 
 const clickExamLink = () => { // 當左側資訊版的題本連結被點擊

@@ -73,8 +73,8 @@
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { showToast, ToastType } from "toast";
-import { getUniShortName, decodeExamIdAndGetConfig } from "@/exam-db/examLoader.js"; // 讀取題本資料
-import { WrongIdFormatError, ExamConfigMissingError } from "@/exam-db/examLoader.js"; // error
+import { getUniShortName, decodeExamId, getExamConfig } from "@lib/exam-db"; // 讀取題本資料
+import { WrongIdFormatError, ExamConfigMissingError } from "@lib/exam-db"; // error
 import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
 import ExamInfo from "./exam-comp/ExamInfo.vue"; // 題本資訊的組件
 import ExamTimer from "./exam-comp/ExamTimer.vue"; // 計時器的組件
@@ -89,10 +89,8 @@ const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	try {
-		const examData = await decodeExamIdAndGetConfig(newExamId); // 讀取題本設定檔
-		uni.value = examData.uni; // 如果題本設定檔載入成功, 更新學校和年份和題本設定檔
-		year.value = examData.year;
-		examConfig.value = examData.examConfig;
+		[uni.value, year.value] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		examConfig.value = await getExamConfig(uni.value, year.value); // 讀取題本設定檔
 	} catch (err) {
 		if (err instanceof WrongIdFormatError) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
 			showToast("題本編號的形式錯誤", ToastType.WARNING);

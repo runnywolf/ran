@@ -39,30 +39,12 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAllExamConfigs } from "@lib/exam-db"; // 讀取題本資訊
+import { getAllProblemConfigs } from "@lib/exam-db"; // 讀取題本資訊
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
 
 const DEBOUNCE_TIME_MS = 500;
 const RESULT_LIMITS = 5; // 搜尋結果每次最多顯示幾題
-
-async function getProblemDatas() { // 所有題目的 config
-	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
-	
-	const examIdAndConfigs = await getAllExamConfigs(); // 載入所有題本的 config. { uni, year, config }
-	
-	problemDatas = await Promise.all(examIdAndConfigs.flatMap(
-		({ uni, year, examConfig }) => Object.entries(examConfig.problemConfigs).map(
-			([no, problemConfig]) => ({ uni, year, no, problemConfig })
-			/* 目前不支援題目內容搜尋
-			import(`../exam-db/${uni}/${year}/sections/${no}.vue?raw`)
-				.then(module => ({ uni, year, no, problemConfig, problemText: module.default }))
-			*/
-		)
-	))
-	
-	isGettingDb.value = false; // 讀取完成
-}
 
 function isSubtag(tag, subtag) { // subtag 是否是 tag 的子標籤
 	const splited_tag = tag.split("-");
@@ -74,25 +56,17 @@ function someSearchTagIsSubtag(searchTags, tag) { // 存在一個篩選標籤是
 	return searchTags.some(searchTag => isSubtag(tag, searchTag));
 }
 
-function getSearchResult(problemDatas, searchText, searchTags) { // 獲得搜尋結果
-	if (!problemDatas) return []; // exam-db 未載入完成, return []
+function getSearchResult(problemConfigTuples, searchText, searchTags) { // 獲得搜尋結果
+	if (!problemConfigTuples) return []; // exam-db 未載入完成, return []
 	if (!searchText && searchTags.length === 0) return []; // 沒有搜尋條件, return []
 	
 	const searchResult = []; // 搜尋結果
-	for (const problemData of problemDatas) { // 篩選題目
+	for (const problemData of problemConfigTuples) { // 篩選題目
 		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
 		if (problemTags.some(tag => someSearchTagIsSubtag(searchTags, tag))) searchResult.push(problemData);
 	}
 	return searchResult;
 }
-
-let debounceTimerId = null; // 防抖
-let problemDatas = []; // 所有題目的 config. { uni, year, no, problemConfig, problemText }
-const isGettingDb = ref(false); // 是否正在讀取 exam db
-const isSearching = ref(false); // 是否正在搜尋
-const searchResultProblemDatas = ref([]); // 搜尋結果
-const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
-getProblemDatas();
 
 function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	isSearching.value = true; // 顯示 "搜尋中"
@@ -100,9 +74,24 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	
 	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
 	debounceTimerId = setTimeout(() => {
-		searchResultProblemDatas.value = getSearchResult(problemDatas, searchText, searchTags); // 搜尋符合的題目
+		searchResultProblemDatas.value = getSearchResult(problemConfigTuples, searchText, searchTags); // 搜尋符合的題目
 		maxResultProblemNumber.value = RESULT_LIMITS; // 重置顯示的題目數
 		isSearching.value = false; // 搜尋完成
 	}, DEBOUNCE_TIME_MS);
 }
+
+async function getProblemDatas() {
+	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
+	problemConfigTuples = await getAllProblemConfigs(); // 載入所有題本的 config
+	isGettingDb.value = false; // 讀取完成
+	console.log(problemConfigTuples)
+}
+
+let debounceTimerId = null; // 防抖
+let problemConfigTuples = []; // 所有題目的 config. { uni, year, no, problemConfig, problemText }
+const isGettingDb = ref(false); // 是否正在讀取 exam db
+const isSearching = ref(false); // 是否正在搜尋
+const searchResultProblemDatas = ref([]); // 搜尋結果
+const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
+getProblemDatas();
 </script>
