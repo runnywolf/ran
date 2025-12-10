@@ -7,18 +7,18 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2540,
-			"sizeByte": 114913
+			"line": 2514,
+			"sizeByte": 114110
 		},
 		"js": {
-			"number": 8,
-			"line": 1514,
-			"sizeByte": 87419
+			"number": 6,
+			"line": 1400,
+			"sizeByte": 81210
 		},
 		"ts": {
-			"number": 1,
-			"line": 52,
-			"sizeByte": 3125
+			"number": 3,
+			"line": 210,
+			"sizeByte": 11921
 		},
 		"css": {
 			"number": 4,
@@ -35,7 +35,7 @@
 		"vue": {
 			"number": 1106,
 			"line": 14578,
-			"sizeByte": 516018
+			"sizeByte": 516048
 		},
 		"webp": {
 			"number": 66,
@@ -59,7 +59,7 @@
 		"md": {
 			"number": 35,
 			"line": 3418,
-			"sizeByte": 126987
+			"sizeByte": 127007
 		},
 		"webp": {
 			"number": 9,
@@ -70,8 +70,8 @@
 	"tool": {
 		"py": {
 			"number": 2,
-			"line": 223,
-			"sizeByte": 13318
+			"line": 222,
+			"sizeByte": 13233
 		},
 		"txt": {
 			"number": 1,

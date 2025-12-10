@@ -63,7 +63,7 @@ function getSearchResult(problemConfigTuples, searchText, searchTags) { // 獲�
 	const searchResult = []; // 搜尋結果
 	for (const tuple of problemConfigTuples) { // 篩選題目
 		const problemTags = tuple.problemConfig.tags ?? []; // 題目的 tag
-		if (problemTags.some(tag => someSearchTagIsSubtag(searchTags, tag))) searchResult.push(problemData);
+		if (problemTags.some(tag => someSearchTagIsSubtag(searchTags, tag))) searchResult.push(tuple);
 	}
 	return searchResult;
 }

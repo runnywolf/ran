@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import { getUniShortName } from "@lib/exam-db"; // 讀取題本資料
 import Problem from "@/components/problem/Problem.vue"; // 題目組件
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 

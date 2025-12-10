@@ -48,7 +48,6 @@ def make_code_stat_json() -> None: # 生成程式碼的統計
 	code_stat_app = CodeStat(RAN_PATH/"index.html") # app 範圍的統計
 	for i in ["components", "libs", "router", "styles", "views", "App.vue", "main.js"]:
 		code_stat_app.merge(CodeStat(SRC_PATH/i))
-	code_stat_app.merge(CodeStat(DB_PATH/"examLoader.js")) # 也包含 exam-db 的 api
 	
 	stat = {
 		"app": code_stat_app.to_stat(),

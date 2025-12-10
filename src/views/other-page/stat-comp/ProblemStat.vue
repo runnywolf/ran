@@ -48,7 +48,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import { getUniShortName } from "@lib/exam-db"; // 讀取題本資料
 import { sum } from "ran-math";
 import stat from "@/stat/problem-stat.json"; // 統計資料
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
