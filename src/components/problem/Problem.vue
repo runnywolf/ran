@@ -6,7 +6,7 @@
 			<component :is="sectionComp"></component>
 		</div>
 		
-		<div v-if="props.no[0] !== '-' && (showAnswer || showLink || showContent)"
+		<div v-if="props.no && props.no[0] !== '-' && (showAnswer || showLink || showContent)"
 			class="ts-wrap is-compact is-vertical content"
 		><!-- 開頭為 "-" 的 section 不是題目, 無詳解 -->
 			
@@ -47,17 +47,17 @@
 
 <script setup>
 import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
-import { getSectionComp, getAllContentComps } from "@/exam-db/examLoader.js"; // 讀取題本資訊
+import { getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
 import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
 import ContentNotFoundComp from "./problem-comp/ContentNotFound.vue"; // 題目的內容載入失敗時, 顯示的錯誤訊息組件
 
 const props = defineProps({
-	uni: String, // 題本的學校英文縮寫
-	year: String, // 題本的民國年份
-	no: { type: String, default: "" }, // 題號
-	problemConfig: { type: Object, default: {} }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
+	uni: { type: String, default: null }, // 題本的學校英文縮寫
+	year: { type: String, default: null }, // 題本的民國年份
+	no: { type: String, default: null }, // 題號
+	problemConfig: { type: Object, default: null }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
 	hideProblemScore: { type: Boolean, default: false }, // 是否顯示題目的配分
 	showAnswer: { type: Boolean, default: false }, // 顯示綠框答案
 	showLink: { type: Boolean, default: false }, // 顯示 "詳解" 按鈕
@@ -91,7 +91,7 @@ watchEffect(async () => {
 	
 	let contentCompsPromise = [];
 	try {
-		contentCompsPromise = await getAllContentComps(uni, year, no, problemConfig);
+		contentCompsPromise = getAllContentComps(uni, year, no, problemConfig);
 	} catch (err) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
 		console.error(err.message); // 在 console 報錯
 	}

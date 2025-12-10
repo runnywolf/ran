@@ -9,9 +9,9 @@
 		可以發現 $G'$ 與 $H$ 恰好對稱，因此 $G$ 和 $H$ 同構。<br>
 		<br>
 		(b)
-		$$
+		$$ \begin{gather*}
 		\varphi(\text{g})=7 ,~~ \varphi(\text{f})=8 ,~~ \varphi(\text{e})=4 ,~~ \varphi(\text{d})=3 , \\
 		\varphi(\text{b})=2 ,~~ \varphi(\text{c})=5 ,~~ \varphi(\text{a})=1 ,~~ \varphi(\text{h})=6
-		$$
+		\end{gather*} $$
 	</vk>
 </template>

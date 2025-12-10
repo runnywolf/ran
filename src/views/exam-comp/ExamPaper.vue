@@ -79,7 +79,7 @@
 
 <script setup>
 import { watch } from "vue";
-import { getUniShortName } from "@/exam-db/examLoader.js"; // 讀取題本資料
+import { getUniShortName } from "@lib/exam-db"; // 讀取題本資料
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
 
 const props = defineProps({

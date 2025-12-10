@@ -71,19 +71,19 @@ import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與
 
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
-const uni = ref(); // 題本的學校英文縮寫
-const year = ref(); // 題本的民國年份
-const no = ref(); // 題目編號
+const uni = ref(null); // 題本的學校英文縮寫
+const year = ref(null); // 題本的民國年份
+const no = ref(null); // 題目編號
 const problemConfig = ref({}); // 題目設定
 const prevNo = ref(null); // 上一題的題號
 const nextNo = ref(null); // 下一題的題號
 
 watch(() => [route.params.id, route.params.prob], async ([newExamId, newNo]) => { // 當路由改變時, 嘗試解碼題本 id
 	try {
-		[uni.value, year.value] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
-		no.value = newNo;
-		problemConfig.value = await getProblemConfig(uni.value, year.value, no.value); // 讀取題本設定檔
-		[prevNo.value, nextNo.value] = await getPrevAndNextNo(uni.value, year.value, no.value); // 取得上一題 & 下一題的題號
+		const [_uni, _year] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		const _problemConfig = await getProblemConfig(_uni, _year, newNo); // 讀取題本設定檔
+		[prevNo.value, nextNo.value] = await getPrevAndNextNo(_uni, _year, newNo); // 取得上一題 & 下一題的題號
+		[uni.value, year.value, no.value, problemConfig.value] = [_uni, _year, newNo, _problemConfig]; // 在 config 讀取成功前, 不能修改這些值, 防止 Problem.vue 報錯
 	} catch (err) {
 		if (err instanceof ProblemConfigMissingError) { // 如果題號不存在
 			showToast(`題本 ${err.uni}-${err.year} 的第 ${err.no} 題不存在`, ToastType.ERROR);

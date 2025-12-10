@@ -61,8 +61,8 @@ function getSearchResult(problemConfigTuples, searchText, searchTags) { // 獲�
 	if (!searchText && searchTags.length === 0) return []; // 沒有搜尋條件, return []
 	
 	const searchResult = []; // 搜尋結果
-	for (const problemData of problemConfigTuples) { // 篩選題目
-		const problemTags = problemData.problemConfig.tags ?? []; // 題目的 tag
+	for (const tuple of problemConfigTuples) { // 篩選題目
+		const problemTags = tuple.problemConfig.tags ?? []; // 題目的 tag
 		if (problemTags.some(tag => someSearchTagIsSubtag(searchTags, tag))) searchResult.push(problemData);
 	}
 	return searchResult;
@@ -80,11 +80,10 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	}, DEBOUNCE_TIME_MS);
 }
 
-async function getProblemDatas() {
+async function getProblemConfigs() {
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
 	problemConfigTuples = await getAllProblemConfigs(); // 載入所有題本的 config
 	isGettingDb.value = false; // 讀取完成
-	console.log(problemConfigTuples)
 }
 
 let debounceTimerId = null; // 防抖
@@ -93,5 +92,5 @@ const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
 const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
-getProblemDatas();
+getProblemConfigs();
 </script>

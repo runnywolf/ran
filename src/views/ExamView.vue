@@ -83,14 +83,15 @@ import ExamPaper from "./exam-comp/ExamPaper.vue"; // 考卷的組件
 // #region 路由解碼
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
-const uni = ref(); // 題本的學校英文縮寫
-const year = ref(); // 題本的民國年份
+const uni = ref(null); // 題本的學校英文縮寫
+const year = ref(null); // 題本的民國年份
 const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	try {
-		[uni.value, year.value] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
-		examConfig.value = await getExamConfig(uni.value, year.value); // 讀取題本設定檔
+		const [_uni, _year] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		const _examConfig = await getExamConfig(_uni, _year); // 讀取題本設定檔
+		[uni.value, year.value, examConfig.value] = [_uni, _year, _examConfig]; // 在 config 讀取成功前, 不能修改這些值, 防止 Problem.vue 報錯
 	} catch (err) {
 		if (err instanceof WrongIdFormatError) { // 如果題本 id 的形式不是 "xxx-xxx", 視為無效 id
 			showToast("題本編號的形式錯誤", ToastType.WARNING);

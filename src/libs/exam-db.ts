@@ -44,6 +44,7 @@ interface ProblemConfigTuple {
 	problemConfig: ProblemConfig,
 }
 
+import type { Component } from "vue";
 import _dbConfig from "../exam-db/config.json" with { type: "json" };
 import tagTree from "../exam-db/tag-tree.json" with { type: "json" };
 
@@ -94,9 +95,23 @@ export async function getAllProblemConfigs(): Promise<Array<ProblemConfigTuple>>
 	return nested.flat();
 }
 
-// get all problem configs
+export async function getSectionComp(uni: string, year: string, no: string): Promise<{ default: Component }> { // 讀取並回傳區塊(題目)組件
+	return import(`../exam-db/${uni}/${year}/sections/${no}.vue`)
+		.catch(() => { throw new SectionCompMissingError(uni, year, no); }) // 若區塊組件不存在或路徑錯誤
+}
 
-// read exam & decode
+export function getAllContentComps(
+	uni: string, year: string, no: string, problemConfig: ProblemConfig
+): Array<Promise<{ default: Component }>> { // 讀取並回傳多個內容(解答)組件
+	const contentConfigs = problemConfig.contentConfigs; // 題目的內容區塊的設定
+	if (!contentConfigs || contentConfigs.length === 0) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
+		throw new ContentsEmptyError(uni, year, no);
+	}
+	return contentConfigs.map(
+		({ fileBaseName }) => import(`../exam-db/${uni}/${year}/contents/${fileBaseName}.vue`) // 讀取解答組件
+			.catch(() => { throw new ContentCompMissingError(uni, year, no, fileBaseName); })
+	);
+}
 
 // class TagTree
 // error tag check
@@ -128,7 +143,7 @@ export class ProblemConfigMissingError extends Error { // 若題目設定不存�
 	constructor(public uni: string, public year: string, public no: string) {
 		super(
 			`[exam-db.ts] Problem ${no} config is not exist. (exam "${uni}-${year}")\n`+
-			`-> Check if problemConfigs.${no}: {...} exist in ${getErrorConfigPath(uni, year)} ?\n`
+			`-> Check if problemConfigs.${no}: {...} in ${getErrorConfigPath(uni, year)} ?`
 		);
 	}
 }
