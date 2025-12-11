@@ -44,11 +44,18 @@ interface ProblemConfigTuple {
 	problemConfig: ProblemConfig,
 }
 
+interface TagNode { // tag node 型別宣告
+	en: string, // tag 的英文
+	zhtw: string, // tag 的中文
+	children?: Record<string, TagNode>, // 子節點
+}
+
 import type { Component } from "vue";
 import _dbConfig from "../exam-db/config.json" with { type: "json" };
-import tagTree from "../exam-db/tag-tree.json" with { type: "json" };
+import _tagTree from "../exam-db/tag-tree.json" with { type: "json" };
 
 export const dbConfig = _dbConfig as DbConfig; // 檢查 db config 型態, 如果報錯代表格式錯誤
+const tagTree = _tagTree as Record<string, TagNode>; // 檢查 tag tree 型態
 
 export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;
@@ -113,8 +120,22 @@ export function getAllContentComps(
 	);
 }
 
-// class TagTree
-// error tag check
+export class TagTree {
+	static getPathToNode(tag: string): Array<{ en: string, zhtw: string }> { // 將一個 tag 字串依照 "-" 字符切分後, 回傳 tag tree 搜尋路徑
+		const path = []; // 搜尋路徑
+		let tagNode = { children: tagTree } as TagNode; // root node
+		for (const seg of tag.split("-")) {
+			if (!(tagNode.children && seg in tagNode.children)) throw new TagMismatchError(path, tag, seg); // tag 不在 tag tree 內
+			tagNode = tagNode.children[seg]; // 繼續搜尋子節點
+			path.push({ en: tagNode.en, zhtw: tagNode.zhtw }); // 紀錄搜尋路徑
+		}
+		return path;
+	}
+	
+	static getFlattenedNodes() {
+		
+	}
+}
 
 function getErrorSectionMessage(uni: string, year: string, no: string) { // 錯誤發生在哪一題的訊息
 	return `(section ${no} in exam ${uni}-${year})`;
@@ -178,5 +199,12 @@ export class ContentCompMissingError extends Error { // 內容(解答)組件不�
 			`problemConfigs.${no}.contentConfigs: [...] in ${getErrorConfigPath(uni, year)} , `+
 			`and one of element.fileBaseName must be "${contentFileName}".`
 		);
+	}
+}
+
+export class TagMismatchError extends Error { // tag 的某個 segment 無法在 tag tree 中找到子節點
+	constructor(public path: Array<{ en: string, zhtw: string }>, tag: string, mismatchSegment: string) {
+		const validSubtag = tag.split(mismatchSegment, 2)[0]; // tag 前半部份合法的子標籤 (將 tag 的 mismatchSegment 之後的部分刪除)
+		super(`[exam-db.ts] Tag segment mismatch: ${validSubtag ?? ""}"${mismatchSegment}"`);
 	}
 }
