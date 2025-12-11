@@ -45,7 +45,7 @@
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { sum } from "ran-math";
-import { getFlatTagNodes } from "@/exam-db/examLoader.js"; // 讀取題本資訊
+import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
@@ -103,11 +103,11 @@ function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square
 
 function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成建議列表的顯示資料 (依據 LCS-RSS 降序排列)
 	let lcsDataArr = [];
-	for (let { tag, enTag, zhtwTag } of tagDatas) { // 遍歷所有 tag 的中/英文
-		enTag = enTag.replaceAll("\n", " "); // 去除英文標籤的 \n
+	for (let { tag, en, zhtw } of tagDatas) { // 遍歷所有 tag 的中/英文
+		en = en.replaceAll("\n", " "); // 去除英文標籤的 \n
 		
-		const enTagLcsSubstrs = getLcsSubstrs(enTag, lcs(enTag, searchText)); // 尋找 lcs 的子字串
-		const zhtwTagLcsSubstrs = getLcsSubstrs(zhtwTag, lcs(zhtwTag, searchText));
+		const enTagLcsSubstrs = getLcsSubstrs(en, lcs(en, searchText)); // 尋找 lcs 的子字串
+		const zhtwTagLcsSubstrs = getLcsSubstrs(zhtw, lcs(zhtw, searchText));
 		
 		const enTagRss = getLcsRss(enTagLcsSubstrs); // rss
 		const zhtwTagRss = getLcsRss(zhtwTagLcsSubstrs);
@@ -126,7 +126,7 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 
 const emit = defineEmits([ "input-changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr
 
-const tagDatas = getFlatTagNodes(); // 將 tag-tree.json 扁平化為 arr: { tag, enTag, zhtwTag }
+const tagDatas = TagTree.getFlattenedNodes(); // 將 tag-tree.json 扁平化為 arr: { tag, en, zhtw }
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)

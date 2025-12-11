@@ -120,10 +120,12 @@ export function getAllContentComps(
 	);
 }
 
+const tagTreeRootNode = { children: tagTree } as TagNode;
+
 export class TagTree {
 	static getPathToNode(tag: string): Array<{ en: string, zhtw: string }> { // 將一個 tag 字串依照 "-" 字符切分後, 回傳 tag tree 搜尋路徑
 		const path = []; // 搜尋路徑
-		let tagNode = { children: tagTree } as TagNode; // root node
+		let tagNode = tagTreeRootNode; // root node
 		for (const seg of tag.split("-")) {
 			if (!(tagNode.children && seg in tagNode.children)) throw new TagMismatchError(path, tag, seg); // tag 不在 tag tree 內
 			tagNode = tagNode.children[seg]; // 繼續搜尋子節點
@@ -132,8 +134,12 @@ export class TagTree {
 		return path;
 	}
 	
-	static getFlattenedNodes() {
-		
+	static getFlattenedNodes(prefix = "", tagNode = tagTreeRootNode): Array<{ tag: string, en: string, zhtw: string }> { // 將 tag tree 扁平化
+		const subTags = prefix ? [{ tag: prefix, en: tagNode.en, zhtw: tagNode.zhtw }] : []; // 排除遞迴造成的空字串 tag
+		Object.entries(tagNode.children ?? {}).forEach(([key, childNode]) => { // 將父 tag node 的 tag 前綴接上所有子目錄的 sub tag
+			subTags.push(...TagTree.getFlattenedNodes(prefix ? `${prefix}-${key}` : key, childNode)); // 防止 "-xxx-xxx" (開頭為 "-")
+		});
+		return subTags;
 	}
 }
 
