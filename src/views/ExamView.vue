@@ -89,7 +89,7 @@ const examConfig = ref({}); // 題本設定檔
 
 watch(() => route.params.id, async (newExamId) => { // 當路由改變時, 嘗試解碼題本 id
 	try {
-		const [_uni, _year] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		const { uni: _uni, year: _year } = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
 		const _examConfig = await getExamConfig(_uni, _year); // 讀取題本設定檔
 		[uni.value, year.value, examConfig.value] = [_uni, _year, _examConfig]; // 在 config 讀取成功前, 不能修改這些值, 防止 Problem.vue 報錯
 	} catch (err) {

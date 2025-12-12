@@ -80,7 +80,7 @@ const nextNo = ref(null); // 下一題的題號
 
 watch(() => [route.params.id, route.params.prob], async ([newExamId, newNo]) => { // 當路由改變時, 嘗試解碼題本 id
 	try {
-		const [_uni, _year] = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+		const { uni: _uni, year: _year } = decodeExamId(newExamId); // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
 		const _problemConfig = await getProblemConfig(_uni, _year, newNo); // 讀取題本設定檔
 		[prevNo.value, nextNo.value] = await getPrevAndNextNo(_uni, _year, newNo); // 取得上一題 & 下一題的題號
 		[uni.value, year.value, no.value, problemConfig.value] = [_uni, _year, newNo, _problemConfig]; // 在 config 讀取成功前, 不能修改這些值, 防止 Problem.vue 報錯

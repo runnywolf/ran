@@ -32,7 +32,7 @@ interface ProblemConfig { // problem config 型別宣告
 }
 
 interface ContentConfig { // content config 型別宣告
-	type: string, // 內容區塊類型
+	type: "default" | "answer", // 內容區塊類型
 	fileBaseName: string, // 內容區塊在資料夾 src/exam-db/<uni>/<year>/contents/ 內的路徑
 	suffix?: string, // 後綴, only for 詳解類型的內容區塊
 }
@@ -59,13 +59,13 @@ const tagTree = _tagTree as Record<string, TagNode>; // 檢查 tag tree 型態
 
 export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;
-	return "?"; // 若 key uni 不存在, 回傳 "?"
+	return "?"; // 若 key uni 不存在, 回傳 "?" (等待載入的空值處理)
 }
 
-export function decodeExamId(examId: string): [string, string] { // 將題本 id "<uni>-<year>" 轉為 [<uni>, <year>]
+export function decodeExamId(examId: string): { uni: string, year: string } { // 將題本 id "<uni>-<year>" 轉為 { uni, year }
 	const examIdParams = examId.split("-"); // 將題本 id "<uni>-<year>" 拆分成 ["<uni>", "<year>"]
 	if (examIdParams.length != 2) throw new WrongIdFormatError(examId); // 參數只能 2 個
-	return [examIdParams[0], examIdParams[1]]; // 題本 id 的第 0 個參數為 uni, 第 1 個參數為 year
+	return { uni: examIdParams[0], year: examIdParams[1] }; // 題本 id 的第 0 個參數為 uni, 第 1 個參數為 year
 }
 
 export async function getExamConfig(uni: string, year: string): Promise<ExamConfig> { // 讀取並回傳題本設定檔
@@ -84,7 +84,7 @@ export async function getPrevAndNextNo( // 取得某一個題號的前後題號
 	uni: string, year: string, no: string
 ): Promise<[string | undefined, string | undefined]> {
 	const examConfig = await getExamConfig(uni, year); // 讀取題本設定檔
-	const problemNoList = examConfig.sectionFileBaseNames.filter(_no => _no[0] !== "-"); // 題本的題號 (有序), 忽略 "-" 開頭的說明區塊
+	const problemNoList = examConfig.sectionFileBaseNames.filter(_no => _no[0] !== "-"); // 題本的題號 (必須有序), 忽略 "-" 開頭的說明區塊
 	const noIndex = problemNoList.indexOf(no); // 題號的順序
 	if (noIndex === -1) return [undefined, undefined]; // 若題號不存在
 	return [problemNoList[noIndex-1], problemNoList[noIndex+1]]; // 回傳前後題號, 注意: 如果前後題號不存在, 可能回傳類似 [undefined, "2"] 的東西

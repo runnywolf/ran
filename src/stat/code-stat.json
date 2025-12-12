@@ -7,8 +7,8 @@
 		},
 		"vue": {
 			"number": 47,
-			"line": 2514,
-			"sizeByte": 114110
+			"line": 2520,
+			"sizeByte": 114121
 		},
 		"js": {
 			"number": 6,
@@ -17,8 +17,8 @@
 		},
 		"ts": {
 			"number": 3,
-			"line": 210,
-			"sizeByte": 11921
+			"line": 240,
+			"sizeByte": 13820
 		},
 		"css": {
 			"number": 4,
