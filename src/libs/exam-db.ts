@@ -102,14 +102,16 @@ export async function getAllProblemConfigs(): Promise<Array<ProblemConfigTuple>>
 	return nested.flat();
 }
 
-export async function getSectionComp(uni: string, year: string, no: string): Promise<{ default: Component }> { // 讀取並回傳區塊(題目)組件
+export async function getSectionComp( // 讀取並回傳區塊(題目)組件
+	uni: string, year: string, no: string
+): Promise<{ default: Component }> {
 	return import(`../exam-db/${uni}/${year}/sections/${no}.vue`)
 		.catch(() => { throw new SectionCompMissingError(uni, year, no); }) // 若區塊組件不存在或路徑錯誤
 }
 
-export function getAllContentComps(
+export function getAllContentComps( // 讀取並回傳多個內容(解答)組件
 	uni: string, year: string, no: string, problemConfig: ProblemConfig
-): Array<Promise<{ default: Component }>> { // 讀取並回傳多個內容(解答)組件
+): Array<Promise<{ default: Component }>> {
 	const contentConfigs = problemConfig.contentConfigs; // 題目的內容區塊的設定
 	if (!contentConfigs || contentConfigs.length === 0) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
 		throw new ContentsEmptyError(uni, year, no);
@@ -134,7 +136,9 @@ export class TagTree {
 		return path;
 	}
 	
-	static getFlattenedNodes(prefix = "", tagNode = tagTreeRootNode): Array<{ tag: string, en: string, zhtw: string }> { // 將 tag tree 扁平化
+	static getFlattenedNodes( // 將 tag tree 扁平化
+		prefix = "", tagNode = tagTreeRootNode
+	): Array<{ tag: string, en: string, zhtw: string }> {
 		const subTags = prefix ? [{ tag: prefix, en: tagNode.en, zhtw: tagNode.zhtw }] : []; // 排除遞迴造成的空字串 tag
 		Object.entries(tagNode.children ?? {}).forEach(([key, childNode]) => { // 將父 tag node 的 tag 前綴接上所有子目錄的 sub tag
 			subTags.push(...TagTree.getFlattenedNodes(prefix ? `${prefix}-${key}` : key, childNode)); // 防止 "-xxx-xxx" (開頭為 "-")

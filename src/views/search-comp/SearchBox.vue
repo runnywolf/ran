@@ -18,7 +18,7 @@
 				>
 					<Tag :tag="tag"></Tag>
 					<div class="ts-text">
-						<span v-for="{ substr, isLcs } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isLcs }">
+						<span v-for="{ substr, isMatch } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isMatch }">
 							{{ substr }}
 						</span><!-- 將 lcs 部份的字串塗橘色 -->
 					</div>
@@ -46,58 +46,14 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { sum } from "ran-math";
 import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
+import { splitTargetByLcs } from "@lib/lcs";
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
 
-function strEqualIgnoreCase(str_a, str_b) { // 忽略大小寫的字串比較
-	return str_a.toLowerCase() === str_b.toLowerCase();
-}
-
-function lcs(str_a, str_b) { // LCS
-	const [n, m] = [str_a.length, str_b.length]; // 字串長度
-	
-	const dpArr = Array.from({ length: n+1 }, () => Array(m+1).fill(0));
-	for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) {
-		if (strEqualIgnoreCase(str_a[i-1], str_b[j-1])) dpArr[i][j] = dpArr[i-1][j-1] + 1;
-		else dpArr[i][j] = Math.max(dpArr[i-1][j], dpArr[i][j-1]);
-	}
-	
-	let [i, j] = [n, m];
-	let lcsStr = "";
-	while (i > 0 && j > 0) {
-		if (strEqualIgnoreCase(str_a[i-1], str_b[j-1])) {
-			lcsStr = str_a[i-1] + lcsStr; i--; j--;
-		} else {
-			dpArr[i-1][j] >= dpArr[i][j-1] ? i-- : j--;
-		}
-	}
-	
-	return lcsStr;
-}
-
-function getLcsSubstrs(str, lcsStr) { // 根據是不是 lcs 的部分, 將字串切分成子字串 (功能實作: 與搜尋字串相同的內容會有底色)
-	if (lcsStr.length === 0) return [{ substr: str, isLcs: false }]; // 整段 str 都不是 lcs
-	
-	let lcsReadIndex = 0;
-	const substrs = []; // lcs 子字串和非 lcs 子字串交替元素的 arr
-	const pushChar = (char, isLcs) => { // 將一個字元加入到 substrs
-		if (substrs.length > 0 && substrs.at(-1).isLcs === isLcs) substrs.at(-1).substr += char;
-		else substrs.push({ substr: char, isLcs });
-	};
-	for (const char of str) {
-		if (lcsReadIndex <= lcsStr.length-1 && strEqualIgnoreCase(char, lcsStr[lcsReadIndex])) { // 逐一比對 (忽略大小寫)
-			pushChar(char, true);
-			lcsReadIndex++;
-		} else {
-			pushChar(char, false);
-		}
-	}
-	return substrs;
-}
-
 function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
-	const squareArr = lcsSubstrs.filter(({ isLcs }) => isLcs).map(({ substr }) => substr.length ** 2); // 若 ^2 獎勵太多, 考慮降低
+	const squareArr = lcsSubstrs.filter(({ isMatch }) => isMatch)
+		.map(({ substr }) => substr.length ** 2); // 若 ^2 獎勵太多, 考慮降低
 	return Math.sqrt(sum(squareArr)); // root sum square
 }
 
@@ -106,8 +62,8 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 	for (let { tag, en, zhtw } of tagDatas) { // 遍歷所有 tag 的中/英文
 		en = en.replaceAll("\n", " "); // 去除英文標籤的 \n
 		
-		const enTagLcsSubstrs = getLcsSubstrs(en, lcs(en, searchText)); // 尋找 lcs 的子字串
-		const zhtwTagLcsSubstrs = getLcsSubstrs(zhtw, lcs(zhtw, searchText));
+		const enTagLcsSubstrs = splitTargetByLcs(en, searchText); // 尋找 lcs 的子字串
+		const zhtwTagLcsSubstrs = splitTargetByLcs(zhtw, searchText);
 		
 		const enTagRss = getLcsRss(enTagLcsSubstrs); // rss
 		const zhtwTagRss = getLcsRss(zhtwTagLcsSubstrs);
