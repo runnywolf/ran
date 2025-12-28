@@ -1,5 +1,5 @@
 # 🦊 Ran
-![](https://img.shields.io/badge/Ran-v0.5.4-55f?style=flat)
+![](https://img.shields.io/badge/Ran-v0.5.5-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.3-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -13,10 +13,11 @@
 數學函式庫 → [RanMath](https://github.com/runnywolf/ran/blob/main/src/libs/ran-math.js)
 
 > [!WARNING]
-> 目前 safari 會有題號顯示異常的問題，因為瀏覽器不支援修改 `::marker`，我也沒辦法。
+> 目前 safari 會有題號顯示異常的問題，因為瀏覽器不支援修改 `::marker`，我也沒辦法。<br>
+> 建議 safari 使用者安裝 chromium/firefox 以獲得最佳體驗。( bug 一堆不想修 )
 
 > [!NOTE]
-> 使用電腦版網頁以獲得最佳體驗。
+> 為獲得最佳體驗，請使用電腦版網頁或行動版網頁的 PC mode。
 
 這個網頁是靜態的，因此你可以 `git clone` 到 `local`，建構完成後作為離線版使用。
 
