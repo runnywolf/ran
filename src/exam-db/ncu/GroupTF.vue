@@ -26,7 +26,7 @@ const props = defineProps({
 
 <style scoped>
 table, tr, td, th { /* 沒有框線的表格 */
-  border: none;
+	border: none;
 	padding: 0;
 }
 table > tbody > tr > td:not(:first-child) {

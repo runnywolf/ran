@@ -32,12 +32,12 @@ function whenWindowResize() { // 當視窗大小改變, 計算導覽列縮放比
 }
 
 onMounted(() => {
-  window.addEventListener("resize", whenWindowResize);
-  whenWindowResize(); // dom 建構完成, 需要根據視窗寬度計算一次樣式
+	window.addEventListener("resize", whenWindowResize);
+	whenWindowResize(); // dom 建構完成, 需要根據視窗寬度計算一次樣式
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", whenWindowResize);
+	window.removeEventListener("resize", whenWindowResize);
 });
 </script>
 

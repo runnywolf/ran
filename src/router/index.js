@@ -41,7 +41,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => { // 當路由切換前
 	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
-  next(); // 繼續跳轉到其他頁面
+	next(); // 繼續跳轉到其他頁面
 })
 
 export default router;
