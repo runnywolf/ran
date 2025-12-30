@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { getSearchData } from "@lib/exam-db"; // 讀取題本資訊
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
@@ -80,18 +80,16 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	}, DEBOUNCE_TIME_MS);
 }
 
-async function getProblemConfigs() {
-	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
-	problemConfigTuples = await getSearchData(); // 載入所有題本的 config
-	console.log(problemConfigTuples);
-	isGettingDb.value = false; // 讀取完成
-}
-
 let debounceTimerId = null; // 防抖
 let problemConfigTuples = []; // 所有題目的 config. { uni, year, no, problemConfig, problemText }
 const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
 const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
-getProblemConfigs();
+
+onMounted(async () => {
+	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
+	problemConfigTuples = await getSearchData(); // 因為 search-data.json 很大, 所以採用動態載入
+	isGettingDb.value = false; // 讀取完成
+});
 </script>
