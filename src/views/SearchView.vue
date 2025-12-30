@@ -7,7 +7,7 @@
 			
 			<!-- 搜尋結果 (很多題目) -->
 			<div v-if="isGettingDb" class="ts-text is-center-aligned">
-				正在處理題目資訊<span class="ts-icon is-spinning is-spinner-icon is-start-spaced"></span>
+				正在蒐集題目資訊<span class="ts-icon is-spinning is-spinner-icon is-start-spaced"></span>
 			</div>
 			<div v-else-if="isSearching" class="ts-text is-center-aligned">
 				搜尋中<span class="ts-icon is-spinning is-spinner-icon is-start-spaced"></span>
@@ -39,7 +39,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAllProblemConfigs } from "@lib/exam-db"; // 讀取題本資訊
+import { getSearchData } from "@lib/exam-db"; // 讀取題本資訊
 import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
 
@@ -82,7 +82,8 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 
 async function getProblemConfigs() {
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
-	problemConfigTuples = await getAllProblemConfigs(); // 載入所有題本的 config
+	problemConfigTuples = await getSearchData(); // 載入所有題本的 config
+	console.log(problemConfigTuples);
 	isGettingDb.value = false; // 讀取完成
 }
 

@@ -37,11 +37,12 @@ interface ContentConfig { // content config 型別宣告
 	suffix?: string, // 後綴, only for 詳解類型的內容區塊
 }
 
-interface ProblemConfigTuple {
-	uni: string,
-	year: string,
-	no: string,
-	problemConfig: ProblemConfig,
+interface ProblemSearchData { // 單個題目的資訊 (用於搜尋題目)
+	uni: string, // 學校縮寫
+	year: string, // 題本年份
+	no: string, // 題號
+	problemConfig: ProblemConfig, // 題目設定檔
+	problemText: string, // 題目 vue 檔內 template 區塊裡擷取出來的 html inner text, 請參考 src/exam-db-tool/make-search-data.py
 }
 
 interface TagNode { // tag node 型別宣告
@@ -52,10 +53,12 @@ interface TagNode { // tag node 型別宣告
 
 import type { Component } from "vue";
 import _dbConfig from "../exam-db/config.json" with { type: "json" };
+import _searchData from "../exam-db/search-data.json" with { type: "json" };
 import _tagTree from "../exam-db/tag-tree.json" with { type: "json" };
 
 export const dbConfig = _dbConfig as DbConfig; // 檢查 db config 型態, 如果報錯代表格式錯誤
 const tagTree = _tagTree as Record<string, TagNode>; // 檢查 tag tree 型態
+const tagTreeRootNode = { children: tagTree } as TagNode;
 
 export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;
@@ -90,18 +93,6 @@ export async function getPrevAndNextNo( // 取得某一個題號的前後題號
 	return [problemNoList[noIndex-1], problemNoList[noIndex+1]]; // 回傳前後題號, 注意: 如果前後題號不存在, 可能回傳類似 [undefined, "2"] 的東西
 }
 
-export async function getAllProblemConfigs(): Promise<Array<ProblemConfigTuple>> { // 讀取所有題目的設定
-	const tasks = Object.entries(dbConfig.uniConfigs).flatMap(
-		([uni, { yearList }]) => yearList.map(
-			async year => Object.entries((await getExamConfig(uni, year)).problemConfigs).map(
-				([no, problemConfig]) => ({ uni, year, no, problemConfig })
-			)
-		)
-	);
-	const nested = await Promise.all(tasks);
-	return nested.flat();
-}
-
 export async function getSectionComp( // 讀取並回傳區塊(題目)組件
 	uni: string, year: string, no: string
 ): Promise<{ default: Component }> {
@@ -122,7 +113,10 @@ export function getAllContentComps( // 讀取並回傳多個內容(解答)組件
 	);
 }
 
-const tagTreeRootNode = { children: tagTree } as TagNode;
+export async function getSearchData(): Promise<Array<ProblemSearchData>> { // 因為 search-data.json 很大, 所以採用動態載入
+	return await import("../exam-db/search-data.json") // 讀取 search data
+		.then(module => module.default as Array<ProblemSearchData>); // 確認型態
+}
 
 export class TagTree {
 	static getPathToNode(tag: string): Array<{ en: string, zhtw: string }> { // 將一個 tag 字串依照 "-" 字符切分後, 回傳 tag tree 搜尋路徑
