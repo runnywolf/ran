@@ -1,14 +1,33 @@
 <template>
 	<div class="ts-wrap is-vertical is-center-aligned is-compact">
 		
-		<!-- 搜尋框 -->
-		<div style="width: 500px" class="ts-input is-start-icon" popovertarget="dropdown-suggestions">
-			<span class="ts-icon is-magnifying-glass-icon"></span>
-			<input type="text" placeholder="搜尋" v-model="searchText">
+		<!-- 搜尋框 & help button -->
+		<div class="ts-wrap is-middle-aligned">
+			
+			<!-- 搜尋框, "建議列表" 是此元素的彈出內容 -->
+			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="search-page-dropdown-suggestions">
+				<span class="ts-icon is-magnifying-glass-icon"></span>
+				<input type="text" placeholder="搜尋" v-model="searchText">
+			</div>
+			
+			<!-- help button & help 彈出內容 -->
+			<button class="ts-icon is-circle-question-icon is-large" popovertarget="search-page-help"></button>
+			<div class="ts-popover" id="search-page-help" popover>
+				<div class="ts-content is-dense" style="width: 400px;">
+					<div class="ts-list is-unordered">
+						<div class="item">可以在搜尋框搜尋想要的題目標籤，點擊搜尋結果即可將該標籤加入搜尋條件。</div>
+						<div class="item">點擊搜尋框下方已加入的標籤，可將其從搜尋條件中移除。</div>
+						<div class="item">如果只想用搜尋框內容查找題目段落，請點擊建議列表以外的區域，建議列表將自動關閉。</div>
+						<div class="item">搜尋框會無視大小寫，直接比對題目段落中的連續子字串，也支援搜尋 LaTeX 語法。</div>
+						<div class="item">標籤篩選規則：所有搜尋標籤必須為該題目任一標籤的子標籤。</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		
 		<!-- 建議列表 -->
-		<div style="width: 500px; padding: 8px;" class="ts-popover" id="dropdown-suggestions" popover>
+		<div style="width: 500px; padding: 8px;" class="ts-popover" id="search-page-dropdown-suggestions" popover>
 			
 			<!-- 多個建議 tag -->
 			<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
@@ -90,9 +109,9 @@ const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 	if (newSearchText) { // 輸入框非空, 顯示建議列表
 		sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
-		document.querySelector("#dropdown-suggestions").showPopover() // 顯示建議列表
+		document.querySelector("#search-page-dropdown-suggestions").showPopover() // 顯示建議列表
 	} else { // 輸入框為空, 隱藏建議列表
-		document.querySelector("#dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
+		document.querySelector("#search-page-dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
 	}
 });
 

@@ -14,7 +14,8 @@ def problemVueFileToInnerText(uni: str, year: str, no: str) -> str: # 題目 vue
 	text = text.split("<template>", 1)[1].rsplit("</template>", 1)[0] # 擷取 vue file 的 temp 部分 (題目文字內容)
 	text = re.sub(r"<[^>]+>", "", text) # 移除 <...> 標籤
 	lines = [l.strip() for l in text.splitlines()] # 去除 innerText 的頭尾空白, tab 等等
-	return " ".join(l for l in lines if len(l) > 0) # 將非空字串以空白符連接
+	text = " ".join(l for l in lines if len(l) > 0) # 將非空字串以空白符連接
+	return text.lower() # 轉小寫, 僅用於輔助搜尋
 
 with open(DB_PATH/"config.json", "r", encoding="utf-8") as f: # 讀取 db config
 	dbConfig = json.load(f)
