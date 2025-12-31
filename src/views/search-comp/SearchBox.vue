@@ -66,9 +66,11 @@ import { useRoute } from "vue-router";
 import { sum } from "ran-math";
 import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
 import { splitTargetByLcs } from "@lib/lcs";
+import { showToast, ToastType } from "@lib/toast"; // 彈出訊息
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
+const SELECTED_TAG_MAX_NUMBER = 5; // 選定的 tag 的最大個數
 
 function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
 	const squareArr = lcsSubstrs.filter(({ isMatch }) => isMatch)
@@ -116,8 +118,12 @@ watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 });
 
 function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
-	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 	searchText.value = ""; // 清空搜尋框
+	if (selectedTags.value.length >= SELECTED_TAG_MAX_NUMBER) { // 超出標籤最大選取限制
+		showToast("你選太多標籤了拉 (☉д⊙)", ToastType.WARNING);
+		return;
+	}
+	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 };
 
 const route = useRoute(); // 路由
