@@ -71,6 +71,12 @@ import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
 const SELECTED_TAG_MAX_NUMBER = 5; // 選定的 tag 的最大個數
+const SEARCH_TEXT_MAX_LENGTH = 100; // 若搜尋字串長於此值, 會捨棄之後的部分, 但不會修改 input ui text
+
+function fixSearchText(text) { // 處理過長的 search text
+	if (text.length > SEARCH_TEXT_MAX_LENGTH) return text.slice(0, SEARCH_TEXT_MAX_LENGTH);
+	return text;
+}
 
 function getLcsRss(lcsSubstrs) { // 將多個 lcs 子字串, 取 root sum square (有利於較長的匹配子字串)
 	const squareArr = lcsSubstrs.filter(({ isMatch }) => isMatch)
@@ -115,6 +121,7 @@ watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變�
 }, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
 
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
+	newSearchText = fixSearchText(newSearchText); // 處理過長的 search text
 	const dropdownElement = document.querySelector("#search-page-tag-suggestions"); // 建議列表的元素
 	
 	if (newSearchText) { // 輸入框非空, 顯示建議列表
@@ -135,6 +142,7 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 };
 
 watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
+	text = fixSearchText(text); // 處理過長的 search text
 	emit("input-changed", text, tags);
 }, { immediate: true, deep: true }); // 第一次載入 emit 和刪除 tag 分別需要 immediate 和 deep 來觸發
 </script>

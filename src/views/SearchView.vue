@@ -36,7 +36,6 @@ import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結�
 
 const DEBOUNCE_TIME_MS = 500; // 搜尋欄和 tag 改變時, 要經過一段時間後才會開始搜尋 (防止打字時高頻觸發搜尋)
 const SEARCH_RESULT_DELTA = 5; // 按下 "顯示更多" 的按鈕後, 會將顯示的題目數增加此值
-const SEARCH_TEXT_MAX_LENGTH = 100; // 搜尋字串的最大長度 (不會修改 input text)
 
 function isSubtag(tag, subtag) { // subtag 是否是 tag 的子標籤
 	const splitedTag = tag.split("-");
@@ -51,8 +50,6 @@ function isSubtagOfAnyProblemTags(tag, problemTags) { // tag 是 problemTags 內
 function getSearchResult(searchData, searchText, searchTags) { // 獲得搜尋結果
 	if (!searchData) return []; // exam-db 未載入完成, return []
 	if (!searchText && searchTags.length === 0) return []; // 沒有任何搜尋字串或篩選 tag, return []
-	
-	if (searchText.length > SEARCH_TEXT_MAX_LENGTH) searchText = searchText.slice(0, SEARCH_TEXT_MAX_LENGTH);
 	
 	const searchResult = []; // 搜尋結果
 	for (const problemSearchData of searchData) { // 篩選題目
