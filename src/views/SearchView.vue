@@ -21,7 +21,7 @@
 			<!-- 顯示更多的按鈕 -->
 			<button v-if="searchResultProblemDatas.length > maxResultProblemNumber"
 				class="ts-button is-secondary"
-				@click="maxResultProblemNumber += RESULT_LIMITS"
+				@click="maxResultProblemNumber += SEARCH_RESULT_DELTA"
 			>顯示更多</button>
 			
 		</div>
@@ -35,7 +35,7 @@ import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示搜尋結果的組件
 
 const DEBOUNCE_TIME_MS = 500; // 搜尋欄和 tag 改變時, 要經過一段時間後才會開始搜尋 (防止打字時高頻觸發搜尋)
-const RESULT_LIMITS = 5; // 按下 "顯示更多" 的按鈕後, 會將顯示的題目數增加此值
+const SEARCH_RESULT_DELTA = 5; // 按下 "顯示更多" 的按鈕後, 會將顯示的題目數增加此值
 const SEARCH_TEXT_MAX_LENGTH = 100; // 搜尋字串的最大長度 (不會修改 input text)
 
 function isSubtag(tag, subtag) { // subtag 是否是 tag 的子標籤
@@ -71,7 +71,7 @@ function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
 	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
 	debounceTimerId = setTimeout(() => {
 		searchResultProblemDatas.value = getSearchResult(searchData, searchText, searchTags); // 搜尋符合的題目
-		maxResultProblemNumber.value = RESULT_LIMITS; // 重置顯示的題目數
+		maxResultProblemNumber.value = SEARCH_RESULT_DELTA; // 重置顯示的題目數
 		isSearching.value = false; // 搜尋完成
 	}, DEBOUNCE_TIME_MS);
 }
@@ -81,7 +81,7 @@ let searchData = []; // 所有題目的 config. { uni, year, no, problemConfig, 
 const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
-const maxResultProblemNumber = ref(RESULT_LIMITS); // 搜尋結果顯示的題目數
+const maxResultProblemNumber = ref(SEARCH_RESULT_DELTA); // 搜尋結果顯示的題目數
 
 onMounted(async () => { // 載入頁面時
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"

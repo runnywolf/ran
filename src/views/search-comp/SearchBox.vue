@@ -5,7 +5,7 @@
 		<div class="ts-wrap is-middle-aligned">
 			
 			<!-- 搜尋框, "建議列表" 是此元素的彈出內容 -->
-			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="search-page-dropdown-suggestions">
+			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="search-page-tag-suggestions">
 				<span class="ts-icon is-magnifying-glass-icon"></span>
 				<input type="text" placeholder="搜尋" v-model="searchText">
 			</div>
@@ -27,17 +27,17 @@
 		</div>
 		
 		<!-- 建議列表 -->
-		<div style="width: 500px; padding: 8px;" class="ts-popover" id="search-page-dropdown-suggestions" popover>
+		<div style="width: 500px; padding: 8px;" class="ts-popover" id="search-page-tag-suggestions" popover>
 			
-			<!-- 多個建議 tag -->
+			<!-- 如果有搜尋到符合的 tag, 顯示多個建議 tag -->
 			<div v-if="sortedTagLcsDataArr.length > 0" class="ts-wrap is-vertical is-compact">
 				<div v-for="{ tag, lcsSubstrs } in sortedTagLcsDataArr"
-					class="ts-wrap is-compact dropdown-suggestion"
+					class="ts-wrap is-compact tag-suggestion"
 					@click="whenDropDownTagClicked(tag)"
 				>
 					<Tag :tag="tag"></Tag>
 					<div class="ts-text">
-						<span v-for="{ substr, isMatch } in lcsSubstrs" :class="{ 'dropdown-lcs-text': isMatch }">
+						<span v-for="{ substr, isMatch } in lcsSubstrs" :class="{ 'tag-suggestion-match-text': isMatch }">
 							{{ substr }}
 						</span><!-- 將 lcs 部份的字串塗橘色 -->
 					</div>
@@ -108,12 +108,20 @@ const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
 
+const route = useRoute(); // 路由
+watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
+	const isRouteTagVaild = tagDatas.some(({ tag }) => tag === newTag);
+	selectedTags.value = isRouteTagVaild ? [newTag] : [];
+}, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
+
 watch(searchText, newSearchText => { // 當搜尋框的字串改變時
+	const dropdownElement = document.querySelector("#search-page-tag-suggestions"); // 建議列表的元素
+	
 	if (newSearchText) { // 輸入框非空, 顯示建議列表
 		sortedTagLcsDataArr.value = getDropDownSuggestionDatas(newSearchText); // 根據搜尋字串, 生成建議列表的顯示資料
-		document.querySelector("#search-page-dropdown-suggestions").showPopover() // 顯示建議列表
+		dropdownElement.showPopover() // 顯示建議列表
 	} else { // 輸入框為空, 隱藏建議列表
-		document.querySelector("#search-page-dropdown-suggestions").hidePopover() // 隱藏下拉建議列表
+		dropdownElement.hidePopover() // 隱藏建議列表
 	}
 });
 
@@ -126,25 +134,20 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 };
 
-const route = useRoute(); // 路由
-watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
-	selectedTags.value = tagDatas.some(({ tag }) => tag === newTag) ? [newTag] : [];
-}, { immediate: true }); // 若路由為 #/search, 清空選定的 tag; 若路由為 #/search/<tag> 且 tag 存在, 添加一個 tag.
-
 watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
 	emit("input-changed", text, tags);
 }, { immediate: true, deep: true }); // 第一次載入 emit 和刪除 tag 分別需要 immediate 和 deep 來觸發
 </script>
 
 <style scoped>
-.dropdown-suggestion {
-	user-select: none; /* 禁止選取搜尋結果 */
+.tag-suggestion { /* 禁止選取搜尋結果 */
+	user-select: none;
 }
-.dropdown-suggestion:hover {
+.tag-suggestion:hover { /* 滑鼠游標放到搜尋結果上時, 整行的背景會變得跟 tag 組件背景一樣的顏色 */
 	background-color: #eee;
 	border-radius: 15px;
 }
-.dropdown-lcs-text { /* lcs 部份會有底色 */
+.tag-suggestion-match-text { /* 搜尋匹配部份會有底色 */
 	background-color: #fc0;
 }
 </style>
