@@ -1,29 +1,10 @@
 <template>
 	<div class="ts-wrap is-vertical is-center-aligned is-compact">
 		
-		<!-- 搜尋框 & help button -->
-		<div class="ts-wrap is-middle-aligned">
-			
-			<!-- 搜尋框, "建議列表" 是此元素的彈出內容 -->
-			<div style="width: 500px" class="ts-input is-start-icon" popovertarget="search-page-tag-suggestions">
-				<span class="ts-icon is-magnifying-glass-icon"></span>
-				<input type="text" placeholder="搜尋" v-model="searchText">
-			</div>
-			
-			<!-- help button & help 彈出內容 -->
-			<button class="ts-icon is-circle-question-icon is-large" popovertarget="search-page-help"></button>
-			<div class="ts-popover" id="search-page-help" popover>
-				<div class="ts-content is-dense" style="width: 400px;">
-					<div class="ts-list is-unordered">
-						<div class="item">可以在搜尋框搜尋想要的題目標籤，點擊搜尋結果即可將該標籤加入搜尋條件。</div>
-						<div class="item">點擊搜尋框下方已加入的標籤，可將其從搜尋條件中移除。</div>
-						<div class="item">如果只想用搜尋框內容查找題目段落，請點擊建議列表以外的區域，建議列表將自動關閉。</div>
-						<div class="item">搜尋框會無視大小寫，直接比對題目段落中的連續子字串，也支援搜尋 LaTeX 語法。</div>
-						<div class="item">標籤篩選規則：所有搜尋標籤必須為該題目任一標籤的子標籤。</div>
-					</div>
-				</div>
-			</div>
-			
+		<!-- 搜尋框, "建議列表" 是此元素的彈出內容 -->
+		<div style="width: 500px" class="ts-input is-start-icon" popovertarget="search-page-tag-suggestions">
+			<span class="ts-icon is-magnifying-glass-icon"></span>
+			<input type="text" placeholder="搜尋" v-model="searchText">
 		</div>
 		
 		<!-- 建議列表 -->
@@ -52,7 +33,26 @@
 			
 		</div>
 		
-		<!-- 搜尋框下面的已選取 tags -->
+		<!-- ??? & help button -->
+		<div class="ts-wrap is-middle-aligned">
+			
+			<!-- help button & help 彈出內容 -->
+			<button class="ts-icon is-circle-question-icon is-large" popovertarget="search-page-help"></button>
+			<div class="ts-popover" id="search-page-help" popover>
+				<div class="ts-content is-dense" style="width: 400px;">
+					<div class="ts-list is-unordered">
+						<div class="item">可以在搜尋框搜尋想要的題目標籤，點擊搜尋結果即可將該標籤加入搜尋條件。</div>
+						<div class="item">點擊搜尋框下方已加入的標籤，可將其從搜尋條件中移除。</div>
+						<div class="item">如果只想用搜尋框內容查找題目段落，請點擊建議列表以外的區域，建議列表將自動關閉。</div>
+						<div class="item">搜尋框會無視大小寫，直接比對題目段落中的連續子字串，也支援搜尋 LaTeX 語法。</div>
+						<div class="item">標籤篩選規則：所有搜尋標籤必須為該題目任一標籤的子標籤。</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<!-- 搜尋框下方的已選取 tags -->
 		<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
 			<Tag v-for="(tag, i) in selectedTags" :tag="tag" @click="selectedTags.splice(i, 1)"></Tag>
 		</div>
@@ -103,8 +103,7 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 		lcsDataArr.push(lcsData);
 	}
 	lcsDataArr = lcsDataArr.sort((a, b) => b.lcsRss - a.lcsRss); // 採用 lcs-rss 降序排列
-	while (lcsDataArr.length > DROPDOWN_MAX_TAG_NUMBER) lcsDataArr.pop(); // 只保留 rss 較高的前幾項
-	return lcsDataArr;
+	return lcsDataArr.slice(0, DROPDOWN_MAX_TAG_NUMBER); // 只保留 rss 較高的前幾項
 }
 
 const emit = defineEmits([ "input-changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr

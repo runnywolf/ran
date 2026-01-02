@@ -61,18 +61,6 @@ function getSearchResult(searchData, searchText, searchTags) { // 獲得搜尋�
 	return searchResult;
 }
 
-function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
-	isSearching.value = true; // 顯示 "搜尋中"
-	searchResultProblemDatas.value = []; // 清空搜尋結果, 防止 "顯示更多" 按鈕顯示
-	
-	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
-	debounceTimerId = setTimeout(() => {
-		searchResultProblemDatas.value = getSearchResult(searchData, searchText, searchTags); // 搜尋符合的題目
-		maxResultProblemNumber.value = SEARCH_RESULT_DELTA; // 重置顯示的題目數
-		isSearching.value = false; // 搜尋完成
-	}, DEBOUNCE_TIME_MS);
-}
-
 let debounceTimerId = null; // 防抖
 let searchData = []; // 所有題目的 config. { uni, year, no, problemConfig, problemText }
 const isGettingDb = ref(false); // 是否正在讀取 exam db
@@ -85,4 +73,16 @@ onMounted(async () => { // 載入頁面時
 	searchData = await getSearchData(); // 因為 search-data.json 很大, 所以採用動態載入
 	isGettingDb.value = false; // 讀取完成
 });
+
+function whenSearchChanged(searchText, searchTags) { // 當搜尋內容改變時
+	isSearching.value = true; // 顯示 "搜尋中"
+	searchResultProblemDatas.value = []; // 清空搜尋結果, 防止 "顯示更多" 按鈕顯示
+	
+	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
+	debounceTimerId = setTimeout(() => {
+		searchResultProblemDatas.value = getSearchResult(searchData, searchText, searchTags); // 搜尋符合的題目
+		maxResultProblemNumber.value = SEARCH_RESULT_DELTA; // 重置顯示的題目數
+		isSearching.value = false; // 搜尋完成
+	}, DEBOUNCE_TIME_MS);
+}
 </script>
