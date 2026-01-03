@@ -34,7 +34,7 @@
 		</div>
 		
 		<!-- 學校篩選 & 年份範圍篩選 & help button -->
-		<SearchBoxRange @scope-changed="scope => uniYearScope = scope"></SearchBoxRange>
+		<SearchFliterRange @scope-changed="scope => uniYearScope = scope"></SearchFliterRange>
 		
 		<!-- 搜尋框下方的已選取 tags -->
 		<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
@@ -52,7 +52,7 @@ import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
 import { splitTargetByLcs } from "@lib/lcs";
 import { showToast, ToastType } from "@lib/toast"; // 彈出訊息
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
-import SearchBoxRange from "./SearchBoxRange.vue"; // 篩選特定學校和年份範圍的組件
+import SearchFliterRange from "./SearchFliterRange.vue"; // 篩選特定學校和年份範圍的組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
 const SELECTED_TAG_MAX_NUMBER = 5; // 選定的 tag 的最大個數
@@ -129,7 +129,7 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 watch([searchText, selectedTags, uniYearScope], ([text, tags, scope]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
 	text = fixSearchText(text); // 處理過長的 search text
 	emit("input-changed", { searchText: text, selectedTags: tags, uniYearScope: scope });
-}, { deep: true }); // 刪除 tag 需要 deep 來觸發, 載入頁面時的立即觸發由 SearchBoxRange 組件更新 uniYearScope 達成
+}, { deep: true }); // 刪除 tag 需要 deep 來觸發, 載入頁面時的立即觸發由 SearchFliterRange 組件更新 uniYearScope 達成
 </script>
 
 <style scoped>

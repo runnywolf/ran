@@ -3,7 +3,7 @@
 		<div class="ts-wrap is-vertical is-center-aligned" style="--gap: 22px">
 			
 			<!-- 搜尋框 + 建議列表 -->
-			<SearchBox @input-changed="whenSearchChanged"></SearchBox>
+			<SearchFliter @input-changed="whenSearchChanged"></SearchFliter>
 			
 			<!-- 搜尋結果 (很多題目) -->
 			<div v-if="isGettingDb" class="ts-text is-center-aligned">
@@ -31,7 +31,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getSearchData } from "@lib/exam-db"; // 讀取題本資訊
-import SearchBox from "./search-comp/SearchBox.vue"; // 搜尋框 & 題目篩選條件
+import SearchFliter from "./search-comp/SearchFliter.vue"; // 搜尋框 & 題目篩選條件
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示很多題目 (搜尋結果) 的組件
 
 const DEBOUNCE_TIME_MS = 500; // 搜尋欄和 tag 改變時, 要經過一段時間後才會開始搜尋 (防止打字時高頻觸發搜尋)
