@@ -118,6 +118,43 @@ export async function getSearchData(): Promise<Array<ProblemSearchData>> { // �
 		.then(module => module.default as Array<ProblemSearchData>); // 確認型態
 }
 
+export class ProblemSaver { // 收藏題目專用
+	static decodeProblemId(id: string): { uni: string, year: string, no: string } { // 解碼型式為 "<uni>-<year>/<no>" 的題目唯一 id
+		const [ examId, no ] = id.split("/"); // -> [ "<uni>-<year>", "<no>" ]
+		const { uni, year } = decodeExamId(examId); // 解碼題本 id
+		return { uni, year, no };
+	}
+	
+	static getSavedProblemIds(): Array<string> { // 從 local storage 讀取所有已收藏的題目 id
+		try {
+			const raw = localStorage.getItem("saved-problem-ids");
+			return raw ? JSON.parse(raw) : [];
+		} catch {
+			return [];
+		}
+	}
+	
+	static setState(uni: string, year: string, no: string, state: boolean): void { // 設定題目的收藏狀態
+		let savedProblemIds = ProblemSaver.getSavedProblemIds(); // 從 local storage 讀取所有已收藏的題目 id
+		const problemId = `${uni}-${year}/${no}`;
+		
+		if (state && !savedProblemIds.includes(problemId)) savedProblemIds.push(problemId);
+		if (!state) savedProblemIds = savedProblemIds.filter(id => id !== problemId);
+		
+		localStorage.setItem("saved-problem-ids", JSON.stringify(savedProblemIds));
+	}
+	
+	static getState(uni: string, year: string, no: string): boolean { // 讀取題目的收藏狀態
+		const savedProblemIds = ProblemSaver.getSavedProblemIds(); // 從 local storage 讀取所有已收藏的題目 id
+		return savedProblemIds.includes(`${uni}-${year}/${no}`);
+	}
+	
+	static getAllDecodedProblemId(): Array<{ uni: string, year: string, no: string }> {
+		const savedProblemIds = ProblemSaver.getSavedProblemIds(); // 從 local storage 讀取所有已收藏的題目 id
+		return savedProblemIds.map(id => ProblemSaver.decodeProblemId(id));
+	}
+}
+
 export class TagTree {
 	static getPathToNode(tag: string): Array<{ en: string, zhtw: string }> { // 將一個 tag 字串依照 "-" 字符切分後, 回傳 tag tree 搜尋路徑
 		const path = []; // 搜尋路徑

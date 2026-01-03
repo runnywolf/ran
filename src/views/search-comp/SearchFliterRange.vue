@@ -65,10 +65,6 @@ watch([uniSelected, year1Input, year2Input], ([uni, year1, year2]) => {
 </script>
 
 <style scoped>
-.ts-wrap { /* tocas ui 多層 ts-wrap 的嵌套 bug, 父元素垂直子元素也會變成垂直的 */
-  display: grid !important;
-  grid-auto-flow: column;
-}
 .year-range-input { /* 年份範圍的輸入框 */
 	width: 64px;
 }
