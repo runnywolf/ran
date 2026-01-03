@@ -33,24 +33,8 @@
 			
 		</div>
 		
-		<!-- ??? & help button -->
-		<div class="ts-wrap is-middle-aligned">
-			
-			<!-- help button & help 彈出內容 -->
-			<button class="ts-icon is-circle-question-icon is-large" popovertarget="search-page-help"></button>
-			<div class="ts-popover" id="search-page-help" popover>
-				<div class="ts-content is-dense" style="width: 400px;">
-					<div class="ts-list is-unordered">
-						<div class="item">可以在搜尋框搜尋想要的題目標籤，點擊搜尋結果即可將該標籤加入搜尋條件。</div>
-						<div class="item">點擊搜尋框下方已加入的標籤，可將其從搜尋條件中移除。</div>
-						<div class="item">如果只想用搜尋框內容查找題目段落，請點擊建議列表以外的區域，建議列表將自動關閉。</div>
-						<div class="item">搜尋框會無視大小寫，直接比對題目段落中的連續子字串，也支援搜尋 LaTeX 語法。</div>
-						<div class="item">標籤篩選規則：所有搜尋標籤必須為該題目任一標籤的子標籤。</div>
-					</div>
-				</div>
-			</div>
-			
-		</div>
+		<!-- 學校篩選 & 年份範圍篩選 & help button -->
+		<SearchBoxRange @scope-changed="scope => uniYearScope = scope"></SearchBoxRange>
 		
 		<!-- 搜尋框下方的已選取 tags -->
 		<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
@@ -68,6 +52,7 @@ import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
 import { splitTargetByLcs } from "@lib/lcs";
 import { showToast, ToastType } from "@lib/toast"; // 彈出訊息
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
+import SearchBoxRange from "./SearchBoxRange.vue"; // 篩選特定學校和年份範圍的組件
 
 const DROPDOWN_MAX_TAG_NUMBER = 10; // 搜尋框下面的搜尋建議的最大 tag 數
 const SELECTED_TAG_MAX_NUMBER = 5; // 選定的 tag 的最大個數
@@ -112,6 +97,7 @@ const tagDatas = TagTree.getFlattenedNodes(); // 將 tag-tree.json 扁平化為 
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
+const uniYearScope = ref(null); // 學校 & 年份範圍, 用於篩選
 
 const route = useRoute(); // 路由
 watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
@@ -140,10 +126,10 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 };
 
-watch([searchText, selectedTags], ([text, tags]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
+watch([searchText, selectedTags, uniYearScope], ([text, tags, scope]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
 	text = fixSearchText(text); // 處理過長的 search text
-	emit("input-changed", text, tags);
-}, { immediate: true, deep: true }); // 第一次載入 emit 和刪除 tag 分別需要 immediate 和 deep 來觸發
+	emit("input-changed", { searchText: text, selectedTags: tags, uniYearScope: scope });
+}, { deep: true }); // 刪除 tag 需要 deep 來觸發, 載入頁面時的立即觸發由 SearchBoxRange 組件更新 uniYearScope 達成
 </script>
 
 <style scoped>
