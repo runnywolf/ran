@@ -58,7 +58,7 @@ const props = defineProps({
 	year: { type: String, default: null }, // 題本的民國年份
 	no: { type: String, default: null }, // 題號
 	problemConfig: { type: Object, default: null }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
-	hideProblemScore: { type: Boolean, default: false }, // 是否顯示題目的配分
+	hideProblemScore: { type: Boolean, default: false }, // 隱藏題目的配分
 	showAnswer: { type: Boolean, default: false }, // 顯示綠框答案
 	showLink: { type: Boolean, default: false }, // 顯示 "詳解" 按鈕
 	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)

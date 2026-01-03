@@ -27,6 +27,7 @@ const routes = [
 		redirect: "/other/stat",
 		children: [
 			{ path: "stat", component: () => import("@/views/other-page/StatView.vue") },
+			{ path: "saved", component: () => import("@/views/other-page/SavedView.vue") },
 			{ path: ":pathMatch(.*)", redirect: "/other" },
 		]
 	},

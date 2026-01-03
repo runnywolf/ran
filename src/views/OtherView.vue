@@ -10,6 +10,7 @@
 import MenuContent from "@/components/layout/MenuContent.vue"; // 側邊欄可以切換第二層路由
 
 const optionConfigArr = [
+	{ iconName: "star", label: "收藏", to: "/other/saved" },
 	{ iconName: "chart-simple", label: "統計", to: "/other/stat" },
 ];
 </script>
