@@ -1,3 +1,15 @@
+<!-- 用來顯示題目的組件, 會附帶很多 ui 可以選擇要不要顯示
+
+| topRow           | 包含收藏按鈕, UniYearNo 藍框, 多個標籤的 row
+
+這些組件需要顯示的 ui:
+| ExamPaper (exam mode)   |
+| ExamPaper (!exam mode)  | showAnswer showLink showStar
+| ProblemView             | hideProblemScore showAnswer showContent showStar
+| SearchResult, SavedPage | hideProblemScore showLink topRow[showStar showUniYearNo showTags]
+| NotePage (future)       | hideProblemScore showLink topRow[showStar showUniYearNo showTags]
+-->
+
 <template>
 	<div class="ts-wrap is-vertical" :class="{ 'hide-problem-score': hideProblemScore }">
 		
@@ -47,7 +59,7 @@
 
 <script setup>
 import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
-import { getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
+import { getProblemConfig, getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
 import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
@@ -57,8 +69,8 @@ const props = defineProps({
 	uni: { type: String, default: null }, // 題本的學校英文縮寫
 	year: { type: String, default: null }, // 題本的民國年份
 	no: { type: String, default: null }, // 題號
-	problemConfig: { type: Object, default: null }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內
-	hideProblemScore: { type: Boolean, default: false }, // 隱藏題目的配分
+	problemConfig: { type: Object, default: null }, // 題目的設定檔, 位於 config.problemConfigs.<no> 內, 若此值不傳會自己去抓
+	hideProblemScore: { type: Boolean, default: false }, // 隱藏題目的配分. 因為配分已存在於題目組件檔, 所以只有這個參數是 hide (某種定義?)
 	showAnswer: { type: Boolean, default: false }, // 顯示綠框答案
 	showLink: { type: Boolean, default: false }, // 顯示 "詳解" 按鈕
 	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)
@@ -78,7 +90,7 @@ const getAsyncComp = (promise, notFoundComp) => defineAsyncComponent({ // 生成
 const sectionComp = shallowRef(null); // shallowRef 優化效能 (因為題目組件是動態載入的)
 const contentComps = shallowRef([]);
 watchEffect(async () => {
-	const { uni, year, no, problemConfig } = props;
+	let { uni, year, no, problemConfig } = props;
 	if (!uni || !year || !no) {
 		sectionComp.value = null;
 		contentComps.value = [];
@@ -89,16 +101,15 @@ watchEffect(async () => {
 	
 	if (!props.showContent) return; // 不顯示 contents, 不用載入
 	
-	let contentCompsPromise = [];
 	try {
-		contentCompsPromise = getAllContentComps(uni, year, no, problemConfig);
-	} catch (err) { // 在 problem config 內, 存放內容組件的 "contentConfigs": [...] 不存在或空
+		if (!problemConfig) problemConfig = await getProblemConfig(uni, year, no); // 若題目設定沒傳入, 自己抓
+		contentComps.value = getAllContentComps(uni, year, no, problemConfig).map( // 讀取內容(解答)組件
+			promise => getAsyncComp(promise, ContentNotFoundComp)
+		);
+	} catch (err) { // 只抓 getAllContentComps error
 		console.error(err.message); // 在 console 報錯
+		contentComps.value = [];
 	}
-	
-	contentComps.value = contentCompsPromise.map( // 讀取內容(解答)組件
-		promise => getAsyncComp(promise, ContentNotFoundComp)
-	);
 });
 </script>
 
