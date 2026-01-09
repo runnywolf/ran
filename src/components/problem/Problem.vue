@@ -78,7 +78,7 @@
 import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
 import { getUniShortName, getProblemConfig, getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
-import SaveButton from "../global/SaveButton.vue"; // 收藏按鈕
+import SaveButton from "./SaveButton.vue"; // 收藏按鈕
 import Tag from "./Tag.vue"; // 標籤
 import LoadingComp from "./problem-comp/Loading.vue"; // 題目加載組件
 import SectionNotFoundComp from "./problem-comp/SectionNotFound.vue"; // 區塊載入失敗時, 顯示的錯誤訊息組件
@@ -138,6 +138,7 @@ watchEffect(async () => {
 	display: none;
 }
 .problem-name { /* 藍色框的題目名稱 */
+	margin-left: -4px; /* 縮短與右側收藏按鈕的距離 */
 	padding: 0 6px;
 	background-color: #bdf;
 	border-radius: 4px;

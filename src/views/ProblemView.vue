@@ -4,7 +4,7 @@
 		<!-- 左側的資訊板 -->
 		<template #sidebar>
 			
-			<!-- 題本的連結 -->
+			<!-- 回 "題本頁面" 的連結 -->
 			<div class="ts-content is-dense">
 				<span class="ts-icon is-reply-icon is-end-spaced"></span>
 				<RanLink :to="`#/exam/${uni}-${year}`" @click="clickExamLink">
@@ -36,10 +36,19 @@
 			</div>
 			<div class="ts-divider"></div>
 			
-			<!-- 標籤 -->
+			<!-- 收藏按鈕 -->
+			<div class="ts-content is-dense">
+				<div class="ts-wrap is-compact">
+					<SaveButton :uni="uni" :year="year" :no="no"></SaveButton>
+					<div>收藏題目</div>
+				</div>
+			</div>
+			<div class="ts-divider"></div>
+			
+			<!-- 題目的多個標籤 -->
 			<div class="ts-content is-compact">
 				<div v-if="(problemConfig.tags ?? []).length > 0" class="ts-grid is-compact">
-					<Tag v-for="tag in problemConfig.tags" :tag="tag" clickToSearch></Tag>
+					<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag" clickToSearch></Tag>
 				</div>
 				<div v-else class="ts-content is-center-aligned is-fitted">無標籤</div>
 			</div>
@@ -66,8 +75,9 @@ import { showToast, ToastType } from "toast";
 import { getUniShortName, decodeExamId, getProblemConfig, getPrevAndNextNo } from "@lib/exam-db"; // 讀取題本資料
 import { ProblemConfigMissingError } from "@lib/exam-db"; // error
 import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
-import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import Problem from "@/components/problem/Problem.vue"; // 用於顯示題目與解答的組件
+import Tag from "@/components/problem/Tag.vue"; // tag 組件
+import SaveButton from "@/components/problem/SaveButton.vue"; // 收藏按鈕
 
 const route = useRoute(); // 目前的路由資訊
 const router = useRouter(); // 路由器
