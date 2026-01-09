@@ -8,10 +8,6 @@
 	border-bottom: 1px solid black;
 }
 
-.hide-problem-score .problem-score { /* 用於控制題目的配分是否要顯示 */
-	display: none;
-}
-
 .ran-order-list { /* 編號為 (A), (B), (C), ... 的 ol 清單 */
 	margin: 0;
 	padding-left: 1.23em; /* 題目編號與 box 左側邊緣的距離 */
