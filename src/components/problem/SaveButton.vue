@@ -18,7 +18,7 @@ const isSaved = ref<boolean>(false); // 這一題是否被收藏, null 代表 un
 
 watch(() => [props.uni, props.year, props.no], ([uni, year, no]) => { // 當參數 uni|year|no 改變時, 更新星號狀態
 	isSaved.value = ProblemSaver.getState(uni, year, no);
-});
+}, { immediate: true });
 
 watch(isSaved, newState => { // 當收藏按鈕的狀態被切換時
 	ProblemSaver.setState(props.uni, props.year, props.no, newState); // 保存收藏狀態至 local session

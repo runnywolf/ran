@@ -15,14 +15,7 @@
 			<div v-else-if="searchResultProblemDatas.length === 0" class="ts-text is-center-aligned">
 				沒有找到符合條件的題目 (´-ω-｀)
 			</div>
-			<SearchResults v-else :problemDatas="searchResultProblemDatas" :maxDisplayNumber="maxResultProblemNumber">
-			</SearchResults>
-			
-			<!-- 顯示更多的按鈕 -->
-			<button v-if="searchResultProblemDatas.length > maxResultProblemNumber"
-				class="ts-button is-secondary"
-				@click="maxResultProblemNumber += SEARCH_RESULT_DELTA"
-			>顯示更多</button>
+			<SearchResults v-else :problemDatas="searchResultProblemDatas"></SearchResults>
 			
 		</div>
 	</div>
@@ -35,7 +28,6 @@ import SearchFliter from "./search-comp/SearchFliter.vue"; // 搜尋框 & 題目
 import SearchResults from "./search-comp/SearchResults.vue"; // 顯示很多題目 (搜尋結果) 的組件
 
 const DEBOUNCE_TIME_MS = 500; // 搜尋欄和 tag 改變時, 要經過一段時間後才會開始搜尋 (防止打字時高頻觸發搜尋)
-const SEARCH_RESULT_DELTA = 5; // 按下 "顯示更多" 的按鈕後, 會將顯示的題目數增加此值
 
 function inRange(value, minValue, maxValue) { // value 是否在區間 [bound1, bound2] 內
 	return (minValue <= value && value <= maxValue);
@@ -71,7 +63,6 @@ let searchData = []; // 所有題目的 config. { uni, year, no, problemConfig, 
 const isGettingDb = ref(false); // 是否正在讀取 exam db
 const isSearching = ref(false); // 是否正在搜尋
 const searchResultProblemDatas = ref([]); // 搜尋結果
-const maxResultProblemNumber = ref(SEARCH_RESULT_DELTA); // 搜尋結果顯示的題目數
 
 onMounted(async () => { // 載入頁面時
 	isGettingDb.value = true; // 顯示 "正在讀取題目資訊"
@@ -86,7 +77,6 @@ function whenSearchChanged({ searchText, selectedTags, uniYearScope }) { // 當�
 	clearTimeout(debounceTimerId); // 清除防抖 timer id (取消前一次尚未觸發搜尋的 timer)
 	debounceTimerId = setTimeout(() => {
 		searchResultProblemDatas.value = getSearchResult(searchData, searchText, selectedTags, uniYearScope); // 搜尋符合的題目
-		maxResultProblemNumber.value = SEARCH_RESULT_DELTA; // 重置顯示的題目數
 		isSearching.value = false; // 搜尋完成
 	}, DEBOUNCE_TIME_MS);
 }

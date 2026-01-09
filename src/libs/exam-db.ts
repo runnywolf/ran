@@ -1,17 +1,17 @@
 // 若需要存取 exam-db, 必須經過這層 api
 
-interface DbConfig { // db config 型別宣告
+export interface DbConfig { // db config 型別宣告
 	uniList: Array<string>,
 	uniConfigs: Record<string, UniConfig>, // 這個 K 只是表達一定要在 uniList 內, 對編譯無影響
 }
 
-interface UniConfig { // uni config 型別宣告
+export interface UniConfig { // uni config 型別宣告
 	name: string, // 學校中文全名
 	shortName: string, // 學校中文縮寫, 建議為 2 ~ 3 個字的全形中文
 	yearList: Array<string>, // 目前有哪些年份
 }
 
-interface ExamConfig { // exam config 型別宣告
+export interface ExamConfig { // exam config 型別宣告
 	subjectCode: string, // 科目代號，同年每一份考卷的編號都不一樣
 	subjectName: string, // 題本的科目的完整名稱
 	subjectShortName: string, // 題本的科目縮寫
@@ -24,20 +24,20 @@ interface ExamConfig { // exam config 型別宣告
 	problemConfigs: Record<string, ProblemConfig>, // key 為題號儲存的 problem config
 }
 
-interface ProblemConfig { // problem config 型別宣告
+export interface ProblemConfig { // problem config 型別宣告
 	hideProblemNo?: boolean, // 是否顯示題號 (若這個 key 不存在就是不顯示)
 	answerLatex: string | Array<string>, // 題目的答案，若為 array<string> 會變成由上而下多行顯示。
 	tags: Array<string>, // 題目的多個標籤
 	contentConfigs: Array<ContentConfig>, // 數個內容設定
 }
 
-interface ContentConfig { // content config 型別宣告
+export interface ContentConfig { // content config 型別宣告
 	type: "default" | "answer", // 內容區塊類型
 	fileBaseName: string, // 內容區塊在資料夾 src/exam-db/<uni>/<year>/contents/ 內的路徑
 	suffix?: string, // 後綴, only for 詳解類型的內容區塊
 }
 
-interface ProblemSearchData { // 單個題目的資訊 (用於搜尋題目)
+export interface ProblemSearchData { // 單個題目的資訊 (用於搜尋題目)
 	uni: string, // 學校縮寫
 	year: string, // 題本年份
 	no: string, // 題號
@@ -45,7 +45,7 @@ interface ProblemSearchData { // 單個題目的資訊 (用於搜尋題目)
 	problemText: string, // 題目 vue 檔內 template 區塊裡擷取出來的 html inner text, 請參考 src/exam-db-tool/make-search-data.py
 }
 
-interface TagNode { // tag node 型別宣告
+export interface TagNode { // tag node 型別宣告
 	en: string, // tag 的英文
 	zhtw: string, // tag 的中文
 	children?: Record<string, TagNode>, // 子節點
