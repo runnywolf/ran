@@ -12,7 +12,7 @@
 	<div class="ts-wrap is-vertical" :class="{ 'hide-problem-score': hideProblemScore }">
 		
 		<!-- topRow: 包含收藏按鈕, 題號, 題目的多個標籤 -->
-		<div v-if="showTopRow" class="ts-grid">
+		<div v-if="showTopRow" class="ts-grid is-top-aligned" style="margin-bottom: -5px;">
 			
 			<!-- 收藏按鈕 -->
 			<SaveButton :uni="uni" :year="year" :no="no" />
@@ -137,8 +137,7 @@ watchEffect(async () => {
 .hide-problem-score:deep(.problem-score) { /* 用於控制題目的配分是否要顯示 */
 	display: none;
 }
-.problem-name > span { /* 藍色框的題目名稱 */
-	display: inline-block;
+.problem-name { /* 藍色框的題目名稱 */
 	padding: 0 6px;
 	background-color: #bdf;
 	border-radius: 4px;
