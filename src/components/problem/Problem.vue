@@ -24,7 +24,7 @@
 			
 			<!-- 題目的多個標籤 -->
 			<div class="column is-fluid ts-grid is-top-aligned" style="row-gap: 10px;">
-				<Tag v-for="tag in (problemConfig.tags ?? [])" :tag="tag"></Tag>
+				<Tag v-for="tag in (resolveProblemConfig?.tags ?? [])" :tag="tag"></Tag>
 			</div>
 			
 		</div>
@@ -41,7 +41,7 @@
 			
 			<!-- 綠色答案框 & 詳解連結 -->
 			<div class="ts-wrap">
-				<AnswerBox v-if="showAnswer" :answerLatex="props.problemConfig.answerLatex"><!-- 綠色答案框 -->
+				<AnswerBox v-if="showAnswer" :answerLatex="resolveProblemConfig.answerLatex"><!-- 綠色答案框 -->
 				</AnswerBox>
 				<RanLink v-if="showLink" class="problem-view-link" :to="`#/exam/${uni}-${year}/${no}`"><!-- 詳解連結-->
 					詳解
@@ -49,7 +49,7 @@
 			</div>
 			
 			<!-- 多個 content box (包含詳解) -->
-			<template v-if="showContent" v-for="({ type, suffix }, i) in problemConfig.contentConfigs">
+			<template v-if="showContent" v-for="({ type, suffix }, i) in resolveProblemConfig.contentConfigs">
 				
 				<!-- 詳解類型的內容區塊 -->
 				<Content v-if="type === 'answer'" colorStyle="blue">
@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { shallowRef, watchEffect, defineAsyncComponent } from "vue";
+import { ref, shallowRef, watchEffect, defineAsyncComponent, computed } from "vue";
 import { getUniShortName, getProblemConfig, getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import SaveButton from "./SaveButton.vue"; // 收藏按鈕
@@ -107,23 +107,32 @@ const getAsyncComp = (promise, notFoundComp) => defineAsyncComponent({ // 生成
 	timeout: 5000
 });
 
+const resolveProblemConfig = ref({});
 const sectionComp = shallowRef(null); // shallowRef 優化效能 (因為題目組件是動態載入的)
 const contentComps = shallowRef([]);
+
 watchEffect(async () => {
 	let { uni, year, no, problemConfig } = props;
-	if (!uni || !year || !no) {
-		sectionComp.value = null;
-		contentComps.value = [];
-		return;
+	
+	resolveProblemConfig.value = {}; // 當 uni year no 改變時, 會清除題目設定和所有題目相關的動態組件 (因為題目變了)
+	sectionComp.value = null;
+	contentComps.value = [];
+	
+	if (!uni || !year || !no) return; // 如果 uni year no 其中一個傳入不合法, 直接提前回傳結束
+	
+	try {
+		resolveProblemConfig.value = problemConfig ?? await getProblemConfig(uni, year, no); // 若題目設定沒傳入, 自己抓
+	} catch (err) {
+		console.error(err.message); // 在 console 報錯
+		return; // 如果 uni year no 對應的題目設定不存在, 代表這題不存在
 	}
 	
 	sectionComp.value = getAsyncComp(getSectionComp(uni, year, no), SectionNotFoundComp); // 動態載入區塊組件
 	
-	if (!props.showContent) return; // 不顯示 contents, 不用載入
+	if (!props.showContent) return; // 不顯示 contents, 不用載入內容(解答)組件
 	
 	try {
-		if (!problemConfig) problemConfig = await getProblemConfig(uni, year, no); // 若題目設定沒傳入, 自己抓
-		contentComps.value = getAllContentComps(uni, year, no, problemConfig).map( // 讀取內容(解答)組件
+		contentComps.value = getAllContentComps(uni, year, no, resolveProblemConfig.value).map( // 讀取內容(解答)組件
 			promise => getAsyncComp(promise, ContentNotFoundComp)
 		);
 	} catch (err) { // 只抓 getAllContentComps error

@@ -24,10 +24,10 @@ const routes = [
 	},
 	{
 		path: "/other", component: () => import("@/views/OtherView.vue"),
-		redirect: "/other/stat",
+		redirect: "/other/saved",
 		children: [
-			{ path: "stat", component: () => import("@/views/other-page/StatView.vue") },
 			{ path: "saved", component: () => import("@/views/other-page/SavedView.vue") },
+			{ path: "stat", component: () => import("@/views/other-page/StatView.vue") },
 			{ path: ":pathMatch(.*)", redirect: "/other" },
 		]
 	},
