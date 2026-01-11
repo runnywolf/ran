@@ -6,36 +6,36 @@
 			"sizeByte": 1016
 		},
 		"vue": {
-			"number": 47,
-			"line": 2520,
-			"sizeByte": 114121
+			"number": 50,
+			"line": 2647,
+			"sizeByte": 122087
 		},
 		"js": {
 			"number": 6,
-			"line": 1400,
-			"sizeByte": 81210
+			"line": 1401,
+			"sizeByte": 81294
 		},
 		"ts": {
-			"number": 3,
-			"line": 240,
-			"sizeByte": 13820
+			"number": 4,
+			"line": 298,
+			"sizeByte": 17537
 		},
 		"css": {
 			"number": 4,
-			"line": 114,
-			"sizeByte": 3682
+			"line": 111,
+			"sizeByte": 3573
 		}
 	},
 	"exam": {
 		"json": {
-			"number": 42,
-			"line": 4347,
-			"sizeByte": 108686
+			"number": 43,
+			"line": 4348,
+			"sizeByte": 404059
 		},
 		"vue": {
 			"number": 1106,
 			"line": 14578,
-			"sizeByte": 516048
+			"sizeByte": 516047
 		},
 		"webp": {
 			"number": 66,
@@ -69,9 +69,9 @@
 	},
 	"tool": {
 		"py": {
-			"number": 2,
-			"line": 222,
-			"sizeByte": 13233
+			"number": 3,
+			"line": 251,
+			"sizeByte": 15027
 		},
 		"txt": {
 			"number": 1,

@@ -1,6 +1,5 @@
 <template>
 	<div class="ts-wrap is-vertical is-compact" style="width: 790px;">
-		
 		<template v-for="({ uni, year, no, problemConfig }, i) in problemDatas" :key="`${uni}-${year}-${no}`">
 			<div v-if="i < maxResultProblemNumber" class="ts-box ts-content">
 				<Problem :uni="uni" :year="year" :no="no" :problemConfig="problemConfig"
@@ -8,9 +7,7 @@
 				></Problem>
 			</div>
 		</template>
-		
-		<div ref="bottomElement"></div>
-		
+		<div ref="bottomElement"></div><!-- 題目清單尾端的隱形元素, 用來判斷是否要載入元素 -->
 	</div>
 </template>
 
@@ -33,11 +30,9 @@ const bottomElement = ref<HTMLElement>(); // 題目清單尾端的隱形元素, 
 const maxResultProblemNumber = ref(LOAD_PROBLEM_NUMBER);
 
 onMounted(() => {
-	observer = new IntersectionObserver(
-		([entry]) => { // 當題目清單尾端的隱形元素顯示在螢幕上時, 增加顯示的題目數
-			if (entry.isIntersecting) maxResultProblemNumber.value += LOAD_PROBLEM_NUMBER;
-		}
-	);
+	observer = new IntersectionObserver(([entry]) => { // 當題目清單尾端的隱形元素顯示在螢幕上時, 增加顯示的題目數
+		if (entry.isIntersecting) maxResultProblemNumber.value += LOAD_PROBLEM_NUMBER;
+	});
 	if (bottomElement.value) observer.observe(bottomElement.value);
 });
 
