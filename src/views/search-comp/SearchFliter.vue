@@ -34,7 +34,7 @@
 		</div>
 		
 		<!-- 學校篩選 & 年份範圍篩選 & help button -->
-		<SearchFliterRange @scope-changed="scope => uniYearScope = scope"></SearchFliterRange>
+		<SearchFliterRange @changed="scope => multiScope = scope"></SearchFliterRange>
 		
 		<!-- 搜尋框下方的已選取 tags -->
 		<div v-if="selectedTags.length > 0" class="ts-wrap is-compact">
@@ -91,13 +91,13 @@ function getDropDownSuggestionDatas(searchText) { // 根據搜尋字串, 生成�
 	return lcsDataArr.slice(0, DROPDOWN_MAX_TAG_NUMBER); // 只保留 rss 較高的前幾項
 }
 
-const emit = defineEmits([ "input-changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr
+const emit = defineEmits([ "changed" ]); // 當搜尋框或 tag 改變, emit text 和 tag arr
 
 const tagDatas = TagTree.getFlattenedNodes(); // 將 tag-tree.json 扁平化為 arr: { tag, en, zhtw }
 const searchText = ref(""); // 搜尋框的字串
 const sortedTagLcsDataArr = ref([]); // 搜尋框的 tag 建議列表
 const selectedTags = ref([]); // 被選定的數個 tag (在搜尋框下方)
-const uniYearScope = ref(null); // 學校 & 年份範圍, 用於篩選
+const multiScope = ref(null); // 收藏狀態 & 學校 & 年份範圍, 用於篩選
 
 const route = useRoute(); // 路由
 watch(() => route.params.tag, newTag => { // 當路由 (#/search/<tag>) 改變時
@@ -126,10 +126,10 @@ function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
 };
 
-watch([searchText, selectedTags, uniYearScope], ([text, tags, scope]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
+watch([searchText, selectedTags, multiScope], ([text, tags, scope]) => { // 當搜尋框或 tag 改變, emit text 和 tag arr
 	text = fixSearchText(text); // 處理過長的 search text
-	emit("input-changed", { searchText: text, selectedTags: tags, uniYearScope: scope });
-}, { deep: true }); // 刪除 tag 需要 deep 來觸發, 載入頁面時的立即觸發由 SearchFliterRange 組件更新 uniYearScope 達成
+	emit("changed", { searchText: text, selectedTags: tags, multiScope: scope });
+}, { deep: true }); // 刪除 tag 需要 deep 來觸發, 載入頁面時的立即觸發由 SearchFliterRange 組件更新 multiScope 達成
 </script>
 
 <style scoped>

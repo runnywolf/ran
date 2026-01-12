@@ -1,6 +1,6 @@
 <template>
 	<div class="icon-wrapper" @click="isSaved = !isSaved">
-		<span class="ts-icon is-star-icon is-large" :class="{ 'is-saved': isSaved, 'is-regular': !isSaved }"></span>
+		<span class="ts-icon is-star-icon is-large" :class="isSaved ? 'is-saved' : 'is-regular'"></span>
 	</div>
 </template>
 
