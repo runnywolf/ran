@@ -1,6 +1,6 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
 
-const routes = [
+const routes: RouteRecordRaw[] = [
 	{ path: "/", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", component: () => import("@/views/ExamMenuView.vue") },
@@ -40,9 +40,15 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => { // 當路由切換前
-	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
-	next(); // 繼續跳轉到其他頁面
-})
+const removeTooltip = () => document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
+
+router.beforeEach((to, from) => {
+	removeTooltip();
+	return true;
+});
+
+router.afterEach((to, from) => {
+	removeTooltip(); // 雖然 remove 一次就夠, 但我測試一下能不能修復首頁的 ran neta tooltip 的 bug
+});
 
 export default router;
