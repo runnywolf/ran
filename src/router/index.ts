@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
+import { getUniShortName, decodeExamId } from "@lib/exam-db";
 
 const routes: RouteRecordRaw[] = [
 	{ path: "/", component: () => import("@/views/HomeView.vue") },
@@ -49,6 +50,25 @@ router.beforeEach((to, from) => {
 
 router.afterEach((to, from) => {
 	removeTooltip(); // 雖然 remove 一次就夠, 但我測試一下能不能修復首頁的 ran neta tooltip 的 bug
+	
+	const page = to.path.split("/")[1]; // 頁面路由 [1]
+	let suffix = "";
+	
+	if (page === "notes") suffix = "筆記";
+	else if (page === "exam") {
+		suffix = "歷屆試題";
+		try {
+			const { id: examId, prob: no } = to.params;
+			const { uni, year } = decodeExamId(examId as string);
+			suffix = `${getUniShortName(uni)} ${year}` + (no ? ` 第 ${no} 題` : "");
+		} catch {}
+	}
+	else if (page === "search") suffix = "搜尋題目";
+	else if (page === "practice") suffix = "模擬室";
+	else if (to.path === "/other/saved") suffix = "收藏";
+	else if (to.path === "/other/stat") suffix = "統計";
+	
+	document.title = "Ran" + (suffix ? ` - ${suffix}` : "");
 });
 
 export default router;
