@@ -121,7 +121,9 @@ watchEffect(async () => {
 	if (!uni || !year || !no) return; // 如果 uni year no 其中一個傳入不合法, 直接提前回傳結束
 	
 	try {
-		resolveProblemConfig.value = problemConfig ?? await getProblemConfig(uni, year, no); // 若題目設定沒傳入, 自己抓
+		if (no[0] !== "-") { // "-" 開頭的不是題目, 不需要抓 config
+			resolveProblemConfig.value = problemConfig ?? await getProblemConfig(uni, year, no); // 若題目設定沒傳入, 自己抓
+		}
 	} catch (err) {
 		console.error(err.message); // 在 console 報錯
 		return; // 如果 uni year no 對應的題目設定不存在, 代表這題不存在
