@@ -42,17 +42,22 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from "vue-router";
 
 const router = useRouter(); // 路由器
 
-const boxGroups = [ // 顯示的多個資訊欄 (網站特點介紹)
+const boxGroups: { iconName: string, texts: string[], clickTargetUrl: string }[][] = [ // 顯示的多個資訊欄 (網站特點介紹)
 	[
 		{
 			iconName: "file",
 			texts: [ "收錄各校的歷屆試題", "重新排版，閱讀更舒適", "盡可能的提供詳解", "帶有計時器的測驗模式" ],
 			clickTargetUrl: "/exam",
+		},
+		{
+			iconName: "magnifying-glass",
+			texts: [ "搜尋題目的文字片段", "搜尋特定標籤的題目", "搜尋特定學校和年份的題目" ],
+			clickTargetUrl: "/search"
 		},
 		{
 			iconName: "pen",
