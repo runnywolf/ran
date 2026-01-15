@@ -1,11 +1,16 @@
 <template>
-	<template v-for="({ uni, year, no }, i) in decodedProblemIds">
-		<template v-if="i < maxResultProblemNumber">
-			<div v-if="i !== 0" class="ts-divider is-section"></div><!-- 分隔線 -->
-			<Problem :uni="uni" :year="year" :no="no" hideProblemScore showTopRow showLink></Problem>
+	<div v-if="decodedProblemIds.length === 0" class="ts-text is-center-aligned">
+		目前沒有任何收藏<br>ヽ(^･ω･^)丿
+	</div>
+	<template v-else>
+		<template v-for="({ uni, year, no }, i) in decodedProblemIds">
+			<template v-if="i < maxResultProblemNumber">
+				<div v-if="i !== 0" class="ts-divider is-section"></div><!-- 分隔線 -->
+				<Problem :uni="uni" :year="year" :no="no" hideProblemScore showTopRow showLink></Problem>
+			</template>
 		</template>
+		<EdgeSentinel @onEntry="maxResultProblemNumber += LOAD_PROBLEM_NUMBER" /><!-- 題目清單尾端的隱形元素, 用來判斷是否要載入元素 -->
 	</template>
-	<EdgeSentinel @onEntry="maxResultProblemNumber += LOAD_PROBLEM_NUMBER" /><!-- 題目清單尾端的隱形元素, 用來判斷是否要載入元素 -->
 </template>
 
 <script setup lang="ts">

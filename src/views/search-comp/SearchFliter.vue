@@ -27,7 +27,7 @@
 			
 			<!-- 如果沒有搜尋到符合的 tag, 顯示這段訊息 -->
 			<div v-else class="ts-text is-center-aligned">
-				沒有符合的 tag 捏<br>
+				沒有符合的標籤捏<br>
 				(´･ω･`) <span class="ts-icon is-question-icon is-large is-spinning"></span>
 			</div>
 			
