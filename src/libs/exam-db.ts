@@ -53,12 +53,11 @@ export interface TagNode { // tag node 型別宣告
 
 import type { Component } from "vue";
 import _dbConfig from "../exam-db/config.json" with { type: "json" };
-import _searchData from "../exam-db/search-data.json" with { type: "json" };
 import _tagTree from "../exam-db/tag-tree.json" with { type: "json" };
 
 export const dbConfig = _dbConfig as DbConfig; // 檢查 db config 型態, 如果報錯代表格式錯誤
 const tagTree = _tagTree as Record<string, TagNode>; // 檢查 tag tree 型態
-const tagTreeRootNode = { children: tagTree } as TagNode;
+const tagTreeRootNode = { children: tagTree } as TagNode; // tag-tree.json 沒有 root node 結構, 這裡補上
 
 export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
 	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;

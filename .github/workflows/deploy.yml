@@ -33,11 +33,14 @@ jobs:
         with:
           python-version: "3.11"
       
-      - name: Make search cache
-        run: python src/exam-db-tool/make-search-data.py
+      - name: Remove search cache # 先清掉 search cache
+        run: rm -f src/exam-db/search-data.json
       
-      - name: Make stat data
-        run: python src/stat/make-stat.py
+      - name: Make stat data # 先統計程式碼行數, 因為不想要 search-data.json 被計入
+        run: python src/stat/make-stat.py # 生成 src/stat 內的 code-stat.json 和 problem-stat.json
+      
+      - name: Make search cache
+        run: python src/exam-db-tool/make-search-data.py # 生成 src/exam-db/search-data.json
       
       - name: Set up Node
         uses: actions/setup-node@v4
