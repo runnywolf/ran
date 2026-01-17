@@ -33,14 +33,13 @@ jobs:
         with:
           python-version: "3.11"
       
-      - name: Remove search cache # 先清掉 search cache
-        run: rm -f src/exam-db/search-data.json
+      - name: Make stat data # 生成 src/stat 內的 code-stat.json 和 problem-stat.json
+        run: | # 先清掉 search cache, 因為不想要 search-data.json 被計入
+          rm -f src/exam-db/search-data.json
+          python src/stat/make-stat.py
       
-      - name: Make stat data # 先統計程式碼行數, 因為不想要 search-data.json 被計入
-        run: python src/stat/make-stat.py # 生成 src/stat 內的 code-stat.json 和 problem-stat.json
-      
-      - name: Make search cache
-        run: python src/exam-db-tool/make-search-data.py # 生成 src/exam-db/search-data.json
+      - name: Make search cache # 生成 src/exam-db/search-data.json (搜尋快取)
+        run: python src/exam-db-tool/make-search-data.py
       
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -51,10 +50,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Build Vite site
+      - name: Build Vite site (Ran app) # 建構 main app
         run: npm run build
       
-      - name: Build VitePress docs
+      - name: Build VitePress docs # 建構 docs
         run: npm run docs:build
       
       - name: Move docs to ./dist/docs # 這樣 docs 路徑就會在 https://runnywolf.github.io/ran/docs/

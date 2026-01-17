@@ -34,4 +34,4 @@ for uni, uni_config in dbConfig["uniConfigs"].items(): # 讀取每一年的題�
 with open(DB_PATH/"search-data.json", "w", encoding="utf-8") as f:
 	json.dump(searchData, f)
 
-print("ok")
+print("[Finish] ฅ^⦁⩊⦁^ฅ ੭")

@@ -131,4 +131,4 @@ def make_problem_stat_json() -> None: # 生成題目的統計
 make_code_stat_json() # 生成程式碼的統計
 make_problem_stat_json() # 生成題目的統計
 
-print("Finish!")
+print("[Finish] ฅ^⦁⩊⦁^ฅ ੭")
