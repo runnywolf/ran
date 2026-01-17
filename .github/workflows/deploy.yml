@@ -28,6 +28,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Make search cache
+        run: python src/exam-db-tool/make-search-data.py
+      
+      - name: Make stat data
+        run: python src/stat/make-stat.py
+      
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
