@@ -1,3 +1,5 @@
+<!-- 多選題摺疊組件, 用於編寫答案組件 (contents 內) -->
+
 <template>
 	<div class="multi-option">
 		<template v-for="(optionName, i) in optionNames">
