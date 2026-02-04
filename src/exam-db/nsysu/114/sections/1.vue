@@ -7,19 +7,17 @@
 				(Here <span class="ran-code-font">i, j, k, increment,</span>
 				and <span class="ran-code-font">sum</span> are integer variables.)
 			</span>
-			<div class="ts-wrap is-center-aligned" style="margin-top: 20px;">
-				<span class="ran-code-font">
-					increment = 0<br>
-					sum = 0<br>
-					for i = 1 to 12 do<br>
-					　　for j = 1 to i do<br>
-					　　　　for k = 1 to j do<br>
-					　　　　begin<br>
-					　　　　　　increment = increment + 1<br>
-					　　　　　　sum = sum + increment<br>
-					　　　　end
-				</span>
-			</div>
+<CodeBlock topMargin><pre>
+increment = 0
+sum = 0
+for i = 1 to 12 do
+    for j = 1 to i do
+        for k = 1 to j do
+        begin
+            increment = increment + 1
+            sum = sum + increment
+        end
+</pre></CodeBlock>
 		</template>
 	</MakeProblem>
 </template>
