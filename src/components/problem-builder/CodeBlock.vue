@@ -1,4 +1,14 @@
-<!-- 顯示在題目內的程式碼區塊, slot 內必須用 <pre> 包裹程式碼 -->
+<!-- 顯示在題目內的程式碼區塊
+
+範例:
+<CodeBlock topMargin bottomMargin><pre>
+#define ever ;;
+for (ever) {
+	programming(); // 任何的縮排都會顯示出來, 所以必須貼齊左側
+}
+</pre></CodeBlock>
+
+-->
 
 <template>
 	<div
@@ -20,3 +30,9 @@ const props = withDefaults(defineProps<Props>(), {
 	bottomMargin: false,
 });
 </script>
+
+<style scoped>
+:deep(pre) {
+	tab-size: 4; /* \t = 4 space */
+}
+</style>

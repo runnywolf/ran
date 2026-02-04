@@ -11,12 +11,12 @@
 increment = 0
 sum = 0
 for i = 1 to 12 do
-    for j = 1 to i do
-        for k = 1 to j do
-        begin
-            increment = increment + 1
-            sum = sum + increment
-        end
+	for j = 1 to i do
+		for k = 1 to j do
+		begin
+			increment = increment + 1
+			sum = sum + increment
+		end
 </pre></CodeBlock>
 		</template>
 	</MakeProblem>
