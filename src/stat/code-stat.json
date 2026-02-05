@@ -6,14 +6,14 @@
 			"sizeByte": 1016
 		},
 		"vue": {
-			"number": 51,
-			"line": 2698,
-			"sizeByte": 125368
+			"number": 52,
+			"line": 2740,
+			"sizeByte": 126714
 		},
 		"js": {
 			"number": 5,
-			"line": 1357,
-			"sizeByte": 78922
+			"line": 1359,
+			"sizeByte": 79137
 		},
 		"ts": {
 			"number": 5,
@@ -28,14 +28,14 @@
 	},
 	"exam": {
 		"json": {
-			"number": 44,
-			"line": 4431,
-			"sizeByte": 406020
+			"number": 45,
+			"line": 4559,
+			"sizeByte": 408877
 		},
 		"vue": {
-			"number": 1125,
-			"line": 14749,
-			"sizeByte": 521633
+			"number": 1159,
+			"line": 15008,
+			"sizeByte": 529803
 		},
 		"webp": {
 			"number": 66,

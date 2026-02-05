@@ -1,0 +1,128 @@
+{
+	"subjectCode": "8102",
+	"subjectName": "線性代數與離散數學",
+	"subjectShortName": "線代與離散",
+	"department": "資訊聯招",
+	"externalLink": "",
+	"externalLinkTip": "",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-group-1", "1-1", "1-2", "1-3", "1-4", "2", "3", "4", "5",
+		"-group-6", "6-1", "6-2", "6-3", "6-4", "6-5", "7", "8", "9"
+	],
+	"problemConfigs": {
+		"1-1": {
+			"answerLatex": "",
+			"tags": [ "la-m-d", "la-m-im" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-1-ans" }
+			]
+		},
+		"1-2": {
+			"answerLatex": "",
+			"tags": [ "la-m-mro" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-2-ans" }
+			]
+		},
+		"1-3": {
+			"answerLatex": "",
+			"tags": [ "la-m-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-3-ans" }
+			]
+		},
+		"1-4": {
+			"answerLatex": "",
+			"tags": [ "la-vs-bd", "la-vs-rn" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-4-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "la-m" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "la-m-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "la-ips-svd" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "la-ips-p" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6-1": {
+			"answerLatex": "",
+			"tags": [ "dm-l-pdl" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-1-ans" }
+			]
+		},
+		"6-2": {
+			"answerLatex": "2",
+			"tags": [ "dm-ba" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-2-ans" }
+			]
+		},
+		"6-3": {
+			"answerLatex": "",
+			"tags": [ "dm-ba" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-3-ans" }
+			]
+		},
+		"6-4": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-4-ans" }
+			]
+		},
+		"6-5": {
+			"answerLatex": "",
+			"tags": [ "dm-st-f" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-5-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "dm-c-r" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "dm-st-br", "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"tags": [ "dm-gt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		}
+	}
+}
