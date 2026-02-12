@@ -28,14 +28,14 @@
 	},
 	"exam": {
 		"json": {
-			"number": 45,
-			"line": 4559,
-			"sizeByte": 408877
+			"number": 48,
+			"line": 4780,
+			"sizeByte": 414158
 		},
 		"vue": {
-			"number": 1159,
-			"line": 15008,
-			"sizeByte": 529803
+			"number": 1214,
+			"line": 15426,
+			"sizeByte": 543808
 		},
 		"webp": {
 			"number": 66,

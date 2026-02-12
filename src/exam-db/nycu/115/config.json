@@ -83,7 +83,7 @@
 			]
 		},
 		"6-3": {
-			"answerLatex": "",
+			"answerLatex": "26",
 			"tags": [ "dm-ba" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-3-ans" }
