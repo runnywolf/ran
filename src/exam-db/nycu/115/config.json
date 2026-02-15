@@ -13,7 +13,12 @@
 	],
 	"problemConfigs": {
 		"1-1": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(1) False} ~,~~ A = I_n",
+				"\\text{(2) True}",
+				"\\text{(3) True}",
+				"\\text{(4) False} ~,~~ A = I_n"
+			],
 			"tags": [ "la-m-d", "la-m-im" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-1-ans" }
@@ -41,14 +46,14 @@
 			]
 		},
 		"2": {
-			"answerLatex": "",
+			"answerLatex": "\\text{See Prove}",
 			"tags": [ "la-m" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "2-ans" }
 			]
 		},
 		"3": {
-			"answerLatex": "",
+			"answerLatex": "-2000",
 			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
@@ -90,7 +95,7 @@
 			]
 		},
 		"6-4": {
-			"answerLatex": "",
+			"answerLatex": "\\text{Yes}",
 			"tags": [ "dm-nt" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-4-ans" }
