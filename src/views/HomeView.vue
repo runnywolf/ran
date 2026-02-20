@@ -69,7 +69,7 @@ const boxGroups: { iconName: string, texts: string[], clickTargetUrl: string }[]
 
 const footerLinks = [ // 底部的連結
 	{ iconName: "github", text: "GitHub", clickTargetUrl: "https://github.com/runnywolf/ran" },
-	{ iconName: "discord", text: " 還沒創群組", clickTargetUrl: "#/" },
+	{ iconName: "discord", text: " Discord", clickTargetUrl: "https://discord.gg/gbZj8jzUQW" },
 ];
 </script>
 
