@@ -1,5 +1,5 @@
 # 🦊 Ran
-![](https://img.shields.io/badge/Ran-v0.6-55f?style=flat)
+![](https://img.shields.io/badge/Ran-v0.6.1-55f?style=flat)
 ![](https://img.shields.io/badge/RanMath.js-v2.0.3-55f?style=flat)
 [![](https://img.shields.io/badge/Vue.js-345?style=flat&logo=vuedotjs&logoColor=4FC08D)](https://vuejs.org/)
 [![](https://img.shields.io/npm/v/tocas.svg?label=TocasUI)](https://github.com/teacat/tocas)
@@ -10,7 +10,6 @@
 
 開始使用 → [Ran](https://runnywolf.github.io/ran/#/)<br>
 說明文件 → [Ran Docs](https://runnywolf.github.io/ran/docs/intro/exam-page)<br>
-數學函式庫 → [RanMath](https://github.com/runnywolf/ran/blob/main/src/libs/ran-math.js)
 
 > [!WARNING]
 > 目前 safari 會有題號顯示異常的問題，因為瀏覽器不支援修改 `::marker`，我也沒辦法。<br>
@@ -41,10 +40,11 @@
 - 題目的統計資訊
 
 ## 📄 已收錄題本
-- 台大 114\~105 (108\~ 無詳解)
-- 交大 114\~105 (112\~ 無詳解)
-- 成大 114\~105 (112\~ 無詳解)
+- 台大 114\~105 (114\~109 有詳解)
+- 交大 115\~105 (114, 113 有詳解)
+- 成大 114\~105 (114, 113 有詳解)
 - 中央 114\~105 (無詳解)
+- 中山 114\~110 (無詳解)
 
 ## ❤️ 感謝
 - [Vue3](https://vuejs.org/)+[Vite](https://vite.dev/) - 前端框架
