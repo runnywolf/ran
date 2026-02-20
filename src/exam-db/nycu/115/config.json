@@ -14,10 +14,10 @@
 	"problemConfigs": {
 		"1-1": {
 			"answerLatex": [
-				"\\text{(1) False} ~,~~ A = I_n",
+				"\\text{(1) False} ,~~ A = I_n",
 				"\\text{(2) True}",
 				"\\text{(3) True}",
-				"\\text{(4) False} ~,~~ A = I_n"
+				"\\text{(4) False} ,~~ A = I_n"
 			],
 			"tags": [ "la-m-d", "la-m-im" ],
 			"contentConfigs": [
@@ -25,21 +25,36 @@
 			]
 		},
 		"1-2": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(1) True}",
+				"\\text{(2) True}",
+				"\\text{(3) True}",
+				"\\text{(4) False} ,~~ @bm{1, 0, 0; 0, 1, 0; 0, 0, 1} \\to @bm{0, 0, 1; 1, 0, 0; 0, 1, 0}"
+			],
 			"tags": [ "la-m-mro" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-2-ans" }
 			]
 		},
 		"1-3": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(1) False} ,~~ A = @bm{0, 0; 0, 0} ,~~ B = @bm{1, 0; 0, 0}",
+				"\\text{(2) False} ,~~ A = B = I_n",
+				"\\text{(3) True}",
+				"\\text{(4) False} ,~~ A = @bm{1, 0; 0, 1} ,~~ B = @bm{0, 1; 1, 0}"
+			],
 			"tags": [ "la-m-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-3-ans" }
 			]
 		},
 		"1-4": {
-			"answerLatex": "",
+			"answerLatex": [
+				"\\text{(1) False} ,~~ A = I_2",
+				"\\text{(2) False} ,~~ A = @bm{1, 0; 0, 0}",
+				"\\text{(3) True}",
+				"\\text{(4) True}"
+			],
 			"tags": [ "la-vs-bd", "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-4-ans" }
@@ -60,7 +75,7 @@
 			]
 		},
 		"4": {
-			"answerLatex": "",
+			"answerLatex": "@bm{ @f{2\\sqrt{5}; 5}, 0, @f{-\\sqrt{5}; 5}; 0, 1, 0; @f{\\sqrt{5}; 5}, 0, @f{2\\sqrt{5}; 5} } @bm{ \\sqrt{10}, 0; 0, 2\\sqrt{2}; 0, 0 } { @bm{ @f{\\sqrt{2}; 2}, @f{\\sqrt{2}; 2}; @f{-\\sqrt{2}; 2}, @f{\\sqrt{2}; 2} } }^T",
 			"tags": [ "la-ips-svd" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
@@ -102,7 +117,7 @@
 			]
 		},
 		"6-5": {
-			"answerLatex": "",
+			"answerLatex": "\\text{No Solution}",
 			"tags": [ "dm-st-f" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-5-ans" }
