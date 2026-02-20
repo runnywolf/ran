@@ -1,3 +1,5 @@
+<!-- 外觀為星型的收藏按鈕, 用來切換題目的收藏狀態 -->
+
 <template>
 	<div class="icon-wrapper" @click="isSaved = !isSaved">
 		<span class="ts-icon is-star-icon is-large" :class="isSaved ? 'is-saved' : 'is-regular'"></span>

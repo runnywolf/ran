@@ -1,3 +1,5 @@
+<!-- 此組件用於編寫題目 vue 檔 (sections 內), 維持樣式的一致性 -->
+
 <template>
 	<vk>
 		<div class="ts-wrap is-vertical is-compact">

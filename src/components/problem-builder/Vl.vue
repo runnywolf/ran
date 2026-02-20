@@ -1,3 +1,7 @@
+<!-- 用於渲染 katex 數學公式
+與 VueKatex.vue 不同, 此組件會根據 exp 動態更新數學公式
+-->
+
 <template>
 	<component :is="c ? 'div' : 'span'" class="ran-vk" ref="katexNode"></component>
 </template>

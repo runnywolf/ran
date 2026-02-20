@@ -1,0 +1,83 @@
+{
+	"subjectCode": "434004",
+	"subjectName": "離散數學",
+	"subjectShortName": "離散數學",
+	"department": "資工系碩士班甲組",
+	"externalLink": "https://www3.nsysu.edu.tw/exam/master/eng/infoe/infoe_113.pdf",
+	"externalLinkTip": "國立中山大學 圖書資訊處",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [ "-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "dm-ba" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "dm-as" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "dm-st-br", "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "dm-c-gf" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "\\cos\\Big( @cf{n\\pi;2} \\Big) + 5\\sin\\Big( @cf{n\\pi;2} \\Big)",
+			"tags": [ "dm-c-rr" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "",
+			"tags": [ "dm-c-rr", "dm-c-gf" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		}
+	}
+}

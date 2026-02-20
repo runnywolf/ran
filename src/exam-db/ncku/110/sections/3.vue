@@ -15,21 +15,19 @@
 			Assume a set $G$ whose elements are real numbers and the size of $G$ is equal to $2^k$,
 			where $k$ is a positive integer. We just want to find the maximum value and the minimum value in this set $G$
 			and develop an algorithm in the following.
-			<div class="ts-wrap is-center-aligned" style="margin: 20px 0;">
-				<span class="ran-code-font">
-					FindMaxMin(G)<br>
-					If G contains only two numbers:<br>
-					&nbsp; Compare these two numbers<br>
-					&nbsp; Set M to be the larger one<br>
-					&nbsp; Set m to be the smaller one<br>
-					Else:<br>
-					&nbsp; Divide G into two subsets with equal size G1 and G2<br>
-					&nbsp; Apply FindMaxMin(G1) to get M1 and m1<br>
-					&nbsp; Apply FindMaxMin(G2) to get M2 and m2<br>
-					&nbsp; M=max(M1,M2), m=min(m1,m2)<br>
-					Return M,m
-				</span>
-			</div>
+<CodeBlock topMargin bottomMargin><pre>
+FindMaxMin(G)
+If G contains only two numbers:
+	Compare these two numbers
+	Set M to be the larger one
+	Set m to be the smaller one
+Else:
+	Divide G into two subsets with equal size G1 and G2
+	Apply FindMaxMin(G1) to get M1 and m1
+	Apply FindMaxMin(G2) to get M2 and m2
+	M=max(M1,M2), m=min(m1,m2)
+Return M,m
+</pre></CodeBlock>
 			We use $T(N)$ to represent the number of comparisons
 			when the set size is equal to $N$. $N=2^k$. Please find $T(N)$ in terms of $N$.
 		</template>

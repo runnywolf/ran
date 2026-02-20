@@ -1,0 +1,9 @@
+<template>
+	<MakeProblem scoreText="(5 points)" listEndLabel="4">
+		<template #problem>If there are two $n \times n$ matrices $A, B$, and one scalar $r$,</template>
+		<template #1>$\det(A) = \det(B)$ implies $A = B$.</template>
+		<template #2>$\det(rA+B) = r\det(rA) + \det(B)$.</template>
+		<template #3>$\det((AB)^T) = \det(A)\det(B)$.</template>
+		<template #4>$\det(A) = \det(B)$ where $A$ and $B$ are row equivalent matrices.</template>
+	</MakeProblem>
+</template>

@@ -1,3 +1,5 @@
+<!-- 標籤元件 -->
+
 <template>
 	<div class="ts-chip is-circular is-start-icon tag" :data-tooltip="tagNameEn" @click="whenTagClicked">
 		<span class="ts-icon is-hashtag-icon is-small"></span>
