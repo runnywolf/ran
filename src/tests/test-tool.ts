@@ -12,10 +12,11 @@ export interface TestData { // 測資通用模板
 }
 
 // 把一些值轉為字串, 用於覆蓋率測試的輸出. 避免影響覆蓋率, 所以不使用 ran-math lib 的 function
-export function str(value: number|bigint|Frac|string): string {
+export function str(value: any): string {
 	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
 	if (value instanceof Frac) return `${value.n}/${value.d}`; // Frac -> string
 	if (typeof value === "bigint") return String(value); // bigint -> string
 	if (Number.isInteger(value)) return String(value); // int number -> string
-	return value.toFixed(4); // float number -> string
+	if (typeof value === "number") return value.toFixed(4); // float number -> string
+	return String(value); // otherwise
 }
