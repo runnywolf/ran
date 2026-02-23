@@ -12,11 +12,15 @@ export default defineConfig({
 			"toast": "/src/libs/toast.js"
 		}
 	},
-	test: { // 測試: npx vitest run --coverage
-		include: [ "src/tests/**/*.test.js" ], // 執行這些測試文件 (*.test.js)
-		coverage: { // 使用 v8 做覆蓋率測試
+	test: {
+		include: [ // 測試檔案範圍
+			"src/tests/ran-math-v3/*.test.ts", // ran math v3
+		],
+		environment: "node",
+		coverage: { // 測試: npx vitest run --coverage
+			provider: "v8", // 使用 v8 覆蓋率引擎
 			all: false, // 不顯示未執行的檔案
-			reporter: [ "text", "html" ], // result web: start coverage/index.html
+			reporter: ["text", "html"], // 終端 + 產生 coverage/index.html
 		},
 	},
 })
