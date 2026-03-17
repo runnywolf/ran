@@ -12,18 +12,29 @@ export class RanMathError extends Error {
 }
 //#endregion
 
-/*
-export function isNum(value: unknown): value is number { // 是否為數字
-	return typeof value === "number";
-}
-
-export function isInt(value: unknown): value is number|bigint { // 是否為整數
-	return Number.isInteger(value) || isBigInt(value);
-}
-*/
-
 export function isBigInt(x: unknown): x is bigint { // 是否為 bigint
 	return typeof x === "bigint";
+}
+
+class Prime { // 質數 (prime number)
+	private static readonly primes: bigint[] = [2n];
+	
+	private static isPrime(n: bigint): boolean { // 是否是質數
+		if (n <= 1) return false;
+		for (let i = 0, p = 2n; p*p <= n; p = Prime.getNth(i++)) if (n % p === 0n) return false; // Trial division
+		return true;
+	}
+	
+	static getNth(n: number): bigint { // 取得第 n 個質數
+		if (!(Number.isInteger(n) && n >= 0)) throw new RanMathError("Prime.getNth", "index must >= 0");
+		if (n <= Prime.primes.length - 1) return Prime.primes[n]; // 質數快取
+		
+		const lastPrime = Prime.primes[Prime.primes.length - 1]; // 最後一個質數
+		for (let i = lastPrime + 1n; n > Prime.primes.length - 1; i++) {
+			if (Prime.isPrime(i)) Prime.primes.push(i);
+		}
+		return Prime.primes[n];
+	}
 }
 
 export class BigIntOp { // bigint 擴充運算子
@@ -185,4 +196,11 @@ export class Frac {
 		x = Frac.toFrac(x, "Frac.lt"); // number|bigint|Frac -> Frac
 		return this.n * x.d < this.d * x.n;
 	}
+}
+
+export function SV() { // SqrtValue 工廠
+	
+}
+export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
+	
 }
