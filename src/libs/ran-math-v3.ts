@@ -16,12 +16,12 @@ export function isBigInt(x: unknown): x is bigint { // 是否為 bigint
 	return typeof x === "bigint";
 }
 
-class Prime { // 質數 (prime number)
+class Prime { // 質數
 	private static readonly primes: bigint[] = [2n];
 	
 	private static isPrime(n: bigint): boolean { // 是否是質數
 		if (n <= 1) return false;
-		for (let i = 0, p = 2n; p*p <= n; p = Prime.getNth(i++)) if (n % p === 0n) return false; // Trial division
+		for (let i = 0, p = 2n; p*p <= n; p = Prime.getNth(++i)) if (n % p === 0n) return false; // Trial division
 		return true;
 	}
 	
@@ -38,7 +38,13 @@ class Prime { // 質數 (prime number)
 }
 
 export class BigIntOp { // bigint 擴充運算子
-	public static abs(x: bigint) { // 絕對值
+	static FactorizeNonPositiveError = class extends RanMathError { // 無法分解 <= 0 的 bigint
+		constructor(caller: string) {
+			super(caller, "Cannot factorize a non-positive bigint.");
+		}
+	}
+	
+	public static abs(x: bigint): bigint { // 絕對值
 		return x < 0n ? -x : x;
 	}
 	
@@ -49,12 +55,27 @@ export class BigIntOp { // bigint 擴充運算子
 		while (y !== 0n) { const swap = x % y; x = y; y = swap; }
 		return x;
 	}
+	
+	public static factorize(x: bigint): Map<bigint, number> { // 質因數分解
+		if (x <= 0n) throw new BigIntOp.FactorizeNonPositiveError("BigIntOp.factorize");
+		
+		const result = new Map<bigint, number>(); // 質因數 & 次方的 map
+		
+		for (let i = 0, p = 2n; p*p <= x; p = Prime.getNth(++i)) { // 從最小的質數開始試除
+			let exp = 0;
+			while (x % p === 0n) { x /= p; exp++; } // 持續整除到不能整除為止
+			if (exp > 0) result.set(p, exp); // 若次方數 >= 1, 紀錄質因數
+		}
+		if (x !== 1n) result.set(x, 1); // 剩餘的一個質因數
+		
+		return result;
+	}
 }
 
 export function F(n: number|bigint = 0n, d: number|bigint = 1n): Frac { // Frac 工廠
 	return new Frac(n, d);
 }
-export class Frac {
+export class Frac { // 分數
 	static UnsafeIntError = class extends RanMathError { // number 超過範圍會無法表示精確整數
 		constructor(caller: string) {
 			super(caller, "Parameter must be a safe integer (|n| <= 2^53-1).");
@@ -202,5 +223,13 @@ export function SV() { // SqrtValue 工廠
 	
 }
 export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
+	
+}
+
+export class Complex { // 浮點複數
+	
+}
+
+export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	
 }
