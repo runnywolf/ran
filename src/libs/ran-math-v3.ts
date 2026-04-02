@@ -93,7 +93,7 @@ export class Frac { // 分數
 	
 	static NonIntError = class extends RanMathError { // 浮點數 number 轉 bigint 的錯誤
 		constructor(caller: string) {
-			super(caller, "Parameter must be a integer number.");
+			super(caller, "Parameter must be an integer number.");
 		}
 	}
 	
@@ -111,7 +111,8 @@ export class Frac { // 分數
 	
 	static DivideZeroError = class extends RanMathError { // 除 0 錯誤
 		constructor(caller: string) {
-			super(caller, "Div 0 error.");
+			if (caller === "Frac.div") super(caller, "Div 0 error."); // for Frac.div
+			else super(caller, "0 cannot be raised to a negative power."); // for Frac.pow
 		}
 	}
 	
@@ -205,16 +206,17 @@ export class Frac { // 分數
 		return F(this.n * x.n, this.d * x.d);
 	}
 	
-	div(x: number|bigint|Frac): Frac { // 乘法
+	div(x: number|bigint|Frac): Frac { // 除法
 		x = Frac.toFrac(x, "Frac.div"); // number|bigint|Frac -> Frac
 		if (x.isZero()) throw new Frac.DivideZeroError("Frac.div"); // 除 0 錯誤
 		return F(this.n * x.d, this.d * x.n);
 	}
 	
-	pow(n: number|bigint): Frac { // 整數次方
-		n = Frac.toBigInt(n, "Frac.pow"); // number|bigint -> bigint
-		if (n < 0n) return F(this.d ** -n, this.n ** -n); // 負整數次方
-		return F(this.n ** n, this.d ** n);
+	pow(x: number|bigint): Frac { // 整數次方
+		x = Frac.toBigInt(x, "Frac.pow"); // number|bigint -> bigint
+		if (x >= 0n) return F(this.n ** x, this.d ** x); // 非負整數次方
+		if (this.equal(0)) throw new Frac.DivideZeroError("Frac.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		return F(this.d ** -x, this.n ** -x); // 負整數次方
 	}
 	
 	equal(x: number|bigint|Frac): boolean { // 相等
@@ -228,8 +230,8 @@ export class Frac { // 分數
 	}
 }
 
-export function SV() { // SqrtValue 工廠
-	
+export function SV(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
+	return new SqrtValue(...inputTerms);
 }
 export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	static isSV(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
@@ -237,7 +239,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	static fromStr(str: string): SqrtValue { // 將字串轉為 SqrtValue 實例, 例: "2/3 s 9/4 + 3.5s12" 會被視為 2/3 √(9/4) + 7/2 √12
-		return new SqrtValue();
+		return new SqrtValue(); // [todo]
 	}
 	
 	private static normalizeTerm(term: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b, 使根號內為整數 & 最簡根號
@@ -258,6 +260,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	readonly terms: ReadonlyMap<bigint, Frac>; // normalized terms
+	// [todo] sorted: 1 2 ... -1 -2 ..., 改 array
 	
 	constructor(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue([a, b], [c, d], ...) = a√b + c√d + ...
 		const terms = new Map<bigint, Frac>(); // normalized terms

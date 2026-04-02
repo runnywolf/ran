@@ -50,7 +50,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ "2.5/1" ], error: Frac.NonFracStringError }, // 子字串不是整數
 			{ input: [ "2/1a" ], error: Frac.NonFracStringError }, // 子字串不是整數
 			{ input: [ "2/1/3" ], error: Frac.NonFracStringError }, // 子字串過多
-			{ input: [ "2/0" ], error: Frac.NonFracStringError }, // 分母為 0
+			{ input: [ "2/0" ], error: Frac.ZeroDenominatorError }, // 分母為 0
 			
 			{ input: [ " 6  " ], output: F(6) },
 			{ input: [ "- 4" ], output: F(-4) },
@@ -218,7 +218,8 @@ const testDatas: Record<string, TestData> = {
 		tests: [ // 測資
 			{ input: [ F(2, 3), 0 ], output: F(1) }, // f^0 = 1
 			{ input: [ F(0), 0 ], output: F(1) }, // 0^0 = 1
-			{ input: [ F(0), 10000 ], output: F(0) }, // 0^x = 0
+			{ input: [ F(0), 100 ], output: F(0) }, // 0^x = 0
+			{ input: [ F(0), -1 ], error: Frac.DivideZeroError }, // 0^-n error
 			{ input: [ F(-7, 3), -1 ], output: F(-3, 7) }, // f^-1 = 1/f
 			{ input: [ F(12, 5), 1 ], output: F(12, 5) }, // f^1 = f
 			{ input: [ F(3), 7 ], output: F(2187) }, // i^i
