@@ -139,19 +139,6 @@ export class Frac { // 分數
 		throw new Frac.NonFracStringError("Frac.fromStr", str); // 字串無法轉成分數的錯誤
 	}
 	
-	private static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint (僅用於參數標準化)
-		if (isBigInt(x)) return x; // bigint 不須處理, 直接回傳
-		
-		if (!Number.isInteger(x)) throw new Frac.NonIntError(caller); // x 不是整數
-		if (!Number.isSafeInteger(x)) throw new Frac.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
-		return BigInt(x); // 將 number 轉為 bigint
-	}
-	
-	private static toFrac(x: number|bigint|Frac, caller: string): Frac { // number|bigint|Frac 轉 Frac (僅用於參數標準化)
-		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
-		return F(Frac.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
-	}
-	
 	readonly n: bigint = 0n; // 分子
 	readonly d: bigint = 1n; // 分母
 	
@@ -228,6 +215,19 @@ export class Frac { // 分數
 		x = Frac.toFrac(x, "Frac.lt"); // number|bigint|Frac -> Frac
 		return this.n * x.d < this.d * x.n;
 	}
+	
+	private static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint (僅用於參數標準化)
+		if (isBigInt(x)) return x; // bigint 不須處理, 直接回傳
+		
+		if (!Number.isInteger(x)) throw new Frac.NonIntError(caller); // x 不是整數
+		if (!Number.isSafeInteger(x)) throw new Frac.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
+		return BigInt(x); // 將 number 轉為 bigint
+	}
+	
+	private static toFrac(x: number|bigint|Frac, caller: string): Frac { // number|bigint|Frac 轉 Frac (僅用於參數標準化)
+		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
+		return F(Frac.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
+	}
 }
 
 export function SV(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
@@ -239,7 +239,63 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	static fromStr(str: string): SqrtValue { // 將字串轉為 SqrtValue 實例, 例: "2/3 s 9/4 + 3.5s12" 會被視為 2/3 √(9/4) + 7/2 √12
-		return new SqrtValue(); // [todo]
+		return SV(); // [todo]
+	}
+	
+	readonly terms: Map<bigint, Frac>; // normalized terms
+	
+	constructor(...terms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
+		const mapTerms = new Map<bigint, Frac>(); // normalized terms
+		for (const term of terms) {
+			const [frac_a, b] = SqrtValue.normalizeTerm(term); // 化簡 a√b, 使根號內為整數 & 最簡根號
+			mapTerms.set(b, (mapTerms.get(b) ?? F(0)).add(frac_a)); // mapTerms[b] += frac_a, 若 key b 不存在會自動建立
+		}
+		for (const [b, frac_a] of mapTerms) if (frac_a.equal(0) || b === 0n) mapTerms.delete(b); // 無視所有的 0√b or a√0 項
+		this.terms = mapTerms;
+	}
+	
+	copy(): SqrtValue { // 複製
+		return SV(); // [todo]
+	}
+	
+	toStr(): string { // 轉為字串
+		return ""; // [todo]
+	}
+	
+	toLatex(): string { // 轉為 latex 字串
+		return ""; // [todo]
+	}
+	
+	real(): SqrtValue { // 取出實部
+		return SV(); // [todo]
+	}
+	
+	imag(): SqrtValue { // 取出虛部
+		return SV(); // [todo]
+	}
+	
+	add(): SqrtValue { // 加法
+		return SV(); // [todo]
+	}
+	
+	sub(): SqrtValue { // 減法
+		return SV(); // [todo]
+	}
+	
+	mul(): SqrtValue { // 乘法
+		return SV(); // [todo]
+	}
+	
+	div(): SqrtValue { // 除法
+		return SV(); // [todo]
+	}
+	
+	pow(): SqrtValue { // 整數次方
+		return SV(); // [todo]
+	}
+	
+	equal(): boolean { // 相等
+		return true; // [todo]
 	}
 	
 	private static normalizeTerm(term: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b, 使根號內為整數 & 最簡根號
@@ -257,19 +313,6 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			if (e instanceof Frac.UnsafeIntError) throw new Frac.UnsafeIntError("SqrtValue.constructor");
 			throw new RanMathError("SqrtValue.normalizeTerm", "Unknown error.");
 		}
-	}
-	
-	readonly terms: ReadonlyMap<bigint, Frac>; // normalized terms
-	// [todo] sorted: 1 2 ... -1 -2 ..., 改 array
-	
-	constructor(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue([a, b], [c, d], ...) = a√b + c√d + ...
-		const terms = new Map<bigint, Frac>(); // normalized terms
-		for (const term of inputTerms) {
-			const [frac_a, b] = SqrtValue.normalizeTerm(term); // 化簡 a√b, 使根號內為整數 & 最簡根號
-			terms.set(b, (terms.get(b) ?? F(0)).add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
-		}
-		for (const [b, frac_a] of terms) if (frac_a.equal(0) || b === 0n) terms.delete(b); // 移除所有的 0√b or a√0 項
-		this.terms = terms;
 	}
 }
 
