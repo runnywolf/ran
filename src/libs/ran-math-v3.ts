@@ -237,8 +237,8 @@ export class Frac { // 分數
 	}
 }
 
-export function SV(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
-	return new SqrtValue(...inputTerms);
+export function SV(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
+	return new SqrtValue(...rawTerms);
 }
 export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
@@ -251,16 +251,13 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	readonly terms: Map<bigint, Frac>; // normalized terms
 	
-	constructor(...terms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
-		// this.terms = new Map<bigint, Frac>();
-		
-		const mapTerms = new Map<bigint, Frac>(); // normalized terms
-		for (const term of terms) {
-			const [frac_a, b] = SqrtValue.normalizeTerm(term); // 化簡 a√b, 使根號內為整數 & 最簡根號
-			mapTerms.set(b, (mapTerms.get(b) ?? F(0)).add(frac_a)); // mapTerms[b] += frac_a, 若 key b 不存在會自動建立
+	constructor(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
+		this.terms = new Map<bigint, Frac>();
+		for (const rawTerm of rawTerms) {
+			const [frac_a, b] = SqrtValue.normalizeTerm(rawTerm); // 化簡 a√b 為最簡根式項
+			this.addTerm(frac_a, b); // 將最簡根式項 a√b 累加到自身物件
 		}
-		for (const [b, frac_a] of mapTerms) if (frac_a.equal(0) || b === 0n) mapTerms.delete(b); // 無視所有的 0√b or a√0 項
-		this.terms = mapTerms;
+		this.removeZeroTerm(); // 清除所有的 0√b | a√0
 	}
 	
 	copy(): SqrtValue { // 複製
@@ -280,6 +277,10 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	imag(): SqrtValue { // 取出虛部
+		return SV(); // [todo]
+	}
+	
+	comp(b: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √b} 其一基底的分量 (component), 例: 1+√6+√3+√14 = (1+√3)1 + (√3+√7)√2
 		return SV(); // [todo]
 	}
 	
@@ -307,17 +308,22 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return true; // [todo]
 	}
 	
-	private static normalizeTerm(term: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b, 使根號內為整數 & 最簡根號
-		const frac_a = ParamNorm.toFrac(term[0], "SqrtValue.constructor");
-		const frac_b = ParamNorm.toFrac(term[1], "SqrtValue.constructor");
+	private static normalizeTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b 為最簡根式項
+		const frac_a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
+		const frac_b = ParamNorm.toFrac(rawTerm[1], "SqrtValue.constructor");
 		
 		const [kn, n] = BigIntOp.getSquareFactor(frac_b.n); // 提出平方根
 		const [kd, d] = BigIntOp.getSquareFactor(frac_b.d);
 		return [F(kn, kd * d).mul(frac_a), n * d]; // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
 	}
 	
-	private addTerm(): void {
-		
+	private addTerm(frac_a: Frac, b: bigint): void { // 將最簡根式項 a√b 累加到自身物件
+		const frac = this.terms.get(b) ?? F(0);
+		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
+	}
+	
+	private removeZeroTerm(): void { // 清除所有的 0√b | a√0
+		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) this.terms.delete(b);
 	}
 }
 
