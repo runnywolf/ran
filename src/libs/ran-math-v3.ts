@@ -37,6 +37,38 @@ class Prime { // 質數
 	}
 }
 
+export class ParamNorm { // 參數標準化
+	static NonIntError = class extends RanMathError { // 浮點數 number 轉 bigint 的錯誤
+		constructor(caller: string) {
+			super(caller, "Parameter must be an integer number.");
+		}
+	}
+	
+	static UnsafeIntError = class extends RanMathError { // number 超過範圍會無法表示精確整數
+		constructor(caller: string) {
+			super(caller, "Parameter must be a safe integer (|n| <= 2^53-1).");
+		}
+	}
+	
+	static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint
+		if (isBigInt(x)) return x; // bigint 不須處理, 直接回傳
+		
+		if (!Number.isInteger(x)) throw new ParamNorm.NonIntError(caller); // x 不是整數
+		if (!Number.isSafeInteger(x)) throw new ParamNorm.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
+		return BigInt(x); // 將 number 轉為 bigint
+	}
+	
+	static toFrac(x: number|bigint|Frac, caller: string): Frac { // number|bigint|Frac 轉 Frac
+		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
+		return F(ParamNorm.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
+	}
+	
+	static toSqrtValue(x: number|bigint|Frac|SqrtValue, caller: string): SqrtValue { // number|bigint|Frac|SqrtValue 轉 SqrtValue
+		if (SqrtValue.isSqrtValue(x)) return x; // SV 不須處理, 直接回傳
+		return SV([ParamNorm.toFrac(x, caller), 1]); // number|bigint|Frac -> Frac -> SV
+	}
+}
+
 export class BigIntOp { // bigint 擴充運算子
 	static FactorizeNonPositiveError = class extends RanMathError { // 無法分解 <= 0 的 bigint
 		constructor(caller: string) {
@@ -85,18 +117,6 @@ export function F(n: number|bigint = 0n, d: number|bigint = 1n): Frac { // Frac 
 	return new Frac(n, d);
 }
 export class Frac { // 分數
-	static UnsafeIntError = class extends RanMathError { // number 超過範圍會無法表示精確整數
-		constructor(caller: string) {
-			super(caller, "Parameter must be a safe integer (|n| <= 2^53-1).");
-		}
-	}
-	
-	static NonIntError = class extends RanMathError { // 浮點數 number 轉 bigint 的錯誤
-		constructor(caller: string) {
-			super(caller, "Parameter must be an integer number.");
-		}
-	}
-	
 	static ZeroDenominatorError = class extends RanMathError { // 分母為 0
 		constructor(caller: string) {
 			super(caller, 'The denominator (param "d") cannot be 0.');
@@ -143,8 +163,8 @@ export class Frac { // 分數
 	readonly d: bigint = 1n; // 分母
 	
 	constructor(n: number|bigint = 0n, d: number|bigint = 1n) {
-		n = Frac.toBigInt(n, "Frac.constructor"); // 將分子和分母的 number 型態轉為 bigint
-		d = Frac.toBigInt(d, "Frac.constructor");
+		n = ParamNorm.toBigInt(n, "Frac.constructor"); // 將分子和分母的 number 型態轉為 bigint
+		d = ParamNorm.toBigInt(d, "Frac.constructor");
 		if (d === 0n) throw new Frac.ZeroDenominatorError("Frac.constructor"); // 分母為 0
 		
 		if (d < 0n) { n = -n; d = -d; } // 若分母為負數, 將 n 和 d 同乘 -1, 保證 d ∈ Z+
@@ -179,54 +199,41 @@ export class Frac { // 分數
 	}
 	
 	add(x: number|bigint|Frac): Frac { // 加法
-		x = Frac.toFrac(x, "Frac.add"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.add"); // number|bigint|Frac -> Frac
 		return F(this.n * x.d + this.d * x.n, this.d * x.d);
 	}
 	
 	sub(x: number|bigint|Frac): Frac { // 減法
-		x = Frac.toFrac(x, "Frac.sub"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.sub"); // number|bigint|Frac -> Frac
 		return F(this.n * x.d - this.d * x.n, this.d * x.d);
 	}
 	
 	mul(x: number|bigint|Frac): Frac { // 乘法
-		x = Frac.toFrac(x, "Frac.mul"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.mul"); // number|bigint|Frac -> Frac
 		return F(this.n * x.n, this.d * x.d);
 	}
 	
 	div(x: number|bigint|Frac): Frac { // 除法
-		x = Frac.toFrac(x, "Frac.div"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.div"); // number|bigint|Frac -> Frac
 		if (x.isZero()) throw new Frac.DivideZeroError("Frac.div"); // 除 0 錯誤
 		return F(this.n * x.d, this.d * x.n);
 	}
 	
 	pow(x: number|bigint): Frac { // 整數次方
-		x = Frac.toBigInt(x, "Frac.pow"); // number|bigint -> bigint
+		x = ParamNorm.toBigInt(x, "Frac.pow"); // number|bigint -> bigint
 		if (x >= 0n) return F(this.n ** x, this.d ** x); // 非負整數次方
 		if (this.equal(0)) throw new Frac.DivideZeroError("Frac.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
 		return F(this.d ** -x, this.n ** -x); // 負整數次方
 	}
 	
 	equal(x: number|bigint|Frac): boolean { // 相等
-		x = Frac.toFrac(x, "Frac.equal"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.equal"); // number|bigint|Frac -> Frac
 		return this.n === x.n && this.d === x.d;
 	}
 	
 	lt(x: number|bigint|Frac): boolean { // 小於
-		x = Frac.toFrac(x, "Frac.lt"); // number|bigint|Frac -> Frac
+		x = ParamNorm.toFrac(x, "Frac.lt"); // number|bigint|Frac -> Frac
 		return this.n * x.d < this.d * x.n;
-	}
-	
-	private static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint (僅用於參數標準化)
-		if (isBigInt(x)) return x; // bigint 不須處理, 直接回傳
-		
-		if (!Number.isInteger(x)) throw new Frac.NonIntError(caller); // x 不是整數
-		if (!Number.isSafeInteger(x)) throw new Frac.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
-		return BigInt(x); // 將 number 轉為 bigint
-	}
-	
-	private static toFrac(x: number|bigint|Frac, caller: string): Frac { // number|bigint|Frac 轉 Frac (僅用於參數標準化)
-		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
-		return F(Frac.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
 	}
 }
 
@@ -234,7 +241,7 @@ export function SV(...inputTerms: [number|bigint|Frac, number|bigint|Frac][]) { 
 	return new SqrtValue(...inputTerms);
 }
 export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
-	static isSV(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
+	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
 		return x instanceof SqrtValue;
 	}
 	
@@ -245,6 +252,8 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	readonly terms: Map<bigint, Frac>; // normalized terms
 	
 	constructor(...terms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
+		// this.terms = new Map<bigint, Frac>();
+		
 		const mapTerms = new Map<bigint, Frac>(); // normalized terms
 		for (const term of terms) {
 			const [frac_a, b] = SqrtValue.normalizeTerm(term); // 化簡 a√b, 使根號內為整數 & 最簡根號
@@ -274,45 +283,41 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return SV(); // [todo]
 	}
 	
-	add(): SqrtValue { // 加法
+	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
 		return SV(); // [todo]
 	}
 	
-	sub(): SqrtValue { // 減法
+	sub(x: number|bigint|Frac|SqrtValue): SqrtValue { // 減法
 		return SV(); // [todo]
 	}
 	
-	mul(): SqrtValue { // 乘法
+	mul(x: number|bigint|Frac|SqrtValue): SqrtValue { // 乘法
 		return SV(); // [todo]
 	}
 	
-	div(): SqrtValue { // 除法
+	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
 		return SV(); // [todo]
 	}
 	
-	pow(): SqrtValue { // 整數次方
+	pow(x: number|bigint): SqrtValue { // 整數次方
 		return SV(); // [todo]
 	}
 	
-	equal(): boolean { // 相等
+	equal(x: number|bigint|Frac|SqrtValue): boolean { // 相等
 		return true; // [todo]
 	}
 	
 	private static normalizeTerm(term: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b, 使根號內為整數 & 最簡根號
-		try {
-			const [a, b] = term; // 單個 term 指的是 a√b
-			const frac_a = Frac.isFrac(a) ? a : F(a); // 將 a & b 都轉為 Frac, 這裡會檢測無法安全轉成 bigint 的 number 參數
-			const frac_b = Frac.isFrac(b) ? b : F(b);
-			
-			const [kn, n] = BigIntOp.getSquareFactor(frac_b.n); // 提出平方根
-			const [kd, d] = BigIntOp.getSquareFactor(frac_b.d);
-			return [F(kn, kd * d).mul(frac_a), n * d]; // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
-		}
-		catch (e) { // e 只會是 Frac.NonIntError | Frac.UnsafeIntError, 因為只會經過 Frac.toBigInt
-			if (e instanceof Frac.NonIntError) throw new Frac.NonIntError("SqrtValue.constructor");
-			if (e instanceof Frac.UnsafeIntError) throw new Frac.UnsafeIntError("SqrtValue.constructor");
-			throw new RanMathError("SqrtValue.normalizeTerm", "Unknown error.");
-		}
+		const frac_a = ParamNorm.toFrac(term[0], "SqrtValue.constructor");
+		const frac_b = ParamNorm.toFrac(term[1], "SqrtValue.constructor");
+		
+		const [kn, n] = BigIntOp.getSquareFactor(frac_b.n); // 提出平方根
+		const [kd, d] = BigIntOp.getSquareFactor(frac_b.d);
+		return [F(kn, kd * d).mul(frac_a), n * d]; // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
+	}
+	
+	private addTerm(): void {
+		
 	}
 }
 

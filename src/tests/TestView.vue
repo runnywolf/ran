@@ -12,7 +12,11 @@
 import { Frac, BigIntOp, F, SV } from '@/libs/ran-math-v3';
 
 try {
-	SV([1, F(2, 4)])
+	let a = [1, -5, -1, 4, 2, -3]
+	console.log(a.sort((x, y) => {
+		if (x < 0 === y < 0) return x < 0 ? y-x : x-y;
+		return x < 0 ? 1 : -1;
+	}))
 } catch (err) {
 	if (err instanceof Error) console.error(err.message);
 }

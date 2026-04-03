@@ -2,7 +2,7 @@ import { test, expect, describe } from "vitest";
 import { TestData, str } from "../test-tool";
 
 // ---------- 以上不要修改 ----------
-import { F, Frac } from "@lib/ran-math-v3";
+import { ParamNorm, Frac, F } from "@lib/ran-math-v3";
 
 const testDatas: Record<string, TestData> = {
 	"Frac.isFrac": {
@@ -66,8 +66,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [], output: F(0, 1) }, // 特性 new Frac() = 0/1
 			{ input: [ 3 ], output: F(3, 1) }, // 特性 new Frac(3) = 3/1
 			{ input: [ 6, -9 ], output: F(-2, 3) },
-			{ input: [ -0.1, 7 ], error: Frac.NonIntError },
-			{ input: [ -2, 1e100 ], error: Frac.UnsafeIntError },
+			{ input: [ -0.1, 7 ], error: ParamNorm.NonIntError },
+			{ input: [ -2, 1e100 ], error: ParamNorm.UnsafeIntError },
 			{ input: [ 5, 0 ], error: Frac.ZeroDenominatorError }, // 分母為 0
 		]
 	},
@@ -152,8 +152,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(-5, 3), 5 ], output: F(10, 3) },
 			{ input: [ F(-5, 37), 17 ], output: F(624, 37) },
 			{ input: [ F(10), -10 ], output: F(0, 1) },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac + float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac + unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac + float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac + unsafe int number
 		]
 	},
 	".sub": {
@@ -170,8 +170,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(-5, 37), 17 ], output: F(-634, 37) }, // Frac - int number
 			{ input: [ F(10), 0 ], output: F(10, 1) },
 			{ input: [ F(-500), -500 ], output: F(0, 1) },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac - float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac - unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac - float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac - unsafe int number
 		]
 	},
 	".mul": {
@@ -188,8 +188,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(-5, 12), 9 ], output: F(-15, 4) }, // Frac * int number
 			{ input: [ F(-500), -500 ], output: F(250000, 1) },
 			{ input: [ F(2, 3), 0 ], output: F(0, 1) },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac - float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac - unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac - float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac - unsafe int number
 		]
 	},
 	".div": {
@@ -205,8 +205,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(7, 10), 4n ], output: F(7, 40) },
 			{ input: [ F(-3, 5), 9 ], output: F(-1, 15) }, // Frac / int number
 			{ input: [ F(-500), -500 ], output: F(1, 1) },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac / float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac / unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac / float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac / unsafe int number
 			{ input: [ F(6, 7), F(0) ], error: Frac.DivideZeroError }, // Frac / 0
 			{ input: [ F(6, 7), 0n ], error: Frac.DivideZeroError },
 			{ input: [ F(6, 7), 0 ], error: Frac.DivideZeroError },
@@ -225,8 +225,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(3), 7 ], output: F(2187) }, // i^i
 			{ input: [ F(-6, 5), -4 ], output: F(625, 1296) }, // f^-i
 			{ input: [ F(-6, 5), 3 ], output: F(-216, 125) }, // f^i
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac ^ float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac ^ unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac ^ float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac ^ unsafe int number
 		]
 	},
 	".equal": {
@@ -240,8 +240,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(7, 10), 7 ], output: false },
 			{ input: [ F(6, -3), -2n ], output: true },
 			{ input: [ F(-3, 5), -3 ], output: false },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac == float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac == unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac == float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac == unsafe int number
 		]
 	},
 	".lt": {
@@ -255,8 +255,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(7, 10), 7n ], output: true },
 			{ input: [ F(6, 3), 2 ], output: false },
 			{ input: [ F(-1, 555), 0 ], output: true },
-			{ input: [ F(6, 7), 3.5 ], error: Frac.NonIntError }, // Frac < float error
-			{ input: [ F(6, 7), 1e100 ], error: Frac.UnsafeIntError }, // Frac < unsafe int number
+			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac < float error
+			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac < unsafe int number
 		]
 	}
 };
