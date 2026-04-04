@@ -13,8 +13,13 @@ export interface TestData { // 測資通用模板
 
 // 把一些值轉為字串, 用於覆蓋率測試的輸出. 避免影響覆蓋率, 所以不使用 ran-math lib 的 function
 export function str(value: any): string {
-	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
+	if (value instanceof Map) { // map object
+		const s = [...value].map(([k, v]) => `${str(k)}: ${str(v)}`).join(", ");
+		return `Map{ ${s} }`;
+	}
+	if (value instanceof Array) return `[ ${value.map(e => str(e)).join(", ")} ]`; // array
 	if (value instanceof Frac) return `${value.n}/${value.d}`; // Frac -> string
+	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
 	if (typeof value === "bigint") return `${value}n`; // bigint -> string
 	if (Number.isInteger(value)) return String(value); // int number -> string
 	if (typeof value === "number") return value.toFixed(4); // float number -> string

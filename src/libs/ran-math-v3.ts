@@ -19,9 +19,9 @@ export function isBigInt(x: unknown): x is bigint { // 是否為 bigint
 class Prime { // 質數
 	private static readonly primes: bigint[] = [2n];
 	
-	private static isPrime(n: bigint): boolean { // 是否是質數
-		if (n <= 1n) return false;
-		for (let i = 0, p = 2n; p*p <= n; p = Prime.getNth(++i)) if (n % p === 0n) return false; // Trial division
+	static isPrime(x: bigint): boolean { // 檢查 x 是否是質數
+		if (x <= 1n) return false;
+		for (let i = 0, p = 2n; p*p <= x; p = Prime.getNth(++i)) if (x % p === 0n) return false; // Trial division
 		return true;
 	}
 	
@@ -368,3 +368,5 @@ export class Complex { // 浮點複數
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	
 }
+
+export const __test__ = { Prime }; // only for test
