@@ -11,8 +11,9 @@
 
 import { Frac, BigIntOp, F, SV, SqrtValue } from '@/libs/ran-math-v3';
 
+console.log(SqrtValue.fromStr("0").toStr());
 try {
-	console.log(SqrtValue.fromStr("1e4s4.5 + 2/3s9/4 + 3.5s13").toStr());
+	
 } catch (err) {
 	if (err instanceof Error) console.error(err.message);
 }

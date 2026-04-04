@@ -199,6 +199,10 @@ export class Frac { // 分數
 		return this.isInt() ? `${this.n}` : `\\frac{${this.n}}{${this.d}}`;
 	}
 	
+	neg(): Frac { // 取負號
+		return F(-this.n, this.d);
+	}
+	
 	add(x: number|bigint|Frac): Frac { // 加法
 		x = ParamNorm.toFrac(x, "Frac.add"); // number|bigint|Frac -> Frac
 		return F(this.n * x.d + this.d * x.n, this.d * x.d);
@@ -266,7 +270,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 				const toF = (i: number) => Frac.fromStr(segments[i]); // 將第 i 個 segment 轉為 Frac
 				if (segments.length === 2 && segments[0] === "") rawTerms.push([F(1), toF(1)]); // "s..." 視為 1√(...)
 				else if (segments.length === 2) rawTerms.push([toF(0), toF(1)]); // "...s..." 視為 ...√(...)
-				else if (segments.length === 1) rawTerms.push([toF(1), F(1)]); // "..." 視為 ...√1
+				else if (segments.length === 1) rawTerms.push([toF(0), F(1)]); // "..." 視為 ...√1
 			}
 			catch (e) {
 				if (e instanceof Frac.InvalidStringError) {
@@ -290,7 +294,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	copy(): SqrtValue { // 複製
-		return SV(); // [todo]
+		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
+		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a, b);
+		return sv;
 	}
 	
 	toStr(): string { // 轉為字串
@@ -299,6 +305,8 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			if (x < 0n === y < 0n) return Number(x < 0n ? y-x : x-y); // √+ 升序排列, √- 降序排列
 			return x < 0n ? 1 : -1; // √- 排在 √+ 後面
 		});
+		
+		if (arrTerms.length === 0) return "0"; // 沒有任何一項就是 0
 		return arrTerms.map(([b, frac_a]) => `${frac_a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
 	}
 	
@@ -318,16 +326,35 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return SV(); // [todo]
 	}
 	
+	neg(): SqrtValue { // 取負號
+		return SV().sub(this);
+	}
+	
 	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
-		return SV(); // [todo]
+		x = ParamNorm.toSqrtValue(x, "SqrtValue.add"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		const sv = this.copy();
+		for (const [b, frac_a] of x.terms) sv.addTerm(frac_a, b);
+		sv.removeZeroTerm();
+		return sv;
 	}
 	
 	sub(x: number|bigint|Frac|SqrtValue): SqrtValue { // 減法
-		return SV(); // [todo]
+		x = ParamNorm.toSqrtValue(x, "SqrtValue.sub"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		const sv = this.copy();
+		for (const [b, frac_a] of x.terms) sv.addTerm(frac_a.neg(), b);
+		sv.removeZeroTerm();
+		return sv;
 	}
 	
 	mul(x: number|bigint|Frac|SqrtValue): SqrtValue { // 乘法
-		return SV(); // [todo]
+		x = ParamNorm.toSqrtValue(x, "SqrtValue.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		const sv = SV();
+		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) {
+			const gcd = BigIntOp.gcd(b1, b2);
+			sv.addTerm(frac_a1.mul(frac_a2).mul(gcd), (b1 / gcd) * (b2 / gcd)); // b1, b2 為最簡根式, 因此同除 gcd 後相乘, 也是最簡根式
+		}
+		sv.removeZeroTerm();
+		return sv;
 	}
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
@@ -356,7 +383,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
 	}
 	
-	private removeZeroTerm(): void { // 清除所有的 0√b | a√0
+	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
 		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) this.terms.delete(b);
 	}
 }
