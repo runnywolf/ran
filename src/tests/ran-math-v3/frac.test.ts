@@ -38,25 +38,26 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ "-20.0" ], output: F(-20) },
 			{ input: [ "-0.0" ], output: F(0) },
 			{ input: [ "- 10. 2  4 " ], output: F(-256, 25) },
-			{ input: [ ".8964" ], error: Frac.NonFracStringError },
-			{ input: [ "-87." ], error: Frac.NonFracStringError },
-			{ input: [ "." ], error: Frac.NonFracStringError },
-			{ input: [ "a.b" ], error: Frac.NonFracStringError },
-			{ input: [ "0x40.2" ], error: Frac.NonFracStringError },
-			{ input: [ "11.45.14" ], error: Frac.NonFracStringError },
+			{ input: [ ".8964" ], error: Frac.InvalidStringError },
+			{ input: [ "-87." ], error: Frac.InvalidStringError },
+			{ input: [ "." ], error: Frac.InvalidStringError },
+			{ input: [ "a.b" ], error: Frac.InvalidStringError },
+			{ input: [ "0x40.2" ], error: Frac.InvalidStringError },
+			{ input: [ "11.45.14" ], error: Frac.InvalidStringError },
 			
 			{ input: [ "6/-9" ], output: F(-2, 3) },
 			{ input: [ " -1 2 /   7 " ], output: F(-12, 7) },
-			{ input: [ "2.5/1" ], error: Frac.NonFracStringError }, // 子字串不是整數
-			{ input: [ "2/1a" ], error: Frac.NonFracStringError }, // 子字串不是整數
-			{ input: [ "2/1/3" ], error: Frac.NonFracStringError }, // 子字串過多
-			{ input: [ "2/0" ], error: Frac.ZeroDenominatorError }, // 分母為 0
+			{ input: [ "2.5/1" ], error: Frac.InvalidStringError }, // 子字串不是整數
+			{ input: [ "2/1a" ], error: Frac.InvalidStringError }, // 子字串不是整數
+			{ input: [ "2/1/3" ], error: Frac.InvalidStringError }, // 子字串過多
+			{ input: [ "2/0" ], error: Frac.InvalidStringError }, // 分母為 0
 			
 			{ input: [ " 6  " ], output: F(6) },
 			{ input: [ "- 4" ], output: F(-4) },
 			{ input: [ "-0" ], output: F(0) },
-			{ input: [ "1e10" ], error: Frac.NonFracStringError },
-			{ input: [ "abc" ], error: Frac.NonFracStringError },
+			{ input: [ "1e10" ], error: Frac.InvalidStringError },
+			{ input: [ "abc" ], error: Frac.InvalidStringError },
+			{ input: [ "" ], error: Frac.InvalidStringError },
 		],
 	},
 	"constructor": {

@@ -123,7 +123,7 @@ export class Frac { // 分數
 		}
 	}
 	
-	static NonFracStringError = class extends RanMathError { // 字串無法轉成分數的錯誤
+	static InvalidStringError = class extends RanMathError { // 字串無法轉成分數的錯誤
 		constructor(caller: string, str: string) {
 			super(caller, `String "${str}" cannot be converted to Frac.`);
 		}
@@ -141,7 +141,8 @@ export class Frac { // 分數
 	}
 	
 	static fromStr(str: string): Frac { // 將浮點數字串, 分數字串轉為 Frac 實例
-		str = str.replaceAll(" ", ""); // 去除所有空白符
+		str = str.replaceAll(" ", ""); // 去除所有空白字符
+		
 		if (/^-?\d+\.\d+$/.test(str)) { // 小數字串 a.b
 			const [str_a, str_b] = str.split(".");
 			const a = F(BigInt(str_a)); // 整數部分 a
@@ -150,13 +151,13 @@ export class Frac { // 分數
 		}
 		if (/^-?\d+\/-?\d+$/.test(str)) { // 分數字串 a/b
 			const [str_a, str_b] = str.split("/");
-			if (BigInt(str_b) === 0n) throw new Frac.ZeroDenominatorError("Frac.fromStr"); // 分母為 0 錯誤
+			if (BigInt(str_b) === 0n) throw new Frac.InvalidStringError("Frac.fromStr", str); // 分母為 0 錯誤
 			return F(BigInt(str_a), BigInt(str_b));
 		}
 		if (/^-?\d+$/.test(str)) { // 整數字串
 			return F(BigInt(str));
 		}
-		throw new Frac.NonFracStringError("Frac.fromStr", str); // 字串無法轉成分數的錯誤
+		throw new Frac.InvalidStringError("Frac.fromStr", str); // 字串無法轉成分數的錯誤
 	}
 	
 	readonly n: bigint = 0n; // 分子
@@ -238,20 +239,48 @@ export class Frac { // 分數
 }
 
 export function SV(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
-	return new SqrtValue(...rawTerms);
+	return new SqrtValue(rawTerms);
 }
 export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
+	static InvalidStringError = class extends RanMathError { // 字串無法轉成 SV 的錯誤
+		constructor(caller: string, str: string, s_term: string, caughtErrorMessage?: string) {
+			let errorMessage = `"${s_term}" in "${str}" cannot be converted to SqrtValue.`;
+			if (caughtErrorMessage) errorMessage += `\n-> Caught error: ${caughtErrorMessage}`;
+			super(caller, errorMessage);
+		}
+	}
+	
 	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
 		return x instanceof SqrtValue;
 	}
 	
 	static fromStr(str: string): SqrtValue { // 將字串轉為 SqrtValue 實例, 例: "2/3 s 9/4 + 3.5s12" 會被視為 2/3 √(9/4) + 7/2 √12
-		return SV(); // [todo]
+		str = str.replaceAll(" ", ""); // 去除所有空白字符
+		
+		const rawTerms: [Frac, Frac][] = [];
+		for (const s_term of str.split("+")) { // 用 "+" 將輸入字串切分成多個 term 字串
+			const segments = s_term.split("s"); // 用 "s" 將 term 字串切分成多個 segment 字串, s_term 只有 "...s..." & "..." 是合法的
+			if (segments.length >= 3) throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, s_term); // "...s...s.." 視為非法字串
+			
+			try {
+				const toF = (i: number) => Frac.fromStr(segments[i]); // 將第 i 個 segment 轉為 Frac
+				if (segments.length === 2 && segments[0] === "") rawTerms.push([F(1), toF(1)]); // "s..." 視為 1√(...)
+				else if (segments.length === 2) rawTerms.push([toF(0), toF(1)]); // "...s..." 視為 ...√(...)
+				else if (segments.length === 1) rawTerms.push([toF(1), F(1)]); // "..." 視為 ...√1
+			}
+			catch (e) {
+				if (e instanceof Frac.InvalidStringError) {
+					throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, s_term, e.message);
+				}
+				throw e; // 將未知錯誤再拋出
+			}
+		}
+		return new SqrtValue(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValue
 	}
 	
 	readonly terms: Map<bigint, Frac>; // normalized terms
 	
-	constructor(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
+	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
 		this.terms = new Map<bigint, Frac>();
 		for (const rawTerm of rawTerms) {
 			const [frac_a, b] = SqrtValue.normalizeTerm(rawTerm); // 化簡 a√b 為最簡根式項
@@ -265,7 +294,12 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	toStr(): string { // 轉為字串
-		return ""; // [todo]
+		const arrTerms: [bigint, Frac][] = Array.from(this.terms); // Map 轉 array, 因為要排序再轉字串
+		arrTerms.sort(([x, _x], [y, _y]) => { // 排序成 √1 + √2 + ... + √-1 + √-2 + ...
+			if (x < 0n === y < 0n) return Number(x < 0n ? y-x : x-y); // √+ 升序排列, √- 降序排列
+			return x < 0n ? 1 : -1; // √- 排在 √+ 後面
+		});
+		return arrTerms.map(([b, frac_a]) => `${frac_a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
 	}
 	
 	toLatex(): string { // 轉為 latex 字串
