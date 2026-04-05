@@ -101,16 +101,6 @@ export class BigIntOp { // bigint 擴充運算子
 		
 		return result;
 	}
-	
-	static getSquareFactor(x: bigint): [bigint, bigint] { // 若 k^2 為 x 的最大平方因數, 回傳 [k, x/k/k]
-		if (x === 0n) return [1n, 0n]; // 若 x 為 0, 回傳 [1, 0]
-		
-		let k = 1n;
-		const factors = BigIntOp.factorize(BigIntOp.abs(x));
-		for (const [p, exp] of factors) k *= p ** (BigInt(exp) / 2n);
-		
-		return [k, x/k/k];
-	}
 }
 
 export function F(n: number|bigint = 0n, d: number|bigint = 1n): Frac { // Frac 工廠
@@ -260,6 +250,13 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 	}
 	
+	static DivideZeroError = class extends RanMathError { // 除 0 錯誤
+		constructor(caller: string) {
+			if (caller === "SqrtValue.div") super(caller, "Div 0 error."); // for SqrtValue.div
+			else super(caller, "0 cannot be raised to a negative power."); // for SqrtValue.pow
+		}
+	}
+	
 	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
 		return x instanceof SqrtValue;
 	}
@@ -288,12 +285,23 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return new SqrtValue(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValue
 	}
 	
-	readonly terms: Map<bigint, Frac>; // normalized terms
+	private readonly terms: Map<bigint, Frac>; // 最簡根式項
+	private readonly baseFactors: Map<bigint, bigint[]>; // √b 的質因數分解
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
 		this.terms = new Map<bigint, Frac>();
+		this.baseFactors = new Map<bigint, bigint[]>();
+		
 		for (const rawTerm of rawTerms) this.addRawTerm(rawTerm); // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		this.removeZeroTerm(); // 清除所有的 0√b | a√0
+	}
+	
+	isZero(): boolean { // 是否為 0
+		return this.terms.size === 0;
+	}
+	
+	toComplex(): Complex { // 轉浮點複數
+		return new Complex();
 	}
 	
 	toStr(): string { // 轉為字串
@@ -364,17 +372,36 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	mul(x: number|bigint|Frac|SqrtValue): SqrtValue { // 乘法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
 		const sv = SV();
 		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) {
 			const gcd = BigIntOp.gcd(b1, b2);
 			sv.addTerm(frac_a1.mul(frac_a2).mul(gcd), (b1 / gcd) * (b2 / gcd)); // b1, b2 為最簡根式, 因此同除 gcd 後相乘, 也是最簡根式
 		}
 		sv.removeZeroTerm();
+		
 		return sv;
 	}
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
-		return SV(); // [todo]
+		x = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		let sv = this.copy(); // 分子
+		while (true) {
+			let base = 1n;
+			for (const [b, frac_a] of x.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
+			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母完全不包含根號, 可以跳出迴圈了
+			
+			if (base < 0n) base = -1n;
+			else base = 1n;
+			
+			const alpha = base > 0n ? x.comp(base, false) : x.real(); // 如果 base > 0, 則分解為 α + β √base
+			const beta = base > 0n ? x.comp(base, true) : x.imag(); // 如果 base < 0 (複數), 則分解為 α + β √-1
+			
+			sv = sv.mul(alpha.sub(SV([1, base]).mul(beta)));
+		}
+		
+		return sv; // [todo]
 	}
 	
 	pow(x: number|bigint): SqrtValue { // 整數次方
@@ -385,25 +412,42 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return true; // [todo]
 	}
 	
-	private addTerm(frac_a: Frac, b: bigint): void { // 將最簡根式項 a√b 累加到自身物件
+	private static getSquareFactor(x: bigint): [bigint, bigint, bigint[]] { // 若 k^2 為 x 的最大平方因數, 回傳 [k, x/k/k, x/k/k質因數分解]
+		if (x === 0n) return [1n, 0n, []]; // 若 x 為 0, 回傳 [1, 0, []]
+		
+		let k = 1n;
+		const bFactors = []; // x/k/k 的質因數分解
+		for (const [p, exp] of BigIntOp.factorize(BigIntOp.abs(x))) {
+			k *= p ** (BigInt(exp) / 2n); // 提出平方根
+			if (exp % 2 === 1) bFactors.push(p); // 紀錄 x/k/k 的質因數
+		}
+		return [k, x/k/k, bFactors];
+	}
+	
+	private addTerm(frac_a: Frac, b: bigint, bFactors: bigint[]): void { // 將最簡根式項 a√b 累加到自身物件, bFactors 為 b 的質因數分解
 		if (frac_a.isZero() || b === 0n) return; // 無視 +0
 		
-		const frac = this.terms.get(b) ?? F(0);
+		let frac = this.terms.get(b) ?? F(0); // 讀取 terms[b]
 		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
+		this.baseFactors.set(b, bFactors); // 保存質因數分解
 	}
 	
 	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		const frac_a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
 		const frac_b = ParamNorm.toFrac(rawTerm[1], "SqrtValue.constructor");
 		
-		const [kn, n] = BigIntOp.getSquareFactor(frac_b.n); // 提出平方根
-		const [kd, d] = BigIntOp.getSquareFactor(frac_b.d);
+		const [kn, n, nFactors] = SqrtValue.getSquareFactor(frac_b.n); // 提出平方根
+		const [kd, d, dFactors] = SqrtValue.getSquareFactor(frac_b.d);
+		nFactors.push(...dFactors); // n*d 的質因數分解, 由於 frac_b 為最簡分數 (n, d 互質), 所以可以保證 √(nd) 是最簡根式
 		
-		this.addTerm(F(kn, kd * d).mul(frac_a), n * d); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
+		this.addTerm(F(kn, kd * d).mul(frac_a), n * d, nFactors); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
 	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
-		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) this.terms.delete(b);
+		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) {
+			this.terms.delete(b); // 刪除 0√b & a√0 項
+			this.baseFactors.delete(b); // 刪除 b 的質因數快取
+		}
 	}
 }
 
