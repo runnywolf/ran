@@ -320,53 +320,51 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	real(): SqrtValue { // 取出實部
-		const sv = SV();
-		for (const [b, frac_a] of this.terms) if (b > 0n) sv.addTerm(frac_a, b);
+		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
+		sv.addTermsBy(this, (frac_a, b) => [frac_a, b > 0n ? b : 0n]); // 將所有 √- 都改成 √0, 這樣就只剩實數部分了
 		return sv;
 	}
 	
 	imag(): SqrtValue { // 取出虛部
 		const sv = SV();
-		for (const [b, frac_a] of this.terms) if (b < 0n) sv.addTerm(frac_a, -b);
+		sv.addTermsBy(this, (frac_a, b) => [frac_a, b < 0n ? -b : 0n]); // 將所有 √+ 都改成 √0, 這樣就只剩虛數部分了
 		return sv;
 	}
 	
 	comp(base: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √base} 其一基底的分量 (component)
 		if (base <= 0n) throw new SqrtValue.NonPositiveBaseError("SqrtValue.comp"); // 無法取出非正整數的分量
 		
-		const sv = SV();
-		for (const [b, frac_a] of this.terms) { // 例: 1+√6+√3+√-14 = (1+√3)1 + (√3+√-7)√2
-			if (b % base === 0n && useSqrtBasis) sv.addTerm(frac_a, b / base);
-			if (b % base !== 0n && !useSqrtBasis) sv.addTerm(frac_a, b);
-		}
+		const sv = SV(); // 例: 1+√6+√3+√-14 = (1+√3)1 + (√3+√-7)√2
+		if (useSqrtBasis) sv.addTermsBy(this, (frac_a, b) => [frac_a, b % base === 0n ? b / base : 0n]); // 根式部分能被 √base 整除就保留
+		else sv.addTermsBy(this, (frac_a, b) => [frac_a, b % base !== 0n ? b : 0n]); // 根式部分不能被 √base 整除就保留
 		return sv;
 	}
 	
 	copy(): SqrtValue { // 複製
-		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
-		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a.copy(), b);
+		const sv = SV();
+		sv.addTermsBy(this, (frac_a, b) => [frac_a, b]);
 		return sv;
 	}
 	
 	neg(): SqrtValue { // 取負號
 		const sv = SV();
-		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a.neg(), b);
+		sv.addTermsBy(this, (frac_a, b) => [frac_a.neg(), b]);
 		return sv;
 	}
 	
 	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.add"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		for (const [b, frac_a] of x.terms) sv.addTerm(frac_a, b);
-		sv.removeZeroTerm();
+		sv.addTermsBy(x, (frac_a, b) => [frac_a, b]);
+		sv.removeZeroTerm(); // 加法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
 	
 	sub(x: number|bigint|Frac|SqrtValue): SqrtValue { // 減法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.sub"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		for (const [b, frac_a] of x.terms) sv.addTerm(frac_a.neg(), b);
-		sv.removeZeroTerm();
+		sv.addTermsBy(x, (frac_a, b) => [frac_a.neg(), b]);
+		sv.removeZeroTerm(); // 減法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
 	
@@ -374,11 +372,15 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		
 		const sv = SV();
-		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) {
+		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) { // 將 this 與 x 的 term 兩兩相乘再加總
+			const b1Factors = this.baseFactors.get(b1) as bigint[];
+			const b2Factors = x.baseFactors.get(b2) as bigint[];
+			const newFactors = [...new Set([...b1Factors, ...b2Factors])]; // 兩個 term 的 b 的質因數分解聯集
+			
 			const gcd = BigIntOp.gcd(b1, b2);
-			sv.addTerm(frac_a1.mul(frac_a2).mul(gcd), (b1 / gcd) * (b2 / gcd)); // b1, b2 為最簡根式, 因此同除 gcd 後相乘, 也是最簡根式
+			sv.addTerm(frac_a1.mul(frac_a2).mul(gcd), (b1 / gcd) * (b2 / gcd), newFactors); // b1, b2 為最簡根式, 因此同除 gcd 後相乘, 也是最簡根式
 		}
-		sv.removeZeroTerm();
+		sv.removeZeroTerm(); // 乘法有可能導致某些項被消掉, 需要清除 zero term
 		
 		return sv;
 	}
@@ -430,7 +432,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		let frac = this.terms.get(b) ?? F(0); // 讀取 terms[b]
 		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
 		this.baseFactors.set(b, bFactors); // 保存質因數分解
-	}
+	} // 注意: addTerm 的參數 frac_a 不需要額外複製, 因為 .add(frac_a) 會回傳新物件
 	
 	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		const frac_a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
@@ -441,6 +443,12 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		nFactors.push(...dFactors); // n*d 的質因數分解, 由於 frac_b 為最簡分數 (n, d 互質), 所以可以保證 √(nd) 是最簡根式
 		
 		this.addTerm(F(kn, kd * d).mul(frac_a), n * d, nFactors); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
+	}
+	
+	private addTermsBy(sv: SqrtValue, fn: (frac_a: Frac, b: bigint) => [Frac, bigint]): void { // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
+		for (const [b, frac_a] of sv.terms) {
+			this.addTerm(...fn(frac_a, b), sv.baseFactors.get(b) as bigint[]); // 使用 "as" 因為 addTerm 保證 baseFactors 有 key b
+		}
 	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
