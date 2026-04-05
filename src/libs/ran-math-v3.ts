@@ -386,24 +386,28 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
-		x = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		let sv_d = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
+		if (sv_d.isZero()) return SV();
 		
-		let sv = this.copy(); // 分子
+		let sv_n = this.copy(); // 分子
 		while (true) {
 			let base = 1n;
-			for (const [b, frac_a] of x.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
-			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母完全不包含根號, 可以跳出迴圈了
+			for (const [b, frac_a] of sv_d.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
+			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母已化簡為有理數, 可以跳出迴圈了
 			
-			if (base < 0n) base = -1n;
-			else base = 1n;
+			if (base < 0n) base = -1n; // 如果取到的基底是 √-, 就分解 √-1
+			else base = (sv_d.baseFactors.get(base) as bigint[]).reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
 			
-			const alpha = base > 0n ? x.comp(base, false) : x.real(); // 如果 base > 0, 則分解為 α + β √base
-			const beta = base > 0n ? x.comp(base, true) : x.imag(); // 如果 base < 0 (複數), 則分解為 α + β √-1
+			const alpha = base > 0n ? sv_d.comp(base, false) : sv_d.real(); // 如果 base > 0, 則分解為 α + β √base
+			const beta = base > 0n ? sv_d.comp(base, true) : sv_d.imag(); // 如果 base < 0 (複數), 則分解為 α + β √-1
 			
-			sv = sv.mul(alpha.sub(SV([1, base]).mul(beta)));
+			const sv_base = SV();
+			sv_base.addTerm(F(1), base, [base]); // √base
+			sv_n = sv_n.mul(alpha.sub(beta.mul(sv_base))); // 分子 <- 分子 * (α - β √base)
+			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base
 		}
-		
-		return sv; // [todo]
+		const frac_d = sv_d.terms.get(1n) as Frac; // 將分母轉為有理數
+		return sv_n.mul(F(1).div(frac_d)); // return 分子/分母
 	}
 	
 	pow(x: number|bigint): SqrtValue { // 整數次方
@@ -449,7 +453,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		for (const [b, frac_a] of sv.terms) {
 			this.addTerm(...fn(frac_a, b), sv.baseFactors.get(b) as bigint[]); // 使用 "as" 因為 addTerm 保證 baseFactors 有 key b
 		}
-	}
+	} // [todo] remove b
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
 		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) {
