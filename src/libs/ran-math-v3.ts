@@ -175,10 +175,6 @@ export class Frac { // 分數
 		this.d = d / ndGcd;
 	}
 	
-	copy(): Frac { // 複製
-		return F(this.n, this.d);
-	}
-	
 	isZero(): boolean { // 是否為 0
 		return this.n === 0n;
 	}
@@ -197,6 +193,10 @@ export class Frac { // 分數
 	
 	toLatex(): string { // 轉為 latex 字串
 		return this.isInt() ? `${this.n}` : `\\frac{${this.n}}{${this.d}}`;
+	}
+	
+	copy(): Frac { // 複製
+		return F(this.n, this.d);
 	}
 	
 	neg(): Frac { // 取負號
@@ -254,6 +254,12 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 	}
 	
+	static NonPositiveBaseError = class extends RanMathError { // 無法取出非正整數基底的分量
+		constructor(caller: string) {
+			super(caller, "Base must be a positive integer.");
+		}
+	}
+	
 	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
 		return x instanceof SqrtValue;
 	}
@@ -286,17 +292,8 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
 		this.terms = new Map<bigint, Frac>();
-		for (const rawTerm of rawTerms) {
-			const [frac_a, b] = SqrtValue.normalizeTerm(rawTerm); // 化簡 a√b 為最簡根式項
-			this.addTerm(frac_a, b); // 將最簡根式項 a√b 累加到自身物件
-		}
+		for (const rawTerm of rawTerms) this.addRawTerm(rawTerm); // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		this.removeZeroTerm(); // 清除所有的 0√b | a√0
-	}
-	
-	copy(): SqrtValue { // 複製
-		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
-		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a, b);
-		return sv;
 	}
 	
 	toStr(): string { // 轉為字串
@@ -315,19 +312,38 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	real(): SqrtValue { // 取出實部
-		return SV(); // [todo]
+		const sv = SV();
+		for (const [b, frac_a] of this.terms) if (b > 0n) sv.addTerm(frac_a, b);
+		return sv;
 	}
 	
 	imag(): SqrtValue { // 取出虛部
-		return SV(); // [todo]
+		const sv = SV();
+		for (const [b, frac_a] of this.terms) if (b < 0n) sv.addTerm(frac_a, -b);
+		return sv;
 	}
 	
-	comp(b: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √b} 其一基底的分量 (component), 例: 1+√6+√3+√14 = (1+√3)1 + (√3+√7)√2
-		return SV(); // [todo]
+	comp(base: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √base} 其一基底的分量 (component)
+		if (base <= 0n) throw new SqrtValue.NonPositiveBaseError("SqrtValue.comp"); // 無法取出非正整數的分量
+		
+		const sv = SV();
+		for (const [b, frac_a] of this.terms) { // 例: 1+√6+√3+√-14 = (1+√3)1 + (√3+√-7)√2
+			if (b % base === 0n && useSqrtBasis) sv.addTerm(frac_a, b / base);
+			if (b % base !== 0n && !useSqrtBasis) sv.addTerm(frac_a, b);
+		}
+		return sv;
+	}
+	
+	copy(): SqrtValue { // 複製
+		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
+		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a.copy(), b);
+		return sv;
 	}
 	
 	neg(): SqrtValue { // 取負號
-		return SV().sub(this);
+		const sv = SV();
+		for (const [b, frac_a] of this.terms) sv.addTerm(frac_a.neg(), b);
+		return sv;
 	}
 	
 	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
@@ -369,18 +385,21 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return true; // [todo]
 	}
 	
-	private static normalizeTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): [Frac, bigint] { // 化簡 a√b 為最簡根式項
+	private addTerm(frac_a: Frac, b: bigint): void { // 將最簡根式項 a√b 累加到自身物件
+		if (frac_a.isZero() || b === 0n) return; // 無視 +0
+		
+		const frac = this.terms.get(b) ?? F(0);
+		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
+	}
+	
+	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		const frac_a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
 		const frac_b = ParamNorm.toFrac(rawTerm[1], "SqrtValue.constructor");
 		
 		const [kn, n] = BigIntOp.getSquareFactor(frac_b.n); // 提出平方根
 		const [kd, d] = BigIntOp.getSquareFactor(frac_b.d);
-		return [F(kn, kd * d).mul(frac_a), n * d]; // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
-	}
-	
-	private addTerm(frac_a: Frac, b: bigint): void { // 將最簡根式項 a√b 累加到自身物件
-		const frac = this.terms.get(b) ?? F(0);
-		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
+		
+		this.addTerm(F(kn, kd * d).mul(frac_a), n * d); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
 	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0

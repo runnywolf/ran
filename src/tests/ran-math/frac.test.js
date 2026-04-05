@@ -94,15 +94,6 @@ const testData = {
 			{ input: { n: 5, d: 0 }, error: '[RanMath][Frac.constructor] The denominator (param "d") cannot be 0.' },
 		]
 	},
-	".copy": {
-		testName: (input, output) => `(${toStr(input)}).copy() = ${toStr(output)}`,
-		testFunc: input => input.copy(),
-		tests: [ // 測資
-			{ input: F(2), output: F(2, 1) },
-			{ input: F(2, 3), output: F(2, 3) },
-			{ input: F(6, -9), output: F(-2, 3) },
-		]
-	},
 	".isZero": {
 		testName: (input, output) => `(${toStr(input)}).isZero() = ${toStr(output)}`,
 		testFunc: input => input.isZero(),
@@ -155,6 +146,15 @@ const testData = {
 			{ input: F(2, 3), output: 2/3 },
 			{ input: F(3, 5), output: 0.6 },
 			{ input: F(0, 1), output: 0 },
+		]
+	},
+	".copy": {
+		testName: (input, output) => `(${toStr(input)}).copy() = ${toStr(output)}`,
+		testFunc: input => input.copy(),
+		tests: [ // 測資
+			{ input: F(2), output: F(2, 1) },
+			{ input: F(2, 3), output: F(2, 3) },
+			{ input: F(6, -9), output: F(-2, 3) },
 		]
 	},
 	".add": {
