@@ -305,13 +305,12 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	toStr(): string { // 轉為字串
-		const arrTerms: [bigint, Frac][] = Array.from(this.terms); // Map 轉 array, 因為要排序再轉字串
-		arrTerms.sort(([x, _x], [y, _y]) => { // 排序成 √1 + √2 + ... + √-1 + √-2 + ...
+		if (this.terms.size === 0) return "0"; // 沒有任何一項就是 0
+		
+		const arrTerms = Array.from(this.terms).sort(([x, _x], [y, _y]) => { // 排序成 √1 + √2 + ... + √-1 + √-2 + ...
 			if (x < 0n === y < 0n) return Number(x < 0n ? y-x : x-y); // √+ 升序排列, √- 降序排列
 			return x < 0n ? 1 : -1; // √- 排在 √+ 後面
 		});
-		
-		if (arrTerms.length === 0) return "0"; // 沒有任何一項就是 0
 		return arrTerms.map(([b, frac_a]) => `${frac_a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
 	}
 	
@@ -403,23 +402,18 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		while (true) {
 			let base = 1n;
 			for (const [b, frac_a] of sv_d.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
-			console.log("find base: ", base)
 			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母已化簡為有理數, 可以跳出迴圈了
 			
 			if (base < 0n) base = -1n; // 如果取到的基底是 √-, 就分解 √-1
 			else base = [...sv_d.getFactors(base)].reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
-			console.log("choose base: ", base)
 			
 			const alpha = base > 0n ? sv_d.comp(base, false) : sv_d.real(); // 如果分母 base > 0, 則分解為 α + β √base
 			const beta = base > 0n ? sv_d.comp(base, true) : sv_d.imag(); // 如果分母 base < 0 (複數), 則分解為 α + β √-1
-			console.log(`alpha = (${alpha.toStr()}), beta = (${beta.toStr()})`)
 			
 			const sv_base = SV();
 			sv_base.addTerm(F(1), base, [base]); // √base
-			console.log(`before: n = (${sv_n.toStr()}), d = (${sv_d.toStr()}), α - β √base = ${alpha.sub(beta.mul(sv_base)).toStr()}`);
 			sv_n = sv_n.mul(alpha.sub(beta.mul(sv_base))); // 分子 <- 分子 * (α - β √base)
 			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base; 消去基底 √base
-			console.log(`after: n = (${sv_n.toStr()}), d = (${sv_d.toStr()})`);
 		}
 		const frac_d = sv_d.terms.get(1n) as Frac; // 將分母轉為有理數
 		return sv_n.mul(F(1).div(frac_d)); // return 分子/分母
@@ -430,7 +424,11 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	equal(x: number|bigint|Frac|SqrtValue): boolean { // 相等
-		return true; // [todo]
+		x = ParamNorm.toSqrtValue(x, "SqrtValue.equal"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		if (this.terms.size !== x.terms.size) return false; // 如果項數不一樣, 必定不相等
+		for (const [b, frac_a] of this.terms) if (!frac_a.equal(x.terms.get(b) ?? 0)) return false; // 逐一檢查每個基底的係數是否相等
+		return true;
 	}
 	
 	private static getSquareFactor(x: bigint): [bigint, bigint, bigint[]] { // 若 k^2 為 x 的最大平方因數, 回傳 [k, x/k/k, x/k/k質因數分解]
