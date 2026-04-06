@@ -37,6 +37,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ "-0.00240" ], output: F(-3, 1250) },
 			{ input: [ "-20.0" ], output: F(-20) },
 			{ input: [ "-0.0" ], output: F(0) },
+			{ input: [ "000.000" ], output: F(0) },
 			{ input: [ "- 10. 2  4 " ], output: F(-256, 25) },
 			{ input: [ ".8964" ], error: Frac.InvalidStringError },
 			{ input: [ "-87." ], error: Frac.InvalidStringError },
@@ -47,6 +48,10 @@ const testDatas: Record<string, TestData> = {
 			
 			{ input: [ "6/-9" ], output: F(-2, 3) },
 			{ input: [ " -1 2 /   7 " ], output: F(-12, 7) },
+			{ input: [ "00012/0003" ], output: F(4) },
+			{ input: [ "-00012/0003" ], output: F(-4) },
+			{ input: [ "-0/-5" ], output: F(0) },
+			{ input: [ "000/0001" ], output: F(0) },
 			{ input: [ "2.5/1" ], error: Frac.InvalidStringError }, // 子字串不是整數
 			{ input: [ "2/1a" ], error: Frac.InvalidStringError }, // 子字串不是整數
 			{ input: [ "2/1/3" ], error: Frac.InvalidStringError }, // 子字串過多
@@ -55,6 +60,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ " 6  " ], output: F(6) },
 			{ input: [ "- 4" ], output: F(-4) },
 			{ input: [ "-0" ], output: F(0) },
+			{ input: [ "1/-0" ], error: Frac.InvalidStringError },
+			{ input: [ "+1" ], error: Frac.InvalidStringError },
 			{ input: [ "1e10" ], error: Frac.InvalidStringError },
 			{ input: [ "abc" ], error: Frac.InvalidStringError },
 			{ input: [ "" ], error: Frac.InvalidStringError },
@@ -67,6 +74,9 @@ const testDatas: Record<string, TestData> = {
 			{ input: [], output: F(0, 1) }, // 特性 new Frac() = 0/1
 			{ input: [ 3 ], output: F(3, 1) }, // 特性 new Frac(3) = 3/1
 			{ input: [ 6, -9 ], output: F(-2, 3) },
+			{ input: [ 0n, -7n ], output: F(0, 1) },
+			{ input: [ -8n, -12n ], output: F(2, 3) },
+			{ input: [ 9007199254740991, 1 ], output: F(9007199254740991n, 1n) },
 			{ input: [ -0.1, 7 ], error: ParamNorm.NonIntError },
 			{ input: [ -2, 1e100 ], error: ParamNorm.UnsafeIntError },
 			{ input: [ 5, 0 ], error: Frac.ZeroDenominatorError }, // 分母為 0
@@ -138,6 +148,15 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(-2, 3) ], output: F(-2, 3) },
 		]
 	},
+	".neg": {
+		testName: (frac: Frac) => `(${str(frac)}).neg()`,
+		testFunc: (frac: Frac) => frac.neg(),
+		tests: [
+			{ input: [ F(-3, 4) ], output: F(3, 4) },
+			{ input: [ F(0) ], output: F(0) },
+			{ input: [ F(5, 9) ], output: F(-5, 9) },
+		]
+	},
 	".add": {
 		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} + ${str(x)}`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.add(x),
@@ -148,6 +167,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(2, 7), F(-3, 5) ], output: F(-11, 35) },
 			{ input: [ F(346, 7835), F(-11307, 5127) ], output: F(-28938801, 13390015) },
 			{ input: [ F(-5, 3), 5n ], output: F(10, 3) }, // Frac + bigint
+			{ input: [ F(1, 2), -1n ], output: F(-1, 2) },
 			{ input: [ F(-500), 500n ], output: F(0, 1) },
 			{ input: [ F(3, 7), -3 ], output: F(-18, 7) }, // Frac + int number
 			{ input: [ F(-5, 3), 5 ], output: F(10, 3) },
@@ -167,6 +187,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(2, 7), F(-3, 5) ], output: F(31, 35) },
 			{ input: [ F(1346, 7835), F(-11307, 5127) ], output: F(31830429, 13390015) },
 			{ input: [ F(3, 7), -3n ], output: F(24, 7) }, // Frac - bigint
+			{ input: [ F(1, 2), 1n ], output: F(-1, 2) },
 			{ input: [ F(-5, 3), 5n ], output: F(-20, 3) },
 			{ input: [ F(-5, 37), 17 ], output: F(-634, 37) }, // Frac - int number
 			{ input: [ F(10), 0 ], output: F(10, 1) },
@@ -185,6 +206,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(12, 5), F(10, 9) ], output: F(8, 3) },
 			{ input: [ F(1346, 7835), F(-11307, 5127) ], output: F(-5073074, 13390015) },
 			{ input: [ F(3, 7), -3n ], output: F(-9, 7) }, // Frac * bigint
+			{ input: [ F(1, 2), -2n ], output: F(-1) },
 			{ input: [ F(7, 10), 4n ], output: F(14, 5) },
 			{ input: [ F(-5, 12), 9 ], output: F(-15, 4) }, // Frac * int number
 			{ input: [ F(-500), -500 ], output: F(250000, 1) },
@@ -203,6 +225,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(12, 5), F(10, 9) ], output: F(54, 25) },
 			{ input: [ F(1346, 7835), F(-11307, 5127) ], output: F(-2300314, 29530115) },
 			{ input: [ F(3, 7), -3n ], output: F(-1, 7) }, // Frac / bigint
+			{ input: [ F(1, 2), -2n ], output: F(-1, 4) },
 			{ input: [ F(7, 10), 4n ], output: F(7, 40) },
 			{ input: [ F(-3, 5), 9 ], output: F(-1, 15) }, // Frac / int number
 			{ input: [ F(-500), -500 ], output: F(1, 1) },
@@ -226,6 +249,9 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(3), 7 ], output: F(2187) }, // i^i
 			{ input: [ F(-6, 5), -4 ], output: F(625, 1296) }, // f^-i
 			{ input: [ F(-6, 5), 3 ], output: F(-216, 125) }, // f^i
+			{ input: [ F(-2, 3), 2 ], output: F(4, 9) },
+			{ input: [ F(-2, 3), -3 ], output: F(-27, 8) },
+			{ input: [ F(1), -999n ], output: F(1) },
 			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac ^ float error
 			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac ^ unsafe int number
 		]
@@ -241,6 +267,8 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(7, 10), 7 ], output: false },
 			{ input: [ F(6, -3), -2n ], output: true },
 			{ input: [ F(-3, 5), -3 ], output: false },
+			{ input: [ F(0, -3), 0n ], output: true },
+			{ input: [ F(-4, 2), -2 ], output: true },
 			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac == float error
 			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac == unsafe int number
 		]
@@ -256,6 +284,9 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ F(7, 10), 7n ], output: true },
 			{ input: [ F(6, 3), 2 ], output: false },
 			{ input: [ F(-1, 555), 0 ], output: true },
+			{ input: [ F(0), 0n ], output: false },
+			{ input: [ F(-1, 2), 0 ], output: true },
+			{ input: [ F(1, 2), 0 ], output: false },
 			{ input: [ F(6, 7), 3.5 ], error: ParamNorm.NonIntError }, // Frac < float error
 			{ input: [ F(6, 7), 1e100 ], error: ParamNorm.UnsafeIntError }, // Frac < unsafe int number
 		]

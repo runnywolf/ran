@@ -480,7 +480,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
-		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) {
+		for (const [b, frac_a] of this.terms) if (frac_a.isZero() || b === 0n) {
 			this.terms.delete(b); // 刪除 0√b & a√0 項
 			this.baseFactors.delete(b); // 刪除 b 的質因數快取
 		}
