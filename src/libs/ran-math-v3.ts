@@ -12,10 +12,6 @@ export class RanMathError extends Error {
 }
 //#endregion
 
-export function isBigInt(x: unknown): x is bigint { // 是否為 bigint
-	return typeof x === "bigint";
-}
-
 class Prime { // 質數
 	private static readonly primes: bigint[] = [2n];
 	
@@ -51,7 +47,7 @@ export class ParamNorm { // 參數標準化
 	}
 	
 	static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint
-		if (isBigInt(x)) return x; // bigint 不須處理, 直接回傳
+		if (typeof x === "bigint") return x; // bigint 不須處理, 直接回傳
 		
 		if (!Number.isInteger(x)) throw new ParamNorm.NonIntError(caller); // x 不是整數
 		if (!Number.isSafeInteger(x)) throw new ParamNorm.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
@@ -217,7 +213,7 @@ export class Frac { // 分數
 	pow(x: number|bigint): Frac { // 整數次方
 		x = ParamNorm.toBigInt(x, "Frac.pow"); // number|bigint -> bigint
 		if (x >= 0n) return F(this.n ** x, this.d ** x); // 非負整數次方
-		if (this.equal(0)) throw new Frac.DivideZeroError("Frac.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		if (this.isZero()) throw new Frac.DivideZeroError("Frac.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
 		return F(this.d ** -x, this.n ** -x); // 負整數次方
 	}
 	
@@ -420,7 +416,18 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	pow(x: number|bigint): SqrtValue { // 整數次方
-		return SV(); // [todo]
+		x = ParamNorm.toBigInt(x, "SqrtValue.pow"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		if (x >= 1n) {
+			const sv_halfPow = this.pow(x / 2n);
+			let sv = sv_halfPow.mul(sv_halfPow);
+			if (x % 2n === 1n) sv.mul(this);
+			return sv;
+		}
+		if (x === 0n) return SV([1, 1]); // n^0 = 1
+		
+		if (this.isZero()) throw new SqrtValue.DivideZeroError("SqrtValue.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		return SV([1, 1]).div(this.pow(-x)); // n^-x = 1/(n^x)
 	}
 	
 	equal(x: number|bigint|Frac|SqrtValue): boolean { // 相等
