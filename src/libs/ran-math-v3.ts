@@ -286,11 +286,11 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	private readonly terms: Map<bigint, Frac>; // 最簡根式項
-	private readonly baseFactors: Map<bigint, bigint[]>; // √b 的質因數分解
+	private readonly baseFactors: Map<bigint, Set<bigint>>; // √b 的質因數分解
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
 		this.terms = new Map<bigint, Frac>();
-		this.baseFactors = new Map<bigint, bigint[]>();
+		this.baseFactors = new Map<bigint, Set<bigint>>();
 		
 		for (const rawTerm of rawTerms) this.addRawTerm(rawTerm); // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		this.removeZeroTerm(); // 清除所有的 0√b | a√0
@@ -321,41 +321,46 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	real(): SqrtValue { // 取出實部
 		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
-		sv.addTermsBy(this, (frac_a, b) => [frac_a, b > 0n ? b : 0n]); // 將所有 √- 都改成 √0, 這樣就只剩實數部分了
+		sv.addTermsBy(this, (frac_a, b) => b > 0n ? frac_a : F(0)); // 將所有 √- 都改成 √0, 這樣就只剩實數部分了
 		return sv;
 	}
 	
 	imag(): SqrtValue { // 取出虛部
 		const sv = SV();
-		sv.addTermsBy(this, (frac_a, b) => [frac_a, b < 0n ? -b : 0n]); // 將所有 √+ 都改成 √0, 這樣就只剩虛數部分了
+		for (const [b, frac_a] of this.terms) if (b < 0n) sv.addTerm(frac_a, -b, this.getFactors(b)); // 將所有 √+ 都改成 √0, 這樣就只剩虛數部分了
 		return sv;
 	}
 	
-	comp(base: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √base} 其一基底的分量 (component)
+	comp(base: bigint, useSqrtBasis: boolean): SqrtValue { // 取出 {1, √base} 其一基底的分量 (component), base 必須是 1 or 質數
 		if (base <= 0n) throw new SqrtValue.NonPositiveBaseError("SqrtValue.comp"); // 無法取出非正整數的分量
 		
 		const sv = SV(); // 例: 1+√6+√3+√-14 = (1+√3)1 + (√3+√-7)√2
-		if (useSqrtBasis) sv.addTermsBy(this, (frac_a, b) => [frac_a, b % base === 0n ? b / base : 0n]); // 根式部分能被 √base 整除就保留
-		else sv.addTermsBy(this, (frac_a, b) => [frac_a, b % base !== 0n ? b : 0n]); // 根式部分不能被 √base 整除就保留
+		if (useSqrtBasis) {
+			for (const [b, frac_a] of this.terms) if (b % base === 0n) { // 根式部分能被 √base 整除就保留
+				sv.addTerm(frac_a, b / base, [...this.getFactors(b)].filter(x => x !== base));
+			}
+		} else {
+			sv.addTermsBy(this, (frac_a, b) => (b % base !== 0n) ? frac_a : F(0)); // 根式部分不能被 √base 整除就保留
+		}
 		return sv;
 	}
 	
 	copy(): SqrtValue { // 複製
 		const sv = SV();
-		sv.addTermsBy(this, (frac_a, b) => [frac_a, b]);
+		sv.addTermsBy(this, (frac_a, b) => frac_a);
 		return sv;
 	}
 	
 	neg(): SqrtValue { // 取負號
 		const sv = SV();
-		sv.addTermsBy(this, (frac_a, b) => [frac_a.neg(), b]);
+		sv.addTermsBy(this, (frac_a, b) => frac_a.neg());
 		return sv;
 	}
 	
 	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.add"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		sv.addTermsBy(x, (frac_a, b) => [frac_a, b]);
+		sv.addTermsBy(x, (frac_a, b) => frac_a);
 		sv.removeZeroTerm(); // 加法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
@@ -363,7 +368,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	sub(x: number|bigint|Frac|SqrtValue): SqrtValue { // 減法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.sub"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		sv.addTermsBy(x, (frac_a, b) => [frac_a.neg(), b]);
+		sv.addTermsBy(x, (frac_a, b) => frac_a.neg());
 		sv.removeZeroTerm(); // 減法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
@@ -372,13 +377,18 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		
 		const sv = SV();
-		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) { // 將 this 與 x 的 term 兩兩相乘再加總
-			const b1Factors = this.baseFactors.get(b1) as bigint[];
-			const b2Factors = x.baseFactors.get(b2) as bigint[];
-			const newFactors = [...new Set([...b1Factors, ...b2Factors])]; // 兩個 term 的 b 的質因數分解聯集
-			
-			const gcd = BigIntOp.gcd(b1, b2);
-			sv.addTerm(frac_a1.mul(frac_a2).mul(gcd), (b1 / gcd) * (b2 / gcd), newFactors); // b1, b2 為最簡根式, 因此同除 gcd 後相乘, 也是最簡根式
+		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) { // 將 this 與 x 的每個 term 兩兩相乘再加總
+			const newFactors = new Set(this.getFactors(b1)); // 獲取 b1 的質因數分解 (this = a1√b1)
+			let k = 1n; // b1 * b2 提出的平方因數 k^2
+			for (const b2Factor of x.getFactors(b2)) { // 遍歷 b2 的質因數分解 (x = a2√b2)
+				if (newFactors.has(b2Factor)) { // 如果 b1 與 b2 有相同的質因數 p, 代表 √b1b2 可以提出 p^2
+					newFactors.delete(b2Factor);
+					k *= b2Factor;
+				}
+				else newFactors.add(b2Factor); // 如果 b1 與 b2 沒有相同的質因數
+			}
+			if (b1 < 0n && b2 < 0n) k *= -1n; // 如果 b1 與 b2 都為負數, 代表 √b1b2 必須提出 -1
+			sv.addTerm(frac_a1.mul(frac_a2).mul(k), (b1 / k) * (b2 / k), newFactors); // a1√b1 * a2√b2 = a1 a2 k √(b1/k * b2/k)
 		}
 		sv.removeZeroTerm(); // 乘法有可能導致某些項被消掉, 需要清除 zero term
 		
@@ -387,24 +397,29 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
 		let sv_d = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
-		if (sv_d.isZero()) return SV();
+		if (sv_d.isZero()) throw new SqrtValue.DivideZeroError("SqrtValue.div"); // div 0 error
 		
 		let sv_n = this.copy(); // 分子
 		while (true) {
 			let base = 1n;
 			for (const [b, frac_a] of sv_d.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
+			console.log("find base: ", base)
 			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母已化簡為有理數, 可以跳出迴圈了
 			
 			if (base < 0n) base = -1n; // 如果取到的基底是 √-, 就分解 √-1
-			else base = (sv_d.baseFactors.get(base) as bigint[]).reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
+			else base = [...sv_d.getFactors(base)].reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
+			console.log("choose base: ", base)
 			
-			const alpha = base > 0n ? sv_d.comp(base, false) : sv_d.real(); // 如果 base > 0, 則分解為 α + β √base
-			const beta = base > 0n ? sv_d.comp(base, true) : sv_d.imag(); // 如果 base < 0 (複數), 則分解為 α + β √-1
+			const alpha = base > 0n ? sv_d.comp(base, false) : sv_d.real(); // 如果分母 base > 0, 則分解為 α + β √base
+			const beta = base > 0n ? sv_d.comp(base, true) : sv_d.imag(); // 如果分母 base < 0 (複數), 則分解為 α + β √-1
+			console.log(`alpha = (${alpha.toStr()}), beta = (${beta.toStr()})`)
 			
 			const sv_base = SV();
 			sv_base.addTerm(F(1), base, [base]); // √base
+			console.log(`before: n = (${sv_n.toStr()}), d = (${sv_d.toStr()}), α - β √base = ${alpha.sub(beta.mul(sv_base)).toStr()}`);
 			sv_n = sv_n.mul(alpha.sub(beta.mul(sv_base))); // 分子 <- 分子 * (α - β √base)
-			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base
+			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base; 消去基底 √base
+			console.log(`after: n = (${sv_n.toStr()}), d = (${sv_d.toStr()})`);
 		}
 		const frac_d = sv_d.terms.get(1n) as Frac; // 將分母轉為有理數
 		return sv_n.mul(F(1).div(frac_d)); // return 分子/分母
@@ -430,8 +445,14 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return [k, x/k/k, bFactors];
 	}
 	
-	private addTerm(frac_a: Frac, b: bigint, bFactors: bigint[]): void { // 將最簡根式項 a√b 累加到自身物件, bFactors 為 b 的質因數分解
+	private getFactors(b: bigint): Set<bigint> { // 取得基底 b 的質因數分解, 你必須保證 b 一定在 this.terms 或 this.baseFactors 內
+		return this.baseFactors.get(b) as Set<bigint>; // 注意: 回傳的是 Set<bigint> 參考
+	}
+	
+	private addTerm(frac_a: Frac, b: bigint, bFactors: Set<bigint> | bigint[]): void { // 將最簡根式項 a√b 累加到自身物件, bFactors 為 b 的質因數分解
 		if (frac_a.isZero() || b === 0n) return; // 無視 +0
+		
+		bFactors = new Set(bFactors); // array 轉 set, 若 bFactors 為 set 則 copy
 		
 		let frac = this.terms.get(b) ?? F(0); // 讀取 terms[b]
 		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
@@ -449,11 +470,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		this.addTerm(F(kn, kd * d).mul(frac_a), n * d, nFactors); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
 	}
 	
-	private addTermsBy(sv: SqrtValue, fn: (frac_a: Frac, b: bigint) => [Frac, bigint]): void { // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
-		for (const [b, frac_a] of sv.terms) {
-			this.addTerm(...fn(frac_a, b), sv.baseFactors.get(b) as bigint[]); // 使用 "as" 因為 addTerm 保證 baseFactors 有 key b
-		}
-	} // [todo] remove b
+	private addTermsBy(sv: SqrtValue, fn: (frac_a: Frac, b: bigint) => Frac): void { // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
+		for (const [b, frac_a] of sv.terms) this.addTerm(fn(frac_a, b), b, sv.getFactors(b));
+	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
 		for (const [b, frac_a] of this.terms) if (frac_a.equal(0) || b === 0n) {

@@ -11,7 +11,11 @@
 
 import { Frac, BigIntOp, F, SV, SqrtValue } from '@/libs/ran-math-v3';
 
-console.log(SqrtValue.fromStr("1 + 4s2 + -2s6 + 2s-2 + s-3").imag().toStr());
+let sv = SqrtValue.fromStr("1 + 4s2 + -2s6 + 2s-2 + s-3");
+const sv_inv = SV([1, 1]).div(sv);
+console.log(`sv: ${sv.toStr()}`, sv);
+console.log(`inv: ${sv_inv.toStr()}`);
+console.log(`1 check: ${sv_inv.mul(sv).toStr()}`);
 try {
 	
 } catch (err) {
