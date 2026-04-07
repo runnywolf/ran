@@ -17,8 +17,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	"Frac.fromStr": {
-		testName: (input: string) => `Frac.fromStr(${str(input)})`,
-		testFunc: (input: string) => Frac.fromStr(input),
+		testName: (s: string) => `Frac.fromStr(${str(s)})`,
+		testFunc: (s: string) => Frac.fromStr(s),
 		tests: [ // 測資
 			{ input: [ "1.24" ], output: F(31, 25) },
 			{ input: [ "01.24" ], output: F(31, 25) },

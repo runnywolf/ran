@@ -1,6 +1,6 @@
 // 一些撰寫測試時可能用的到的工具
 
-import { Frac } from "@lib/ran-math-v3";
+import { Frac, SqrtValue } from "@lib/ran-math-v3";
 
 export interface TestData { // 測資通用模板
 	testName: (...input: any[]) => string, // 測試名稱, 例如: "a+b"
@@ -11,7 +11,7 @@ export interface TestData { // 測資通用模板
 	>,
 }
 
-// 把一些值轉為字串, 用於覆蓋率測試的輸出. 避免影響覆蓋率, 所以不使用 ran-math lib 的 function
+// 把一些值轉為字串, 用於覆蓋率測試的輸出
 export function str(value: any): string {
 	if (value instanceof Map) { // map object
 		const s = [...value].map(([k, v]) => `${str(k)}: ${str(v)}`).join(", ");
@@ -19,6 +19,7 @@ export function str(value: any): string {
 	}
 	if (value instanceof Array) return `[ ${value.map(e => str(e)).join(", ")} ]`; // array
 	if (value instanceof Frac) return `${value.n}/${value.d}`; // Frac -> string
+	if (value instanceof SqrtValue) return value.toStr(); // SV -> string
 	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
 	if (typeof value === "bigint") return `${value}n`; // bigint -> string
 	if (Number.isInteger(value)) return String(value); // int number -> string

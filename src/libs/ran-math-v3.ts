@@ -394,6 +394,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		let sv_d = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
 		if (sv_d.isZero()) throw new SqrtValue.DivideZeroError("SqrtValue.div"); // div 0 error
 		
+		let loopCount = 0; // 雖然理論上會收斂, 這個計數用於避免非預期的無窮迴圈
 		let sv_n = this.copy(); // 分子
 		while (true) {
 			let base = 1n;
@@ -410,6 +411,8 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			sv_base.addTerm(F(1), base, [base]); // √base
 			sv_n = sv_n.mul(alpha.sub(beta.mul(sv_base))); // 分子 <- 分子 * (α - β √base)
 			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base; 消去基底 √base
+			
+			if (++loopCount >= 100) throw new RanMathError("SqrtValue.div", "Unexpected infinity loop error.");
 		}
 		const frac_d = sv_d.terms.get(1n) as Frac; // 將分母轉為有理數
 		return sv_n.mul(F(1).div(frac_d)); // return 分子/分母
@@ -421,7 +424,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		if (x >= 1n) {
 			const sv_halfPow = this.pow(x / 2n);
 			let sv = sv_halfPow.mul(sv_halfPow);
-			if (x % 2n === 1n) sv.mul(this);
+			if (x % 2n === 1n) sv = sv.mul(this);
 			return sv;
 		}
 		if (x === 0n) return SV([1, 1]); // n^0 = 1
