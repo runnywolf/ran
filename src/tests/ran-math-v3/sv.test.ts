@@ -23,10 +23,12 @@ const testDatas: Record<string, TestData> = {
 		testFunc: (s: string) => SqrtValue.fromStr(s),
 		tests: [
 			{ input: [ "2/3s9/4 + 3.5s12" ], output: SV([1, 1], [7, 3]) },
-			{ input: [ "s12" ], output: SV([2, 3]) },
-			{ input: [ "5" ], output: SV([5, 1]) },
-			{ input: [ "-2s-8" ], output: SV([-4, -2]) },
+			{ input: [ "2s-2 + -2s-2" ], output: SV() },
 			{ input: [ " 2 s 8 + 1 / 2 s 2 " ], output: SV([F(9, 2), 2]) },
+			{ input: [ "s12" ], output: SV([2, 3]) },
+			{ input: [ "-2s0" ], output: SV() },
+			{ input: [ "-2s-8" ], output: SV([-4, -2]) },
+			{ input: [ "5" ], output: SV([5, 1]) },
 			{ input: [ "1s2s3" ], error: SqrtValue.InvalidStringError },
 			{ input: [ "1s2/" ], error: SqrtValue.InvalidStringError },
 			{ input: [ "" ], error: SqrtValue.InvalidStringError },
@@ -93,8 +95,12 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".copy": {
-		testName: (sv: SqrtValue) => `(${str(sv)}).copy()`,
-		testFunc: (sv: SqrtValue) => sv.copy(),
+		testName: (sv: SqrtValue) => `Object (SV) copy test`,
+		testFunc: (sv: any) => { // 這裡不指定型別, 因為要修改 .terms 測試是否複製
+			let sv_copy = sv.copy();
+			sv_copy.terms.set(2n, F(-1)); // 你可以去把 SqrtValue.copy 的回傳值改成 this 試試看, 會錯
+			return sv;
+		},
 		tests: [
 			{ input: [ SV([2, 1], [3, 2], [5, -3]) ], output: SV([2, 1], [3, 2], [5, -3]) },
 		],
@@ -115,6 +121,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ SV([-1, -7]), SV([1, -7]) ], output: SV() },
 			{ input: [ SV([1, 2]), F(1, 2) ], output: SV([F(1, 2), 1], [1, 2]) },
 			{ input: [ SV([1, 2]), 2n ], output: SV([2, 1], [1, 2]) },
+			{ input: [ SV([F(7, 2), 1]), -3 ], output: SV([F(1, 2), 1]) },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
 			{ input: [ SV([1, 2]), 1e100 ], error: ParamNorm.UnsafeIntError },
 		],
@@ -124,8 +131,10 @@ const testDatas: Record<string, TestData> = {
 		testFunc: (sv: SqrtValue, x: any) => sv.sub(x),
 		tests: [
 			{ input: [ SV([1, 2]), SV([3, 8]) ], output: SV([-5, 2]) },
-			{ input: [ SV([1, 2]), 2n ], output: SV([-2, 1], [1, 2]) },
+			{ input: [ SV([2, -1]), SV([2, -1]) ], output: SV() },
 			{ input: [ SV([1, 2]), F(1, 2) ], output: SV([F(-1, 2), 1], [1, 2]) },
+			{ input: [ SV([1, 2]), 2n ], output: SV([-2, 1], [1, 2]) },
+			{ input: [ SV([F(7, 2), 1]), 3 ], output: SV([F(1, 2), 1]) },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
 			{ input: [ SV([1, 2]), 1e100 ], error: ParamNorm.UnsafeIntError },
 		],
@@ -140,23 +149,26 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ SV([1, -1]), SV() ], output: SV() },
 			{ input: [ SV(), SV([1, -1]) ], output: SV() },
 			{ input: [ SV(), SV() ], output: SV() },
-			{ input: [ SV([1, 2]), 2n ], output: SV([2, 2]) },
 			{ input: [ SV([1, 2]), F(1, 2) ], output: SV([F(1, 2), 2]) },
+			{ input: [ SV([1, 2]), 2n ], output: SV([2, 2]) },
+			{ input: [ SV([7, -1]), -2 ], output: SV([-14, -1]) },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
 			{ input: [ SV([1, 2]), 1e100 ], error: ParamNorm.UnsafeIntError },
 		],
 	},
 	".div": {
 		testName: (sv: SqrtValue, x: any) => `(${str(sv)}) / (${str(x)})`,
-		testFunc: (sv: SqrtValue, x: any) => sv.div(x).toStr(),
-		tests: [
-			{ input: [ SV([1, 2]), SV([1, 2]) ], output: SV([1, 1]).toStr() },
-			{ input: [ SV([1, 2]), 2n ], output: SV([F(1, 2), 2]).toStr() },
+		testFunc: (sv: SqrtValue, x: any) => sv.div(x).toStr(), // 這裡轉 str 是因為無法保證 Map 物件的 key 順序
+		tests: [ // 兩個相等 terms 若 key insert order 不一樣, vitest 的 toStrictEqual 無法比較
 			{ input: [ SV([1, 1], [1, 2]), SV([1, 1], [-1, 2]) ], output: SV([-3, 1], [-2, 2]).toStr() },
+			{ input: [ SV([1, 2]), SV([1, 2]) ], output: SV([1, 1]).toStr() },
 			{
 				input: [ SV([1, 1]), SV([2, -2], [1, 1], [4, 2], [-2, 6], [1, -3]) ],
 				output: SV([473, 1], [1264, -1], [66, 2], [-1394, -2], [272, 3], [663, -3], [-210, 6], [-734, -6]).div(7108).toStr()
 			},
+			{ input: [ SV([1, -2]), F(1, 2) ], output: SV([2, -2]).toStr() },
+			{ input: [ SV([1, -2]), 2n ], output: SV([F(1, 2), -2]).toStr() },
+			{ input: [ SV([1, -2]), 2 ], output: SV([F(1, 2), -2]).toStr() },
 			{ input: [ SV([1, 2]), SV() ], error: SqrtValue.DivideZeroError },
 			{ input: [ SV([1, 2]), 0n ], error: SqrtValue.DivideZeroError },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
@@ -167,11 +179,17 @@ const testDatas: Record<string, TestData> = {
 		testName: (sv: SqrtValue, x: number|bigint) => `(${str(sv)}) ^ (${str(x)})`,
 		testFunc: (sv: SqrtValue, x: number|bigint) => sv.pow(x),
 		tests: [
+			{ input: [ SV([-2, 3], [1, -2]), 12n ], output: SV([3068160, -6], [-460736, 1]) },
+			{ input: [ SV([1, 2]), -1 ], output: SV([F(1, 2), 2]) },
 			{ input: [ SV([1, 2]), 0 ], output: SV([1, 1]) },
 			{ input: [ SV([1, 2]), 1 ], output: SV([1, 2]) },
 			{ input: [ SV([1, 2]), 2 ], output: SV([2, 1]) },
+			{ input: [ SV([3, 2]), -1 ], output: SV([F(1, 6), 2]) },
+			{ input: [ SV([1, 1], [1, 2]), -1 ], output: SV([-1, 1], [1, 2]) },
+			{ input: [ SV([2, 1]), -3 ], output: SV([F(1, 8), 1]) },
+			{ input: [ SV(), 87 ], output: SV() },
+			{ input: [ SV(), 0n ], output: SV([1, 1]) },
 			{ input: [ SV(), -1 ], error: SqrtValue.DivideZeroError },
-			{ input: [ SV([1, 2]), -1 ], output: SV([F(1, 2), 2]) },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
 			{ input: [ SV([1, 2]), 1e100 ], error: ParamNorm.UnsafeIntError },
 		],
