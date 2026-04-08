@@ -240,6 +240,12 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 	}
 	
+	static UnknownLatexModeError = class extends RanMathError { // 未知的 .toLatex 模式
+		constructor(caller: string, mode: string) {
+			super(caller, `Unknown mode "${mode}" for ".toLatex(mode)", use "sum" | "i" | "frac" .`);
+		}
+	}
+	
 	static NonPositiveBaseError = class extends RanMathError { // 無法取出非正整數基底的分量
 		constructor(caller: string) {
 			super(caller, "Base must be a positive integer.");
@@ -310,8 +316,17 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return arrTerms.map(([b, frac_a]) => `${frac_a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
 	}
 	
-	toLatex(): string { // 轉為 latex 字串
-		return ""; // [todo]
+	toLatex(mode: string = "i"): string { // 轉為 latex 字串
+		if (mode === "sum") {
+			return "todo";
+		}
+		if (mode === "i") {
+			return "todo";
+		}
+		if (mode === "frac") {
+			return "todo";
+		}
+		throw new SqrtValue.UnknownLatexModeError("SqrtValue.toLatex", mode);
 	}
 	
 	real(): SqrtValue { // 取出實部

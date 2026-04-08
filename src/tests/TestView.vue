@@ -1,6 +1,6 @@
 <template>
 	<div class="ts-box ts-content">
-
+		<vl c :exp="SV().toLatex('sum')"></vl>
 	</div>
 </template>
 
