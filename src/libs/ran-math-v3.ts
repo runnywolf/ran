@@ -1,4 +1,4 @@
-// ran math v3
+﻿// ran math v3
 
 //#region print & error
 function messageFormat(caller: string, message: string): string {
@@ -46,22 +46,29 @@ export class ParamNorm { // 參數標準化
 		}
 	}
 	
-	static toBigInt(x: number|bigint, caller: string): bigint { // number|bigint 轉 bigint
+	static toBigInt(x: number|bigint, caller: string): bigint { // 轉 bigint
 		if (typeof x === "bigint") return x; // bigint 不須處理, 直接回傳
 		
 		if (!Number.isInteger(x)) throw new ParamNorm.NonIntError(caller); // x 不是整數
 		if (!Number.isSafeInteger(x)) throw new ParamNorm.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
-		return BigInt(x); // 將 number 轉為 bigint
+		return BigInt(x); // 將 number -> bigint
 	}
 	
-	static toFrac(x: number|bigint|Frac, caller: string): Frac { // number|bigint|Frac 轉 Frac
+	static toFrac(x: number|bigint|Frac, caller: string): Frac { // 轉 Frac
 		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
 		return F(ParamNorm.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
 	}
 	
-	static toSqrtValue(x: number|bigint|Frac|SqrtValue, caller: string): SqrtValue { // number|bigint|Frac|SqrtValue 轉 SqrtValue
-		if (SqrtValue.isSqrtValue(x)) return x; // SV 不須處理, 直接回傳
-		return SV([ParamNorm.toFrac(x, caller), 1]); // number|bigint|Frac -> Frac -> SV
+	static toSqrtValue(x: number|bigint|Frac|SqrtValue, caller: string): SqrtValue { // 轉 SqrtValue
+		if (SqrtValue.isSqrtValue(x)) return x; // SqrtValue 不須處理, 直接回傳
+		return SV([ParamNorm.toFrac(x, caller), 1]); // number|bigint|Frac -> Frac -> SqrtValue
+	}
+	
+	static toComplex(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 轉 Complex
+		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
+		if (SqrtValue.isSqrtValue(x)) return x.toComplex(); // SqrtValue 降級為 Complex
+		if (Frac.isFrac(x)) return CP(x.toFloat()); // Frac -> number -> Complex
+		return CP(Number(x)); // number|bigint -> number -> Complex, (無視 bigint -> number 的精度損失)
 	}
 }
 
@@ -505,8 +512,73 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 }
 
+export function CP(real: number = 0, imag: number = 0): Complex { // Complex 工廠
+	return new Complex(real, imag);
+}
 export class Complex { // 浮點複數
+	static readonly EPS = 1e-12; // 最大容許誤差
 	
+	static isComplex(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
+		return x instanceof Complex;
+	}
+	
+	readonly real: number; // 實部
+	readonly imag: number; // 虛部
+	
+	constructor(real: number = 0, imag: number = 0) {
+		this.real = real;
+		this.imag = imag;
+	}
+	
+	isZero(eps: number = Complex.EPS): boolean { // 是否為 0
+		return Math.abs(this.real) <= eps && Math.abs(this.imag) <= eps;
+	}
+	
+	toStr(): string { // 轉為字串
+		return `${this.real} + ${this.imag} i`;
+	}
+	
+	toLatex(): string { // 轉為 latex 字串
+		return ""; // todo
+	}
+	
+	copy(): Complex { // 複製
+		return CP(this.real, this.imag);
+	}
+	
+	neg(): Complex { // 取負號
+		return CP(-this.real, -this.imag);
+	}
+	
+	add(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 加法
+		x = ParamNorm.toComplex(x); // ... -> Complex
+		return CP(this.real + x.real, this.imag + x.imag);
+	}
+	
+	sub(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 減法
+		x = ParamNorm.toComplex(x); // ... -> Complex
+		return CP(this.real - x.real, this.imag - x.imag);
+	}
+	
+	mul(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 乘法
+		x = ParamNorm.toComplex(x); // ... -> Complex
+		return CP(this.real * x.real - this.imag * x.imag, this.real * x.imag + this.imag * x.real);
+	}
+	
+	div(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 除法
+		x = ParamNorm.toComplex(x); // ... -> Complex
+		
+	}
+	
+	pow(x: number|bigint|Frac): Complex { // 實數次方
+		x = Frac.isFrac(x) ? x.toFloat() : Number(x); // number|bigint|Frac -> number
+		
+	}
+	
+	equal(x: number|bigint|Frac|SqrtValue|Complex, eps: number = Complex.EPS): boolean { // 相等
+		x = ParamNorm.toComplex(x); // ... -> Complex
+		return Math.abs(this.real - x.real) <= eps && Math.abs(this.imag - x.imag) <= eps;
+	}
 }
 
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
