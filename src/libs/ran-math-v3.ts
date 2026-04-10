@@ -53,6 +53,19 @@ export class ParamNorm { // 參數標準化
 		}
 	}
 	
+	static NanError = class extends RanMathError { // NaN error
+		constructor(caller: string) {
+			super(caller, "Parameter cannot be NaN.");
+		}
+	}
+	
+	static toFloat(x: number|bigint|Frac, caller: string): number { // 轉 float number
+		if (Frac.isFrac(x)) return x.toFloat(); // Frac -> number
+		if (typeof x === "bigint") return Number(x); // bigint -> number, 無視精度損失
+		if (Number.isNaN(x)) throw new ParamNorm.NanError(caller);
+		return x;
+	}
+	
 	static toBigInt(x: number|bigint, caller: string): bigint { // 轉 bigint
 		if (typeof x === "bigint") return x; // bigint 不須處理, 直接回傳
 		
@@ -71,11 +84,10 @@ export class ParamNorm { // 參數標準化
 		return SV([ParamNorm.toFrac(x, caller), 1]); // number|bigint|Frac -> Frac -> SqrtValue
 	}
 	
-	static toComplex(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 轉 Complex
+	static toComplex(x: number|bigint|Frac|SqrtValue|Complex, caller: string): Complex { // 轉 Complex
 		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
 		if (SqrtValue.isSqrtValue(x)) return x.toComplex(); // SqrtValue 降級為 Complex
-		if (Frac.isFrac(x)) return CP(x.toFloat()); // Frac -> number -> Complex
-		return CP(Number(x)); // number|bigint -> number -> Complex, (無視 bigint -> number 的精度損失)
+		return CP(ParamNorm.toFloat(x, caller)); // number|bigint|Frac -> float
 	}
 }
 
@@ -527,7 +539,13 @@ export class Complex { // 浮點複數
 		}
 	}
 	
-	static readonly EPS = 1e-12; // 最大容許誤差
+	static InfPowError = class extends RanMathError { // n ^ ±inf error
+		constructor(caller: string) {
+			super(caller, "Exponent must be finite.");
+		}
+	}
+	
+	static eps = 1e-12; // 最大容許誤差, 可以改
 	
 	static isComplex(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
 		return x instanceof Complex;
@@ -537,19 +555,21 @@ export class Complex { // 浮點複數
 	readonly imag: number; // 虛部
 	
 	constructor(real: number = 0, imag: number = 0) {
-		this.real = real;
-		this.imag = imag;
+		this.real = Math.abs(real) <= Complex.eps ? 0 : real;
+		this.imag = Math.abs(imag) <= Complex.eps ? 0 : imag;
 	}
 	
-	isZero(eps: number = Complex.EPS): boolean { // 是否為 0
+	isZero(eps: number = Complex.eps): boolean { // 是否為 0
 		return Math.abs(this.real) <= eps && Math.abs(this.imag) <= eps;
 	}
 	
-	toStr(): string { // 轉為字串
-		return `${this.real} + ${this.imag} i`;
+	toStr(digits: number = 4): string { // 轉為字串, 小數取 digits 位
+		const s_real = Complex.floatStr(this.real, digits);
+		const s_imag = Complex.floatStr(this.imag, digits);
+		return `${s_real} + ${s_imag} i`;
 	}
 	
-	toLatex(): string { // 轉為 latex 字串
+	toLatex(digits: number = 4): string { // 轉為 latex 字串, 小數取 digits 位
 		return ""; // todo
 	}
 	
@@ -562,33 +582,50 @@ export class Complex { // 浮點複數
 	}
 	
 	add(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 加法
-		x = ParamNorm.toComplex(x); // ... -> Complex
+		x = ParamNorm.toComplex(x, "Complex.add"); // ... -> Complex
 		return CP(this.real + x.real, this.imag + x.imag);
 	}
 	
 	sub(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 減法
-		x = ParamNorm.toComplex(x); // ... -> Complex
+		x = ParamNorm.toComplex(x, "Complex.sub"); // ... -> Complex
 		return CP(this.real - x.real, this.imag - x.imag);
 	}
 	
 	mul(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 乘法
-		x = ParamNorm.toComplex(x); // ... -> Complex
+		x = ParamNorm.toComplex(x, "Complex.mul"); // ... -> Complex
 		return CP(this.real * x.real - this.imag * x.imag, this.real * x.imag + this.imag * x.real);
 	}
 	
 	div(x: number|bigint|Frac|SqrtValue|Complex): Complex { // 除法
-		x = ParamNorm.toComplex(x); // ... -> Complex
+		x = ParamNorm.toComplex(x, "Complex.div"); // ... -> Complex
+		if (x.isZero()) throw new Complex.DivideZeroError("div"); // div 0 error
 		
+		const l = x.real ** 2 + x.imag ** 2;
+		return this.mul(CP(x.real / l, -x.imag / l)); // (a+bi)/(c+di) = (a+bi)*(c-di)/(c^2+d^2)
 	}
 	
 	pow(x: number|bigint|Frac): Complex { // 實數次方
-		x = Frac.isFrac(x) ? x.toFloat() : Number(x); // number|bigint|Frac -> number
+		x = ParamNorm.toFloat(x, "Complex.pow"); // number|bigint|Frac -> number
+		if (!Number.isFinite(x)) throw new Complex.InfPowError("Complex.pow");
 		
+		if (this.isZero()) {
+			if (x === 0) return CP(1); // 0^0 = 1
+			if (x > 0) return CP(0); // 0^+ = 0
+			throw new Complex.DivideZeroError("pow"); // 0^- = div 0 error
+		}
+		
+		const rPowX = Math.hypot(this.real, this.imag) ** x; // r^x = |z|^x
+		const theta = x * Math.atan2(this.imag, this.real); // θ = x * atan2(z)
+		return CP(rPowX * Math.cos(theta), rPowX * Math.sin(theta)); // z^x = r^x cosθ + r^x sinθ
 	}
 	
-	equal(x: number|bigint|Frac|SqrtValue|Complex, eps: number = Complex.EPS): boolean { // 相等
-		x = ParamNorm.toComplex(x); // ... -> Complex
+	equal(x: number|bigint|Frac|SqrtValue|Complex, eps: number = Complex.eps): boolean { // 相等
+		x = ParamNorm.toComplex(x, "Complex.equal"); // ... -> Complex
 		return Math.abs(this.real - x.real) <= eps && Math.abs(this.imag - x.imag) <= eps;
+	}
+	
+	private static floatStr(x: number, maxDigits: number): string { // float -> string
+		return Intl.NumberFormat("en", { maximumFractionDigits: maxDigits }).format(x);
 	}
 }
 

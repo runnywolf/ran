@@ -1,6 +1,6 @@
 <template>
 	<div class="ts-box ts-content">
-		<vl c :exp="SV().toLatex('sum')"></vl>
+		<vl c :exp="CP(2.5, 2.333333).toLatex()"></vl>
 	</div>
 </template>
 
@@ -9,13 +9,8 @@
 // import TermTest from "./ran-math/make-latex-term.test.vue"; // MakeLatex.term 的 ui 測試
 // import EquationTest from "./ran-math/make-latex-equation.test.vue"; // MakeLatex.equationSystem 的 ui 測試
 
-import { Frac, BigIntOp, F, SV, SqrtValue } from '@/libs/ran-math-v3';
+import { Frac, BigIntOp, F, SV, SqrtValue, Complex, CP } from '@/libs/ran-math-v3';
 
-let sv = SqrtValue.fromStr("1 + 4s2 + -2s6 + 2s-2 + s-3");
-const sv_inv = SV([1, 1]).div(sv);
-console.log(`sv: ${sv.toStr()}`, sv);
-console.log(`inv: ${sv_inv.toStr()}`);
-console.log(`1 check: ${sv_inv.mul(sv).toStr()}`);
 try {
 	
 } catch (err) {
