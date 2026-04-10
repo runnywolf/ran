@@ -10,6 +10,13 @@ export class RanMathError extends Error {
 		super(messageFormat(caller, message));
 	}
 }
+
+export class DivideZeroError extends RanMathError { // div 與 pow 的除零錯誤
+	constructor(className: string, op: "div" | "pow") {
+		if (op === "div") super(`${className}.${op}`, "Div 0 error.");
+		else super(`${className}.${op}`, "0 cannot be raised to a negative power.");
+	}
+}
 //#endregion
 
 class Prime { // 質數
@@ -110,22 +117,21 @@ export function F(n: number|bigint = 0n, d: number|bigint = 1n): Frac { // Frac 
 	return new Frac(n, d);
 }
 export class Frac { // 分數
-	static ZeroDenominatorError = class extends RanMathError { // 分母為 0
-		constructor(caller: string) {
-			super(caller, 'The denominator (param "d") cannot be 0.');
-		}
-	}
-	
 	static InvalidStringError = class extends RanMathError { // 字串無法轉成分數的錯誤
 		constructor(caller: string, str: string) {
 			super(caller, `String "${str}" cannot be converted to Frac.`);
 		}
 	}
 	
-	static DivideZeroError = class extends RanMathError { // 除 0 錯誤
+	static ZeroDenominatorError = class extends RanMathError { // 分母為 0
 		constructor(caller: string) {
-			if (caller === "Frac.div") super(caller, "Div 0 error."); // for Frac.div
-			else super(caller, "0 cannot be raised to a negative power."); // for Frac.pow
+			super(caller, 'The denominator (param "d") cannot be 0.');
+		}
+	}
+	
+	static DivideZeroError = class extends DivideZeroError { // 除 0 錯誤
+		constructor(op: "div" | "pow") {
+			super("Frac", op);
 		}
 	}
 	
@@ -213,14 +219,14 @@ export class Frac { // 分數
 	
 	div(x: number|bigint|Frac): Frac { // 除法
 		x = ParamNorm.toFrac(x, "Frac.div"); // number|bigint|Frac -> Frac
-		if (x.isZero()) throw new Frac.DivideZeroError("Frac.div"); // 除 0 錯誤
+		if (x.isZero()) throw new Frac.DivideZeroError("div"); // 除 0 錯誤
 		return F(this.n * x.d, this.d * x.n);
 	}
 	
 	pow(x: number|bigint): Frac { // 整數次方
 		x = ParamNorm.toBigInt(x, "Frac.pow"); // number|bigint -> bigint
 		if (x >= 0n) return F(this.n ** x, this.d ** x); // 非負整數次方
-		if (this.isZero()) throw new Frac.DivideZeroError("Frac.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		if (this.isZero()) throw new Frac.DivideZeroError("pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
 		return F(this.d ** -x, this.n ** -x); // 負整數次方
 	}
 	
@@ -259,10 +265,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 	}
 	
-	static DivideZeroError = class extends RanMathError { // 除 0 錯誤
-		constructor(caller: string) {
-			if (caller === "SqrtValue.div") super(caller, "Div 0 error."); // for SqrtValue.div
-			else super(caller, "0 cannot be raised to a negative power."); // for SqrtValue.pow
+	static DivideZeroError = class extends DivideZeroError { // 除 0 錯誤
+		constructor(op: "div" | "pow") {
+			super("SqrtValue", op);
 		}
 	}
 	
@@ -414,7 +419,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
 		let sv_d = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
-		if (sv_d.isZero()) throw new SqrtValue.DivideZeroError("SqrtValue.div"); // div 0 error
+		if (sv_d.isZero()) throw new SqrtValue.DivideZeroError("div"); // div 0 error
 		
 		let loopCount = 0; // 雖然理論上會收斂, 這個計數用於避免非預期的無窮迴圈
 		let sv_n = this.copy(); // 分子
@@ -451,7 +456,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 		if (x === 0n) return SV([1, 1]); // n^0 = 1
 		
-		if (this.isZero()) throw new SqrtValue.DivideZeroError("SqrtValue.pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		if (this.isZero()) throw new SqrtValue.DivideZeroError("pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
 		return SV([1, 1]).div(this.pow(-x)); // n^-x = 1/(n^x)
 	}
 	
@@ -516,6 +521,12 @@ export function CP(real: number = 0, imag: number = 0): Complex { // Complex 工
 	return new Complex(real, imag);
 }
 export class Complex { // 浮點複數
+	static DivideZeroError = class extends DivideZeroError { // 除 0 錯誤
+		constructor(op: "div" | "pow") {
+			super("Complex", op);
+		}
+	}
+	
 	static readonly EPS = 1e-12; // 最大容許誤差
 	
 	static isComplex(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
