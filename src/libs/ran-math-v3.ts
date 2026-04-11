@@ -551,7 +551,7 @@ export class Complex { // 浮點複數
 		}
 	}
 	
-	static eps = 1e-12; // 最大容許誤差, 可以改
+	static eps = 1e-13; // 最大容許誤差, 可以改
 	
 	static isComplex(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
 		return x instanceof Complex;
