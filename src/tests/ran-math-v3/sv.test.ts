@@ -2,7 +2,7 @@ import { test, expect, describe } from "vitest";
 import { TestData, str } from "../test-tool";
 
 // ---------- 以上不要修改 ----------
-import { ParamNorm, SqrtValue, SV, F } from "@lib/ran-math-v3";
+import { ParamNorm, F, SqrtValue, SV, CP } from "@lib/ran-math-v3";
 
 const testDatas: Record<string, TestData> = {
 	"SqrtValue.isSqrtValue": {
@@ -65,6 +65,18 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ SV([2, 1]) ], output: "2 √1" },
 			{ input: [ SV([1, 2], [3, 1]) ], output: "3 √1 + 1 √2" },
 			{ input: [ SV([1, -2], [-1, 3]) ], output: "-1 √3 + 1 √-2" },
+		],
+	},
+	".toComplex": {
+		testName: (sv: SqrtValue) => `(${str(sv)}).toComplex()`,
+		testFunc: (sv: SqrtValue) => sv.toComplex(),
+		tests: [
+			{ input: [ SV() ], output: CP(0, 0) },
+			{ input: [ SV([2, 1], [3, 4]) ], output: CP(8, 0) },
+			{ input: [ SV([1, -1]) ], output: CP(0, 1) },
+			{ input: [ SV([2, -4], [-3, -9]) ], output: CP(0, -5) },
+			{ input: [ SV([1, 1], [1, 2], [3, -8]) ], output: CP(1 + Math.sqrt(2), 6 * Math.sqrt(2)) },
+			{ input: [ SV([1, -2], [-1, -8]) ], output: CP(0, -Math.sqrt(2)) },
 		],
 	},
 	".real": {

@@ -327,7 +327,13 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	toComplex(): Complex { // 轉浮點複數
-		return new Complex();
+		let real = 0;
+		let imag = 0;
+		for (const [b, frac_a] of this.terms) {
+			if (b > 0n) real += frac_a.toFloat() * Math.sqrt(Number(b));
+			else imag += frac_a.toFloat() * Math.sqrt(Number(-b));
+		}
+		return CP(real, imag);
 	}
 	
 	toStr(): string { // 轉為字串
