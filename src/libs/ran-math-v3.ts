@@ -53,6 +53,12 @@ export class ParamNorm { // 參數標準化
 		}
 	}
 	
+	static InfError = class extends RanMathError { // infinity number error
+		constructor(caller: string) {
+			super(caller, "Parameter cannot be infinity number.");
+		}
+	}
+	
 	static NanError = class extends RanMathError { // NaN error
 		constructor(caller: string) {
 			super(caller, "Parameter cannot be NaN.");
@@ -60,15 +66,16 @@ export class ParamNorm { // 參數標準化
 	}
 	
 	static toFloat(x: number|bigint|Frac, caller: string): number { // 轉 float number
-		if (Frac.isFrac(x)) return x.toFloat(); // Frac -> number
-		if (typeof x === "bigint") return Number(x); // bigint -> number, 無視精度損失
+		if (Frac.isFrac(x)) x = x.toFloat(); // Frac -> number
+		else if (typeof x === "bigint") x = Number(x); // bigint -> number, 無視精度損失
+		
 		if (Number.isNaN(x)) throw new ParamNorm.NanError(caller);
+		if (!Number.isFinite(x)) throw new ParamNorm.InfError(caller);
 		return x;
 	}
 	
 	static toBigInt(x: number|bigint, caller: string): bigint { // 轉 bigint
 		if (typeof x === "bigint") return x; // bigint 不須處理, 直接回傳
-		
 		if (!Number.isInteger(x)) throw new ParamNorm.NonIntError(caller); // x 不是整數
 		if (!Number.isSafeInteger(x)) throw new ParamNorm.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
 		return BigInt(x); // 將 number -> bigint
@@ -88,6 +95,12 @@ export class ParamNorm { // 參數標準化
 		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
 		if (SqrtValue.isSqrtValue(x)) return x.toComplex(); // SqrtValue 降級為 Complex
 		return CP(ParamNorm.toFloat(x, caller)); // number|bigint|Frac -> float
+	}
+	
+	static toSvOrCp(x: number|bigint|Frac|SqrtValue|Complex, caller: string): SqrtValue|Complex { // 優先轉 SV, 否則轉 CP
+		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
+		if (typeof x === "number" && !Number.isSafeInteger(x)) return CP(ParamNorm.toFloat(x, caller)); // non int number -> CP
+		return ParamNorm.toSqrtValue(x, caller); // int-number|bigint|Frac -> Frac -> SqrtValue
 	}
 }
 
@@ -635,8 +648,19 @@ export class Complex { // 浮點複數
 	}
 }
 
-export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
+export function SC(): Scalar {
 	
+}
+export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
+	static isScalar(x: unknown): x is Scalar { // 檢查 x 是否為 Scalar 實例
+		return x instanceof Scalar;
+	}
+	
+	private readonly value: SqrtValue|Complex;
+	
+	constructor(x: number|bigint|Frac|SqrtValue|Complex) {
+		// todo: class 型別判斷都改成 .is
+	}
 }
 
 export const __test__ = { Prime }; // only for test
