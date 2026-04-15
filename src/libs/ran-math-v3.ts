@@ -41,6 +41,18 @@ class Prime { // 質數
 }
 
 export class ParamNorm { // 參數標準化
+	static NanError = class extends RanMathError { // NaN error
+		constructor(caller: string) {
+			super(caller, "Parameter cannot be NaN.");
+		}
+	}
+	
+	static InfError = class extends RanMathError { // infinity number error
+		constructor(caller: string) {
+			super(caller, "Parameter cannot be infinity number.");
+		}
+	}
+	
 	static NonIntError = class extends RanMathError { // 浮點數 number 轉 bigint 的錯誤
 		constructor(caller: string) {
 			super(caller, "Parameter must be an integer number.");
@@ -53,20 +65,8 @@ export class ParamNorm { // 參數標準化
 		}
 	}
 	
-	static InfError = class extends RanMathError { // infinity number error
-		constructor(caller: string) {
-			super(caller, "Parameter cannot be infinity number.");
-		}
-	}
-	
-	static NanError = class extends RanMathError { // NaN error
-		constructor(caller: string) {
-			super(caller, "Parameter cannot be NaN.");
-		}
-	}
-	
-	static toFloat(x: number|bigint|Frac, caller: string): number { // 轉 float number
-		if (Frac.isFrac(x)) x = x.toFloat(); // Frac -> number
+	static toFloat(x: number|bigint|Frac, caller: string): number { // 降級為 float number
+		if (Frac.is(x)) x = x.toFloat(); // Frac -> number
 		else if (typeof x === "bigint") x = Number(x); // bigint -> number, 無視精度損失
 		
 		if (Number.isNaN(x)) throw new ParamNorm.NanError(caller);
@@ -74,31 +74,31 @@ export class ParamNorm { // 參數標準化
 		return x;
 	}
 	
-	static toBigInt(x: number|bigint, caller: string): bigint { // 轉 bigint
+	static toBigInt(x: number|bigint, caller: string): bigint { // 提升為 bigint
 		if (typeof x === "bigint") return x; // bigint 不須處理, 直接回傳
 		if (!Number.isInteger(x)) throw new ParamNorm.NonIntError(caller); // x 不是整數
 		if (!Number.isSafeInteger(x)) throw new ParamNorm.UnsafeIntError(caller); // number 超過範圍會無法表示精確整數
 		return BigInt(x); // 將 number -> bigint
 	}
 	
-	static toFrac(x: number|bigint|Frac, caller: string): Frac { // 轉 Frac
-		if (Frac.isFrac(x)) return x; // Frac 不須處理, 直接回傳
+	static toFrac(x: number|bigint|Frac, caller: string): Frac { // 提升為 Frac
+		if (Frac.is(x)) return x; // Frac 不須處理, 直接回傳
 		return F(ParamNorm.toBigInt(x, caller)); // number|bigint -> bigint -> Frac
 	}
 	
-	static toSqrtValue(x: number|bigint|Frac|SqrtValue, caller: string): SqrtValue { // 轉 SqrtValue
-		if (SqrtValue.isSqrtValue(x)) return x; // SqrtValue 不須處理, 直接回傳
+	static toSqrtValue(x: number|bigint|Frac|SqrtValue, caller: string): SqrtValue { // 提升為 SqrtValue
+		if (SqrtValue.is(x)) return x; // SqrtValue 不須處理, 直接回傳
 		return SV([ParamNorm.toFrac(x, caller), 1]); // number|bigint|Frac -> Frac -> SqrtValue
 	}
 	
-	static toComplex(x: number|bigint|Frac|SqrtValue|Complex, caller: string): Complex { // 轉 Complex
-		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
-		if (SqrtValue.isSqrtValue(x)) return x.toComplex(); // SqrtValue 降級為 Complex
+	static toComplex(x: number|bigint|Frac|SqrtValue|Complex, caller: string): Complex { // 降級為 Complex
+		if (Complex.is(x)) return x; // Complex 不須處理, 直接回傳
+		if (SqrtValue.is(x)) return x.toComplex(); // SqrtValue 降級為 Complex
 		return CP(ParamNorm.toFloat(x, caller)); // number|bigint|Frac -> float
 	}
 	
-	static toSvOrCp(x: number|bigint|Frac|SqrtValue|Complex, caller: string): SqrtValue|Complex { // 優先轉 SV, 否則轉 CP
-		if (Complex.isComplex(x)) return x; // Complex 不須處理, 直接回傳
+	static toSvOrCp(x: number|bigint|Frac|SqrtValue|Complex, caller: string): SqrtValue|Complex { // 優先提升為 SV, 否則降級為 CP
+		if (Complex.is(x)) return x; // Complex 不須處理, 直接回傳
 		if (typeof x === "number" && !Number.isSafeInteger(x)) return CP(ParamNorm.toFloat(x, caller)); // non int number -> CP
 		return ParamNorm.toSqrtValue(x, caller); // int-number|bigint|Frac -> Frac -> SqrtValue
 	}
@@ -160,7 +160,7 @@ export class Frac { // 分數
 		}
 	}
 	
-	static isFrac(x: unknown): x is Frac { // 檢查 x 是否為 Frac 實例
+	static is(x: unknown): x is Frac { // 檢查 x 是否為 Frac 實例
 		return x instanceof Frac;
 	}
 	
@@ -296,7 +296,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		}
 	}
 	
-	static isSqrtValue(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
+	static is(x: unknown): x is SqrtValue { // 檢查 x 是否為 SqrtValue 實例
 		return x instanceof SqrtValue;
 	}
 	
@@ -558,15 +558,9 @@ export class Complex { // 浮點複數
 		}
 	}
 	
-	static InfPowError = class extends RanMathError { // n ^ ±inf error
-		constructor(caller: string) {
-			super(caller, "Exponent must be finite.");
-		}
-	}
-	
 	static eps = 1e-13; // 最大容許誤差, 可以改
 	
-	static isComplex(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
+	static is(x: unknown): x is Complex { // 檢查 x 是否為 Complex 實例
 		return x instanceof Complex;
 	}
 	
@@ -625,7 +619,6 @@ export class Complex { // 浮點複數
 	
 	pow(x: number|bigint|Frac): Complex { // 實數次方
 		x = ParamNorm.toFloat(x, "Complex.pow"); // number|bigint|Frac -> number
-		if (!Number.isFinite(x)) throw new Complex.InfPowError("Complex.pow");
 		
 		if (this.isZero()) {
 			if (x === 0) return CP(1); // 0^0 = 1
@@ -648,18 +641,18 @@ export class Complex { // 浮點複數
 	}
 }
 
-export function SC(): Scalar {
-	
+export function SC(x: number|bigint|Frac|SqrtValue|Complex): Scalar { // Scalar 工廠
+	return new Scalar(x);
 }
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
-	static isScalar(x: unknown): x is Scalar { // 檢查 x 是否為 Scalar 實例
+	static is(x: unknown): x is Scalar { // 檢查 x 是否為 Scalar 實例
 		return x instanceof Scalar;
 	}
 	
 	private readonly value: SqrtValue|Complex;
 	
 	constructor(x: number|bigint|Frac|SqrtValue|Complex) {
-		// todo: class 型別判斷都改成 .is
+		this.value = SV(); // todo
 	}
 }
 

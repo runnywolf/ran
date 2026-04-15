@@ -5,9 +5,9 @@ import { TestData, str } from "../test-tool";
 import { ParamNorm, F, SqrtValue, SV, CP } from "@lib/ran-math-v3";
 
 const testDatas: Record<string, TestData> = {
-	"SqrtValue.isSqrtValue": {
-		testName: (x: any) => `SqrtValue.isSqrtValue(${str(x)})`,
-		testFunc: (x: any) => SqrtValue.isSqrtValue(x),
+	"SqrtValue.is": {
+		testName: (x: any) => `SqrtValue.is(${str(x)})`,
+		testFunc: (x: any) => SqrtValue.is(x),
 		tests: [
 			{ input: [ SV() ], output: true },
 			{ input: [ SV([1, -1]) ], output: true },

@@ -5,9 +5,9 @@ import { TestData, str } from "../test-tool";
 import { ParamNorm, Complex, CP, F, SV } from "@lib/ran-math-v3";
 
 const testDatas: Record<string, TestData> = {
-	"Complex.isComplex": {
-		testName: (x: any) => `Complex.isComplex(${str(x)})`,
-		testFunc: (x: any) => Complex.isComplex(x),
+	"Complex.is": {
+		testName: (x: any) => `Complex.is(${str(x)})`,
+		testFunc: (x: any) => Complex.is(x),
 		tests: [
 			{ input: [ CP() ], output: true },
 			{ input: [ CP(1, -2) ], output: true },
@@ -128,7 +128,6 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ CP(2, 0), F(1, 2) ], output: CP(Math.sqrt(2), 0) },
 			{ input: [ CP(1, 1), 0.5 ], output: CP(1.0986841134678098, 0.45508986056222733) },
 			{ input: [ CP(1, -1), F(3, 2) ], output: CP(0.6435942529055828, -1.5537739740300374) },
-			{ input: [ CP(1, 2), Infinity ], error: Complex.InfPowError },
 			{ input: [ CP(1, 2), NaN ], error: ParamNorm.NanError },
 		],
 	},

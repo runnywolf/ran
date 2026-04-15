@@ -5,9 +5,9 @@ import { TestData, str } from "../test-tool";
 import { ParamNorm, Frac, F } from "@lib/ran-math-v3";
 
 const testDatas: Record<string, TestData> = {
-	"Frac.isFrac": {
-		testName: (x: any) => `Frac.isFrac(${str(x)})`,
-		testFunc: (x: any) => Frac.isFrac(x),
+	"Frac.is": {
+		testName: (x: any) => `Frac.is(${str(x)})`,
+		testFunc: (x: any) => Frac.is(x),
 		tests: [ // 測資
 			{ input: [ 0 ], output: false },
 			{ input: [ F(3) ], output: true },
