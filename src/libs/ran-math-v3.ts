@@ -641,18 +641,57 @@ export class Complex { // 浮點複數
 	}
 }
 
-export function SC(x: number|bigint|Frac|SqrtValue|Complex): Scalar { // Scalar 工廠
-	return new Scalar(x);
+export function SC(x: number|bigint|Frac|SqrtValue|Complex, cloneInput: boolean = true): Scalar { // Scalar 工廠
+	return new Scalar(x, cloneInput);
 }
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	static is(x: unknown): x is Scalar { // 檢查 x 是否為 Scalar 實例
 		return x instanceof Scalar;
 	}
 	
-	private readonly value: SqrtValue|Complex;
+	readonly value: SqrtValue|Complex;
 	
-	constructor(x: number|bigint|Frac|SqrtValue|Complex) {
-		this.value = SV(); // todo
+	constructor(x: number|bigint|Frac|SqrtValue|Complex = 0n, cloneInput: boolean = true) { // cloneInput: 是否要複製輸入的 SV|CP 建立 Scalar
+		if (cloneInput && (SqrtValue.is(x) || Complex.is(x))) this.value = x.copy(); // 預設會複製 SV|CP
+		else this.value = ParamNorm.toSvOrCp(x, "Scalar.constructor"); // 若 toSvOrCp 輸入 num|bigint|F 會產生新物件, SV|CP 則不會
+	}
+	
+	isSqrtValue(): boolean {
+		return SqrtValue.is(this.value);
+	}
+	
+	isComplex(): boolean {
+		return Complex.is(this.value);
+	}
+	
+	isZero(): boolean { // 是否為 0
+		return this.value.isZero();
+	}
+	
+	toStr(): string { // 轉為字串, 無法調整 Complex 的小數點後位數
+		return this.value.toStr();
+	}
+	
+	toLatex(): string { // 轉為 latex 字串
+		return ""; // todo
+	}
+	
+	real(): Scalar { // 取出實部
+		if (this.value instanceof SqrtValue) return SC(this.value.real(), false); // SV.real 會產生新物件, 建立 SC 時不複製
+		return SC(this.value.real);
+	}
+	
+	imag(): Scalar { // 取出虛部
+		if (this.value instanceof SqrtValue) return SC(this.value.imag(), false); // SV.imag 會產生新物件, 建立 SC 時不複製
+		return SC(this.value.imag);
+	}
+	
+	copy(): Scalar { // 複製
+		return SC(this.value); // copy SV|CP in constructor
+	}
+	
+	neg(): Scalar { // 取負號
+		return SC(this.value.neg(), false); // SV.neg & CP.neg 會產生新物件, 建立 SC 時不複製
 	}
 }
 
