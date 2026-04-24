@@ -1,6 +1,6 @@
 // 一些撰寫測試時可能用的到的工具
 
-import { Frac, SqrtValue, Complex } from "@lib/ran-math-v3";
+import { Frac, SqrtValue, Complex, Scalar } from "@lib/ran-math-v3";
 
 export interface TestData { // 測資通用模板
 	testName: (...input: any[]) => string, // 測試名稱, 例如: "a+b"
@@ -21,6 +21,7 @@ export function str(value: any): string {
 	if (value instanceof Frac) return `${value.n}/${value.d}`; // Frac -> string
 	if (value instanceof SqrtValue) return value.toStr(); // SV -> string
 	if (value instanceof Complex) return value.toStr(); // CP -> string
+	if (value instanceof Scalar) return value.toStr(); // CP -> string
 	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
 	if (typeof value === "bigint") return `${value}n`; // bigint -> string
 	if (Number.isInteger(value)) return String(value); // int number -> string

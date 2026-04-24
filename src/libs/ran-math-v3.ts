@@ -1,4 +1,4 @@
-﻿// ran math v3
+// ran math v3
 
 //#region print & error
 function messageFormat(caller: string, message: string): string {
@@ -97,7 +97,8 @@ export class ParamNorm { // 參數標準化
 		return CP(ParamNorm.toFloat(x, caller)); // number|bigint|Frac -> float
 	}
 	
-	static toSvOrCp(x: number|bigint|Frac|SqrtValue|Complex, caller: string): SqrtValue|Complex { // 優先提升為 SV, 否則降級為 CP
+	static toSvOrCp(x: number|bigint|Frac|SqrtValue|Complex|Scalar, caller: string): SqrtValue|Complex { // 優先提升為 SV, 否則降級為 CP
+		if (Scalar.is(x)) return x.value; // 取出 Scalar 內的 SV|CP
 		if (Complex.is(x)) return x; // Complex 不須處理, 直接回傳
 		if (typeof x === "number" && !Number.isSafeInteger(x)) return CP(ParamNorm.toFloat(x, caller)); // non int number -> CP
 		return ParamNorm.toSqrtValue(x, caller); // int-number|bigint|Frac -> Frac -> SqrtValue
@@ -477,7 +478,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	pow(x: number|bigint): SqrtValue { // 整數次方
-		x = ParamNorm.toBigInt(x, "SqrtValue.pow"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		x = ParamNorm.toBigInt(x, "SqrtValue.pow"); // number|bigint -> bigint
 		
 		if (x >= 1n) {
 			const sv_halfPow = this.pow(x / 2n);
@@ -645,6 +646,12 @@ export function SC(x: number|bigint|Frac|SqrtValue|Complex, cloneInput: boolean 
 	return new Scalar(x, cloneInput);
 }
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
+	static DivideZeroError = class extends DivideZeroError { // 除 0 錯誤
+		constructor(op: "div" | "pow") {
+			super("Scalar", op);
+		}
+	}
+	
 	static is(x: unknown): x is Scalar { // 檢查 x 是否為 Scalar 實例
 		return x instanceof Scalar;
 	}
@@ -678,12 +685,12 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	
 	real(): Scalar { // 取出實部
 		if (this.value instanceof SqrtValue) return SC(this.value.real(), false); // SV.real 會產生新物件, 建立 SC 時不複製
-		return SC(this.value.real);
+		return SC(this.value.real); // CP.real
 	}
 	
 	imag(): Scalar { // 取出虛部
 		if (this.value instanceof SqrtValue) return SC(this.value.imag(), false); // SV.imag 會產生新物件, 建立 SC 時不複製
-		return SC(this.value.imag);
+		return SC(this.value.imag); // CP.imag
 	}
 	
 	copy(): Scalar { // 複製
@@ -692,6 +699,47 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	
 	neg(): Scalar { // 取負號
 		return SC(this.value.neg(), false); // SV.neg & CP.neg 會產生新物件, 建立 SC 時不複製
+	}
+	
+	add(x: number|bigint|Frac|SqrtValue|Complex|Scalar): Scalar { // 加法
+		return this.makeOp(x, "add");
+	}
+	
+	sub(x: number|bigint|Frac|SqrtValue|Complex|Scalar): Scalar { // 減法
+		return this.makeOp(x, "sub");
+	}
+	
+	mul(x: number|bigint|Frac|SqrtValue|Complex|Scalar): Scalar { // 乘法
+		return this.makeOp(x, "mul");
+	}
+	
+	div(x: number|bigint|Frac|SqrtValue|Complex|Scalar): Scalar { // 除法
+		return this.makeOp(x, "div");
+	}
+	
+	pow(x: number|bigint): Scalar { // 整數次方
+		x = ParamNorm.toBigInt(x, "Scalar.pow"); // number|bigint -> bigint
+		if (this.isZero() && x < 0n) throw new Scalar.DivideZeroError("pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		return SC(this.value.pow(x), false); // SV.pow & CP.pow 會產生新物件, 建立 SC 時不複製
+	}
+	
+	equal(x: number|bigint|Frac|SqrtValue|Complex|Scalar): boolean { // 相等
+		let v = this.value;
+		x = ParamNorm.toSvOrCp(x, `Scalar.equal`); // ... -> SqrtValue|Complex
+		if (SqrtValue.is(v)) return x.equal(v); // 因為無法進行 SV == CP, 所以這邊會將 SV == SV|CP 對調為 SV|CP == SV
+		return v.equal(x); // CP == SV|CP 運算
+	}
+	
+	private makeOp(x: number|bigint|Frac|SqrtValue|Complex|Scalar, op: "add"|"sub"|"mul"|"div"): Scalar { // 通用算子
+		let v = this.value;
+		x = ParamNorm.toSvOrCp(x, `Scalar.${op}`); // ... -> SqrtValue|Complex
+		if (op === "div" && x.isZero()) throw new Scalar.DivideZeroError("div"); // div 0 error
+		
+		if (SqrtValue.is(v)) {
+			if (SqrtValue.is(x)) return SC(v[op](x), false); // SV @ SV = SV, SV.<op> 會產生新物件, 建立 SC 時不複製
+			v = v.toComplex(); // SV @ CP 會降級為 CP @ CP 運算
+		}
+		return SC(v[op](x), false); // CP @ SV|CP 運算, CP.<op> 會產生新物件, 建立 SC 時不複製
 	}
 }
 
