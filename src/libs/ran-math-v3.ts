@@ -332,7 +332,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		this.terms = new Map<bigint, Frac>();
 		this.baseFactors = new Map<bigint, Set<bigint>>();
 		
-		for (const rawTerm of rawTerms) this.addRawTerm(rawTerm); // 化簡 a√b 為最簡根式項, 並累加到自身物件
+		for (const rawTerm of rawTerms) this.addRawTerm(rawTerm, "SqrtValue.constructor"); // 化簡 a√b 為最簡根式項, 並累加到自身物件
 		this.removeZeroTerm(); // 清除所有的 0√b | a√0
 	}
 	
@@ -526,9 +526,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		this.baseFactors.set(b, bFactors); // 保存質因數分解
 	} // 注意: addTerm 的參數 frac_a 不需要額外複製, 因為 .add(frac_a) 會回傳新物件
 	
-	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac]): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
-		const frac_a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
-		const frac_b = ParamNorm.toFrac(rawTerm[1], "SqrtValue.constructor");
+	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac], caller: string): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
+		const frac_a = ParamNorm.toFrac(rawTerm[0], caller);
+		const frac_b = ParamNorm.toFrac(rawTerm[1], caller);
 		
 		const [kn, n, nFactors] = SqrtValue.getSquareFactor(frac_b.n); // 提出平方根
 		const [kd, d, dFactors] = SqrtValue.getSquareFactor(frac_b.d);
@@ -642,7 +642,7 @@ export class Complex { // 浮點複數
 	}
 }
 
-export function SC(x: number|bigint|Frac|SqrtValue|Complex, cloneInput: boolean = true): Scalar { // Scalar 工廠
+export function SC(x: number|bigint|Frac|SqrtValue|Complex, cloneInput = true): Scalar { // Scalar 工廠
 	return new Scalar(x, cloneInput);
 }
 export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
@@ -658,7 +658,7 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	
 	readonly value: SqrtValue|Complex;
 	
-	constructor(x: number|bigint|Frac|SqrtValue|Complex = 0n, cloneInput: boolean = true) { // cloneInput: 是否要複製輸入的 SV|CP 建立 Scalar
+	constructor(x: number|bigint|Frac|SqrtValue|Complex = 0n, cloneInput = true) { // cloneInput: 是否要複製輸入的 SV|CP 建立 Scalar
 		if (cloneInput && (SqrtValue.is(x) || Complex.is(x))) this.value = x.copy(); // 預設會複製 SV|CP
 		else this.value = ParamNorm.toSvOrCp(x, "Scalar.constructor"); // 若 toSvOrCp 輸入 num|bigint|F 會產生新物件, SV|CP 則不會
 	}
@@ -740,6 +740,40 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 			v = v.toComplex(); // SV @ CP 會降級為 CP @ CP 運算
 		}
 		return SC(v[op](x), false); // CP @ SV|CP 運算, CP.<op> 會產生新物件, 建立 SC 時不複製
+	}
+}
+
+export class Matrix { // 矩陣
+	static NonPosIntDimensionError = class extends RanMathError { // 矩陣的維度必須是正整數
+		constructor(caller: string, paramName: string) {
+			super(caller, `Parameter "${paramName}" must be a positive integer.`);
+		}
+	}
+	
+	static is(x: unknown): x is Matrix { // 檢查 x 是否為 Matrix 實例
+		return x instanceof Matrix;
+	}
+	
+	static diag(m: number, a: Scalar = SC(1n), b: Scalar = SC(0n)): Matrix { // 生成對角矩陣, 對角線元素 a 預設為 1, 非對角線元素 b 預設為 0
+		m = Matrix.checkDimension(m, "Matrix.diag", "m"); // 保證 m 為正整數
+		return new Matrix(m, m, (i, j) => i === j ? a : b); // 必須 copy (建構子預設會複製), 不然整個矩陣的 Scalar 會指向同一個參考
+	}
+	
+	readonly m: number; // 矩陣的列數
+	readonly n: number; // 矩陣的行數
+	readonly arr: Scalar[][]; // arr \in Scalar^{m \times n}, 這裡宣告 readonly Array 表示不建議修改
+	
+	constructor(m: number, n: number, elementFn: (i: number, j: number) => Scalar, cloneInput = true) { // cloneInput: 是否要複製 elementFn 回傳的 Scalar
+		this.m = Matrix.checkDimension(m, "Matrix.constructor", "m"); // 保證 m, n 為正整數
+		this.n = Matrix.checkDimension(n, "Matrix.constructor", "n");
+		this.arr = Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => { // 利用 elementFn 建構整個矩陣
+			return cloneInput ? elementFn(i, j).copy() : elementFn(i, j); // cloneInput 決定是否要複製 elementFn 回傳的 Scalar
+		}));
+	}
+	
+	private static checkDimension(dim: number, caller: string, paramName: string): number { // 若 dim 為正整數則回傳 dim, 如果 dim 不是正整數會報錯
+		if (!Number.isInteger(dim) || dim <= 0) throw new Matrix.NonPosIntDimensionError(caller, paramName);
+		return dim;
 	}
 }
 
