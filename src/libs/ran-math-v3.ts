@@ -745,8 +745,14 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 
 export class Matrix { // 矩陣
 	static NonPosIntDimensionError = class extends RanMathError { // 矩陣的維度必須是正整數
-		constructor(caller: string, paramName: string) {
-			super(caller, `Parameter "${paramName}" must be a positive integer.`);
+		constructor(caller: string, paramName: string, dim: number) {
+			super(caller, `Parameter "${paramName}" must be a positive integer dimension, get: ${dim}`);
+		}
+	}
+	
+	static DimensionMismatchError = class extends RanMathError { // 矩陣加減法時, 兩個矩陣的列數或行數不一致
+		constructor(caller: string, m1: Matrix, m2: Matrix) {
+			super(caller, `Matrix dimension mismatch: (${m1.m}, ${m1.n}) +/- (${m2.m}, ${m2.n})`);
 		}
 	}
 	
@@ -756,7 +762,7 @@ export class Matrix { // 矩陣
 	
 	static diag(m: number, a: Scalar = SC(1n), b: Scalar = SC(0n)): Matrix { // 生成對角矩陣, 對角線元素 a 預設為 1, 非對角線元素 b 預設為 0
 		m = Matrix.checkDimension(m, "Matrix.diag", "m"); // 保證 m 為正整數
-		return new Matrix(m, m, (i, j) => i === j ? a : b); // 必須 copy (建構子預設會複製), 不然整個矩陣的 Scalar 會指向同一個參考
+		return new Matrix(m, m, (i, j) => i === j ? a : b); // 複製矩陣元素, 不然整個矩陣的 Scalar 會指向同一個參考
 	}
 	
 	readonly m: number; // 矩陣的列數
@@ -771,8 +777,56 @@ export class Matrix { // 矩陣
 		}));
 	}
 	
+	toStr(): string { // 轉為字串
+		return ""; // todo
+	}
+	
+	toLatex(): string { // 轉為 latex 字串
+		return ""; // todo
+	}
+	
+	trans(): Matrix { // 轉置
+		return new Matrix(this.n, this.m, (i, j) => this.arr[j][i]); // 複製矩陣元素
+	}
+	
+	inverse(): Matrix { // 逆矩陣
+		
+	}
+	
+	copy(): Matrix { // 複製
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j]); // 複製矩陣元素
+	}
+	
+	neg(): Matrix { // 取負號
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].neg(), false); // 因為 Scalar.neg 會產生新物件, 不複製矩陣元素
+	}
+	
+	add(matrix: Matrix): Matrix { // 加法
+		if (this.m !== matrix.m || this.n !== matrix.n) { // 矩陣加法時, 兩個矩陣的列數或行數不一致
+			throw new Matrix.DimensionMismatchError("Matrix.add", this, matrix);
+		}
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].add(matrix.arr[i][j]), false); // 因為 Scalar.add 會產生新物件, 不複製矩陣元素
+	}
+	
+	sub(matrix: Matrix): Matrix { // 減法
+		if (this.m !== matrix.m || this.n !== matrix.n) { // 矩陣減法時, 兩個矩陣的列數或行數不一致
+			throw new Matrix.DimensionMismatchError("Matrix.sub", this, matrix);
+		}
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].sub(matrix.arr[i][j]), false); // 因為 Scalar.sub 會產生新物件, 不複製矩陣元素
+	}
+	
+	mul(matrix: Matrix): Matrix { // 乘法
+		
+	}
+	
+	muls(sc: Scalar): Matrix { // 乘常數
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].mul(sc), false); // 因為 Scalar.mul 會產生新物件, 不複製矩陣元素
+	}
+	
 	private static checkDimension(dim: number, caller: string, paramName: string): number { // 若 dim 為正整數則回傳 dim, 如果 dim 不是正整數會報錯
-		if (!Number.isInteger(dim) || dim <= 0) throw new Matrix.NonPosIntDimensionError(caller, paramName);
+		if (!Number.isInteger(dim) || dim <= 0) {
+			throw new Matrix.NonPosIntDimensionError(caller, paramName, dim);
+		}
 		return dim;
 	}
 }
