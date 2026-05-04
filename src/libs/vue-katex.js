@@ -17,6 +17,7 @@ export function renderKatex(node, exp, isCenter) { // 在 node 之下渲染 kate
 	exp = replaceMacro(exp); // 替換掉 @<ins>{...} 語法
 	katex.render(exp, node, { displayMode: isCenter, throwOnError: false }); // 渲染 katex 元素
 	if (!isCenter && exp.includes("matrix")) addExtraMarginToKatexNode(node); // 增加 span katex 的矩陣語法的垂直 margin
+	else node.style.lineHeight = ""; // [v0.6.2-dev.1 fix] 在題目頁面, 點擊右側選單的切換題目安紐, 上一題的 line height 不會被更新的 bug
 }
 
 function makeKatexNode(exp, isCenter) { // 生成一個內有 katex html 的 node
