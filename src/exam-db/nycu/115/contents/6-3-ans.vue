@@ -17,7 +17,7 @@
 		&= \sqrt{1093.5} - \sqrt{40.5} \\
 		&\gt 33 - 6.4 = 26.6
 		\end{split} $$
-		$$ \implies~ 26.6 \lt \int_{5-1/2}^{13+1/2} \sqrt{x} dx \lt \sqrt{5} + \sqrt{6} + \cdots + \sqrt{13} $$
+		$$ \implies~ 26.6 \lt \int_{5-1/2}^{13+1/2} \sqrt{x} dx \le \sqrt{5} + \sqrt{6} + \cdots + \sqrt{13} $$
 		<br>
 		根據算幾不等式可以推導出：
 		$$ \begin{split}
