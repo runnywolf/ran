@@ -1,5 +1,5 @@
 <template>
-	<MakeProblem scoreText="" listEndLabel="e">
+	<MakeProblem listEndLabel="e">
 		<template #problem>
 			Let $V$ be a vector space over a field $\mathbb{F}$. Which of the following statements are true?
 		</template>

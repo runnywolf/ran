@@ -83,7 +83,7 @@ def createProblemVueFile(sectionName: str, sectionLineArr: list[str], problemMod
 	
 	textArr = [
 		"<template>",
-		f'\t<MakeProblem scoreText="" { f'listEndLabel="{problemMode}"' if problemMode != "" else "" }>', # 如果有多選題, 需要加這個參數
+		f'\t<MakeProblem{ f' listEndLabel="{problemMode}"' if problemMode != "" else "" }>', # 如果有多選題, 需要加這個參數
 		'\t\t<template #problem>',
 		*[ "\t\t\t"+line for line in sectionLineArr ], # 插入 section 的內容
 		"\t\t</template>",

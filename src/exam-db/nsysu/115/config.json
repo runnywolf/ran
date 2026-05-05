@@ -1,0 +1,106 @@
+{
+	"subjectCode": "434004",
+	"subjectName": "離散數學",
+	"subjectShortName": "離散數學",
+	"department": "資工系碩士班甲組",
+	"externalLink": "https://www3.nsysu.edu.tw/exam/master/eng/infoe/infoe_115.pdf",
+	"externalLinkTip": "國立中山大學 圖書資訊處",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-part-a", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "-part-b", "B1", "B2", "B3"
+	],
+	"problemConfigs": {
+		"A1": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A1-ans" }
+			]
+		},
+		"A2": {
+			"answerLatex": "",
+			"tags": [ "dm-c-ic" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A2-ans" }
+			]
+		},
+		"A3": {
+			"answerLatex": "",
+			"tags": [ "dm-st" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A3-ans" }
+			]
+		},
+		"A4": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A4-ans" }
+			]
+		},
+		"A5": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A5-ans" }
+			]
+		},
+		"A6": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A6-ans" }
+			]
+		},
+		"A7": {
+			"answerLatex": "",
+			"tags": [ "dm-nt" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A7-ans" }
+			]
+		},
+		"A8": {
+			"answerLatex": "",
+			"tags": [ "dm-st-f", "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A8-ans" }
+			]
+		},
+		"A9": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A9-ans" }
+			]
+		},
+		"A10": {
+			"answerLatex": "",
+			"tags": [ "dm-c-r" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "A10-ans" }
+			]
+		},
+		"B1": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "B1-ans" }
+			]
+		},
+		"B2": {
+			"answerLatex": "",
+			"tags": [ "dm-l-ppl" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "B2-ans" }
+			]
+		},
+		"B3": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pp" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "B3-ans" }
+			]
+		}
+	}
+}
