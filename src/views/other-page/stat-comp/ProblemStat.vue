@@ -9,8 +9,6 @@
 				<div class="ts-list is-unordered">
 					<div class="item">點擊標籤可以跳至搜尋頁面。</div>
 					<div class="item">點擊標籤右側的圖示可以展開子標籤。</div>
-					<div class="item">由於一題可能有多個標籤，所以將占比加總是沒有意義的。</div>
-					<div class="item">這份資料無法預測未來考題，如造成損失請自行負責。</div>
 				</div>
 			</div>
 		</div>
@@ -27,7 +25,7 @@
 		<table class="ts-table is-collapsed stat-table">
 			<thead>
 				<tr>
-					<th>標籤</th><th>題目數</th><th>占比</th><th>學校出題數</th>
+					<th>標籤</th><th>題目數</th><th>學校出題數</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,7 +35,6 @@
 						<span v-if="tagStat.isIconEnabled()" :class="tagStat.getIconCssClass()" @click="whenIconClicked(i)"></span>
 					</td>
 					<td>{{ tagStat.count }}</td>
-					<td>{{ tagStat.percent.toFixed(2) }}%</td>
 					<td>{{ tagStat.uniCountStr }}</td>
 				</tr>
 			</tbody>
@@ -69,7 +66,6 @@ class TagStat { // 每一個 tag 的統計資料 (包含 icon 狀態)
 		this.indentWidth = 20 * this.tagLevel; // 縮排寬度 (px), 取決於 tag level
 		this.iconStateRef = ref(null); // false 收起, true 展開, null 不顯示 icon
 		this.count = sum(Object.values(uniCountsDict)); // 所有題目之中, 包含此標籤的題目個數
-		this.percent = this.count / stat.problemNumber * 100; // 所有題目之中, 包含此標籤的題目比例
 		this.uniCountStr = TagStat.getUniCountStr(uniCountsDict); // 每個學校有幾題包含這個 tag
 	}
 	
@@ -125,7 +121,7 @@ function whenIconClicked(i) { // 當 icon 被點擊
 </script>
 
 <style scoped>
-.stat-table > tbody > tr > :nth-child(2), :nth-child(3) { /* "題目數" 和 "占比" 的值因為是數字, 所以靠右排列 */
+.stat-table > tbody > tr > :nth-child(2) { /* "題目數" 和 "占比" 的值因為是數字, 所以靠右排列 */
 	text-align: right;
 }
 .stat-table tr > :nth-child(1) { /* 減少 "標籤" 與 "題目數" 的間距 */

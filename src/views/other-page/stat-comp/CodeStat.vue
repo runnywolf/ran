@@ -5,7 +5,7 @@
 		</button>
 		<div class="ts-popover" id="other-page-code-stat" popover>
 			<div class="ts-content is-dense ts-text is-medium" style="font-weight: initial;">
-				以下所有的統計資料並非動態，而是依賴開發環境的手動更新，<br>
+				以下所有的統計資料並非動態，而是依賴 github action 的更新，<br>
 				可以參考 <code>src/stat/make-stat.py</code>。
 			</div>
 		</div>
