@@ -2,6 +2,16 @@
 	"la": {
 		"en": "Linear algebra", "zhtw": "線性代數",
 		"children": {
+			"vs": {
+				"en": "Vector space", "zhtw": "向量空間",
+				"children": {
+					"bd": { "en": "Basis", "zhtw": "基底" },
+					"ss": { "en": "Subspace", "zhtw": "子空間" },
+					"rk": { "en": "Range & Kernel", "zhtw": "值域 & 核空間" },
+					"rn": { "en": "Rank & Nullity", "zhtw": "秩 & 零化度" },
+					"cb": { "en": "Change of basis", "zhtw": "基底變換" }
+				}
+			},
 			"m": {
 				"en": "Matrix", "zhtw": "矩陣",
 				"children": {
@@ -13,16 +23,6 @@
 					"mro": { "en": "Matrix row operations", "zhtw": "矩陣列運算" },
 					"lud": { "en": "LU decomposition", "zhtw": "LU 分解" },
 					"cd": { "en": "Cholesky decomposition", "zhtw": "Cholesky 分解" }
-				}
-			},
-			"vs": {
-				"en": "Vector space", "zhtw": "向量空間",
-				"children": {
-					"bd": { "en": "Basis", "zhtw": "基底" },
-					"ss": { "en": "Subspace", "zhtw": "子空間" },
-					"rk": { "en": "Range & Kernel", "zhtw": "值域 & 核空間" },
-					"rn": { "en": "Rank & Nullity", "zhtw": "秩 & 零化度" },
-					"cb": { "en": "Change of basis", "zhtw": "基底變換" }
 				}
 			},
 			"ev": {

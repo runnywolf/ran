@@ -139,7 +139,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-gt" ],
+			"tags": [ "dm-gt-ehg" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

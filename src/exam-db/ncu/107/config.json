@@ -126,7 +126,7 @@
 		},
 		"17": {
 			"answerLatex": "",
-			"tags": [ "la" ],
+			"tags": [ "la-vs" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "17-ans" }
 			]

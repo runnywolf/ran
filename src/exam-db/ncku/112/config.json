@@ -46,7 +46,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "la-m-mro" ],
+			"tags": [ "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

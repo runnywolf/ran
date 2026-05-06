@@ -27,7 +27,7 @@
 		},
 		"A3": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-c-pc" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "A3-ans" }
 			]

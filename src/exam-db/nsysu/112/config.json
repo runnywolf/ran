@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm" ],
+			"tags": [ "dm-c-gf" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
