@@ -32,4 +32,7 @@ coverage
 # vscode 識別 vue alias 用
 jsconfig.json
 
+# 用來協助 gpt 維護 exam db 的 text
+src/exam-db/gpt-review-hint.md
+
 docs/ran.xmind
