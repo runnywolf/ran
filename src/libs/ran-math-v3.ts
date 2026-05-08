@@ -743,28 +743,31 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 	}
 }
 
-export class Matrix { // 矩陣
+interface MatrixElement<T> { // 定義矩陣元素
+	isZero(): boolean;
+	copy(): T;
+	neg(): T;
+	add(x: T): T;
+	sub(x: T): T;
+	mul(x: T): T;
+	div(x: T): T;
+}
+export class Matrix<T extends MatrixElement<T>> { // 矩陣
 	static NonPosIntDimensionError = class extends RanMathError { // 矩陣的維度必須是正整數
 		constructor(caller: string, paramName: string, dim: number) {
-			super(caller, `Parameter "${paramName}" must be a positive integer dimension, get ${dim}`);
+			super(caller, `Parameter "${paramName}" must be a positive integer dimension, got ${dim}`);
 		}
 	}
 	
-	static AddDimensionMismatchError = class extends RanMathError { // 矩陣加減法時, 兩個矩陣的列數或行數不一致
-		constructor(caller: string, m1: Matrix, m2: Matrix) {
-			super(caller, `Matrix dimension mismatch: (${m1.m}, ${m1.n}) +/- (${m2.m}, ${m2.n})`);
-		}
-	}
-	
-	static MulDimensionMismatchError = class extends RanMathError { // 矩陣乘法時, 兩個矩陣的列數或行數無法對上
-		constructor(caller: string, m1: Matrix, m2: Matrix) {
-			super(caller, `Matrix dimension mismatch: (${m1.m}, ${m1.n}) * (${m2.m}, ${m2.n})`);
+	static RowIndexError = class extends RanMathError { // row index 不為整數 0 ~ m-1
+		constructor(caller: string, paramName: string, m: number, i: number) {
+			super(caller, `Parameter "${paramName}" must be an integer in [${0}, ${m-1}], got ${i}`);
 		}
 	}
 	
 	static InverseNonSquareMatrixError = class extends RanMathError { // 只有方陣才能求逆
-		constructor(caller: string, m1: Matrix) {
-			super(caller, `Non-square matrix cannot be inverted, get (${m1.m}, ${m1.n})`);
+		constructor(caller: string, m1: { m: number, n: number }) {
+			super(caller, `Non-square matrix cannot be inverted, got (${m1.m}, ${m1.n})`);
 		}
 	}
 	
@@ -774,24 +777,36 @@ export class Matrix { // 矩陣
 		}
 	}
 	
-	static is(x: unknown): x is Matrix { // 檢查 x 是否為 Matrix 實例
+	static AddDimensionMismatchError = class extends RanMathError { // 矩陣加減法時, 兩個矩陣的列數或行數不一致
+		constructor(caller: string, m1: { m: number, n: number }, m2: { m: number, n: number }) {
+			super(caller, `Matrix dimension mismatch: (${m1.m}, ${m1.n}) +/- (${m2.m}, ${m2.n})`);
+		}
+	}
+	
+	static MulDimensionMismatchError = class extends RanMathError { // 矩陣乘法時, 兩個矩陣的列數或行數無法對上
+		constructor(caller: string, m1: { m: number, n: number }, m2: { m: number, n: number }) {
+			super(caller, `Matrix dimension mismatch: (${m1.m}, ${m1.n}) * (${m2.m}, ${m2.n})`);
+		}
+	}
+	
+	static is(x: unknown): x is Matrix<any> { // 檢查 x 是否為 Matrix 實例
 		return x instanceof Matrix;
 	}
 	
-	static diag(m: number, a: Scalar, b: Scalar): Matrix { // 生成對角矩陣, 對角線元素為 a, 非對角線元素為 b
-		m = Matrix.checkDimension(m, "Matrix.diag", "m"); // 保證 m 為正整數
-		return new Matrix(m, m, (i, j) => i === j ? a : b); // 複製矩陣元素, 不然整個矩陣的 Scalar 會指向同一個參考
+	static diag<T extends MatrixElement<T>>(m: number, a: T, b: T): Matrix<T> { // 生成對角矩陣, 對角線元素為 a, 非對角線元素為 b
+		Matrix.checkDimension(m, "Matrix.diag", "m"); // 保證 m 為正整數
+		return new Matrix(m, m, (i, j) => i === j ? a : b); // 複製矩陣元素, 不然整個矩陣的物件 T 會指向同一個參考
 	}
 	
 	readonly m: number; // 矩陣的列數
 	readonly n: number; // 矩陣的行數
-	readonly arr: Scalar[][]; // arr \in Scalar^{m \times n}, 這裡宣告 readonly Array 表示不建議修改
+	readonly arr: T[][]; // arr \in T^{m \times n}, 這裡宣告 readonly Array 表示不建議修改
 	
-	constructor(m: number, n: number, elementFn: (i: number, j: number) => Scalar, cloneInput = true) { // cloneInput: 是否要複製 elementFn 回傳的 Scalar
+	constructor(m: number, n: number, elementFn: (i: number, j: number) => T, cloneInput = true) { // cloneInput: 是否要複製 elementFn 回傳的 T
 		this.m = Matrix.checkDimension(m, "Matrix.constructor", "m"); // 保證 m, n 為正整數
 		this.n = Matrix.checkDimension(n, "Matrix.constructor", "n");
 		this.arr = Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => { // 利用 elementFn 建構整個矩陣
-			return cloneInput ? elementFn(i, j).copy() : elementFn(i, j); // cloneInput 決定是否要複製 elementFn 回傳的 Scalar
+			return cloneInput ? elementFn(i, j).copy() : elementFn(i, j); // cloneInput 決定是否要複製 elementFn 回傳的 T
 		}));
 	}
 	
@@ -803,53 +818,83 @@ export class Matrix { // 矩陣
 		return ""; // todo
 	}
 	
-	swapRow(i: number, j: number) { // 矩陣列運算: 交換 i, j 兩列 (不回傳新矩陣)
+	swapRow(i: number, j: number): void { // 矩陣列運算: 交換 i, j 兩列 (不回傳新矩陣)
+		this.checkRowIndex(i, "Matrix.swapRow", "i");
+		this.checkRowIndex(j, "Matrix.swapRow", "j");
 		[this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
 	}
 	
-	scaleRow(i: number, sc: Scalar) { // 矩陣列運算: 列 i 乘常數 s (不回傳新矩陣)
-		for (let [k, aik] of this.arr[i].entries()) this.arr[i][k] = aik.mul(sc);
+	scaleRow(i: number, x: T): void { // 矩陣列運算: 列 i 乘常數 x (不回傳新矩陣)
+		this.checkRowIndex(i, "Matrix.scaleRow", "i");
+		for (let [k, aik] of this.arr[i].entries()) this.arr[i][k] = aik.mul(x);
 	}
 	
-	addRow(i: number, j: number, sc: Scalar) { // 矩陣列運算: 列 i 乘常數 s 加到列 j (不回傳新矩陣)
-		for (let [k, aik] of this.arr[i].entries()) this.arr[j][k] = this.arr[j][k].add(aik.mul(sc));
+	addRow(i: number, j: number, x: T): void { // 矩陣列運算: 列 i 乘常數 x 加到列 j (不回傳新矩陣)
+		this.checkRowIndex(i, "Matrix.addRow", "i");
+		this.checkRowIndex(j, "Matrix.addRow", "j");
+		for (let [k, aik] of this.arr[i].entries()) this.arr[j][k] = this.arr[j][k].add(aik.mul(x));
 	}
 	
-	trans(): Matrix { // 轉置
+	trans(): Matrix<T> { // 轉置
 		return new Matrix(this.n, this.m, (i, j) => this.arr[j][i]); // 複製矩陣元素
 	}
 	
-	inverse(): Matrix { // 逆矩陣
+	inverse(zero: T, one: T): Matrix<T> { // 逆矩陣, 需要提供泛型 T 的 0/1 元素
 		if (this.m !== this.n) throw new Matrix.InverseNonSquareMatrixError("Matrix.inverse", this);
 		
 		const m = this.m; // m*m 方陣
 		let m_simplify = this.copy(); // 執行簡化列運算的矩陣
-		let m_inverse = Matrix.diag(m); // 反矩陣的計算結果, 初始化為 I (Gauss-Jordan Elimination)
+		let m_inverse = Matrix.diag(m, one, zero); // 反矩陣的計算結果, 初始化為 I (Gauss-Jordan Elimination)
+		
+		for (let i = 0; i < m; i++) { // 消去原矩陣的下三角部分
+			let swapI = i;
+			while (m_simplify.arr[swapI][i].isZero()) { // 若對角線元素為 0, 尋找適合交換的列編號
+				swapI++;
+				if (swapI >= m) throw new Matrix.InverseSingularMatrixError("Matrix.inverse"); // 若找不到適合交換的列, 矩陣為奇異矩陣, 不可逆
+			}
+			m_simplify.swapRow(i, swapI); // 交換兩列, 使對角線元素不為 0
+			m_inverse.swapRow(i, swapI);
+			
+			for (let j = i+1; j < m; j++) {
+				const x = m_simplify.arr[j][i].neg().div(m_simplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的下三角部分
+				m_simplify.addRow(i, j, x);
+				m_inverse.addRow(i, j, x);
+			}
+		}
+		
+		for (let i = m-1; i >= 0; i--) for (let j = i-1; j >= 0; j--) { // 消去原矩陣的上三角部分
+			const x = m_simplify.arr[j][i].neg().div(m_simplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的上三角部分
+			m_inverse.addRow(i, j, x); // 此步驟不需要修改原矩陣也能完成運算
+		}
+		
+		for (let i = 0; i < m; i++) m_inverse.scaleRow(i, one.div(m_simplify.arr[i][i])); // 同除對角線
+		
+		return m_inverse;
 	}
 	
-	copy(): Matrix { // 複製
+	copy(): Matrix<T> { // 複製
 		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j]); // 複製矩陣元素
 	}
 	
-	neg(): Matrix { // 取負號
-		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].neg(), false); // 因為 Scalar.neg 會產生新物件, 不複製矩陣元素
+	neg(): Matrix<T> { // 取負號
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].neg(), false); // 因為 T.neg 會產生新物件, 不複製矩陣元素
 	}
 	
-	add(matrix: Matrix): Matrix { // 加法
+	add(matrix: Matrix<T>): Matrix<T> { // 加法
 		if (this.m !== matrix.m || this.n !== matrix.n) { // 矩陣加法時, 兩個矩陣的列數或行數不一致
 			throw new Matrix.AddDimensionMismatchError("Matrix.add", this, matrix);
 		}
-		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].add(matrix.arr[i][j]), false); // 因為 Scalar.add 會產生新物件, 不複製矩陣元素
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].add(matrix.arr[i][j]), false); // 因為 T.add 會產生新物件, 不複製矩陣元素
 	}
 	
-	sub(matrix: Matrix): Matrix { // 減法
+	sub(matrix: Matrix<T>): Matrix<T> { // 減法
 		if (this.m !== matrix.m || this.n !== matrix.n) { // 矩陣減法時, 兩個矩陣的列數或行數不一致
 			throw new Matrix.AddDimensionMismatchError("Matrix.sub", this, matrix);
 		}
-		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].sub(matrix.arr[i][j]), false); // 因為 Scalar.sub 會產生新物件, 不複製矩陣元素
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].sub(matrix.arr[i][j]), false); // 因為 T.sub 會產生新物件, 不複製矩陣元素
 	}
 	
-	mul(matrix: Matrix): Matrix { // 乘法
+	mul(matrix: Matrix<T>): Matrix<T> { // 乘法
 		if (this.n !== matrix.m) { // 矩陣乘法時, 兩個矩陣的列數或行數無法對上
 			throw new Matrix.MulDimensionMismatchError("Matrix.mul", this, matrix);
 		}
@@ -857,11 +902,11 @@ export class Matrix { // 矩陣
 			let aij = this.arr[i][0].mul(matrix.arr[0][j]);
 			for (let k = 1; k < this.n; k++) aij = aij.add(this.arr[i][k].mul(matrix.arr[k][j]));
 			return aij;
-		}, false); // 因為 Scalar.add 會產生新物件, 不複製矩陣元素
+		}, false); // 因為 T.add 會產生新物件, 不複製矩陣元素
 	}
 	
-	muls(sc: Scalar): Matrix { // 乘常數
-		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].mul(sc), false); // 因為 Scalar.mul 會產生新物件, 不複製矩陣元素
+	muls(x: T): Matrix<T> { // 乘常數 x
+		return new Matrix(this.m, this.n, (i, j) => this.arr[i][j].mul(x), false); // 因為 T.mul 會產生新物件, 不複製矩陣元素
 	}
 	
 	private static checkDimension(dim: number, caller: string, paramName: string): number { // 若 dim 為正整數則回傳 dim, 如果 dim 不是正整數會報錯
@@ -869,6 +914,12 @@ export class Matrix { // 矩陣
 			throw new Matrix.NonPosIntDimensionError(caller, paramName, dim);
 		}
 		return dim;
+	}
+	
+	private checkRowIndex(i: number, caller: string, paramName: string): void { // 如果 row index 不為整數 0 ~ m-1 會報錯
+		if (!Number.isInteger(i) || i < 0 || i >= this.m) {
+			throw new Matrix.RowIndexError(caller, paramName, this.m, i);
+		}
 	}
 }
 
