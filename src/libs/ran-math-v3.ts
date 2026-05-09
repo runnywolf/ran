@@ -663,14 +663,6 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 		else this.value = ParamNorm.toSvOrCp(x, "Scalar.constructor"); // 若 toSvOrCp 輸入 num|bigint|F 會產生新物件, SV|CP 則不會
 	}
 	
-	isSqrtValue(): boolean {
-		return SqrtValue.is(this.value);
-	}
-	
-	isComplex(): boolean {
-		return Complex.is(this.value);
-	}
-	
 	isZero(): boolean { // 是否為 0
 		return this.value.isZero();
 	}
