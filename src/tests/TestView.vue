@@ -1,6 +1,5 @@
 <template>
 	<div class="ts-box ts-content">
-		<vl c :exp="CP(2.5, 2.333333).toLatex()"></vl>
 	</div>
 </template>
 

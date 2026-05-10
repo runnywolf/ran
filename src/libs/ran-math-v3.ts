@@ -587,6 +587,10 @@ export class Complex { // 浮點複數
 		return ""; // todo
 	}
 	
+	conj(): Complex { // 共軛
+		return CP(this.real, -this.imag);
+	}
+	
 	copy(): Complex { // 複製
 		return CP(this.real, this.imag);
 	}
@@ -737,6 +741,8 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 
 interface MatrixElement<T> { // 定義矩陣元素
 	isZero(): boolean;
+	toStr(): string;
+	toLatex(): string;
 	copy(): T;
 	neg(): T;
 	add(x: T): T;
@@ -803,11 +809,20 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 	}
 	
 	toStr(): string { // 轉為字串
-		return ""; // todo
+		const strArr = this.arr.map(rowI => rowI.map(aij => aij.toStr())); // 將矩陣的每個元素轉為 string
+		for (let j = 0; j < this.n; j++) {
+			const colWidth = Math.max(...strArr.map(rowI => rowI[j].length)); // 計算行寬
+			for (let i = 0; i < this.m; i++) strArr[i][j] = strArr[i][j].padStart(colWidth); // 將同一欄的元素補齊到相同寬度, 使各列對齊
+		}
+		return strArr.map(rowI => `| ${rowI.join(" | ")} |`).join("\n"); // 將每一列加上左右邊界與分隔線後合併
 	}
 	
-	toLatex(): string { // 轉為 latex 字串
-		return ""; // todo
+	toLatex(mode: "m"|"pm"|"bm"|"vm" = "bm"): string { // 轉為 latex 字串, 例子: mode = "bm" 會生成 \begin{bmatrix} ... \end{bmatrix}
+		let str = this.arr.map(rowI => rowI.map(aij => aij.toStr()).join("&")).join("\\\\"); // 插入 latex 矩陣語法的元素分隔符
+		str = `\\begin{${mode}atrix}${str}\\end{${mode}atrix}`; // latex 矩陣語法
+		if (mode === "bm") str = `\\!${str}\\!`; // 因為 bmatrix 的左右間距太寬了, 減少一點
+		if (str.includes("\\frac")) str = `\\def\\arraystretch{1.35}${str}\\def\\arraystretch{1}`; // 如果矩陣元素包含分數, 則增加列距
+		return str;
 	}
 	
 	swapRow(i: number, j: number): void { // 矩陣列運算: 交換 i, j 兩列 (不回傳新矩陣)
