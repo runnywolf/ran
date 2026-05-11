@@ -1,6 +1,6 @@
 // 一些撰寫測試時可能用的到的工具
 
-import { Frac, SqrtValue, Complex, Scalar } from "@lib/ran-math-v3";
+import { Frac, SqrtValue, Complex, Scalar, Matrix } from "@lib/ran-math-v3";
 
 export interface TestData { // 測資通用模板
 	testName: (...input: any[]) => string, // 測試名稱, 例如: "a+b"
@@ -11,8 +11,7 @@ export interface TestData { // 測資通用模板
 	>,
 }
 
-// 把一些值轉為字串, 用於覆蓋率測試的輸出
-export function str(value: any): string {
+export function str(value: any): string { // 把一些值轉為字串, 用於覆蓋率測試的輸出
 	if (value instanceof Map) { // map object
 		const s = [...value].map(([k, v]) => `${str(k)}: ${str(v)}`).join(", ");
 		return `Map{ ${s} }`;
@@ -22,7 +21,11 @@ export function str(value: any): string {
 	if (value instanceof SqrtValue) return value.toStr(); // SV -> string
 	if (value instanceof Complex) return value.toStr(); // CP -> string
 	if (value instanceof Scalar) return value.toStr(); // CP -> string
-	if (typeof value === "string") return `"${value}"`; // 強調 value 是一個字串
+	if (value instanceof Matrix) { // Matrix -> string
+		const s = value.arr.map(rowI => rowI.map(aij => aij.toStr()).join(", ")).join("; ");
+		return `Matrix[ ${s} ]`;
+	}
+	if (typeof value === "string") return `"${value.replace("\n", "\\n")}"`; // 強調 value 是一個字串, 取代掉換行
 	if (typeof value === "bigint") return `${value}n`; // bigint -> string
 	if (Number.isInteger(value)) return String(value); // int number -> string
 	if (typeof value === "number") return value.toFixed(4); // float number -> string

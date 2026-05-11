@@ -149,7 +149,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".neg": {
-		testName: (frac: Frac) => `(${str(frac)}).neg()`,
+		testName: (frac: Frac) => `-(${str(frac)})`,
 		testFunc: (frac: Frac) => frac.neg(),
 		tests: [
 			{ input: [ F(-3, 4) ], output: F(3, 4) },
@@ -158,7 +158,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".add": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} + ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) + (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.add(x),
 		tests: [
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-11, 8) }, // Frac + Frac
@@ -178,7 +178,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".sub": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} - ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) - (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.sub(x),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(-1, 8) }, // Frac - Frac
@@ -197,7 +197,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".mul": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} * ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) * (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.mul(x),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(15, 32) }, // Frac * Frac
@@ -216,7 +216,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".div": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} / ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) / (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.div(x),
 		tests: [ // 測資
 			{ input: [ F(-3, 4), F(-5, 8) ], output: F(6, 5) }, // Frac / Frac
@@ -237,7 +237,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".pow": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} ^ ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) ^ (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint) => frac.pow(x),
 		tests: [ // 測資
 			{ input: [ F(2, 3), 0 ], output: F(1) }, // f^0 = 1
@@ -257,7 +257,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".equal": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} == ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) == (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.equal(x),
 		tests: [ // 測資
 			{ input: [ F(8, 6), F(20, 15) ], output: true },
@@ -274,7 +274,7 @@ const testDatas: Record<string, TestData> = {
 		]
 	},
 	".lt": {
-		testName: (frac: Frac, x: number|bigint|Frac) => `${str(frac)} < ${str(x)}`,
+		testName: (frac: Frac, x: number|bigint|Frac) => `(${str(frac)}) < (${str(x)})`,
 		testFunc: (frac: Frac, x: number|bigint|Frac) => frac.lt(x),
 		tests: [ // 測資
 			{ input: [ F(8, 6), F(20, 15) ], output: false },
@@ -296,7 +296,7 @@ const testDatas: Record<string, TestData> = {
 
 for (const [groupName, testData] of Object.entries(testDatas)) describe(groupName, () => { // 對每個 func 做測試
 	for (const t of testData.tests) test( // 測一組測資
-		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `(Err)${t.error.name}`), // 輸出 output, 報錯就輸出 error name
+		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
 			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance

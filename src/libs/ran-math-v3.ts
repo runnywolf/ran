@@ -569,8 +569,8 @@ export class Complex { // 浮點複數
 	readonly imag: number; // 虛部
 	
 	constructor(real: number = 0, imag: number = 0) {
-		this.real = Math.abs(real) <= Complex.eps ? 0 : real;
-		this.imag = Math.abs(imag) <= Complex.eps ? 0 : imag;
+		this.real = ParamNorm.toFloat(Math.abs(real) <= Complex.eps ? 0 : real, "Matrix.constructor");
+		this.imag = ParamNorm.toFloat(Math.abs(imag) <= Complex.eps ? 0 : imag, "Matrix.constructor");
 	}
 	
 	isZero(eps: number = Complex.eps): boolean { // 是否為 0
@@ -818,7 +818,7 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 	}
 	
 	toLatex(mode: "m"|"pm"|"bm"|"vm" = "bm"): string { // 轉為 latex 字串, 例子: mode = "bm" 會生成 \begin{bmatrix} ... \end{bmatrix}
-		let str = this.arr.map(rowI => rowI.map(aij => aij.toStr()).join("&")).join("\\\\"); // 插入 latex 矩陣語法的元素分隔符
+		let str = this.arr.map(rowI => rowI.map(aij => aij.toLatex()).join("&")).join("\\\\"); // 插入 latex 矩陣語法的元素分隔符
 		str = `\\begin{${mode}atrix}${str}\\end{${mode}atrix}`; // latex 矩陣語法
 		if (mode === "bm") str = `\\!${str}\\!`; // 因為 bmatrix 的左右間距太寬了, 減少一點
 		if (str.includes("\\frac")) str = `\\def\\arraystretch{1.35}${str}\\def\\arraystretch{1}`; // 如果矩陣元素包含分數, 則增加列距

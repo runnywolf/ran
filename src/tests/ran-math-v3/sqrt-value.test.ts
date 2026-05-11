@@ -107,7 +107,7 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".copy": {
-		testName: (sv: SqrtValue) => `Object (SV) copy test`,
+		testName: (sv: SqrtValue) => `Object (SqrtValue) copy test`,
 		testFunc: (sv: any) => { // 這裡不指定型別, 因為要修改 .terms 測試是否複製
 			let sv_copy = sv.copy();
 			sv_copy.terms.set(2n, F(-1)); // 你可以去把 SqrtValue.copy 的回傳值改成 this 試試看, 會錯
@@ -118,7 +118,7 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".neg": {
-		testName: (sv: SqrtValue) => `(${str(sv)}).neg()`,
+		testName: (sv: SqrtValue) => `-(${str(sv)})`,
 		testFunc: (sv: SqrtValue) => sv.neg(),
 		tests: [
 			{ input: [ SV([2, 1], [3, 2], [5, -3]) ], output: SV([-2, 1], [-3, 2], [-5, -3]) },
@@ -224,7 +224,7 @@ const testDatas: Record<string, TestData> = {
 
 for (const [groupName, testData] of Object.entries(testDatas)) describe(groupName, () => { // 對每個 func 做測試
 	for (const t of testData.tests) test( // 測一組測資
-		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `(Err)${t.error.name}`), // 輸出 output, 報錯就輸出 error name
+		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
 			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance

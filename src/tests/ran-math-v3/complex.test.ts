@@ -25,11 +25,15 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ 3 ], output: CP(3, 0) },
 			{ input: [ -1.5, 2.25 ], output: CP(-1.5, 2.25) },
 			{ input: [ 1e-15, -1e-15 ], output: CP(0, 0) },
+			{ input: [ NaN ], error: ParamNorm.NanError },
+			{ input: [ Infinity ], error: ParamNorm.InfError },
+			{ input: [ 1, NaN ], error: ParamNorm.NanError },
+			{ input: [ 1, -Infinity ], error: ParamNorm.InfError },
 		],
 	},
 	".isZero": {
-		testName: (z: Complex, eps?: number) => `(${str(z)}).isZero(${str(eps)})`,
-		testFunc: (z: Complex, eps?: number) => z.isZero(eps),
+		testName: (cp: Complex, eps?: number) => `(${str(cp)}).isZero(${str(eps)})`,
+		testFunc: (cp: Complex, eps?: number) => cp.isZero(eps),
 		tests: [
 			{ input: [ CP(0, 0) ], output: true },
 			{ input: [ CP(1e-14, -2e-14) ], output: true },
@@ -38,37 +42,46 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".toStr": {
-		testName: (z: Complex, digits?: number) => `(${str(z)}).toStr(${str(digits)})`,
-		testFunc: (z: Complex, digits?: number) => z.toStr(digits),
+		testName: (cp: Complex, digits?: number) => `(${str(cp)}).toStr(${str(digits)})`,
+		testFunc: (cp: Complex, digits?: number) => cp.toStr(digits),
 		tests: [
 			{ input: [ CP(0, 0) ], output: "0 + 0 i" },
 			{ input: [ CP(1.23456, -9.87654), 3 ], output: "1.235 + -9.877 i" },
 			{ input: [ CP(2, 3) ], output: "2 + 3 i" },
 		],
 	},
+	".conj": {
+		testName: (cp: Complex) => `(${str(cp)}).conj()`,
+		testFunc: (cp: Complex) => cp.conj(),
+		tests: [
+			{ input: [ CP(7) ], output: CP(7) },
+			{ input: [ CP(2, -3) ], output: CP(2, 3) },
+			{ input: [ CP(0) ], output: CP(0) },
+		],
+	},
 	".copy": {
-		testName: (z: Complex) => "Object (Complex) copy test",
-		testFunc: (z: any) => {
-			let c = z.copy();
+		testName: (cp: Complex) => "Object (Complex) copy test",
+		testFunc: (cp: any) => {
+			let c = cp.copy();
 			c.real = 777;
 			c.imag = -888;
-			return z;
+			return cp;
 		},
 		tests: [
 			{ input: [ CP(2, -3) ], output: CP(2, -3) },
 		],
 	},
 	".neg": {
-		testName: (z: Complex) => `(${str(z)}).neg()`,
-		testFunc: (z: Complex) => z.neg(),
+		testName: (cp: Complex) => `-(${str(cp)})`,
+		testFunc: (cp: Complex) => cp.neg(),
 		tests: [
 			{ input: [ CP(2, -3) ], output: CP(-2, 3) },
 			{ input: [ CP(0) ], output: CP(0) },
 		],
 	},
 	".add": {
-		testName: (z: Complex, x: any) => `(${str(z)}) + (${str(x)})`,
-		testFunc: (z: Complex, x: any) => z.add(x),
+		testName: (cp: Complex, x: any) => `(${str(cp)}) + (${str(x)})`,
+		testFunc: (cp: Complex, x: any) => cp.add(x),
 		tests: [
 			{ input: [ CP(1, 2), CP(3, -5) ], output: CP(4, -3) },
 			{ input: [ CP(1, 2), 3 ], output: CP(4, 2) },
@@ -79,8 +92,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".sub": {
-		testName: (z: Complex, x: any) => `(${str(z)}) - (${str(x)})`,
-		testFunc: (z: Complex, x: any) => z.sub(x),
+		testName: (cp: Complex, x: any) => `(${str(cp)}) - (${str(x)})`,
+		testFunc: (cp: Complex, x: any) => cp.sub(x),
 		tests: [
 			{ input: [ CP(1, 2), CP(3, -5) ], output: CP(-2, 7) },
 			{ input: [ CP(1, 2), 3 ], output: CP(-2, 2) },
@@ -91,8 +104,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".mul": {
-		testName: (z: Complex, x: any) => `(${str(z)}) * (${str(x)})`,
-		testFunc: (z: Complex, x: any) => z.mul(x),
+		testName: (cp: Complex, x: any) => `(${str(cp)}) * (${str(x)})`,
+		testFunc: (cp: Complex, x: any) => cp.mul(x),
 		tests: [
 			{ input: [ CP(1, 2), CP(3, -5) ], output: CP(13, 1) },
 			{ input: [ CP(1, 2), 3 ], output: CP(3, 6) },
@@ -103,8 +116,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".div": {
-		testName: (z: Complex, x: any, cmp: Complex) => `(${str(z)}) / (${str(x)}) == ${str(cmp)}`,
-		testFunc: (z: Complex, x: any, cmp: Complex) => z.div(x).equal(cmp), // 因為會有精度問題, 所以用 cmp
+		testName: (cp: Complex, x: any, cmp: Complex) => `(${str(cp)}) / (${str(x)}) == ${str(cmp)}`,
+		testFunc: (cp: Complex, x: any, cmp: Complex) => cp.div(x).equal(cmp), // 因為會有精度問題, 所以用 cmp
 		tests: [
 			{ input: [ CP(1, 2), CP(3, 4), CP(11 / 25, 2 / 25) ], output: true },
 			{ input: [ CP(1, 2), 2, CP(0.5, 1) ], output: true },
@@ -116,8 +129,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".pow": {
-		testName: (z: Complex, x: number|bigint|ReturnType<typeof F>) => `(${str(z)}) ^ (${str(x)})`,
-		testFunc: (z: Complex, x: number|bigint|ReturnType<typeof F>) => z.pow(x),
+		testName: (cp: Complex, x: number|bigint|ReturnType<typeof F>) => `(${str(cp)}) ^ (${str(x)})`,
+		testFunc: (cp: Complex, x: number|bigint|ReturnType<typeof F>) => cp.pow(x),
 		tests: [
 			{ input: [ CP(0, 0), 0 ], output: CP(1, 0) },
 			{ input: [ CP(0, 0), 5 ], output: CP(0, 0) },
@@ -132,8 +145,8 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".equal": {
-		testName: (z: Complex, x: any, eps?: number) => `(${str(z)}).equal(${str(x)}, ${str(eps)})`,
-		testFunc: (z: Complex, x: any, eps?: number) => z.equal(x, eps),
+		testName: (cp: Complex, x: any, eps?: number) => `eps = ${str(eps)}, (${str(cp)}) == (${str(x)})`,
+		testFunc: (cp: Complex, x: any, eps?: number) => cp.equal(x, eps),
 		tests: [
 			{ input: [ CP(1, 2), CP(1, 2) ], output: true },
 			{ input: [ CP(1, 2), CP(1 + 1e-14, 2 - 1e-14) ], output: true },
@@ -150,7 +163,7 @@ const testDatas: Record<string, TestData> = {
 
 for (const [groupName, testData] of Object.entries(testDatas)) describe(groupName, () => { // 對每個 func 做測試
 	for (const t of testData.tests) test( // 測一組測資
-		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `(Err)${t.error.name}`), // 輸出 output, 報錯就輸出 error name
+		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
 			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance

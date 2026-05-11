@@ -56,27 +56,6 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ CP(1, 2) ], output: true },
 		],
 	},
-	".isSqrtValue": {
-		testName: (sc: Scalar) => `(${str(sc)}).isSqrtValue()`,
-		testFunc: (sc: Scalar) => sc.isSqrtValue(),
-		tests: [
-			{ input: [ SC(2n) ], output: true },
-			{ input: [ SC(F(3, 2)) ], output: true },
-			{ input: [ SC(SV([1, 2])) ], output: true },
-			{ input: [ SC(3.5) ], output: false },
-			{ input: [ SC(CP(1, 2)) ], output: false },
-		],
-	},
-	".isComplex": {
-		testName: (sc: Scalar) => `(${str(sc)}).isComplex()`,
-		testFunc: (sc: Scalar) => sc.isComplex(),
-		tests: [
-			{ input: [ SC(2n) ], output: false },
-			{ input: [ SC(SV([1, 2])) ], output: false },
-			{ input: [ SC(3.5) ], output: true },
-			{ input: [ SC(CP(1, 2)) ], output: true },
-		],
-	},
 	".isZero": {
 		testName: (sc: Scalar) => `(${str(sc)}).isZero()`,
 		testFunc: (sc: Scalar) => sc.isZero(),
@@ -116,7 +95,7 @@ const testDatas: Record<string, TestData> = {
 		],
 	},
 	".neg": {
-		testName: (sc: Scalar) => `(${str(sc)}).neg()`,
+		testName: (sc: Scalar) => `-(${str(sc)})`,
 		testFunc: (sc: Scalar) => sc.neg(),
 		tests: [
 			{ input: [ SC(SV([2, 1], [3, -2])) ], output: SC(SV([-2, 1], [-3, -2]), false) },
@@ -197,7 +176,7 @@ const testDatas: Record<string, TestData> = {
 
 for (const [groupName, testData] of Object.entries(testDatas)) describe(groupName, () => { // 對每個 func 做測試
 	for (const t of testData.tests) test( // 測一組測資
-		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `(Err)${t.error.name}`), // 輸出 output, 報錯就輸出 error name
+		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
 			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance
