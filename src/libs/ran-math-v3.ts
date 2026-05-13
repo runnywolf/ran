@@ -169,15 +169,15 @@ export class Frac { // 分數
 		str = str.replaceAll(" ", ""); // 去除所有空白字符
 		
 		if (/^-?\d+\.\d+$/.test(str)) { // 小數字串 a.b
-			const [str_a, str_b] = str.split(".");
-			const a = F(BigInt(str_a)); // 整數部分 a
-			const b = F(BigInt(str_b), 10n ** BigInt(str_b.length)); // 小數部分 b
-			return str_a.includes("-") ? a.sub(b) : a.add(b); // b 的正負要與 a 相同
+			const [strA, strB] = str.split(".");
+			const a = F(BigInt(strA)); // 整數部分 a
+			const b = F(BigInt(strB), 10n ** BigInt(strB.length)); // 小數部分 b
+			return strA.includes("-") ? a.sub(b) : a.add(b); // b 的正負要與 a 相同
 		}
 		if (/^-?\d+\/-?\d+$/.test(str)) { // 分數字串 a/b
-			const [str_a, str_b] = str.split("/");
-			if (BigInt(str_b) === 0n) throw new Frac.InvalidStringError("Frac.fromStr", str); // 分母為 0 錯誤
-			return F(BigInt(str_a), BigInt(str_b));
+			const [strA, strB] = str.split("/");
+			if (BigInt(strB) === 0n) throw new Frac.InvalidStringError("Frac.fromStr", str); // 分母為 0 錯誤
+			return F(BigInt(strA), BigInt(strB));
 		}
 		if (/^-?\d+$/.test(str)) { // 整數字串
 			return F(BigInt(str));
@@ -305,9 +305,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		str = str.replaceAll(" ", ""); // 去除所有空白字符
 		
 		const rawTerms: [Frac, Frac][] = [];
-		for (const s_term of str.split("+")) { // 用 "+" 將輸入字串切分成多個 term 字串
-			const segments = s_term.split("s"); // 用 "s" 將 term 字串切分成多個 segment 字串, s_term 只有 "...s..." & "..." 是合法的
-			if (segments.length >= 3) throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, s_term); // "...s...s.." 視為非法字串
+		for (const strTerm of str.split("+")) { // 用 "+" 將輸入字串切分成多個 term 字串
+			const segments = strTerm.split("s"); // 用 "s" 將 term 字串切分成多個 segment 字串, strTerm 只有 "...s..." & "..." 是合法的
+			if (segments.length >= 3) throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, strTerm); // "...s...s.." 視為非法字串
 			
 			try {
 				const toF = (i: number) => Frac.fromStr(segments[i]); // 將第 i 個 segment 轉為 Frac
@@ -317,7 +317,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			}
 			catch (e) {
 				if (e instanceof Frac.InvalidStringError) {
-					throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, s_term, e.message);
+					throw new SqrtValue.InvalidStringError("SqrtValue.fromStr", str, strTerm, e.message);
 				}
 				throw e; // 將未知錯誤再拋出
 			}
@@ -325,7 +325,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return new SqrtValue(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValue
 	}
 	
-	private readonly terms: Map<bigint, Frac>; // 最簡根式項
+	readonly terms: Map<bigint, Frac>; // 最簡根式項
 	private readonly baseFactors: Map<bigint, Set<bigint>>; // √b 的質因數分解
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
@@ -343,9 +343,9 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	toComplex(): Complex { // 轉浮點複數
 		let real = 0;
 		let imag = 0;
-		for (const [b, frac_a] of this.terms) {
-			if (b > 0n) real += frac_a.toFloat() * Math.sqrt(Number(b));
-			else imag += frac_a.toFloat() * Math.sqrt(Number(-b));
+		for (const [b, a] of this.terms) {
+			if (b > 0n) real += a.toFloat() * Math.sqrt(Number(b));
+			else imag += a.toFloat() * Math.sqrt(Number(-b));
 		}
 		return CP(real, imag);
 	}
@@ -357,7 +357,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			if (x < 0n === y < 0n) return Number(x < 0n ? y-x : x-y); // √+ 升序排列, √- 降序排列
 			return x < 0n ? 1 : -1; // √- 排在 √+ 後面
 		});
-		return arrTerms.map(([b, frac_a]) => `${frac_a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
+		return arrTerms.map(([b, a]) => `${a.toStr()} √${b}`).join(" + "); // 轉 debug 字串
 	}
 	
 	toLatex(mode: string = "i"): string { // 轉為 latex 字串
@@ -375,13 +375,13 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	
 	real(): SqrtValue { // 取出實部
 		const sv = SV(); // 建立一個無參數的 sv. 因為 terms 已經是最簡根式, 避免計算 normalizeTerm
-		sv.addTermsBy(this, (frac_a, b) => b > 0n ? frac_a : F(0)); // 將所有 √- 都改成 √0, 這樣就只剩實數部分了
+		sv.addTermsBy(this, (a, b) => b > 0n ? a : F(0)); // 將所有 √- 都改成 √0, 這樣就只剩實數部分了
 		return sv;
 	}
 	
 	imag(): SqrtValue { // 取出虛部
 		const sv = SV();
-		for (const [b, frac_a] of this.terms) if (b < 0n) sv.addTerm(frac_a, -b, this.getFactors(b)); // 將所有 √+ 都改成 √0, 這樣就只剩虛數部分了
+		for (const [b, a] of this.terms) if (b < 0n) sv.addTerm(a, -b, this.getFactors(b)); // 將所有 √+ 都改成 √0, 這樣就只剩虛數部分了
 		return sv;
 	}
 	
@@ -390,31 +390,31 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		
 		const sv = SV(); // 例: 1+√6+√3+√-14 = (1+√3)1 + (√3+√-7)√2
 		if (useSqrtBasis) {
-			for (const [b, frac_a] of this.terms) if (b % base === 0n) { // 根式部分能被 √base 整除就保留
-				sv.addTerm(frac_a, b / base, [...this.getFactors(b)].filter(x => x !== base));
+			for (const [b, a] of this.terms) if (b % base === 0n) { // 根式部分能被 √base 整除就保留
+				sv.addTerm(a, b / base, [...this.getFactors(b)].filter(x => x !== base));
 			}
 		} else {
-			sv.addTermsBy(this, (frac_a, b) => (b % base !== 0n) ? frac_a : F(0)); // 根式部分不能被 √base 整除就保留
+			sv.addTermsBy(this, (a, b) => (b % base !== 0n) ? a : F(0)); // 根式部分不能被 √base 整除就保留
 		}
 		return sv;
 	}
 	
 	copy(): SqrtValue { // 複製
 		const sv = SV();
-		sv.addTermsBy(this, (frac_a, b) => frac_a);
+		sv.addTermsBy(this, (a, b) => a);
 		return sv;
 	}
 	
 	neg(): SqrtValue { // 取負號
 		const sv = SV();
-		sv.addTermsBy(this, (frac_a, b) => frac_a.neg());
+		sv.addTermsBy(this, (a, b) => a.neg());
 		return sv;
 	}
 	
 	add(x: number|bigint|Frac|SqrtValue): SqrtValue { // 加法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.add"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		sv.addTermsBy(x, (frac_a, b) => frac_a);
+		sv.addTermsBy(x, (a, b) => a);
 		sv.removeZeroTerm(); // 加法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
@@ -422,7 +422,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	sub(x: number|bigint|Frac|SqrtValue): SqrtValue { // 減法
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.sub"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		const sv = this.copy();
-		sv.addTermsBy(x, (frac_a, b) => frac_a.neg());
+		sv.addTermsBy(x, (a, b) => a.neg());
 		sv.removeZeroTerm(); // 減法有可能導致某些項被消掉, 需要清除 zero term
 		return sv;
 	}
@@ -431,7 +431,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		
 		const sv = SV();
-		for (const [b1, frac_a1] of this.terms) for (const [b2, frac_a2] of x.terms) { // 將 this 與 x 的每個 term 兩兩相乘再加總
+		for (const [b1, a1] of this.terms) for (const [b2, a2] of x.terms) { // 將 this 與 x 的每個 term 兩兩相乘再加總
 			const newFactors = new Set(this.getFactors(b1)); // 獲取 b1 的質因數分解 (this = a1√b1)
 			let k = 1n; // b1 * b2 提出的平方因數 k^2
 			for (const b2Factor of x.getFactors(b2)) { // 遍歷 b2 的質因數分解 (x = a2√b2)
@@ -442,7 +442,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 				else newFactors.add(b2Factor); // 如果 b1 與 b2 沒有相同的質因數
 			}
 			if (b1 < 0n && b2 < 0n) k *= -1n; // 如果 b1 與 b2 都為負數, 代表 √b1b2 必須提出 -1
-			sv.addTerm(frac_a1.mul(frac_a2).mul(k), (b1 / k) * (b2 / k), newFactors); // a1√b1 * a2√b2 = a1 a2 k √(b1/k * b2/k)
+			sv.addTerm(a1.mul(a2).mul(k), (b1 / k) * (b2 / k), newFactors); // a1√b1 * a2√b2 = a1 a2 k √(b1/k * b2/k)
 		}
 		sv.removeZeroTerm(); // 乘法有可能導致某些項被消掉, 需要清除 zero term
 		
@@ -450,39 +450,39 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 	
 	div(x: number|bigint|Frac|SqrtValue): SqrtValue { // 除法
-		let sv_d = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
-		if (sv_d.isZero()) throw new SqrtValue.DivideZeroError("div"); // div 0 error
+		let svD = ParamNorm.toSqrtValue(x, "SqrtValue.div"); // 分母
+		if (svD.isZero()) throw new SqrtValue.DivideZeroError("div"); // div 0 error
 		
 		let loopCount = 0; // 雖然理論上會收斂, 這個計數用於避免非預期的無窮迴圈
-		let sv_n = this.copy(); // 分子
+		let svN = this.copy(); // 分子
 		while (true) {
 			let base = 1n;
-			for (const [b, frac_a] of sv_d.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
+			for (const [b, a] of svD.terms) if (b !== 1n) { base = b; break; } // 找出非 √1 的基底
 			if (base === 1n) break; // 如果分母的基底只剩 √1, 代表分母已化簡為有理數, 可以跳出迴圈了
 			
 			if (base < 0n) base = -1n; // 如果取到的基底是 √-, 就分解 √-1
-			else base = [...sv_d.getFactors(base)].reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
+			else base = [...svD.getFactors(base)].reduce((a, b) => a < b ? a : b); // 取出最小的 √+ 質數基底
 			
-			const alpha = base > 0n ? sv_d.comp(base, false) : sv_d.real(); // 如果分母 base > 0, 則分解為 α + β √base
-			const beta = base > 0n ? sv_d.comp(base, true) : sv_d.imag(); // 如果分母 base < 0 (複數), 則分解為 α + β √-1
+			const alpha = base > 0n ? svD.comp(base, false) : svD.real(); // 如果分母 base > 0, 則分解為 α + β √base
+			const beta = base > 0n ? svD.comp(base, true) : svD.imag(); // 如果分母 base < 0 (複數), 則分解為 α + β √-1
 			
-			const sv_base = SV();
-			sv_base.addTerm(F(1), base, [base]); // √base
-			sv_n = sv_n.mul(alpha.sub(beta.mul(sv_base))); // 分子 <- 分子 * (α - β √base)
-			sv_d = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base; 消去基底 √base
+			const svBase = SV();
+			svBase.addTerm(F(1), base, [base]); // √base
+			svN = svN.mul(alpha.sub(beta.mul(svBase))); // 分子 <- 分子 * (α - β √base)
+			svD = alpha.mul(alpha).sub(beta.mul(beta).mul(base)); // 分母 <- (α + β √base) * (α - β √base) = α^2 - β^2 * base; 消去基底 √base
 			
 			if (++loopCount >= 100) throw new RanMathError("SqrtValue.div", "Unexpected infinity loop error.");
 		}
-		const frac_d = sv_d.terms.get(1n) as Frac; // 將分母轉為有理數
-		return sv_n.mul(F(1).div(frac_d)); // return 分子/分母
+		const fracD = svD.terms.get(1n) ?? F(0); // 將分母轉為有理數, 這裡是為了排除掉 undefined, 分母不可能為 0
+		return svN.mul(F(1).div(fracD)); // return 分子/分母
 	}
 	
 	pow(x: number|bigint): SqrtValue { // 整數次方
 		x = ParamNorm.toBigInt(x, "SqrtValue.pow"); // number|bigint -> bigint
 		
 		if (x >= 1n) {
-			const sv_halfPow = this.pow(x / 2n);
-			let sv = sv_halfPow.mul(sv_halfPow);
+			const halfPow = this.pow(x / 2n);
+			let sv = halfPow.mul(halfPow);
 			if (x % 2n === 1n) sv = sv.mul(this);
 			return sv;
 		}
@@ -496,7 +496,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		x = ParamNorm.toSqrtValue(x, "SqrtValue.equal"); // number|bigint|Frac|SqrtValue -> SqrtValue
 		
 		if (this.terms.size !== x.terms.size) return false; // 如果項數不一樣, 必定不相等
-		for (const [b, frac_a] of this.terms) if (!frac_a.equal(x.terms.get(b) ?? 0)) return false; // 逐一檢查每個基底的係數是否相等
+		for (const [b, a] of this.terms) if (!a.equal(x.terms.get(b) ?? 0)) return false; // 逐一檢查每個基底的係數是否相等
 		return true;
 	}
 	
@@ -516,33 +516,33 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return this.baseFactors.get(b) as Set<bigint>; // 注意: 回傳的是 Set<bigint> 參考
 	}
 	
-	private addTerm(frac_a: Frac, b: bigint, bFactors: Set<bigint> | bigint[]): void { // 將最簡根式項 a√b 累加到自身物件, bFactors 為 b 的質因數分解
-		if (frac_a.isZero() || b === 0n) return; // 無視 +0
+	private addTerm(a: Frac, b: bigint, bFactors: Set<bigint> | bigint[]): void { // 將最簡根式項 a√b 累加到自身物件, bFactors 為 b 的質因數分解
+		if (a.isZero() || b === 0n) return; // 無視 +0
 		
 		bFactors = new Set(bFactors); // array 轉 set, 若 bFactors 為 set 則 copy
 		
-		let frac = this.terms.get(b) ?? F(0); // 讀取 terms[b]
-		this.terms.set(b, frac.add(frac_a)); // terms[b] += frac_a, 若 key b 不存在會自動建立
+		let bCoef = this.terms.get(b) ?? F(0); // 讀取 terms[b]
+		this.terms.set(b, bCoef.add(a)); // terms[b] += a, 若 key b 不存在會自動建立
 		this.baseFactors.set(b, bFactors); // 保存質因數分解
-	} // 注意: addTerm 的參數 frac_a 不需要額外複製, 因為 .add(frac_a) 會回傳新物件
+	} // 注意: addTerm 的參數 a 不需要額外複製, 因為 .add(a) 會回傳新物件
 	
 	private addRawTerm(rawTerm: [number|bigint|Frac, number|bigint|Frac], caller: string): void { // 化簡 a√b 為最簡根式項, 並累加到自身物件
-		const frac_a = ParamNorm.toFrac(rawTerm[0], caller);
-		const frac_b = ParamNorm.toFrac(rawTerm[1], caller);
+		const a = ParamNorm.toFrac(rawTerm[0], caller);
+		const b = ParamNorm.toFrac(rawTerm[1], caller);
 		
-		const [kn, n, nFactors] = SqrtValue.getSquareFactor(frac_b.n); // 提出平方根
-		const [kd, d, dFactors] = SqrtValue.getSquareFactor(frac_b.d);
-		nFactors.push(...dFactors); // n*d 的質因數分解, 由於 frac_b 為最簡分數 (n, d 互質), 所以可以保證 √(nd) 是最簡根式
+		const [kn, n, nFactors] = SqrtValue.getSquareFactor(b.n); // 提出平方根
+		const [kd, d, dFactors] = SqrtValue.getSquareFactor(b.d);
+		nFactors.push(...dFactors); // n*d 的質因數分解, 由於 b 為最簡分數 (n, d 互質), 所以可以保證 √(nd) 是最簡根式
 		
-		this.addTerm(F(kn, kd * d).mul(frac_a), n * d, nFactors); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
+		this.addTerm(F(kn, kd * d).mul(a), n * d, nFactors); // a √(kn*kn*n / kd*kd*d) = a kn/kd √(n/d) = a kn/(kd*d) √(nd)
 	}
 	
-	private addTermsBy(sv: SqrtValue, fn: (frac_a: Frac, b: bigint) => Frac): void { // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
-		for (const [b, frac_a] of sv.terms) this.addTerm(fn(frac_a, b), b, sv.getFactors(b));
+	private addTermsBy(sv: SqrtValue, fn: (a: Frac, b: bigint) => Frac): void { // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
+		for (const [b, a] of sv.terms) this.addTerm(fn(a, b), b, sv.getFactors(b));
 	}
 	
 	private removeZeroTerm(): void { // 清除所有的 0√b & a√0
-		for (const [b, frac_a] of this.terms) if (frac_a.isZero() || b === 0n) {
+		for (const [b, a] of this.terms) if (a.isZero() || b === 0n) {
 			this.terms.delete(b); // 刪除 0√b & a√0 項
 			this.baseFactors.delete(b); // 刪除 b 的質因數快取
 		}
@@ -578,9 +578,9 @@ export class Complex { // 浮點複數
 	}
 	
 	toStr(digits: number = 4): string { // 轉為字串, 小數取 digits 位
-		const s_real = Complex.floatStr(this.real, digits);
-		const s_imag = Complex.floatStr(this.imag, digits);
-		return `${s_real} + ${s_imag} i`;
+		const strReal = Complex.floatStr(this.real, digits);
+		const strImag = Complex.floatStr(this.imag, digits);
+		return `${strReal} + ${strImag} i`;
 	}
 	
 	toLatex(digits: number = 4): string { // 轉為 latex 字串, 小數取 digits 位
@@ -850,33 +850,33 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 		if (this.m !== this.n) throw new Matrix.InverseNonSquareMatrixError("Matrix.inverse", this);
 		
 		const m = this.m; // m*m 方陣
-		let m_simplify = this.copy(); // 執行簡化列運算的矩陣
-		let m_inverse = Matrix.diag(m, one, zero); // 反矩陣的計算結果, 初始化為 I (Gauss-Jordan Elimination)
+		let matSimplify = this.copy(); // 執行簡化列運算的矩陣
+		let matInverse = Matrix.diag(m, one, zero); // 反矩陣的計算結果, 初始化為 I (Gauss-Jordan Elimination)
 		
 		for (let i = 0; i < m; i++) { // 消去原矩陣的下三角部分
 			let swapI = i;
-			while (m_simplify.arr[swapI][i].isZero()) { // 若對角線元素為 0, 尋找適合交換的列編號
+			while (matSimplify.arr[swapI][i].isZero()) { // 若對角線元素為 0, 尋找適合交換的列編號
 				swapI++;
 				if (swapI >= m) throw new Matrix.InverseSingularMatrixError("Matrix.inverse"); // 若找不到適合交換的列, 矩陣為奇異矩陣, 不可逆
 			}
-			m_simplify.swapRow(i, swapI); // 交換兩列, 使對角線元素不為 0
-			m_inverse.swapRow(i, swapI);
+			matSimplify.swapRow(i, swapI); // 交換兩列, 使對角線元素不為 0
+			matInverse.swapRow(i, swapI);
 			
 			for (let j = i+1; j < m; j++) {
-				const x = m_simplify.arr[j][i].neg().div(m_simplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的下三角部分
-				m_simplify.addRow(i, j, x);
-				m_inverse.addRow(i, j, x);
+				const x = matSimplify.arr[j][i].neg().div(matSimplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的下三角部分
+				matSimplify.addRow(i, j, x);
+				matInverse.addRow(i, j, x);
 			}
 		}
 		
 		for (let i = m-1; i >= 0; i--) for (let j = i-1; j >= 0; j--) { // 消去原矩陣的上三角部分
-			const x = m_simplify.arr[j][i].neg().div(m_simplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的上三角部分
-			m_inverse.addRow(i, j, x); // 此步驟不需要修改原矩陣也能完成運算
+			const x = matSimplify.arr[j][i].neg().div(matSimplify.arr[i][i]); // 列 i 乘常數 x 加到列 j, 逐漸消去原矩陣的上三角部分
+			matInverse.addRow(i, j, x); // 此步驟不需要修改原矩陣也能完成運算
 		}
 		
-		for (let i = 0; i < m; i++) m_inverse.scaleRow(i, one.div(m_simplify.arr[i][i])); // 同除對角線
+		for (let i = 0; i < m; i++) matInverse.scaleRow(i, one.div(matSimplify.arr[i][i])); // 同除對角線
 		
-		return m_inverse;
+		return matInverse;
 	}
 	
 	copy(): Matrix<T> { // 複製
