@@ -931,17 +931,26 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 }
 
 export class SolveQuad { // 解二次方程式
+	static NonQuadEquationError = class extends RanMathError { // a = 0 時無法視為二次方程式
+		constructor(caller: string) {
+			super(caller, "0x^2 + bx + c = 0 is not a quadratic equation.");
+		}
+	}
+	
 	readonly roots: [Scalar, Scalar];
 	
 	constructor(a: number|bigint|Frac, b: number|bigint|Frac, c: number|bigint|Frac) { // 解二次方程式 ax^2 + bx + c = 0
 		const A = SC(ParamNorm.toSvOrCp(a, "SolveQuad.constructor"), false);
 		const B = SC(ParamNorm.toSvOrCp(b, "SolveQuad.constructor"), false);
 		const C = SC(ParamNorm.toSvOrCp(c, "SolveQuad.constructor"), false);
+		
+		if (A.isZero()) throw new SolveQuad.NonQuadEquationError("SolveQuad.constructor"); // a = 0 時無法視為二次方程式
+		
 		const center = B.neg().div(2n).div(A); // -b/2a
 		const squareOffset = center.mul(center).sub(C.div(A)); // (-b/2a)^2 - c/a
 		const offset = SqrtValue.is(squareOffset.value) ? // √( (-b/2a)^2 - c/a )
 			SV([1n, squareOffset.value.terms.get(1n) ?? F(0)]) : // 因為是有理數, 所以直接把 √1 基底取出, 開根號
-			squareOffset.pow(0.5); // 浮點數就直接 ^ 0.5 即可
+			squareOffset.value.pow(0.5); // 浮點數就直接 ^ 0.5 即可
 		
 		this.roots = [center.sub(offset), center.add(offset)]; // x = -b/2a ± √( (-b/2a)^2 - c/a )
 	}
