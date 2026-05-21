@@ -32,6 +32,25 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ 766807745399305214797211508569n, 949041956498605429076062676137n ], output: 1n },
 		],
 	},
+	"BigIntOp.lcm": {
+		testName: (x: bigint, y: bigint) => `BigIntOp.lcm(${str(x)}, ${str(y)})`,
+		testFunc: (x: bigint, y: bigint) => BigIntOp.lcm(x, y),
+		tests: [ // 測資
+			{ input: [ 0n, 0n ], output: 0n },
+			{ input: [ 0n, 45n ], output: 0n },
+			{ input: [ 1n, 1n ], output: 1n },
+			{ input: [ 1n, -1n ], output: 1n },
+			{ input: [ -60n, 36n ], output: 180n },
+			{ input: [ 36n, -60n ], output: 180n },
+			{ input: [ -81n, -27n ], output: 81n },
+			{ input: [ 123456n, 789012n ], output: 8117355456n },
+			{ input: [ 2829389910723n, 1782309478212n ], output: 560316495048778599296364n },
+			{
+				input: [ 766807745399305214797211508569n, 949041956498605429076062676137n ],
+				output: 727732722952041127005814555561585817495718940207973047317953n
+			},
+		],
+	},
 	"BigIntOp.factorize": {
 		testName: (x: bigint) => `BigIntOp.factorize(${str(x)})`,
 		testFunc: (x: bigint) => BigIntOp.factorize(x),

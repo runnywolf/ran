@@ -116,12 +116,17 @@ export class BigIntOp { // bigint 擴充運算子
 		return x < 0n ? -x : x;
 	}
 	
-	static gcd(x: bigint, y: bigint): bigint { // 最大公因數, 注: gcd(0, 0) = 0
+	static gcd(x: bigint, y: bigint): bigint { // 最大公因數, gcd(0, 0) = 0
 		x = BigIntOp.abs(x); // x, y 取正值再計算 gcd
 		y = BigIntOp.abs(y);
 		
 		while (y !== 0n) { const swap = x % y; x = y; y = swap; }
 		return x;
+	}
+	
+	static lcm(x: bigint, y: bigint): bigint { // 最小公倍數, lcm(0, 0) = 0
+		if (x === 0n || y === 0n) return 0n;
+		return BigIntOp.abs(x / BigIntOp.gcd(x, y) * y);
 	}
 	
 	static factorize(x: bigint): Map<bigint, number> { // 質因數分解
@@ -136,6 +141,23 @@ export class BigIntOp { // bigint 擴充運算子
 		if (x !== 1n) result.set(x, 1); // 剩餘的一個質因數
 		
 		return result;
+	}
+	
+	static getFactors(x: bigint): bigint[] { // 回傳 x 的因數 array (升序排列), getFactors(0n) 會回傳 []
+		if (x === 0n) return [];
+		
+		x = BigIntOp.abs(x); // x 取正值再取因數
+		const factorMap = BigIntOp.factorize(x); // 將 x 分解為 p1^e1 * p2^e2 * ...
+		
+		let factors: bigint[] = [1n]; // 已處理完的質因數所能組合出的因數
+		for (const [p, exp] of factorMap) {
+			const factorNum = factors.length; // 目前累積的因數個數
+			for (let k = 1, pPow = p; k <= exp; k++, pPow *= p) { // 舊因數分別乘上 p^1, ..., p^exp, 產生新的因數
+				for (let i = 0; i < factorNum; i++) factors.push(factors[i] * pPow); // 舊因數乘上 p^k, 生成新的因數
+			}
+		}
+		
+		return factors.sort((a, b) => a < b ? -1 : 1); // 升序排列
 	}
 }
 
@@ -325,7 +347,7 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 		return new SqrtValue(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValue
 	}
 	
-	readonly terms: Map<bigint, Frac>; // 最簡根式項
+	private readonly terms: Map<bigint, Frac>; // 最簡根式項 a1√b1 + a2√b2 + ...
 	private readonly baseFactors: Map<bigint, Set<bigint>>; // √b 的質因數分解
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
@@ -397,6 +419,10 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 			sv.addTermsBy(this, (a, b) => (b % base !== 0n) ? a : F(0)); // 根式部分不能被 √base 整除就保留
 		}
 		return sv;
+	}
+	
+	coefOf(base: bigint): Frac { // 取出基底 √base 的係數 a
+		return this.terms.get(base) ?? F(0);
 	}
 	
 	copy(): SqrtValue { // 複製
@@ -930,7 +956,7 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 	}
 }
 
-export class SolveQuad { // 解二次方程式
+export class SolveQuad { // 解二次方程式 ax^2 + bx + c = 0
 	static NonQuadEquationError = class extends RanMathError { // a = 0 時無法視為二次方程式
 		constructor(caller: string) {
 			super(caller, "0x^2 + bx + c = 0 is not a quadratic equation.");
@@ -939,7 +965,7 @@ export class SolveQuad { // 解二次方程式
 	
 	readonly roots: [Scalar, Scalar];
 	
-	constructor(a: number|bigint|Frac, b: number|bigint|Frac, c: number|bigint|Frac) { // 解二次方程式 ax^2 + bx + c = 0
+	constructor(a: number|bigint|Frac, b: number|bigint|Frac, c: number|bigint|Frac) {
 		const A = SC(ParamNorm.toSvOrCp(a, "SolveQuad.constructor"), false);
 		const B = SC(ParamNorm.toSvOrCp(b, "SolveQuad.constructor"), false);
 		const C = SC(ParamNorm.toSvOrCp(c, "SolveQuad.constructor"), false);
@@ -949,10 +975,92 @@ export class SolveQuad { // 解二次方程式
 		const center = B.neg().div(2n).div(A); // -b/2a
 		const squareOffset = center.mul(center).sub(C.div(A)); // (-b/2a)^2 - c/a
 		const offset = SqrtValue.is(squareOffset.value) ? // √( (-b/2a)^2 - c/a )
-			SV([1n, squareOffset.value.terms.get(1n) ?? F(0)]) : // 因為是有理數, 所以直接把 √1 基底取出, 開根號
+			SV([1n, squareOffset.value.coefOf(1n)]) : // 因為是有理數, 所以直接把 √1 基底取出, 開根號
 			squareOffset.value.pow(0.5); // 浮點數就直接 ^ 0.5 即可
 		
 		this.roots = [center.sub(offset), center.add(offset)]; // x = -b/2a ± √( (-b/2a)^2 - c/a )
+	}
+	
+	toStr(): string { // 轉為字串
+		return this.roots.map(root => root.toStr()).join(" , ");
+	}
+}
+
+export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
+	static NonCubicEquationError = class extends RanMathError { // a = 0 時無法視為三次方程式
+		constructor(caller: string) {
+			super(caller, "0x^3 + bx^2 + cx + d = 0 is not a cubic equation.");
+		}
+	}
+	
+	readonly roots: [Scalar, Scalar, Scalar];
+	
+	constructor(a: number|bigint|Frac, b: number|bigint|Frac, c: number|bigint|Frac, d: number|bigint|Frac) {
+		if (SC(a).isZero()) throw new SolveCubic.NonCubicEquationError("SolveCubic.constructor"); // a = 0 時無法視為三次方程式
+		
+		let roots: [Scalar, Scalar, Scalar] | null = null;
+		try { // Frac mode
+			const [A, B, C, D] = [a, b, c, d].map(coef => ParamNorm.toFrac(coef, "?")); // 如果所有係數都是有理數, 會走 Frac mode; 否則走 float mode
+			const root = SolveCubic.findRationalRoot(A, B, C, D);
+			if (root !== null) { // 如果存在有理數根, 會走 Frac mode; 否則走 float mode
+				const quadA = A; // a' = a; 若至少一根為有理數, 可以簡化為二次方程式, 再求剩餘兩根
+				const quadB = quadA.mul(root).add(B); // b' = a'r + b
+				const quadC = quadB.mul(root).add(C); // c' = b'r + c
+				const quad = new SolveQuad(quadA, quadB, quadC); // 解二次方程式 a'x^2 + b'x + c'
+				roots = [SC(root), ...quad.roots];
+			}
+		} catch {}
+		
+		if (roots === null) { // float mode
+			const [A, B, C, D] = [a, b, c, d].map(coef => ParamNorm.toFloat(coef, "SolveCubic.constructor"));
+			const root = SolveCubic.findRealRoot(A, B, C, D, Complex.eps);
+			const quadA = A; // a' = a; 若至少一根為有理數, 可以簡化為二次方程式, 再求剩餘兩根
+			const quadB = quadA * root + B; // b' = a'r + b
+			const quadC = quadB * root + C; // c' = b'r + c
+			const quad = new SolveQuad(quadA, quadB, quadC); // 解二次方程式 a'x^2 + b'x + c'
+			roots = [SC(root), ...quad.roots];
+		}
+		
+		if (roots.every(root => root.imag().isZero())) { // 如果三個根都是實根, 則由小排到大
+			const toFloat = (sc: Scalar) => (SqrtValue.is(sc.value) ? sc.value.toComplex() : sc.value).real;
+			roots.sort((a, b) => toFloat(a) - toFloat(b));
+		}
+		
+		this.roots = roots;
+	}
+	
+	private static findRationalRoot(a: Frac, b: Frac, c: Frac, d: Frac): Frac|null { // 嘗試尋找有理數根, 若找不到則回傳 null
+		if (d.isZero()) return F(0); // d 若為 0, 必存在一根為 0
+		
+		const coefLcm = BigIntOp.lcm(BigIntOp.lcm(a.d, b.d), BigIntOp.lcm(c.d, d.d));
+		const [ia, ib, ic, id] = [a, b, c, d].map(coef => coef.mul(coefLcm).n); // 將三次方程式的係數通分, 轉為整數
+		
+		for (const af of BigIntOp.getFactors(ia)) for (const df of BigIntOp.getFactors(id)) { // 遍歷所有可能的有理根
+			const root = F(df, af); // 可能的有理根
+			const fxMain = root.mul(root).mul(ib).add(id); // 當 +- 根代入方程式時, b x^2 + d 這部分的值會相同
+			const fxPN = root.mul(root).mul(ia).add(ic).mul(root); // 當 +- 根代入方程式時, a x^3 + c x 這部分的值會異號
+			
+			if (fxMain.add(fxPN).isZero()) return root; // 若正根為方程式的解, 直接回傳
+			if (fxMain.sub(fxPN).isZero()) return root.neg(); // 若負根為方程式的解, 直接回傳
+		}
+		return null; // 找不到有理根, 回傳 null
+	}
+	
+	private static findRealRoot(a: number, b: number, c: number, d: number, eps: number): number { // 尋找三次方程式的某個實根
+		if (Math.abs(d) <= eps) return 0; // d 若為 0, 必存在一根為 0
+		
+		if (a < 0) [a, b, c, d] = [-a, -b, -c, -d]; // 使 a 為正數
+		
+		const f = (x: number) => a*x**3 + b*x*x + c*x + d;
+		let [r1, r2] = [0, f(0) < 0 ? 1 : -1]; // 搜尋範圍. 因為 a > 0, 如果 f(0) < 0 就搜尋正根, 如果 f(0) > 0 就搜尋負根
+		while ((f(r1) < 0) === (f(r2) < 0)) [r1, r2] = [r2, r2*2]; // 如果範圍 [r1, r2] 沒有變號 -> 指數擴大搜尋範圍
+		if (r1 > r2) [r1, r2] = [r2, r1]; // 保證 r1 < r2
+		
+		while (Math.abs(r1-r2) > eps) { // 二分搜
+			if (f((r1+r2)/2) > 0) r2 = (r1+r2)/2;
+			else r1 = (r1+r2)/2;
+		}
+		return (r1+r2)/2;
 	}
 	
 	toStr(): string { // 轉為字串
