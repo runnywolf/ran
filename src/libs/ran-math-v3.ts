@@ -1068,4 +1068,62 @@ export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
 	}
 }
 
+export class MakeLatex { // latex 字串處理
+	static removePrefix(str: string, prefix: string): string { // 嘗試移除字串的前綴, 如果字串開頭不是 prefix 則不做任何事
+		if (prefix === "") return str;
+		return str.startsWith(prefix) ? str.slice(prefix.length) : str;
+	}
+	
+	static removeSuffix(str: string, suffix: string): string { // 嘗試移除字串的後綴, 如果字串結尾不是 suffix 則不做任何事
+		if (suffix === "") return str;
+		return str.endsWith(suffix) ? str.slice(0, -suffix.length) : str;
+	}
+	
+	static delim(str: string): string { // 在 latex 字串兩端加上自動調整大小的小括號
+		return `\\left(${str}\\right)`;
+	}
+	
+	static term(coef: any, base: any, pow: any): string { // 自動推導 c b^p 的 latex 字串
+		const coefStr = ml.anyToLatex(coef);
+		const baseStr = ml.anyToLatex(base);
+		const powStr = (Frac.is(pow) && !pow.isInt()) ? `${pow.n}/${pow.d}` : ml.anyToLatex(pow); // 分數次方會顯示 "n/d" 而非分數
+		
+		const cfg = { ld: false, dot: false, rd: false }; // cfg.ld -> (c)b^p ; cfg.dot -> c \cdot b^p ; cfg.rd -> c(b)^p
+		if (ml.hasOuterSign(coefStr.replace(/^[+-]+|[+-]+$/g, ""))) cfg.ld = true; // coef 的 {...} 區塊外如果包含 +/-, 但忽略首尾, 則需要加左括號
+		if (ml.hasOuterSign(baseStr) || baseStr.includes("\\frac")) cfg.rd = true; // base 的 {...} 區塊外如果包含 +/-, 或是存在分數, 則需要加右括號
+		if (coefStr === "1" && powStr === "1") cfg.rd = false; // 例外: 如果是 1 b^1 這種情況, b 一定不用括號
+		if (/^[0-9]$/.test(baseStr[0])) cfg.dot = true; // 底數 base 的開頭若為數字 -> coef \cdot base
+		if (cfg.ld || cfg.rd) cfg.dot = false; // 例外: 如果左括號或右括號已經存在, 不需要額外加乘點
+		
+		let str; // 生成 b^p 的部分
+		if (powStr === "0" || baseStr === "1") str = "1"; // b^0 -> 1 ; 1^p -> 1
+		else if (baseStr === "0") str = "0"; // 0^p -> 0, 不包含 0^0
+		else if (powStr === "1") str = cfg.rd ? ml.delim(baseStr) : baseStr; // (b)^1 -> (b) ; b^1 -> b
+		else str = `{${cfg.rd ? ml.delim(baseStr) : baseStr}}^{${powStr}}`; // (b)^p ; b^p
+		
+		if (coefStr === "0" || str === "0") str = "0"; // 0b^p -> 0 ; c0 -> 0
+		else if (coefStr === "1") str = str; // 1b^p -> b^p
+		else if (coefStr === "-1") str = `-${str}`; // -1b^p -> -b^p
+		else if (str === "1") str = coefStr; // c1 -> c
+		else str = (cfg.ld ? ml.delim(coefStr) : coefStr) + (cfg.dot ? "\\cdot" : "") + str; // c b^p ; (c)b^p ; c \cdot b^p
+		
+		return str;
+	}
+	
+	private static anyToLatex(x: any): string { // 嘗試回傳 x.toLatex(), 如果失敗則回傳 String(x)
+		return String(typeof x?.toLatex === "function" ? x.toLatex() : x);
+	}
+	
+	private static hasOuterSign(str: string): boolean { // 字串的 {...} 區塊外是否包含 +, - 兩種符號
+		let depth = 0;
+		for (const char of str) {
+			if (char === "{") depth++;
+			else if (char === "}") depth--;
+			else if (depth === 0 && (char === "+" || char === "-")) return true;
+		}
+		return false;
+	}
+}
+const ml = MakeLatex;
+
 export const __test__ = { Prime }; // only for test
