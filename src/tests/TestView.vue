@@ -1,7 +1,5 @@
 <template>
-	<div class="ts-box ts-content">
-		<TermTest></TermTest>
-	</div>
+	<TermTest></TermTest>
 </template>
 
 <script setup lang="ts">
