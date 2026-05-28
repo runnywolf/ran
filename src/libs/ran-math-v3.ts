@@ -604,8 +604,8 @@ export class Complex { // 浮點複數
 	}
 	
 	toStr(digits: number = 4): string { // 轉為字串, 小數取 digits 位
-		const strReal = Complex.floatStr(this.real, digits);
-		const strImag = Complex.floatStr(this.imag, digits);
+		const strReal = ml.floatToStr(this.real, digits);
+		const strImag = ml.floatToStr(this.imag, digits);
 		return `${strReal} + ${strImag} i`;
 	}
 	
@@ -665,10 +665,6 @@ export class Complex { // 浮點複數
 	equal(x: number|bigint|Frac|SqrtValue|Complex, eps: number = Complex.eps): boolean { // 相等
 		x = ParamNorm.toComplex(x, "Complex.equal"); // ... -> Complex
 		return Math.abs(this.real - x.real) <= eps && Math.abs(this.imag - x.imag) <= eps;
-	}
-	
-	private static floatStr(x: number, maxDigits: number): string { // float -> string
-		return Intl.NumberFormat("en", { maximumFractionDigits: maxDigits }).format(x);
 	}
 }
 
@@ -1069,6 +1065,10 @@ export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
 }
 
 export class MakeLatex { // latex 字串處理
+	static floatToStr(x: number, maxDigits: number): string { // float -> string
+		return Intl.NumberFormat("en", { maximumFractionDigits: maxDigits }).format(x);
+	}
+	
 	static removePrefix(str: string, prefix: string): string { // 嘗試移除字串的前綴, 如果字串開頭不是 prefix 則不做任何事
 		if (prefix === "") return str;
 		return str.startsWith(prefix) ? str.slice(prefix.length) : str;
