@@ -1029,6 +1029,10 @@ export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
 		this.roots = roots;
 	}
 	
+	toStr(): string { // 轉為字串
+		return this.roots.map(root => root.toStr()).join(" , ");
+	}
+	
 	private static findRationalRoot(a: Frac, b: Frac, c: Frac, d: Frac): Frac|null { // 嘗試尋找有理數根, 若找不到則回傳 null
 		if (d.isZero()) return F(0); // d 若為 0, 必存在一根為 0
 		
@@ -1061,10 +1065,6 @@ export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
 			else r1 = (r1+r2)/2;
 		}
 		return (r1+r2)/2;
-	}
-	
-	toStr(): string { // 轉為字串
-		return this.roots.map(root => root.toStr()).join(" , ");
 	}
 }
 
@@ -1125,5 +1125,25 @@ export class MakeLatex { // latex 字串處理
 	}
 }
 const ml = MakeLatex;
+
+export class LatexSum { // 將多個 latex 字串串接為一個和式，並自動處理各項之間的 +/- 連接
+	private buffer = ""; // latex string buffer
+	
+	add(latexStr: string): LatexSum { // 在尾端串接一個 latex 字串, 可 chaining
+		if (latexStr === "0" || latexStr === "") return this; // 若為 "0" 或空字串, 那麼不新增這一項
+		if (latexStr[0] !== "+" && latexStr[0] !== "-") latexStr = `+${latexStr}`; // 如果 latexStr 首字元不是 +/-, 補上 "+" (為了將多個 term 連接起來)
+		this.buffer += latexStr; // 串接至 buffer
+		return this; // chaining
+	}
+	
+	addTerm(coef: any, base: any, pow: any): LatexSum { // 等價於 .add(ml.term(coef, base, pow)), 可 chaining
+		return this.add(ml.term(coef, base, pow)); // chaining
+	}
+	
+	toStr(): string { // 回傳連接完成的 latex 語法字串
+		if (this.buffer === "") return "0"; // 如果 buffer 沒有任何一項, 回傳 "0"
+		return ml.removePrefix(this.buffer, "+"); // 首字元如果出現 "+", 必須移除
+	}
+}
 
 export const __test__ = { Prime }; // only for test
