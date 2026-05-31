@@ -575,10 +575,58 @@ export class SqrtValue { // 帶有根號的常數, √-1 也是一個基底
 	}
 }
 
-export function SV2(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValue 工廠
+export function SV2(...rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SqrtValueV2 工廠
 	return new SqrtValueV2(rawTerms);
 }
 export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式生成元
+	static InvalidStringError = class extends RanMathError { // 字串無法轉成 SV 的錯誤
+		constructor(caller: string, str: string, s_term: string, caughtErrorMessage?: string) {
+			let errorMessage = `"${s_term}" in "${str}" cannot be converted to SqrtValueV2.`;
+			if (caughtErrorMessage) errorMessage += `\n-> Caught error: ${caughtErrorMessage}`;
+			super(caller, errorMessage);
+		}
+	}
+	
+	static UnknownLatexModeError = class extends RanMathError { // 未知的 .toLatex 模式
+		constructor(caller: string, mode: string) {
+			super(caller, `Unknown mode "${mode}" for ".toLatex(mode)", use "sum" | "i" | "frac" .`);
+		}
+	}
+	
+	static DivideZeroError = class extends DivideZeroError { // 除 0 錯誤
+		constructor(op: "div" | "pow") {
+			super("SqrtValueV2", op);
+		}
+	}
+	
+	static is(x: unknown): x is SqrtValueV2 { // 檢查 x 是否為 SqrtValueV2 實例
+		return x instanceof SqrtValueV2;
+	}
+	
+	static fromStr(str: string): SqrtValueV2 { // 將字串轉為 SqrtValueV2 實例, 例: "2/3 s 9/4 + 3.5s12" 會被視為 2/3 √(9/4) + 7/2 √12
+		str = str.replaceAll(" ", ""); // 去除所有空白字符
+		
+		const rawTerms: [Frac, Frac][] = [];
+		for (const strTerm of str.split("+")) { // 用 "+" 將輸入字串切分成多個 term 字串
+			const segments = strTerm.split("s"); // 用 "s" 將 term 字串切分成多個 segment 字串, strTerm 只有 "...s..." & "..." 是合法的
+			if (segments.length >= 3) throw new SqrtValueV2.InvalidStringError("SqrtValueV2.fromStr", str, strTerm); // "...s...s.." 視為非法字串
+			
+			try {
+				const toF = (i: number) => Frac.fromStr(segments[i]); // 將第 i 個 segment 轉為 Frac
+				if (segments.length === 2 && segments[0] === "") rawTerms.push([F(1), toF(1)]); // "s..." 視為 1√(...)
+				else if (segments.length === 2) rawTerms.push([toF(0), toF(1)]); // "...s..." 視為 ...√(...)
+				else if (segments.length === 1) rawTerms.push([toF(0), F(1)]); // "..." 視為 ...√1
+			}
+			catch (e) {
+				if (e instanceof Frac.InvalidStringError) {
+					throw new SqrtValueV2.InvalidStringError("SqrtValueV2.fromStr", str, strTerm, e.message);
+				}
+				throw e; // 將未知錯誤再拋出
+			}
+		}
+		return new SqrtValueV2(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValueV2
+	}
+	
 	private readonly terms: Map<bigint, Frac>; // 儲存最簡根式項 a1√b1 + a2√b2 + ..., 其中 key 為根式生成元的 bitmask
 	private bitToBasis: bigint[]; // 記錄每個 bit 對應的生成元, 會包含 -1, 必為由小到大排序
 	private basisToBit: Map<bigint, number>; // 記錄每個生成元對應的 bit 位置
@@ -587,8 +635,8 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 		const normalizedTerms: [Frac, bigint[]][] = []; // 暫存已化簡的根式項, 等 bitToBasis 建立後再轉成 bitmask
 		const basisSet = new Set<bigint>(); // 收集所有 raw term 實際使用到的根式生成元
 		for (const rawTerm of rawTerms) {
-			const a = ParamNorm.toFrac(rawTerm[0], "SqrtValue.constructor");
-			const b = ParamNorm.toFrac(rawTerm[1], "SqrtValue.constructor");
+			const a = ParamNorm.toFrac(rawTerm[0], "SqrtValueV2.constructor");
+			const b = ParamNorm.toFrac(rawTerm[1], "SqrtValueV2.constructor");
 			
 			const [kn, _n, nBasisList] = SqrtValueV2.getSquareFactor(b.n); // 提出平方根
 			const [kd, d, dBasisList] = SqrtValueV2.getSquareFactor(b.d); // 由於 b 為最簡分數 (n, d 互質), 所以可以保證 √(nd) 是最簡根式
@@ -607,6 +655,8 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 			this.addTerm(a, allOnesMask, basisList, true);
 		}
 	}
+	
+	// conj 的 basis 就算不存在也會靜默, 會跟 copy 一樣的行為
 	
 	private static getSquareFactor(x: bigint): [bigint, bigint, bigint[]] { // 若 k^2 為 x 的最大平方因數, 回傳 [k, x/k/k, x/k/k的根式生成元]
 		if (x === 0n) return [1n, 0n, []]; // 若 x 為 0, 回傳 [1, 0, []]
@@ -682,7 +732,7 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 				newBitmask |= 1n << BigInt(newBit); // 新的 bit 位置 -> 新的 bitmask
 			}
 			bitmask = newBitmask;
-		} // remapBitmask 用於避免 bitToBasis 相同時, bitmask 映射帶來的額外開銷
+		} // remapBitmask 用於避免 bitToBasis 相同時, bitmask 映射帶來的額外開銷. 你必須保證 bitToBasis 相同, 才能使用 remapBitmask = false
 		
 		const oldCoef = this.terms.get(bitmask) ?? F(0); // 舊的 a√b 項的 a
 		const newCoef = oldCoef.add(a); // 新的 a√b 項的 a
