@@ -627,10 +627,10 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 		return new SqrtValueV2(rawTerms); // 避免 SV 工廠展開參數 terms, 所以用 new SqrtValueV2
 	}
 	
-	private readonly terms: Map<bigint, Frac>; // 儲存最簡根式項 a1√b1 + a2√b2 + ..., 其中 key 為根式生成元的 bitmask
-	private bitToBasis: bigint[]; // 記錄每個 bit 對應的生成元, 會包含 -1, 必為由小到大排序
+	private readonly terms: Map<bigint, Frac>; // 儲存最簡根式項 a1√b1 + a2√b2 + ..., 其中 key 為根式生成元的 bitmask, 保證 a != 0
+	private bitToBasis: bigint[]; // 記錄每個 bit 對應的生成元, 會包含 -1, 必為由小到大排序, 有可能存在沒有被任何 term 使用的 basis
 	private basisToBit: Map<bigint, number>; // 記錄每個生成元對應的 bit 位置
-	// [property 1] 若 basis -1 存在, 由於 bitToBasis 為升序, 所以 bitmask 最低位一定是 basis -1
+	// 多數運算不會引入新的 basis; 即使運算結果含有未使用的 basis, 也直接沿用 this 的 basis, 避免頻繁的 remap
 	
 	constructor(rawTerms: [number|bigint|Frac, number|bigint|Frac][]) { // SV([a, b], [c, d], ...) = a√b + c√d + ...
 		const normalizedTerms: [Frac, bigint[]][] = []; // 暫存已化簡的根式項, 等 bitToBasis 建立後再轉成 bitmask
@@ -653,7 +653,7 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 		this.terms = new Map<bigint, Frac>();
 		for (const [a, basisList] of normalizedTerms) { // 因為要先遍歷完所有 rawTerm 才能確定 basis 順序, 所以最後才做 remap bitmask
 			const allOnesMask = (1n << BigInt(basisList.length)) - 1n; // 因為 a√b 的 b 的所有生成元都在 basisList 內
-			this.addTerm(a, allOnesMask, basisList); // 傳入 basisList, 執行 remap
+			this.addTerm(a, this.remapBitmask(allOnesMask, basisList)); // 傳入 basisList, 執行 remap
 		}
 	}
 	
@@ -675,8 +675,8 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 	toStr(): string { // 轉為字串
 		if (this.isZero()) return "0"; // 沒有任何一項就是 0
 		
-		const arrTerms = Array.from(this.terms,
-			([bitmask, a]): [bigint, Frac] => [this.bitmaskToBase(bitmask), a] // bitmask 轉 base, 這樣才能排序
+		const arrTerms: [bigint, Frac][] = Array.from(this.terms,
+			([bitmask, a]) => [this.bitmaskToBase(bitmask), a] // bitmask 轉 base, 這樣才能排序
 		);
 		arrTerms.sort(([x, _x], [y, _y]) => { // 排序成 √1 + √2 + ... + √-1 + √-2 + ...
 			if (x < 0n === y < 0n) return Number(x < 0n ? y-x : x-y); // √+ 升序排列, √- 降序排列
@@ -707,11 +707,110 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 	imag(): SqrtValueV2 { // 取出虛部
 		const [sv] = SqrtValueV2.createEmptySvWithMergedBasis(this); // 直接沿用 this 的 basis
 		if (!this.basisToBit.has(-1n)) return sv; // this 為實數時提前回傳 0, 但仍然沿用 basis; 也避免後續假設 bit 0 為 -1
-		sv.addTermsBy(this, (a, bitmask) => this.isNegativeBase(bitmask) ? [a, bitmask & ~1n] : [F(0)]); // 移除最低位 basis -1
-		return sv; // 參考 [property 1]. 只保留含 √-1 的項, 並移除 √-1, 得到虛部係數
+		
+		sv.addTermsBy(this, (a, bitmask) => this.isNegativeBase(bitmask) ? [a, bitmask & ~1n] : [F(0)]); // 只保 √-, 並移除 √-1, 得到虛部係數
+		return sv; // 若 basis -1 存在, 由於 bitToBasis 為升序, 所以 bitmask 最低位必為 basis -1
 	}
 	
-	// conj 的 basis 就算不存在也會靜默, 會跟 copy 一樣的行為
+	conj(basis: bigint = -1n): SqrtValueV2 { // 對指定根式生成元做共軛, 將含該生成元的項取負號, basis 若為 -1 就是複共軛
+		const bit = this.basisToBit.get(basis);
+		if (bit === undefined) return this.copy(); // 若 basis 不存在, 共軛後值不變
+		
+		const basisMask = 1n << BigInt(bit);
+		const [sv] = SqrtValueV2.createEmptySvWithMergedBasis(this); // 直接沿用 this 的 basis
+		sv.addTermsBy(this, (a, bitmask) => (bitmask & basisMask) !== 0n ? [a.neg()] : [a]); // 若 basis bit 為 1, 代表含有生成元, 取負號
+		return sv;
+	}
+	
+	rationalCoef(): Frac { // 取出有理數項的係數
+		return this.terms.get(0n) ?? F(0); // 若 bitmask 全為 0, 代表不含任何根式生成元, 即為有理數項
+	}
+	
+	copy(): SqrtValueV2 { // 複製
+		const [sv] = SqrtValueV2.createEmptySvWithMergedBasis(this); // 直接沿用 this 的 basis
+		sv.addTermsBy(this, (a, bitmask) => [a]);
+		return sv;
+	}
+	
+	neg(): SqrtValueV2 { // 取負號
+		const [sv] = SqrtValueV2.createEmptySvWithMergedBasis(this); // 直接沿用 this 的 basis
+		sv.addTermsBy(this, (a, bitmask) => [a.neg()]);
+		return sv;
+	}
+	
+	add(x: number|bigint|Frac|SqrtValue): SqrtValueV2 { // 加法
+		x = ParamNorm.toSqrtValue(x, "SqrtValueV2.add"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		const [sv, remapSv1, remapSv2] = SqrtValueV2.createEmptySvWithMergedBasis(this, x); // 合併 basis
+		sv.addTermsBy(this, (a, bitmask) => [a, remapSv1 ? sv.remapBitmask(bitmask, this.bitToBasis) : bitmask]);
+		sv.addTermsBy(x, (a, bitmask) => [a, remapSv2 ? sv.remapBitmask(bitmask, x.bitToBasis) : bitmask]);
+		return sv; // 必須先將執行 sv.remapBitmask(bitmask, ...) 才能呼叫 sv.addTermsBy, 否則值會錯誤
+	}
+	
+	sub(x: number|bigint|Frac|SqrtValue): SqrtValueV2 { // 減法
+		x = ParamNorm.toSqrtValue(x, "SqrtValueV2.sub"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		const [sv, remapSv1, remapSv2] = SqrtValueV2.createEmptySvWithMergedBasis(this, x); // 合併 basis
+		sv.addTermsBy(this, (a, bitmask) => [a, remapSv1 ? sv.remapBitmask(bitmask, this.bitToBasis) : bitmask]);
+		sv.addTermsBy(x, (a, bitmask) => [a.neg(), remapSv2 ? sv.remapBitmask(bitmask, x.bitToBasis) : bitmask]);
+		return sv; // 必須先將執行 sv.remapBitmask(bitmask, ...) 才能呼叫 sv.addTermsBy, 否則值會錯誤
+	}
+	
+	mul(x: number|bigint|Frac|SqrtValue): SqrtValueV2 { // 乘法
+		x = ParamNorm.toSqrtValue(x, "SqrtValueV2.mul"); // number|bigint|Frac|SqrtValue -> SqrtValue
+		
+		const [sv, remapSv1, remapSv2] = SqrtValueV2.createEmptySvWithMergedBasis(this, x); // 合併 basis
+		const terms1 = remapSv1 ? this.remapTermsBitmask(sv) : this.terms; // 將 this.terms 的 key 轉換到坐標系 sv.bitToBasis, 這樣才能進行 bitmask 操作
+		const terms2 = remapSv2 ? x.remapTermsBitmask(sv) : x.terms; // 將 x.terms 的 key 轉換到坐標系 sv.bitToBasis
+		
+		for (const [bitmask1, a1] of terms1) for (const [bitmask2, a2] of terms2) { // this & x 的 terms 兩兩相乘並加總
+			const squareFactor = sv.bitmaskToBase(bitmask1 & bitmask2); // 兩項共同的 basis 會提出根號成為係數
+			sv.addTerm(a1.mul(a2).mul(squareFactor), bitmask1 ^ bitmask2); // square-free 部分保留在根號內
+		} // a1√b1 * a2√b2 = a1 a2 k √(b1/k * b2/k), k = squareFactor
+		
+		return sv;
+	}
+	
+	div(x: number|bigint|Frac|SqrtValue): SqrtValueV2 { // 除法
+		let d = ParamNorm.toSqrtValue(x, "SqrtValueV2.div"); // 分母
+		if (d.isZero()) throw new SqrtValueV2.DivideZeroError("div"); // div 0 error
+		
+		let n = this.copy(); // 分子
+		for (const basis of d.getUsedBasis()) { // 對分母中每個根式生成元逐一做共軛, 使該生成元在分母中被消去
+			const dConj = d.conj(basis); // 取得分母對 basis 的共軛, 也就是將含該生成元的項取負號
+			n = n.mul(dConj); // 分子同步乘上共軛, 保持分式值不變
+			d = d.mul(dConj); // 分母乘上共軛後, 該 basis 會被消去; 全部 basis 處理完後分母會變成有理數
+		}
+		
+		return n.mul(F(1).div(d.rationalCoef())); // 先將 SqrtValueV2 型態的有理數分母轉為 Frac, 再回傳 分子/分母
+	}
+	
+	pow(x: number|bigint): SqrtValueV2 { // 整數次方
+		x = ParamNorm.toBigInt(x, "SqrtValueV2.pow"); // number|bigint -> bigint
+		
+		if (x >= 1n) {
+			const halfPow = this.pow(x / 2n);
+			let sv = halfPow.mul(halfPow);
+			if (x % 2n === 1n) sv = sv.mul(this);
+			return sv;
+		}
+		if (x === 0n) return SV2([1, 1]); // n^0 = 1
+		
+		if (this.isZero()) throw new SqrtValueV2.DivideZeroError("pow"); // 0^-n = 1/0^n 造成的除 0 錯誤
+		return SV2([1, 1]).div(this.pow(-x)); // n^-x = 1/(n^x)
+	}
+	
+	equal(x: number|bigint|Frac|SqrtValueV2): boolean { // 相等
+		x = ParamNorm.toSqrtValue(x, "SqrtValueV2.equal"); // number|bigint|Frac|SqrtValueV2 -> SqrtValueV2
+		
+		const [sv, remapSv1, remapSv2] = SqrtValueV2.createEmptySvWithMergedBasis(this, x); // 合併 basis
+		const terms1 = remapSv1 ? this.remapTermsBitmask(sv) : this.terms; // 將 this.terms 的 key 轉換到坐標系 sv.bitToBasis, 這樣才能進行 bitmask 操作
+		const terms2 = remapSv2 ? x.remapTermsBitmask(sv) : x.terms; // 將 x.terms 的 key 轉換到坐標系 sv.bitToBasis
+		
+		if (terms1.size !== terms2.size) return false; // 因為不可能存在零項, 所以如果項數不一樣, 必定不相等
+		for (const [bitmask, a] of terms1) if (!a.equal(terms2.get(bitmask) ?? F(0))) return false; // 用 term1 的 bitmask 查詢 term2 的係數 a, 做比較
+		return true;
+	}
 	
 	private static getSquareFactor(x: bigint): [bigint, bigint, bigint[]] { // 若 k^2 為 x 的最大平方因數, 回傳 [k, x/k/k, x/k/k的根式生成元]
 		if (x === 0n) return [1n, 0n, []]; // 若 x 為 0, 回傳 [1, 0, []]
@@ -755,7 +854,7 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 			emptySv.bitToBasis = sv1.bitToBasis; // 若 bitToBasis 相同, 代表 sv1, sv2, emptySv 的 bitmask 是可以互通的
 			emptySv.basisToBit = sv1.basisToBit; // 只有在建立新物件時, 才能修改 bitToBasis & basisToBit, 此處可直接共用 sv1 成員變數的參考
 			return [emptySv, false, false]; // 因為 bitToBasis 相同, 所以 sv1 和 sv2 的 bitmask 不需要重新映射至 emptySv 的 bitmask
-		}
+		} // 為了避免 bitToBasis 相同時, bitmask 重映射帶來的額外開銷
 		
 		const emptySv = SV2(); // 若 bitToBasis 不相同, 需要過濾掉沒有使用的 basis, 再合併成新的 bitToBasis, 防止無用的 basis 無限累積
 		emptySv.bitToBasis = SqrtValueV2.unionSortedArray(sv1.getUsedBasis(), sv2.getUsedBasis());
@@ -776,7 +875,7 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 		return usedBasis;
 	}
 	
-	private bitmaskToBase(bitmask: bigint): bigint { // 將 bitmask 轉換為根號底數 b
+	private bitmaskToBase(bitmask: bigint): bigint { // 根據 this.bitToBasis, 將 bitmask 轉換為根號底數 b
 		let base = 1n;
 		for (let bit = 0, mask = bitmask; mask > 0n; bit++, mask >>= 1n) if ((mask & 1n) !== 0n) {
 			base *= this.bitToBasis[bit];
@@ -784,40 +883,45 @@ export class SqrtValueV2 { // 帶有根號的常數, √-1 也視為一個根式
 		return base;
 	}
 	
-	private isNegativeBase(bitmask: bigint): boolean { // bitmask 代表的根號底數 b 是否 < 0
-		return this.basisToBit.has(-1n) && (bitmask & 1n) !== 0n; // 參考 [property 1]
+	private remapBitmask(bitmask: bigint, bitToBasis: bigint[]): bigint { // 將 bitmask, bitToBasis 映射到 newBitmask, this.bitToBasis
+		let newBitmask = 0n;
+		for (let bit = 0, mask = bitmask; mask > 0n; bit++, mask >>= 1n) if ((mask & 1n) !== 0n) { // 從低位到高位逐一檢查使用中的 bit
+			const newBit = this.basisToBit.get(bitToBasis[bit]); // 舊的 bit 位置 -> basis -> 新的 bit 位置
+			if (newBit === undefined) throw new RanMathError("SqrtValueV2.remapBitmask", `Unregistered basis.`); // 必須保證 basis 都存在
+			newBitmask |= 1n << BigInt(newBit); // 新的 bit 位置 -> 新的 bitmask
+		}
+		return newBitmask;
 	}
 	
-	private addTerm(a: Frac, bitmask: bigint, bitToBasis?: bigint[]): void { // 累加一個 a√b 到 this, b 為 bitmask 形式
+	private remapTermsBitmask(sv: SqrtValueV2): Map<bigint, Frac> { // 將 this.terms 內所有的 bitmask key 轉換到坐標系 sv.bitToBasis
+		const newTerms = new Map<bigint, Frac>();
+		for (const [bitmask, a] of this.terms) newTerms.set(sv.remapBitmask(bitmask, this.bitToBasis), a);
+		return newTerms;
+	}
+	
+	private isNegativeBase(bitmask: bigint): boolean { // 判斷 bitmask 代表的根號底數 b 是否 < 0
+		return this.basisToBit.has(-1n) && (bitmask & 1n) !== 0n; // 若 basis -1 存在, 由於 bitToBasis 為升序, 所以 bitmask 最低位必為 basis -1
+	}
+	
+	private addTerm(a: Frac, bitmask: bigint): void { // 累加一個 a√b 到 this, b 為 bitmask 形式
 		if (a.isZero()) return; // 無視 +0
-		
-		if (bitToBasis !== undefined) { // 如果參數 bitToBasis 有傳, 則將 bitmask, bitToBasis 映射到 newBitmask, this.bitToBasis
-			let newBitmask = 0n;
-			for (let bit = 0, mask = bitmask; mask > 0n; bit++, mask >>= 1n) if ((mask & 1n) !== 0n) { // 從低位到高位逐一檢查使用中的 bit
-				const newBit = this.basisToBit.get(bitToBasis[bit]); // 舊的 bit 位置 -> basis -> 新的 bit 位置
-				if (newBit === undefined) throw new RanMathError("SqrtValueV2.addTerm", `Unregistered basis.`); // 必須保證 basis 都存在才能使用 addTerm
-				newBitmask |= 1n << BigInt(newBit); // 新的 bit 位置 -> 新的 bitmask
-			}
-			bitmask = newBitmask;
-		} // 用於避免 bitToBasis 相同時, bitmask 映射帶來的額外開銷. 你必須保證 bitToBasis 相同, 才能忽略參數 bitToBasis
 		
 		const oldCoef = this.terms.get(bitmask) ?? F(0); // 舊的 a√b 項的 a
 		const newCoef = oldCoef.add(a); // 新的 a√b 項的 a
 		
 		if (newCoef.isZero()) this.terms.delete(bitmask);
 		else this.terms.set(bitmask, newCoef);
-	}
+	} // 注意: 必須保證 bitmask 對應到坐標系 this.bitToBasis 才能使用 addTerm, 否則值會錯誤
 	
 	private addTermsBy( // 用 fn 處理 sv 的所有 terms, 並累加到自身物件
 		sv: SqrtValueV2,
 		fn: (a: Frac, bitmask: bigint) => [newA: Frac, newBitMask?: bigint], // 如果 newBitMask 沒有傳, 會沿用原本的 bitmask
-		bitToBasis?: bigint[] // 如果參數 bitToBasis 有傳, 則將 bitToBasis 映射到 this.bitToBasis
 	): void {
 		for (const [bitmask, a] of sv.terms) {
 			const [newA, newBitmask] = fn(a, bitmask);
-			this.addTerm(newA, newBitmask ?? bitmask, bitToBasis);
+			this.addTerm(newA, newBitmask ?? bitmask);
 		}
-	}
+	} // 注意: 必須保證 bitmask 對應到坐標系 this.bitToBasis 才能使用 addTermsBy, 否則值會錯誤
 }
 
 export function CP(real: number = 0, imag: number = 0): Complex { // Complex 工廠
@@ -860,7 +964,7 @@ export class Complex { // 浮點複數
 		return new LatexSum().add(strReal).addTerm(strImag, "i").toLatex();
 	}
 	
-	conj(): Complex { // 共軛
+	conj(): Complex { // 複共軛
 		return CP(this.real, -this.imag);
 	}
 	
@@ -958,8 +1062,12 @@ export class Scalar { // 純量, 可能包含 SqrtValue 或 Complex
 		return SC(this.value.imag); // CP.imag
 	}
 	
+	conj(): Scalar { // 複共軛
+		return SC(this.value.conj(), false); // SV.conj & CP.conj 會產生新物件, 建立 SC 時不複製
+	}
+	
 	copy(): Scalar { // 複製
-		return SC(this.value); // copy SV|CP in constructor
+		return SC(this.value); // copy SV & CP in constructor
 	}
 	
 	neg(): Scalar { // 取負號
