@@ -14,7 +14,7 @@ export default defineConfig({
 	},
 	test: {
 		include: [ // 測試檔案範圍
-			"src/tests/ran-math-v3/solve-cubic.test.ts", // ran math v3
+			"src/tests/ran-math-v3/sqrt-value.test.ts", // ran math v3
 		],
 		environment: "node",
 		coverage: { // 測試: npx vitest run --coverage

@@ -39,6 +39,9 @@ const testDatas: Record<string, TestData> = {
 		testFunc: (rawTerms: any[]) => new SqrtValue(rawTerms),
 		tests: [
 			{ input: [ [] ], output: SV() },
+			{ input: [ [[0, 0]] ], output: SV() },
+			{ input: [ [[1, 0]] ], output: SV() },
+			{ input: [ [[F(-1, 2), 3], [F(1, 2), 3]] ], output: SV() },
 			{ input: [ [[1, 8]] ], output: SV([2, 2]) },
 			{ input: [ [[1, -8]] ], output: SV([2, -2]) },
 			{ input: [ [[1, 2], [3, 8], [-7, 2]] ], output: SV() },
@@ -95,15 +98,20 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ SV([3, 2], [7, 1]) ], output: SV() },
 		],
 	},
-	".comp": {
-		testName: (sv: SqrtValue, base: bigint, useSqrtBasis: boolean) => `(${str(sv)}).comp(${str(base)}, ${str(useSqrtBasis)})`,
-		testFunc: (sv: SqrtValue, base: bigint, useSqrtBasis: boolean) => sv.comp(base, useSqrtBasis),
+	".conj": {
+		testName: (sv: SqrtValue, basis?: bigint) => `(${str(sv)}).conj(${str(basis)})`,
+		testFunc: (sv: SqrtValue, basis?: bigint) => sv.conj(basis),
 		tests: [
-			{ input: [ SV([2, 1], [3, 2], [5, -6], [7, 3]), 3n, true ], output: SV([5, -2], [7, 1]) },
-			{ input: [ SV([2, 1], [3, -2], [5, 6], [7, -3]), 3n, false ], output: SV([2, 1], [3, -2]) },
-			{ input: [ SV([2, 1], [3, 2]), 1n, true ], output: SV([2, 1], [3, 2]) },
-			{ input: [ SV([2, 1], [3, 2]), 1n, false ], output: SV() },
-			{ input: [ SV([2, 1]), 0n, true ], error: SqrtValue.NonPositiveBaseError },
+			{ input: [ SV() ], output: SV() },
+			{ input: [ SV([7, 1]), -1n ], output: SV([7, 1]) },
+			{ input: [ SV([3, -1]) ], output: SV([-3, -1]) },
+			{ input: [ SV([2, 1], [3, -2], [5, 6], [-7, -3]) ], output: SV([2, 1], [-3, -2], [5, 6], [7, -3]) },
+			{ input: [ SV([1, 2], [2, 3], [3, 6], [4, -2], [5, -3]), 2n ], output: SV([-1, 2], [2, 3], [-3, 6], [-4, -2], [5, -3]) },
+			{ input: [ SV([1, 2], [2, 3], [3, 6], [4, -2], [5, -3]), 3n ], output: SV([1, 2], [-2, 3], [-3, 6], [4, -2], [-5, -3]) },
+			{ input: [ SV([1, 2], [2, -3]), 5n ], output: SV([1, 2], [2, -3]) },
+			{ input: [ SV([1, 18], [1, -50]), 2n ], output: SV([-3, 2], [-5, -2]) },
+			{ input: [ SV([1, -6], [2, 6]), -1n ], output: SV([-1, -6], [2, 6]) },
+			{ input: [ SV([1, -30], [2, 30], [-3, -42]), 7n ], output: SV([1, -30], [2, 30], [3, -42]) },
 		],
 	},
 	".copy": {
@@ -170,17 +178,17 @@ const testDatas: Record<string, TestData> = {
 	},
 	".div": {
 		testName: (sv: SqrtValue, x: any) => `(${str(sv)}) / (${str(x)})`,
-		testFunc: (sv: SqrtValue, x: any) => sv.div(x).toStr(), // 這裡轉 str 是因為無法保證 Map 物件的 key 順序
-		tests: [ // 兩個相等 terms 若 key insert order 不一樣, vitest 的 toStrictEqual 無法比較
-			{ input: [ SV([1, 1], [1, 2]), SV([1, 1], [-1, 2]) ], output: SV([-3, 1], [-2, 2]).toStr() },
-			{ input: [ SV([1, 2]), SV([1, 2]) ], output: SV([1, 1]).toStr() },
+		testFunc: (sv: SqrtValue, x: any) => sv.div(x),
+		tests: [
+			{ input: [ SV([1, 1], [1, 2]), SV([1, 1], [-1, 2]) ], output: SV([-3, 1], [-2, 2]) },
+			{ input: [ SV([1, 2]), SV([1, 2]) ], output: SV([1, 1]) },
 			{
 				input: [ SV([1, 1]), SV([2, -2], [1, 1], [4, 2], [-2, 6], [1, -3]) ],
-				output: SV([473, 1], [1264, -1], [66, 2], [-1394, -2], [272, 3], [663, -3], [-210, 6], [-734, -6]).div(7108).toStr()
+				output: SV([473, 1], [1264, -1], [66, 2], [-1394, -2], [272, 3], [663, -3], [-210, 6], [-734, -6]).div(7108)
 			},
-			{ input: [ SV([1, -2]), F(1, 2) ], output: SV([2, -2]).toStr() },
-			{ input: [ SV([1, -2]), 2n ], output: SV([F(1, 2), -2]).toStr() },
-			{ input: [ SV([1, -2]), 2 ], output: SV([F(1, 2), -2]).toStr() },
+			{ input: [ SV([1, -2]), F(1, 2) ], output: SV([2, -2]) },
+			{ input: [ SV([1, -2]), 2n ], output: SV([F(1, 2), -2]) },
+			{ input: [ SV([1, -2]), 2 ], output: SV([F(1, 2), -2]) },
 			{ input: [ SV([1, 2]), SV() ], error: SqrtValue.DivideZeroError },
 			{ input: [ SV([1, 2]), 0n ], error: SqrtValue.DivideZeroError },
 			{ input: [ SV([1, 2]), 3.5 ], error: ParamNorm.NonIntError },
@@ -226,7 +234,11 @@ for (const [groupName, testData] of Object.entries(testDatas)) describe(groupNam
 	for (const t of testData.tests) test( // 測一組測資
 		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
-			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
+			if ("output" in t) { // 檢查 output
+				const actual = testData.testFunc(...t.input);
+				if (actual instanceof SqrtValue && t.output instanceof SqrtValue) expect(actual.equal(t.output)).toBe(true);
+				else expect(actual).toStrictEqual(t.output);
+			}
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance
 		}
 	);
