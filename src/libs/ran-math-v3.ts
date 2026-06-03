@@ -686,15 +686,15 @@ export class Complex { // 浮點複數
 	}
 	
 	toStr(digits: number = 4): string { // 轉為字串, 小數取 digits 位
-		const strReal = ml.floatToStr(this.real, digits);
-		const strImag = ml.floatToStr(this.imag, digits);
-		return `${strReal} + ${strImag} i`;
+		const realStr = ml.floatToStr(this.real, digits);
+		const imagStr = ml.floatToStr(this.imag, digits);
+		return `${realStr} + ${imagStr} i`;
 	}
 	
 	toLatex(digits: number = 4): string { // 轉為 latex 字串, 小數取 digits 位
-		const strReal = ml.floatToStr(this.real, digits);
-		const strImag = ml.floatToStr(this.imag, digits);
-		return new LatexSum().add(strReal).addTerm(strImag, "i").toLatex();
+		const realLatex = ml.floatToStr(this.real, digits);
+		const imagLatex = ml.floatToStr(this.imag, digits);
+		return new LatexSum().add(realLatex).addTerm(imagLatex, "i").toLatex();
 	}
 	
 	conj(): Complex { // 複共軛
@@ -1185,19 +1185,19 @@ export class MakeLatex { // latex 字串處理
 		if (/^[0-9]$/.test(baseLatex[0])) cfg.dot = true; // 底數 base 的開頭若為數字 -> coef \cdot base
 		if (cfg.ld || cfg.rd) cfg.dot = false; // 例外: 如果左括號或右括號已經存在, 不需要額外加乘點
 		
-		let str; // 生成 b^p 的部分
-		if (powLatex === "0" || baseLatex === "1") str = "1"; // b^0 -> 1 ; 1^p -> 1
-		else if (baseLatex === "0") str = "0"; // 0^p -> 0, 不包含 0^0
-		else if (powLatex === "1") str = cfg.rd ? ml.delim(baseLatex) : baseLatex; // (b)^1 -> (b) ; b^1 -> b
-		else str = `{${cfg.rd ? ml.delim(baseLatex) : baseLatex}}^{${powLatex}}`; // (b)^p ; b^p
+		let latex; // 生成 b^p 的部分
+		if (powLatex === "0" || baseLatex === "1") latex = "1"; // b^0 -> 1 ; 1^p -> 1
+		else if (baseLatex === "0") latex = "0"; // 0^p -> 0, 不包含 0^0
+		else if (powLatex === "1") latex = cfg.rd ? ml.delim(baseLatex) : baseLatex; // (b)^1 -> (b) ; b^1 -> b
+		else latex = `{${cfg.rd ? ml.delim(baseLatex) : baseLatex}}^{${powLatex}}`; // (b)^p ; b^p
 		
-		if (coefLatex === "0" || str === "0") str = "0"; // 0b^p -> 0 ; c0 -> 0
-		else if (coefLatex === "1") str = str; // 1b^p -> b^p
-		else if (coefLatex === "-1") str = `-${str}`; // -1b^p -> -b^p
-		else if (str === "1") str = coefLatex; // c1 -> c
-		else str = (cfg.ld ? ml.delim(coefLatex) : coefLatex) + (cfg.dot ? "\\cdot" : "") + str; // c b^p ; (c)b^p ; c \cdot b^p
+		if (coefLatex === "0" || latex === "0") latex = "0"; // 0b^p -> 0 ; c0 -> 0
+		else if (coefLatex === "1") latex = latex; // 1b^p -> b^p
+		else if (coefLatex === "-1") latex = `-${latex}`; // -1b^p -> -b^p
+		else if (latex === "1") latex = coefLatex; // c1 -> c
+		else latex = (cfg.ld ? ml.delim(coefLatex) : coefLatex) + (cfg.dot ? "\\cdot" : "") + latex; // c b^p ; (c)b^p ; c \cdot b^p
 		
-		return str;
+		return latex;
 	}
 	
 	// todo equationSystem
@@ -1221,10 +1221,10 @@ const ml = MakeLatex;
 export class LatexSum { // 將多個 latex 字串串接為一個和式，並自動處理各項之間的 +/- 連接
 	private buffer = ""; // latex string buffer
 	
-	add(latexStr: string): LatexSum { // 在尾端串接一個 latex 字串, 可 chaining
-		if (["", "0", "+0", "-0"].includes(latexStr)) return this; // 若為 0 或空字串, 那麼不新增這一項, 但不禁止 "{0}"
-		if (latexStr[0] !== "+" && latexStr[0] !== "-") latexStr = `+${latexStr}`; // 如果 latexStr 首字元不是 +/-, 補上 "+" (為了將多個 term 連接起來)
-		this.buffer += latexStr; // 串接至 buffer
+	add(latex: string): LatexSum { // 在尾端串接一個 latex 字串, 可 chaining
+		if (["", "0", "+0", "-0"].includes(latex)) return this; // 若為 0 或空字串, 那麼不新增這一項, 但不禁止 "{0}"
+		if (latex[0] !== "+" && latex[0] !== "-") latex = `+${latex}`; // 如果 latex 首字元不是 +/-, 補上 "+" (為了將多個 term 連接起來)
+		this.buffer += latex; // 串接至 buffer
 		return this; // chaining
 	}
 	
