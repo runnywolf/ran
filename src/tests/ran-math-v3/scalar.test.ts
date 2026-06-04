@@ -65,6 +65,22 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ SC(CP(0, 0)) ], output: true },
 		],
 	},
+	".toLatex": {
+		testName: (sc: Scalar) => `(${str(sc)}).toLatex()`,
+		testFunc: (sc: Scalar) => sc.toLatex(),
+		tests: [
+			{ input: [ SC(SV([F(1, 2), 1], [F(1, 3), 2])) ], output: "\\frac{3+2\\sqrt{2}}{6}" },
+			{ input: [ SC(CP(2, -3)) ], output: "2-3i" },
+		],
+	},
+	".conj": {
+		testName: (sc: Scalar) => `(${str(sc)}).conj()`,
+		testFunc: (sc: Scalar) => sc.conj(),
+		tests: [
+			{ input: [ SC(SV([2, 1], [3, -2], [5, 6])) ], output: SC(SV([2, 1], [-3, -2], [5, 6]), false) },
+			{ input: [ SC(CP(2, -3)) ], output: SC(CP(2, 3), false) },
+		],
+	},
 	".real": {
 		testName: (sc: Scalar) => `(${str(sc)}).real()`,
 		testFunc: (sc: Scalar) => sc.real(),
@@ -178,7 +194,11 @@ for (const [groupName, testData] of Object.entries(testDatas)) describe(groupNam
 	for (const t of testData.tests) test( // 測一組測資
 		testData.testName(...t.input) + " = " + ("output" in t ? str(t.output) : `[Error]${t.error.name}`), // 輸出 output, 報錯就輸出 error name
 		() => {
-			if ("output" in t) expect(testData.testFunc(...t.input)).toStrictEqual(t.output); // 檢查 output
+			if ("output" in t) { // 檢查 output
+				const actual = testData.testFunc(...t.input);
+				if (actual instanceof Scalar && t.output instanceof Scalar) expect(actual.equal(t.output)).toBe(true);
+				else expect(actual).toStrictEqual(t.output);
+			}
 			if ("error" in t) expect(() => testData.testFunc(...t.input)).toThrow(t.error); // 報錯就檢查 error instance
 		}
 	);

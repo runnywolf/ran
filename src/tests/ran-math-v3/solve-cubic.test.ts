@@ -30,6 +30,7 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ 1, 0, 0, -2 ], output: "1.2599 + 0 i , -0.63 + -1.0911 i , -0.63 + 1.0911 i" },
 			{ input: [ 1, 0, 1, 1 ], output: "-0.6823 + 0 i , 0.3412 + -1.1615 i , 0.3412 + 1.1615 i" },
 			{ input: [ 3, 17, -18, 71 ], output: "-7.0054 + 0 i , 0.6694 + -1.7118 i , 0.6694 + 1.7118 i" },
+			{ input: [ -3, -17, 18, -71 ], output: "-7.0054 + 0 i , 0.6694 + -1.7118 i , 0.6694 + 1.7118 i" }, // 測 findRealRoot 的 a = -a
 			{ input: [ 1.5, -9, 16.5, -9 ], output: "1 + 0 i , 2 + 0 i , 3 + 0 i" },
 			{ input: [ 0.5, 0, -2, 0 ], output: "-2 + 0 i , 0 , 2 + 0 i" },
 			{ input: [ unsafeScale, -6*unsafeScale, 11*unsafeScale, -6*unsafeScale ], output: "0 + 0 i , 0 + 0 i , 1 + 0 i" },
