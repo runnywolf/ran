@@ -930,7 +930,7 @@ export class Matrix<T extends MatrixElement<T>> { // 矩陣
 		return strArr.map(rowI => `| ${rowI.join(" | ")} |`).join("\n"); // 將每一列加上左右邊界與分隔線後合併
 	}
 	
-	toLatex(mode: "m"|"pm"|"bm"|"vm" = "bm", options: Record<string, unknown>): string { // 轉為 latex 字串, 會將 options 傳入 MatrixElement.toLatex
+	toLatex(mode: "m"|"pm"|"bm"|"vm" = "bm", options: Record<string, unknown> = {}): string { // 轉為 latex 字串, 會將 options 傳入 MatrixElement.toLatex
 		let latex = this.arr.map(rowI => rowI.map(aij => aij.toLatex(options)).join("&")).join("\\\\"); // 插入 latex 矩陣語法的元素分隔符
 		latex = `\\begin{${mode}atrix}${latex}\\end{${mode}atrix}`; // latex 矩陣語法
 		if (mode === "bm") latex = `\\!${latex}\\!`; // 因為 bmatrix 的左右間距太寬了, 減少一點
