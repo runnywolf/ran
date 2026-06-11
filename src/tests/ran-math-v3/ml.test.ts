@@ -75,6 +75,39 @@ const testDatas: Record<string, TestData> = {
 			{ input: [ 2, "-x", 2 ], output: "2{\\left(-x\\right)}^{2}" },
 		],
 	},
+	"MakeLatex.equationSystem": {
+		testName: (
+			row: number, col: number, coefArr: any[][], baseArr: any[][], equalArr: any[], equalMode: "none"|"right"|"left"
+		) => `MakeLatex.equationSystem(${str(row)}, ${str(col)}, ..., ${str(equalMode)})`,
+		testFunc: (
+			row: number, col: number, coefArr: any[][], baseArr: any[][], equalArr: any[], equalMode: "none"|"right"|"left"
+		) => ml.equationSystem(row, col, (i, j) => coefArr[i][j], (i, j) => baseArr[i][j], i => equalArr[i], equalMode),
+		tests: [
+			{
+				input: [ 2, 2, [[1, 2], [3, -1]], [["x", "y"], ["x", "y"]], [5, 6], "right" ],
+				output: "\\left\\{\\begin{array}{rrrr}x&+2y&=&5\\\\3x&-y&=&6\\end{array}\\right."
+			},
+			{
+				input: [ 1, 2, [[1, -1]], [["x", "y"]], [0], "none" ],
+				output: "\\left\\{\\begin{array}{rr}x&-y\\end{array}\\right."
+			},
+			{
+				input: [ 2, 1, [[1], [-1]], [["x_{0}"], ["x_{1}"]], [3, -3], "left" ],
+				output: "\\left\\{\\begin{array}{rrr}3&=&x_{0}\\\\-3&=&-x_{1}\\end{array}\\right."
+			},
+			{
+				input: [ 2, 3, [[1, 0, -2], [0, 3, 1]], [["x", "y", "z"], ["x", "y", "z"]], [5, -7], "right" ],
+				output: "\\left\\{\\begin{array}{rrrrr}x&&-2z&=&5\\\\&3y&+z&=&-7\\end{array}\\right."
+			},
+			{
+				input: [ 3, 2, [[1, 2], [-3, 0], [null, -1]], [["a_0", "a_1"], ["a_0", "a_1"], ["a_0", null]], [4, null, -6], "left" ],
+				output: "\\left\\{\\begin{array}{rrrr}4&=&a_0&+2a_1\\\\?&=&-3a_0&\\\\-6&=&?a_0&-?\\end{array}\\right."
+			},
+			{ input: [ 0, 1, [[1]], [["x"]], [1], "right" ], error: ml.NonPosIntDimensionError },
+			{ input: [ 1, 0, [[1]], [["x"]], [1], "right" ], error: ml.NonPosIntDimensionError },
+			{ input: [ 1.5, 1, [[1]], [["x"]], [1], "right" ], error: ml.NonPosIntDimensionError },
+		],
+	},
 };
 // ---------- 以下不要修改 ----------
 
