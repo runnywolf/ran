@@ -1156,6 +1156,12 @@ export class SolveCubic { // 解三次方程式 ax^3 + bx^2 + cx + d = 0
 }
 
 export class MakeLatex { // latex 字串處理
+	static NonPosIntDimensionError = class extends RanMathError { // 維度必須是正整數
+		constructor(caller: string, paramName: string, dim: number) {
+			super(caller, `Parameter "${paramName}" must be a positive integer dimension, got ${dim}`);
+		}
+	}
+	
 	static floatToStr(x: number, maxDigits: number): string { // float -> string
 		let str = x.toFixed(maxDigits);
 		if (maxDigits > 0) str = str.replace(/\.?0+$/, ""); // 去除浮點數尾端的 0
@@ -1177,8 +1183,8 @@ export class MakeLatex { // latex 字串處理
 	}
 	
 	static term(coef: any, base: any = "1", pow: any = "1"): string { // 自動推導 c b^p 的 latex 字串
-		const coefLatex = ml.anyToLatex(coef);
-		const baseLatex = ml.anyToLatex(base);
+		const coefLatex = ml.anyToLatex(coef); // 係數部分
+		const baseLatex = ml.anyToLatex(base); // 底數部分
 		const powLatex = (Frac.is(pow) && !pow.isInt()) ? `${pow.n}/${pow.d}` : ml.anyToLatex(pow); // 分數次方會顯示 "n/d" 而非分數
 		
 		const cfg = { ld: false, dot: false, rd: false }; // cfg.ld -> (c)b^p ; cfg.dot -> c \cdot b^p ; cfg.rd -> c(b)^p
@@ -1203,7 +1209,47 @@ export class MakeLatex { // latex 字串處理
 		return latex;
 	}
 	
-	// todo equationSystem
+	static equationSystem( // 生成聯立方程式的 LaTeX 字串
+		row: number, // row 為方程式列數
+		col: number, // col 為每列的項數
+		coefFn: (i: number, j: number) => any, // 回傳第 i 列第 j 項的係數
+		baseFn: (i: number, j: number) => any, // 回傳第 i 列第 j 項的未知數或底數
+		equalFn: (i: number) => any, // 回傳第 i 列等號另一側的值
+		equalMode: "none"|"right"|"left" = "right" // 控制等號是否顯示, 以及等號值放左邊或右邊
+	): string {
+		MakeLatex.checkDimension(row, "MakeLatex.equationSystem", "row"); // 保證 row 為正整數
+		MakeLatex.checkDimension(col, "MakeLatex.equationSystem", "col"); // 保證 col 為正整數
+		
+		let latex = Array.from({ length: row }, (_, i) => { // 逐列生成每一條方程式的 LaTeX
+			let addPos = false; // 記錄目前列是否已經出現非零項, 用來判斷正項前面是否要補 "+"
+			let equationLatex = Array.from({ length: col }, (_, j) => { // 逐項生成第 i 列的每一個項
+				const coefLatex = ml.anyToLatex(coefFn(i, j) ?? "?"); // 取得係數並轉為 LaTeX, null/undefined 以 "?" 代替
+				const baseLatex = ml.anyToLatex(baseFn(i, j) ?? "?"); // 取得未知數並轉為 LaTeX, null/undefined 以 "?" 代替
+				let termLatex = ml.term(coefLatex, baseLatex); // 將係數與未知數合成單項 LaTeX
+				if (termLatex === "0") return ""; // 零項不顯示, 但仍保留欄位位置
+				
+				if (termLatex[0] !== "-" && addPos) termLatex = `+${termLatex}`; // 非首項且為正項時補上 "+"
+				addPos = true; // 標記這一列已經出現至少一個非零項
+				return termLatex; // 回傳該項 LaTeX
+			}).join("&"); // 用 array 欄位分隔符連接同一列的所有項
+			
+			const equalLatex = ml.anyToLatex(equalFn(i) ?? "?"); // 取得等號另一側的值並轉為 LaTeX
+			if (equalMode === "left") equationLatex = `${equalLatex}&=&${equationLatex}`; // 等號值放左側
+			else if (equalMode === "right") equationLatex = `${equationLatex}&=&${equalLatex}`; // 等號值放右側
+			return equationLatex; // 回傳第 i 列完整方程式
+		}).join("\\\\"); // 用 LaTeX 換列符號連接所有方程式
+		
+		const colNum = col + (equalMode !== "none" ? 2 : 0); // 若顯示等號, 需要額外加入等號與等號值兩欄
+		latex = `\\begin{array}{${"r".repeat(colNum)}}${latex}\\end{array}`; // 建立 array 環境並設定所有欄位靠右對齊
+		return `\\left\\{${latex}\\right.`; // 加上左大括號, 右側使用不可見 delimiter
+	}
+	
+	private static checkDimension(dim: number, caller: string, paramName: string): number { // 若 dim 為正整數則回傳 dim, 如果 dim 不是正整數會報錯
+		if (!Number.isInteger(dim) || dim <= 0) {
+			throw new MakeLatex.NonPosIntDimensionError(caller, paramName, dim);
+		}
+		return dim;
+	}
 	
 	private static anyToLatex(x: any): string { // 嘗試回傳 x.toLatex(), 如果失敗則回傳 String(x)
 		return String(typeof x?.toLatex === "function" ? x.toLatex() : x); // 不會特別處理小數位數

@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { F, SV, MakeLatex as ml } from "@lib/ran-math-v3";
+import { F, MakeLatex as ml } from "@lib/ran-math-v3";
 
 const coefTests = ["c", -2, -1, 0, 1, 2, F(-2, 3), "a+b"];
 const baseTests = ["b", -2, -1, 0, 1, 2, 10, F(-1, 2), "a+b"];
