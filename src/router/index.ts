@@ -1,7 +1,7 @@
-import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, type RouteLocationNormalizedLoaded, type RouteRecordRaw } from "vue-router";
 import { getUniShortName, decodeExamId } from "@lib/exam-db";
 
-const routes: RouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [ // page table
 	{ path: "/", component: () => import("@/views/HomeView.vue") },
 	{ path: "/notes", component: () => import("@/views/NotesView.vue") },
 	{ path: "/exam", component: () => import("@/views/ExamMenuView.vue") },
@@ -41,34 +41,41 @@ const router = createRouter({
 	routes,
 });
 
-const removeTooltip = () => document.querySelectorAll(".ts-tooltip").forEach(el => el.remove()); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
-
-router.beforeEach((to, from) => {
-	removeTooltip();
+router.beforeEach((to, from) => { // 跳轉頁面前
+	removeTooltip(); // 若 tooltip 正在顯示, 跳轉後會留在頁面上, 需要刪除
 	return true;
 });
 
-router.afterEach((to, from) => {
+router.afterEach((to, from) => { // 跳轉頁面後
 	removeTooltip(); // 雖然 remove 一次就夠, 但我測試一下能不能修復首頁的 ran neta tooltip 的 bug
 	
-	const page = to.path.split("/")[1]; // 頁面路由 [1]
-	let suffix = "";
+	const suffix = getRouteSuffix(to); // 網頁標題的後綴
+	document.title = suffix ? `Ran - ${suffix}` : "Ran"; // 如果後綴存在就顯示 "Ran - ...", 否則只顯示 "Ran"
+});
+
+function removeTooltip(): void { // 刪除頁面上所有 tocas tooltip
+	document.querySelectorAll(".ts-tooltip").forEach(el => el.remove());
+}
+
+function getRouteSuffix(to: RouteLocationNormalizedLoaded): string { // 依據目前 route 產生網頁標題的後綴
+	const page = to.path.split("/")[1]; // 第一層頁面路由
 	
-	if (page === "notes") suffix = "筆記";
+	if (page === "notes") return "筆記";
 	else if (page === "exam") {
-		suffix = "歷屆試題";
 		try {
 			const { id: examId, prob: no } = to.params;
 			const { uni, year } = decodeExamId(examId as string);
-			suffix = `${getUniShortName(uni)} ${year}` + (no ? ` 第 ${no} 題` : "");
-		} catch {}
+			return `${getUniShortName(uni)} ${year}` + (no ? ` 第 ${no} 題` : "");
+		} catch {
+			return "歷屆試題";
+		}
 	}
-	else if (page === "search") suffix = "搜尋題目";
-	else if (page === "practice") suffix = "模擬室";
-	else if (to.path === "/other/saved") suffix = "收藏";
-	else if (to.path === "/other/stat") suffix = "統計";
+	else if (page === "search") return "搜尋題目";
+	else if (page === "practice") return "模擬室";
+	else if (to.path === "/other/saved") return "收藏";
+	else if (to.path === "/other/stat") return "統計";
 	
-	document.title = "Ran" + (suffix ? ` - ${suffix}` : "");
-});
+	return "";
+}
 
 export default router;
