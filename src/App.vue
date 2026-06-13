@@ -10,9 +10,9 @@
 	<Toast></Toast>
 </template>
 
-<script setup>
-import Navbar from "./components/app-comp/Navbar.vue";
-import Toast from "./components/app-comp/Toast.vue";
+<script setup lang="ts">
+import Navbar from "./components/app-comp/Navbar.vue"; // 頁面頂部的導覽列
+import Toast from "./components/app-comp/Toast.vue"; // 彈出方塊的組件 (預設為隱藏)
 </script>
 
 <style scoped>
