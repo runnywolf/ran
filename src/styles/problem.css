@@ -8,6 +8,13 @@
 	border-bottom: 1px solid black;
 }
 
+.ran-native-table { /* html 原生的表格樣式 */
+	border-collapse: collapse; border-spacing: 0;
+}
+.ran-native-table td {
+	border: 1px #000 solid;
+}
+
 .ran-order-list { /* 編號為 (A), (B), (C), ... 的 ol 清單 */
 	margin: 0;
 	padding-left: 1.23em; /* 題目編號與 box 左側邊緣的距離 */

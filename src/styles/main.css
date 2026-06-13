@@ -1,13 +1,6 @@
 @import "./font.css";
 @import "./problem.css";
 
-.ran-native-table { /* html 原生的表格樣式 */
-	border-collapse: collapse; border-spacing: 0;
-}
-.ran-native-table td {
-	border: 1px #000 solid;
-}
-
 span.ran-neko::before { /* 貓咪 */
 	content: "ฅ^⦁⩊⦁^ฅ ੭";
 }
