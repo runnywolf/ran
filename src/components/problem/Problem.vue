@@ -75,8 +75,9 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, watchEffect, defineAsyncComponent, computed } from "vue";
+import { ref, shallowRef, watchEffect, defineAsyncComponent } from "vue";
 import { getUniShortName, getProblemConfig, getSectionComp, getAllContentComps } from "@lib/exam-db"; // 讀取題本資訊
+import Content from "@/components/global/Content.vue"; // 內容區塊的組件
 import AnswerBox from "./problem-comp/AnswerBox.vue"; // 綠色答案框的組件
 import SaveButton from "./SaveButton.vue"; // 收藏按鈕
 import Tag from "./Tag.vue"; // 標籤

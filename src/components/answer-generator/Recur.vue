@@ -72,6 +72,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { SolveRecur } from "./Recur";
+import Content from "@/components/global/Content.vue"; // 內容區塊的組件
 import RecurNonHomog from "./RecurNonHomog.vue";
 
 const props = defineProps({

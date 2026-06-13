@@ -3,3 +3,7 @@
 		找不到這一個內容區塊的設定檔 ٩(ŏ﹏ŏ、)۶ ，請檢查 console。
 	</Content>
 </template>
+
+<script setup lang="ts">
+import Content from "@/components/global/Content.vue"; // 內容區塊的組件
+</script>

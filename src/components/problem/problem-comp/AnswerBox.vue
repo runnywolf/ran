@@ -11,5 +11,7 @@
 </template>
 
 <script setup>
+import Content from "@/components/global/Content.vue"; // 內容區塊的組件
+
 const props = defineProps([ "answerLatex" ]); // 解答的 latex 語法 (string), 若為多個解答則為 Array<string>
 </script>

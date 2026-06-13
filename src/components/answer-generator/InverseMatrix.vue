@@ -10,6 +10,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { EF, Matrix, MakeLatex as ml } from "ran-math";
+import Content from "@/components/global/Content.vue"; // 內容區塊的組件
 
 const props = defineProps({
 	n: { type: Number, default: 0 }, // n 階方陣
