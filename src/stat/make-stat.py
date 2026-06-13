@@ -58,7 +58,7 @@ def make_code_stat_json() -> None: # 生成程式碼的統計
 	}
 	
 	with open(SRC_PATH/"stat"/"code-stat.json", "w", encoding="utf-8") as f: # write json
-		json.dump(stat, f, ensure_ascii=False, indent="\t")
+		json.dump(stat, f, ensure_ascii=False, separators=(",", ":"))
 
 def get_flat_tags(prefix="", tag_node={}) -> list[str]: # 將 tag-tree.json 扁平化為 tag arr
 	sub_tags = [prefix] if prefix else [] # 排除遞迴造成的空字串 tag
@@ -126,7 +126,7 @@ def make_problem_stat_json() -> None: # 生成題目的統計
 				update_problem_stat(stat, exam_config, uni) # 更新 stat
 	
 	with open(SRC_PATH/"stat"/"problem-stat.json", "w", encoding="utf-8") as f: # write json
-		json.dump(stat, f, ensure_ascii=False, indent="\t")
+		json.dump(stat, f, ensure_ascii=False, separators=(",", ":"))
 
 make_code_stat_json() # 生成程式碼的統計
 make_problem_stat_json() # 生成題目的統計
