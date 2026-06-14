@@ -10,7 +10,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { walkAndRenderKatex } from "@/libs/vue-katex";
+import { walkAndRenderKatex } from "@lib/vue-katex";
 
 const nodeRendered = ref(null);
 

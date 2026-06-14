@@ -8,7 +8,7 @@
 
 <script setup>
 import { watch, ref } from "vue";
-import { renderKatex } from "@/libs/vue-katex";
+import { renderKatex } from "@lib/vue-katex";
 
 const props = defineProps({
 	exp: { type: String, default: "?" }, // latex 表達式
