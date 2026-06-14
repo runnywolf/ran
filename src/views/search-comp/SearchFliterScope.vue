@@ -45,6 +45,20 @@
 import { ref, watch } from "vue";
 import { dbConfig, getUniShortName } from "@lib/exam-db";
 
+const emit = defineEmits([ "changed" ]); // 當搜尋範圍 (收藏類型/學校/年份) 變動時, 向父層回傳目前的篩選條件
+
+const saveType = ref<number>(0); // 收藏狀態篩選: 0全部, 1僅未收藏, 2僅已收藏
+const uniSelected = ref<string|null>(null); // 學校篩選: 學校, 若為 null 則為全部學校
+const year1Input = ref<string>(""); // 年份範圍篩選: 起始年份
+const year2Input = ref<string>(""); // 年份範圍篩選: 結束年份, year1 不一定 <= year2, 只是為了表達一段年份範圍
+
+watch([saveType, uniSelected, year1Input, year2Input], ([type, uni, year1, year2]) => {
+	let yearRange = [getYearNum(year1), getYearNum(year2)]; // 將年份輸入轉為數字, 並自動處理不合法輸入
+	if (yearRange[0] > yearRange[1]) yearRange.reverse(); // 確保年份區間為 [min, max]
+	if (yearRange[0] === 0 && yearRange[1] === 0) yearRange[1] = 1000; // 如果範圍是 [0, 0], 視為全集合, 將範圍設成 [0, 1000年]
+	emit("changed", { saveType: type, uni, yearStart: yearRange[0], yearEnd: yearRange[1] });
+}, { immediate: true }); // 頁面載入時, 將目前的搜尋範圍回傳給父層
+
 function getSaveIconClass(type: number): string { // 將 "收藏篩選狀態" 轉換為對應的 icon 樣式 class
 	if (type === 0) return "is-regular save-icon-all"; // 全部: 灰色+空心
 	if (type === 1) return "is-regular"; // 僅未收藏: tocas黑色+空心
@@ -60,20 +74,6 @@ function isYearValid(year: string): boolean { // 檢查年份字串是否合法,
 function getYearNum(year: string): number { // 將年份字串轉為數字, 若格式不合法, 則回傳 0 作為預設值
 	return isYearValid(year) ? Number(year) : 0;
 }
-
-const emit = defineEmits([ "changed" ]); // 當搜尋範圍 (收藏類型/學校/年份) 變動時, 向父層回傳目前的篩選條件
-
-const saveType = ref<number>(0); // 收藏狀態篩選: 0全部, 1僅未收藏, 2僅已收藏
-const uniSelected = ref<string|null>(null); // 學校篩選: 學校, 若為 null 則為全部學校
-const year1Input = ref<string>(""); // 年份範圍篩選: 起始年份
-const year2Input = ref<string>(""); // 年份範圍篩選: 結束年份, year1 不一定 <= year2, 只是為了表達一段年份範圍
-
-watch([saveType, uniSelected, year1Input, year2Input], ([type, uni, year1, year2]) => {
-	let yearRange = [getYearNum(year1), getYearNum(year2)]; // 將年份輸入轉為數字, 並自動處理不合法輸入
-	if (yearRange[0] > yearRange[1]) yearRange.reverse(); // 確保年份區間為 [min, max]
-	if (yearRange[0] === 0 && yearRange[1] === 0) yearRange[1] = 1000; // 如果範圍是 [0, 0], 視為全集合, 將範圍設成 [0, 1000年]
-	emit("changed", { saveType: type, uni, yearStart: yearRange[0], yearEnd: yearRange[1] });
-}, { immediate: true }); // 頁面載入時, 將目前的搜尋範圍回傳給父層
 </script>
 
 <style scoped>

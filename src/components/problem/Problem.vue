@@ -1,7 +1,7 @@
 <!-- 用來顯示題目的組件, 會附帶很多 ui 可以選擇要不要顯示
 
 這些組件需要顯示的 ui:
-| ExamPaper (exam mode)   |
+| ExamPaper (exam mode)   | 不顯示任何額外 ui
 | ExamPaper (!exam mode)  | showAnswer showLink
 | ProblemView             | hideProblemScore showAnswer showContent
 | SearchResult, SavedPage | hideProblemScore showLink topRow
@@ -97,17 +97,6 @@ const props = defineProps({
 	showContent: { type: Boolean, default: false }, // 顯示內容區塊 (包含詳解)
 });
 
-const getAsyncComp = (promise, notFoundComp) => defineAsyncComponent({ // 生成一個動態組件
-	loader: () => promise.catch(err => {
-		console.error(err.message); // 如果 import 失敗, 在 console 報錯
-		return notFoundComp; // 回傳錯誤組件
-	}),
-	loadingComponent: LoadingComp,
-	delay: 200, // 顯示"加載組件"前的延遲時間 (防抖動), 預設為 200ms
-	errorComponent: notFoundComp,
-	timeout: 5000
-});
-
 const resolveProblemConfig = ref({});
 const sectionComp = shallowRef(null); // shallowRef 優化效能 (因為題目組件是動態載入的)
 const contentComps = shallowRef([]);
@@ -143,6 +132,19 @@ watchEffect(async () => {
 		contentComps.value = [];
 	}
 });
+
+function getAsyncComp(promise, notFoundComp) { // 生成一個動態組件
+	return defineAsyncComponent({
+		loader: () => promise.catch(err => {
+			console.error(err.message); // 如果 import 失敗, 在 console 報錯
+			return notFoundComp; // 回傳錯誤組件
+		}),
+		loadingComponent: LoadingComp,
+		delay: 200, // 顯示"加載組件"前的延遲時間 (防抖動), 預設為 200ms
+		errorComponent: notFoundComp,
+		timeout: 5000
+	});
+}
 </script>
 
 <style scoped>
