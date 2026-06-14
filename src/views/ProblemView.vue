@@ -71,7 +71,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { showToast, ToastType } from "toast";
+import { showToast } from "@lib/toast"; // 彈出訊息
 import { getUniShortName, decodeExamId, getProblemConfig, getPrevAndNextNo } from "@lib/exam-db"; // 讀取題本資料
 import { ProblemConfigMissingError } from "@lib/exam-db"; // error
 import SidebarContent from "@/components/layout/SidebarContent.vue"; // 用於建構 body 的 sidebar 與內容
@@ -96,7 +96,7 @@ watch(() => [route.params.id, route.params.prob], async ([newExamId, newNo]) => 
 		[uni.value, year.value, no.value, problemConfig.value] = [_uni, _year, newNo, _problemConfig]; // 在 config 讀取成功前, 不能修改這些值, 防止 Problem.vue 報錯
 	} catch (err) {
 		if (err instanceof ProblemConfigMissingError) { // 如果題號不存在
-			showToast(`題本 ${err.uni}-${err.year} 的第 ${err.no} 題不存在`, ToastType.ERROR);
+			showToast(`題本 ${err.uni}-${err.year} 的第 ${err.no} 題不存在`, "error");
 		}
 		console.error(err.message); // 在 console 報錯
 		router.push(`/exam/${newExamId}`); // 轉址回題本頁面, 由 ExamView.vue 處理 exam config 的報錯

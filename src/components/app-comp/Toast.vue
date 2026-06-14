@@ -3,10 +3,10 @@
 		class="ts-content is-dense toast" :class="{ 'is-active': display }"
 		:style="{ '--color': toastData.color, '--bg-color': toastData.bgColor }"
 	>
-		<span v-if="toastData.icon"
-			class="ts-icon is-end-spaced is-large" :class="`is-${toastData.icon}-icon`"
-		></span>
-		<span class="ts-text is-bold">{{ toastData.text }}</span>
+		<div class="ts-wrap is-middle-aligned is-compact">
+			<div v-if="toastData.icon" class="ts-icon is-large" :class="`is-${toastData.icon}-icon`"></div>
+			<div class="ts-text is-bold">{{ toastData.text }}</div>
+		</div>
 	</div>
 </template>
 

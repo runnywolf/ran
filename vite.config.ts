@@ -8,8 +8,7 @@ export default defineConfig({
 		alias: { // import js 的路徑別名
 			"@": "/src", // @ 代表 /src
 			"@lib": "/src/libs",
-			"ran-math": "/src/libs/ran-math.js", // 可以直接 import { ... } from "ran-math"
-			"toast": "/src/libs/toast.js"
+			"ran-math": "/src/libs/ran-math.js", // [棄用] 可以直接 import { ... } from "ran-math"
 		}
 	},
 	test: { // 測試: npx vitest run --coverage

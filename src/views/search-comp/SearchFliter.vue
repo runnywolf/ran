@@ -50,7 +50,7 @@ import { useRoute } from "vue-router";
 import { sum } from "ran-math";
 import { TagTree } from "@lib/exam-db"; // 讀取題本資訊
 import { splitTargetByLcs } from "@lib/lcs";
-import { showToast, ToastType } from "@lib/toast"; // 彈出訊息
+import { showToast } from "@lib/toast"; // 彈出訊息
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 import SearchFliterScope from "./SearchFliterScope.vue"; // 篩選特定學校和年份範圍的組件
 
@@ -87,7 +87,7 @@ watch(searchText, newSearchText => { // 當搜尋框的字串改變時
 function whenDropDownTagClicked(tag) { // 當建議列表的 tag 被點擊
 	searchText.value = ""; // 清空搜尋框
 	if (selectedTags.value.length >= SELECTED_TAG_MAX_NUMBER) { // 超出標籤最大選取限制
-		showToast("你選太多標籤了拉 (☉д⊙)", ToastType.WARNING);
+		showToast("你選太多標籤了拉 (☉д⊙)", "warning");
 		return;
 	}
 	if (!selectedTags.value.includes(tag)) selectedTags.value.push(tag); // 如果某個 tag 沒有被選取, 選取它
