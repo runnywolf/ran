@@ -91,7 +91,7 @@
 		},
 		"12": {
 			"answerLatex": "",
-			"tags": [ "dm-l-pdl", "dm-nt" ],
+			"tags": [ "dm-l-pdl", "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "12-ans" }
 			]

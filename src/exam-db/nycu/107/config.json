@@ -35,7 +35,7 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-ma", "dm-nt-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]

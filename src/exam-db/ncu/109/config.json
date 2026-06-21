@@ -84,7 +84,7 @@
 		},
 		"43": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "43-ans" }
 			]
@@ -112,7 +112,7 @@
 		},
 		"47": {
 			"answerLatex": "",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "47-ans" }
 			]

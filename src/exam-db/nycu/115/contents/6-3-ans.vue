@@ -21,7 +21,7 @@
 		<br>
 		根據算幾不等式可以推導出：
 		$$ \begin{split}
-		&\qquad\quad \sqrt{ab} \lt @f{a+b;2} ~~ \text{ for } a, b \gt 0 ,~ a \neq b \\
+		&\qquad~~~ \sqrt{ab} \lt @f{a+b;2} ~~ \text{ for } a, b \gt 0 ,~ a \neq b \\
 		&\implies 2\sqrt{ab} \lt a+b \\
 		&\implies \sqrt{a}^2 + 2\sqrt{ab} + \sqrt{b}^2 \lt 2(a+b) \\
 		&\implies (\sqrt{a} + \sqrt{b})^2 \lt 2(a+b) \\

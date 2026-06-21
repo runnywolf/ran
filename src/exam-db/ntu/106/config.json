@@ -72,7 +72,7 @@
 		},
 		"9": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-pn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

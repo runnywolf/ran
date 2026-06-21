@@ -40,14 +40,14 @@
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-nt", "dm-l-pdl" ],
+			"tags": [ "dm-nt-pn", "dm-l-pdl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-gl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

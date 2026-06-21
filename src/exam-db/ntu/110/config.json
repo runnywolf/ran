@@ -39,7 +39,7 @@
 		},
 		"5": {
 			"answerLatex": "\\text{Prove} \\to",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

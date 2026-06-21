@@ -89,10 +89,18 @@
 					"c": { "en": "Completeness", "zhtw": "完備性" }
 				}
 			},
-			"nt": { "en": "Number theory", "zhtw": "數論" },
-			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" },
-			"as": { "en": "Algebraic structures", "zhtw": "代數結構" },
-			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
+			"nt": {
+				"en": "Number theory", "zhtw": "數論",
+				"children": {
+					"d": { "en": "Divisibility", "zhtw": "整除性" },
+					"gl": { "en": "GCD & LCM", "zhtw": "最大公因數" },
+					"ma": { "en": "Modular arithmetic", "zhtw": "模運算" },
+					"pn": { "en": "Prime number", "zhtw": "質數" }
+				}
+			},
+			"aa": { "en": "Abstract algebra", "zhtw": "抽象代數" },
+			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" },
+			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" }
 		}
 	},
 	"ag": {

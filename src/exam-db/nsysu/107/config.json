@@ -32,21 +32,21 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
 		},
 		"5": {
 			"answerLatex": "",
-			"tags": [ "dm-as", "dm-nt" ],
+			"tags": [ "dm-aa", "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

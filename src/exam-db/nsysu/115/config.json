@@ -34,7 +34,7 @@
 		},
 		"A4": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-gl" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "A4-ans" }
 			]
@@ -55,7 +55,7 @@
 		},
 		"A7": {
 			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "A7-ans" }
 			]

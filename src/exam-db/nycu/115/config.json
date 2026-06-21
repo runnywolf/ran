@@ -111,7 +111,7 @@
 		},
 		"6-4": {
 			"answerLatex": "\\text{Yes}",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-4-ans" }
 			]
@@ -132,7 +132,7 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "dm-st-br", "dm-nt" ],
+			"tags": [ "dm-st-br", "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

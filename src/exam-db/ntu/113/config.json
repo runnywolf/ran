@@ -25,7 +25,7 @@
 		},
 		"3": {
 			"answerLatex": "24",
-			"tags": [ "dm-nt" ],
+			"tags": [ "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]
@@ -63,7 +63,7 @@
 		},
 		"8": {
 			"answerLatex": "(2, 1, 0)",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]

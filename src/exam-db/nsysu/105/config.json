@@ -11,7 +11,7 @@
 	"problemConfigs": {
 		"1": {
 			"answerLatex": "",
-			"tags": [ "dm-c-pp", "dm-nt" ],
+			"tags": [ "dm-c-pp", "dm-nt-ma" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-ans" }
 			]

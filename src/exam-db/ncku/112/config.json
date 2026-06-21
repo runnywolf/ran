@@ -38,8 +38,8 @@
 			]
 		},
 		"5": {
-			"answerLatex": "",
-			"tags": [ "dm-nt" ],
+			"answerLatex": "\\text{True}",
+			"tags": [ "dm-nt-d" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "5-ans" }
 			]

@@ -77,7 +77,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "dm-as" ],
+			"tags": [ "dm-aa" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]
