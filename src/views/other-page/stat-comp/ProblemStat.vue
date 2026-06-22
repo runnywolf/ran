@@ -38,7 +38,7 @@
 					<td>{{ tagStat.count }}</td>
 					<td>
 						<div class="ts-wrap is-compact">
-							<span v-for="([uni, count], j) in tagStat.uniCounts"
+							<span v-for="[uni, count] in tagStat.uniCounts"
 								:class="{ 'uni-count-selected': selectedUni === uni }"
 								@click="selectedUni = (selectedUni === uni ? null : uni)"
 							>{{ getUniShortName(uni) }}{{ count }}</span>
