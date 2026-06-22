@@ -35,7 +35,11 @@
 						<span v-if="tagStat.isIconEnabled()" :class="tagStat.getIconCssClass()" @click="whenIconClicked(i)"></span>
 					</td>
 					<td>{{ tagStat.count }}</td>
-					<td>{{ tagStat.uniCountStr }}</td>
+					<td>
+						<div class="ts-wrap">
+							<span v-for="([uni, count], j) in tagStat.uniCounts">{{ getUniShortName(uni) }}{{ count }}</span>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -43,74 +47,80 @@
 	
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, type Ref } from "vue";
 import { getUniShortName } from "@lib/exam-db"; // 讀取題本資料
-import { sum } from "ran-math";
-import stat from "@/stat/problem-stat.json"; // 統計資料
+import dbConfig from "@/exam-db/config.json"; // 題庫設定
+import problemStatText from "@/stat/problem-stat.txt?raw"; // 統計資料
 import Tag from "@/components/problem/Tag.vue"; // tag 組件
 
 class TagStat { // 每一個 tag 的統計資料 (包含 icon 狀態)
-	static getUniCountStr(uniCountsDict) {
-		return Object.entries(uniCountsDict) // { <uni>: <uniCount>, ... } 轉 [ [<uni>, <uniCount>], ... ]
-			.filter(([uni, uniCount]) => uniCount > 0) // 只顯示題數 > 0 的學校
-			.sort((a, b) => b[1]-a[1]) // 根據題數降序排列
-			.map(([uni, uniCount]) => `${getUniShortName(uni)}${uniCount}`) // 轉成字串: "<學校><題數>"
-			.join("　") // 以全形空白連接多個字串
-	}
+	readonly tag: string;
+	readonly tagLevel: number;
+	readonly indentWidth: number;
+	readonly count: number;
+	readonly uniCounts: [string, number][];
+	show: boolean;
+	readonly iconState: Ref<boolean|null>;
 	
-	constructor(tag, uniCountsDict) {
+	constructor(tag: string, uniCounts: [string, number][]) {
 		this.tag = tag; // 標籤
 		this.tagLevel = tag.split("-").length - 1; // tag 在 tag tree 內的 level (恰等於 "-" 字符數量)
-		this.show = this.tagLevel === 0; // 初始化時, 只有 level 為 0 的 tag row 會顯示
 		this.indentWidth = 20 * this.tagLevel; // 縮排寬度 (px), 取決於 tag level
-		this.iconStateRef = ref(null); // false 收起, true 展開, null 不顯示 icon
-		this.count = sum(Object.values(uniCountsDict)); // 所有題目之中, 包含此標籤的題目個數
-		this.uniCountStr = TagStat.getUniCountStr(uniCountsDict); // 每個學校有幾題包含這個 tag
+		this.count = uniCounts.reduce((sum, [, count]) => sum + count, 0); // 所有題目之中, 包含此標籤的題目個數
+		this.uniCounts = uniCounts.filter(([, count]) => count > 0).sort((a, b) => b[1]-a[1]); // 每個學校有幾題包含這個 tag (由大到小排序)
+		this.show = this.tagLevel === 0; // 初始化時, 只有 level 為 0 的 tag row 會顯示
+		this.iconState = ref(null); // false 收起, true 展開, null 不顯示 icon
 	}
 	
-	haveChildren(tagStat_preorderSuccessor) { // 這個 tag 是否有 child tag
-		if (!tagStat_preorderSuccessor) return false; // 若後繼節點不存在, 代表沒有 child
-		return this.tagLevel + 1 === tagStat_preorderSuccessor.tagLevel;
+	haveChildren(preorderSuccessor: TagStat): boolean { // 這個 tag 是否有 child tag
+		if (!preorderSuccessor) return false; // 若後繼節點不存在, 代表沒有 child
+		return this.tagLevel + 1 === preorderSuccessor.tagLevel;
 	} // 前序遍歷扁平化得到的 tag node arr 之中, 若節點有 child, 則後繼節點的 level 必定 +1
 	
-	getIconState() { // 獲取按鈕的狀態 (null 隱藏 / false 收起 / true 展開)
-		return this.iconStateRef.value;
+	getIconState(): boolean|null { // 獲取按鈕的狀態 (null 隱藏 / false 收起 / true 展開)
+		return this.iconState.value;
 	}
 	
-	setIconState(state) { // 設定按鈕的狀態 (false 收起 / true 展開)
-		this.iconStateRef.value = state; // 若按鈕啟用中, 切換按鈕的狀態 (收起/展開)
+	setIconState(state: boolean|null): void { // 設定按鈕的狀態 (false 收起 / true 展開)
+		this.iconState.value = state; // 若按鈕啟用中, 切換按鈕的狀態 (收起/展開)
 	}
 	
-	switchIcon() { // 切換按鈕的狀態 (收起/展開)
+	switchIcon(): void { // 切換按鈕的狀態 (收起/展開)
 		if (this.isIconEnabled()) this.setIconState(!this.getIconState()); // 若按鈕啟用中, 切換按鈕的狀態 (收起/展開)
 	}
 	
-	enableIcon() { // 啟用 icon
+	enableIcon(): void { // 啟用 icon
 		this.setIconState(false); // 啟用後, icon 為收起狀態
 	}
 	
-	isIconEnabled() { // 是否要顯示 icon
+	isIconEnabled(): boolean { // 是否要顯示 icon
 		return this.getIconState() !== null; // null -> 不顯示 icon ; false/true -> 收起/展開 icon
 	}
 	
-	getIconCssClass() { // 回傳 icon 的 css class 樣式
-		const iconStyle = this.iconStateRef.value ? "down" : "right"; // true 展開, false 收起
+	getIconCssClass(): string { // 回傳 icon 的 css class 樣式
+		const iconStyle = this.iconState.value ? "down" : "right"; // true 展開, false 收起
 		return `ts-icon is-start-spaced is-chevron-${iconStyle}-icon`;
 	}
 }
 
-const tagStats = Object.entries(stat.tagsNumber).map( // 所有 tag 的統計資料和 icon 狀態
-	([tag, uniCountsDict]) => new TagStat(tag, uniCountsDict)
-);
-tagStats.forEach((tagStat, i) => { // 檢查每個 tag 是否有 child tag, 決定是否要顯示 icon
-	if (tagStat.haveChildren(tagStats[i+1])) tagStat.enableIcon(); // 若標籤有子標籤, 顯示下拉 icon
-});
+const [mainStatLine, ...tagStatLines] = problemStatText.trim().split(/\r?\n/);
+const stat = JSON.parse(mainStatLine); // 解析 problem-stat.txt 的 head line
 
-function whenIconClicked(i) { // 當 icon 被點擊
+const tagStats: TagStat[] = [];
+for (const line of tagStatLines) { // 解析 problem-stat.txt 從第二行開始的 tag stat
+	const [tag, ...counts] = line.split(",");
+	const uniCounts: [string, number][] = dbConfig.uniList.map((uni, i) => [uni, Number(counts[i])]);
+	tagStats.push(new TagStat(tag, uniCounts));
+}
+for (let i = 0; i < tagStats.length; i++) { // 檢查每個 tag 是否有 child tag, 決定是否要顯示 icon
+	if (tagStats[i].haveChildren(tagStats[i+1])) tagStats[i].enableIcon(); // 若標籤有子標籤, 顯示下拉 icon
+}
+
+function whenIconClicked(i: number) { // 當 icon 被點擊
 	tagStats[i].switchIcon(); // 切換按鈕的狀態 (收起/展開)
 	
-	const showChildren = tagStats[i].getIconState(); // 若 icon 展開, 代表要顯示 children, 反之隱藏
+	const showChildren = tagStats[i].getIconState() as boolean; // 若 icon 展開, 代表要顯示 children, 反之隱藏
 	for (let j = i+1; j < tagStats.length; j++) {
 		if (tagStats[j].tagLevel <= tagStats[i].tagLevel) break; // 遇到 <= 自己 level 的 tag, 表示這不是子孫 node
 		
