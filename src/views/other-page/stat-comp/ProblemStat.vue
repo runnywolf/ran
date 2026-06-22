@@ -9,6 +9,7 @@
 				<div class="ts-list is-unordered">
 					<div class="item">點擊標籤可以跳至搜尋頁面。</div>
 					<div class="item">點擊標籤右側的圖示可以展開子標籤。</div>
+					<div class="item">若點擊某個學校出題數，該學校的所有出題數會變成淺藍底色。</div>
 				</div>
 			</div>
 		</div>
@@ -36,8 +37,11 @@
 					</td>
 					<td>{{ tagStat.count }}</td>
 					<td>
-						<div class="ts-wrap">
-							<span v-for="([uni, count], j) in tagStat.uniCounts">{{ getUniShortName(uni) }}{{ count }}</span>
+						<div class="ts-wrap is-compact">
+							<span v-for="([uni, count], j) in tagStat.uniCounts"
+								:class="{ 'uni-count-selected': selectedUni === uni }"
+								@click="selectedUni = (selectedUni === uni ? null : uni)"
+							>{{ getUniShortName(uni) }}{{ count }}</span>
 						</div>
 					</td>
 				</tr>
@@ -117,6 +121,8 @@ for (let i = 0; i < tagStats.length; i++) { // 檢查每個 tag 是否有 child 
 	if (tagStats[i].haveChildren(tagStats[i+1])) tagStats[i].enableIcon(); // 若標籤有子標籤, 顯示下拉 icon
 }
 
+const selectedUni = ref<string|null>(null); // 被選中的學校, 所有 tag row 之中的此學校的題目數會顯示底色
+
 function whenIconClicked(i: number) { // 當 icon 被點擊
 	tagStats[i].switchIcon(); // 切換按鈕的狀態 (收起/展開)
 	
@@ -139,5 +145,11 @@ function whenIconClicked(i: number) { // 當 icon 被點擊
 }
 .stat-table tr > :nth-child(2) { /* 減少 "標籤" 與 "題目數" 的間距 */
 	padding-left: 0;
+}
+.uni-count-selected {
+	padding: 0 6px;
+	background-color: #acf;
+	border-radius: 4px;
+	user-select: none;
 }
 </style>
