@@ -9,16 +9,16 @@
 一款用於準備資工所數學的網頁 App。
 
 開始使用 → [Ran](https://runnywolf.github.io/ran/#/)<br>
-說明文件 → [Ran Docs](https://runnywolf.github.io/ran/docs/intro/exam-page)<br>
+說明文件 (舊版, 待更新) → [Ran Docs](https://runnywolf.github.io/ran/docs/intro/exam-page)<br>
 
 > [!WARNING]
 > 目前 safari 會有題號顯示異常的問題，因為瀏覽器不支援修改 `::marker`，我也沒辦法。<br>
 > 建議 safari 使用者安裝 chromium/firefox 以獲得最佳體驗。( bug 一堆不想修 )
 
 > [!NOTE]
-> 為獲得最佳體驗，請使用電腦版網頁或行動版網頁的 PC mode。
+> 因為懶得弄 RWD，為獲得最佳體驗，請使用電腦版網頁或行動版網頁的 "電腦板模式"。
 
-這個網頁是靜態的，因此你可以 `git clone` 到 `local`，建構完成後作為離線版使用。
+這個網頁是靜態的，因此你可以 `clone` 到你的電腦，建構完成後作為離線版使用。
 
 ## ✨ 功能
 ### 歷屆試題頁面
