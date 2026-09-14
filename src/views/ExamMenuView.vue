@@ -18,7 +18,7 @@
 						<tr v-for="year in sortedAllYearArr">
 							<td v-for="uni in dbConfig.uniList">
 								<RanLink v-if="isExamExist[year][uni]" :to="`#/exam/${uni}-${year}`">
-									{{ `${getUniShortName(uni)} ${year}` }}
+									{{ `${getUniShortName(uni, year)} ${year}` }}
 								</RanLink>
 								<span v-else>&nbsp;</span><!-- 防止整個 row 都沒有 link 而塌陷 -->
 							</td>

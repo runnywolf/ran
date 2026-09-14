@@ -1,5 +1,5 @@
 {
-	"uniList": [ "ntu", "nycu", "ncku", "ncu", "nsysu" ],
+	"uniList": [ "ntu", "nycu", "ncku", "ncu", "nsysu", "nchu1", "nchu2" ],
 	"uniConfigs": {
 		"ntu": {
 			"name": "國立臺灣大學",
@@ -39,6 +39,20 @@
 			"yearList": [
 				"115", "114", "113", "112", "111", "110",
 				"109", "108", "107", "106", "105"
+			]
+		},
+		"nchu1": {
+			"name": "國立中興大學",
+			"shortName": "中興甲",
+			"yearList": [
+				"107", "108", "113"
+			]
+		},
+		"nchu2": {
+			"name": "國立中興大學",
+			"shortName": "中興乙",
+			"yearList": [
+				"113"
 			]
 		}
 	}

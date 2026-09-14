@@ -59,8 +59,11 @@ export const dbConfig = _dbConfig as DbConfig; // 檢查 db config 型態, 如�
 const tagTree = _tagTree as Record<string, TagNode>; // 檢查 tag tree 型態
 const tagTreeRootNode = { children: tagTree } as TagNode; // tag-tree.json 沒有 root node 結構, 這裡補上
 
-export function getUniShortName(uni: string): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
-	if (uni in dbConfig.uniConfigs) return dbConfig.uniConfigs[uni].shortName;
+export function getUniShortName(uni: string, year: string = "?"): string { // 將 uni (學校英文縮寫) 轉為中文縮寫
+	if (uni in dbConfig.uniConfigs) {
+		if ((uni === "nchu1" || uni === "nchu2") && year !== "?" && Number(year) <= 107) return "中興"; // 中興 107 之前沒有分甲乙組
+		return dbConfig.uniConfigs[uni].shortName;
+	}
 	return "?"; // 若 key uni 不存在, 回傳 "?" (等待載入的空值處理)
 }
 
