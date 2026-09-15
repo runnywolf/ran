@@ -9,7 +9,7 @@
 			Let $V$ be a vector space of all symmetric $2 \times 2$ matrices.<br>
 			Define a linear transformation $T: V \to P_2(\mathbb{R})$ by
 			$$ T\left( \begin{bmatrix} a & b \\ b & c \end{bmatrix} \right) = (a-b) + (b-c)x + (c-a)x^2. $$
-			Find $\operatorname{rank}(T)$.
+			Find $\text{rank}(T)$.
 		</template>
 	</MakeProblem>
 </template>

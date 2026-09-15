@@ -45,15 +45,13 @@
 			"name": "國立中興大學",
 			"shortName": "中興甲",
 			"yearList": [
-				"107", "108", "113"
+				"115"
 			]
 		},
 		"nchu2": {
 			"name": "國立中興大學",
 			"shortName": "中興乙",
-			"yearList": [
-				"113"
-			]
+			"yearList": []
 		}
 	}
 }
