@@ -1,7 +1,7 @@
 <template>
-	<CodeStat></CodeStat>
-	<div class="ts-divider is-section"></div>
 	<ProblemStat></ProblemStat>
+	<div class="ts-divider is-section"></div>
+	<CodeStat></CodeStat>
 </template>
 
 <script setup>
