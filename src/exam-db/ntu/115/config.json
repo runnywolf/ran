@@ -1,0 +1,85 @@
+{
+	"subjectCode": "277",
+	"subjectName": "數學 (A)",
+	"subjectShortName": "數學 (A)",
+	"department": "資訊工程學研究所",
+	"externalLink": "https://drive.google.com/drive/folders/1QKagbDmfk_rRMt6GK0-ZTNYIXXs31HKa",
+	"externalLinkTip": "Google Drive (mayjaylee1928)",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-notice", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+	],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "1-ans" }
+			]
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "dm-st-f" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "2-ans" }
+			]
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "dm-c-rr" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "3-ans" }
+			]
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "dm-c-gf" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "4-ans" }
+			]
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "dm-c-ic" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "5-ans" }
+			]
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "la-m-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "6-ans" }
+			]
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "la-ev-d" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "7-ans" }
+			]
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "la-ips-p" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "8-ans" }
+			]
+		},
+		"9": {
+			"answerLatex": "",
+			"tags": [ "la-ips-dm", "la-ips-svd" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "9-ans" }
+			]
+		},
+		"10": {
+			"answerLatex": "",
+			"tags": [ "la-ips-dm" ],
+			"contentConfigs": [
+				{ "type": "answer", "fileBaseName": "10-ans" }
+			]
+		}
+	}
+}
