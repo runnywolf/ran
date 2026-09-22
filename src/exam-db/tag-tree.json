@@ -5,7 +5,7 @@
 			"vs": {
 				"en": "Vector space", "zhtw": "向量空間",
 				"children": {
-					"bd": { "en": "Basis", "zhtw": "基底" },
+					"b": { "en": "Basis", "zhtw": "基底" },
 					"ss": { "en": "Subspace", "zhtw": "子空間" },
 					"rk": { "en": "Range & Kernel", "zhtw": "值域 & 核空間" },
 					"rn": { "en": "Rank & Nullity", "zhtw": "秩 & 零化度" },

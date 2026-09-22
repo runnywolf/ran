@@ -84,7 +84,7 @@
 		},
 		"11": {
 			"answerLatex": "",
-			"tags": [ "la-vs-bd", "la-vs-cb" ],
+			"tags": [ "la-vs-b", "la-vs-cb" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "11-ans" }
 			]

@@ -55,7 +55,7 @@
 				"\\text{(3) True}",
 				"\\text{(4) True}"
 			],
-			"tags": [ "la-vs-bd", "la-vs-rn" ],
+			"tags": [ "la-vs-b", "la-vs-rn" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "1-4-ans" }
 			]

@@ -50,7 +50,7 @@
 		},
 		"6": {
 			"answerLatex": "\\text{See solution}",
-			"tags": [ "la-vs-bd" ],
+			"tags": [ "la-vs-b" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

@@ -60,7 +60,7 @@
 		},
 		"8": {
 			"answerLatex": "",
-			"tags": [ "la-m-shm", "la-ips-oc", "la-vs-rn", "la-vs-bd", "la-vs-rk" ],
+			"tags": [ "la-m-shm", "la-ips-oc", "la-vs-rn", "la-vs-b", "la-vs-rk" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "8-ans" }
 			]
