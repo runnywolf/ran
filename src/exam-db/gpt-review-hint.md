@@ -29,7 +29,7 @@
 5. 當判定完所有標籤之後, 列表說明每一題的題號 `<uni>-<year>-<no>` 以及 `tags`, 並簡短說明選擇這些 tag 的理由, 如果有疑義也提出
 
 ## tag maintain
-1. 機率問題目前暫時放在 dm-c-pc, 之後再分出 dm-c-p
+1. 機率問題 (單純只是排列組合除以所有可能個數這種機率) 暫時放在 dm-c-pc
 2. euler function 暫時歸類在 dm-nt-gl
 3. linearly independent 判定問題歸類在 la-vs-bd
 
