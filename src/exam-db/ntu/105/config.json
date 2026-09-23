@@ -49,7 +49,7 @@
 		},
 		"6": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-bip" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-ans" }
 			]

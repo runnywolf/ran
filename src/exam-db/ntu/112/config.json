@@ -69,7 +69,7 @@
 		},
 		"9": {
 			"answerLatex": "\\text{A}",
-			"tags": [ "la-m-shm", "la-m", "la-m-oum" ],
+			"tags": [ "la-m-shm", "la-m-oum" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "9-ans" }
 			]

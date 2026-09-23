@@ -35,6 +35,7 @@
 			"ips": {
 				"en": "Inner product space", "zhtw": "內積空間",
 				"children": {
+					"bip": { "en": "Basic inner product", "zhtw": "基本內積" },
 					"oc": { "en": "Orthogonal complement", "zhtw": "正交補空間" },
 					"gsp": { "en": "Gram-Schmidt process", "zhtw": "正交化" },
 					"qrd": { "en": "QR decomposition", "zhtw": "QR 分解" },

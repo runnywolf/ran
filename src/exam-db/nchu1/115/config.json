@@ -98,7 +98,7 @@
 		},
 		"13": {
 			"answerLatex": "",
-			"tags": [ "la-m-shm", "la-m-im", "la-ips" ],
+			"tags": [ "la-m-shm", "la-m-im", "la-ips-bip" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "13-ans" }
 			]
@@ -112,7 +112,7 @@
 		},
 		"15": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-bip" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "15-ans" }
 			]

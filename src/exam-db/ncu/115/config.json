@@ -35,7 +35,7 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "la-ips" ],
+			"tags": [ "la-ips-bip" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
