@@ -77,7 +77,7 @@
 		},
 		"10": {
 			"answerLatex": "",
-			"tags": [ "dm-st", "dm-gt-gi", "dm-l-c" ],
+			"tags": [ "dm-st-br", "dm-st-c", "dm-st-s", "dm-gt-gi", "dm-l-c" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "10-ans" }
 			]

@@ -25,7 +25,7 @@
 		},
 		"3": {
 			"answerLatex": "\\text{c}",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st-s" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "3-ans" }
 			]

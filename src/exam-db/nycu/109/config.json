@@ -33,7 +33,7 @@
 		},
 		"4": {
 			"answerLatex": "",
-			"tags": [ "dm-st" ],
+			"tags": [ "dm-st-s" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "4-ans" }
 			]
