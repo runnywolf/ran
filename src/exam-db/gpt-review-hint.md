@@ -13,8 +13,9 @@
 8. latex 語法請用 `\(...\)` 包裹行內 latex 語法, latex 置中語法請用 `\[...\]` 包裹
 9. `\[...\]` 語法請這樣寫 `\[...\]`, 不要寫成 `\[\n...\n\]`, 但是單行太長不需要遵守此規則, 直接從中間換行
 10. 使用 `docs/components/vue-katex` 的 latex macro
-11. 不要附上詳解
-12. temp file 都暫存到 `src/exam-db-tool`, 執行完記得清理, 用 git 檢查是否有殘留
+11. latex `operatorname` 改用 `text` 即可
+12. 不要附上詳解
+13. temp file 都暫存到 `src/exam-db-tool`, 執行完記得清理, 用 git 檢查是否有殘留
 
 將題本解析內容複寫到 `src/exam-db-tool/raw-exam-text.txt`
 

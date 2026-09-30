@@ -47,6 +47,8 @@ function splitStrToKatexNodeAndStr(str: string): (Node|string)[] { // 將字串 
 	];
 	
 	let nodeOrStrArr: (Node|string)[] = [str];
+	if (str === "$") return nodeOrStrArr; // [v0.6.4 fix] 如果需要 "$" 字符但不想被 vk 解碼, 可以使用 <span>$</span>, 不會報未閉合錯誤
+	
 	for (const [sep, strToNodeFn] of sepList) {
 		nodeOrStrArr = nodeOrStrArr.flatMap(nodeOrStr => {
 			if (typeof nodeOrStr === "string") return splitStrToNodeAndStr(nodeOrStr, sep, strToNodeFn); // 如果是 str, 嘗試切分
