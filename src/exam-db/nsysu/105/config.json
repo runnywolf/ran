@@ -12,51 +12,37 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pp", "dm-nt-ma" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "dm-st-c" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pp" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-pg", "dm-gt-bg" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "dm-fsm" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

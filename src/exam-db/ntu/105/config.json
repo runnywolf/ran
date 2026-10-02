@@ -15,72 +15,52 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "la-m-t" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "la-m-d" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "la-m-im", "la-ips-dm", "la-vs-b", "la-ev", "la-vs-rk" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "la-vs-ss" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "la-m-im" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "la-ips-bip" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "la-ev" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": "",
 			"tags": [ "la-m-d" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"9": {
 			"answerLatex": "",
 			"tags": [ "dm-c-ic" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"10": {
 			"answerLatex": "",
 			"tags": [ "dm-aa" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"11": {
 			"answerLatex": "-2 - n + 6 \\cdot 2^n",
@@ -92,30 +72,22 @@
 		"12": {
 			"answerLatex": "",
 			"tags": [ "dm-c-gf" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "12-ans" }
-			]
+			"contentConfigs": []
 		},
 		"13": {
 			"answerLatex": "",
 			"tags": [ "dm-c-gf" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "13-ans" }
-			]
+			"contentConfigs": []
 		},
 		"14": {
 			"answerLatex": "",
 			"tags": [ "dm-st-f" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "14-ans" }
-			]
+			"contentConfigs": []
 		},
 		"15": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-t" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "15-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

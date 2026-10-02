@@ -54,8 +54,8 @@ def createExamConfig(sectionBaseNames: list[str]) -> None: # 建立題本設定�
 		examConfig["problemConfigs"][name] = {
 			"answerLatex": "",
 			"tags": '<insert>[ "?" ]<insert>',
-			"contentConfigs": [ f'<insert>{{ "type": "answer", "fileBaseName": "{name}-ans" }}<insert>' ]
-		}
+			"contentConfigs": '<insert>[]<insert>', # [ f'<insert>{{ "type": "answer", "fileBaseName": "{name}-ans" }}<insert>' ]
+		} # 因為 v0.6.4+ 目標為優先盡量涵蓋所有題目, 而非提供解答, 因此暫停建立答案 vue 檔
 	
 	examConfigStr = json.dumps(examConfig, ensure_ascii=False, indent="\t") # py dict 轉 json str, 並以 tab 縮排
 	examConfigStr = examConfigStr.replace('"<insert>', "").replace('<insert>"', "") # 移除 <insert> 標籤
@@ -121,7 +121,7 @@ def createAllVueFile( # 建立所有區塊 vue 檔 (sections 資料夾下)
 			createNonProblemVueFile(name, sectionLineArrs[i]) # 區塊編號開頭為 "-" 會被視為非題目區塊
 		else:
 			createProblemVueFile(name, sectionLineArrs[i], problemModes[name]) # 建立題目區塊檔
-			createAnswerVueFile(name) # 建立詳解區塊檔
+			# createAnswerVueFile(name) # 建立詳解區塊檔; 因為 v0.6.4+ 目標為優先盡量涵蓋所有題目, 而非提供解答, 因此暫停建立答案 vue 檔
 
 print("\033c", end="") # clear console
 uni = input("學校英文縮寫: ")

@@ -12,9 +12,7 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-t", "dm-st-c" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "\\text{See prove}",
@@ -26,30 +24,22 @@
 		"3": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-d", "dm-nt-pn", "dm-nt-gl", "ag-tc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "la-ips-qrd", "la-ips-p", "la-ips-svd" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "la-ev" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

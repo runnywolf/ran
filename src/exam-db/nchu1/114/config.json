@@ -15,128 +15,92 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "dm-l-ppl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "dm-st-f" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-gl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "o" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "o" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "la-m-d", "la-m-t" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": "",
 			"tags": [ "la-vs-cb" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"9": {
 			"answerLatex": "",
 			"tags": [ "la-ips-bip" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"10": {
 			"answerLatex": "",
 			"tags": [ "la-ips-bip" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"11": {
 			"answerLatex": "",
 			"tags": [ "la-vs-cb" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "11-ans" }
-			]
+			"contentConfigs": []
 		},
 		"12": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "12-ans" }
-			]
+			"contentConfigs": []
 		},
 		"13": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "13-ans" }
-			]
+			"contentConfigs": []
 		},
 		"14": {
 			"answerLatex": "",
 			"tags": [ "la-m-oum" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "14-ans" }
-			]
+			"contentConfigs": []
 		},
 		"15": {
 			"answerLatex": "",
 			"tags": [ "la-ips-oc", "la-ips-p", "la-m-oum" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "15-ans" }
-			]
+			"contentConfigs": []
 		},
 		"16": {
 			"answerLatex": "",
 			"tags": [ "la-ips-bip" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "16-ans" }
-			]
+			"contentConfigs": []
 		},
 		"17": {
 			"answerLatex": "",
 			"tags": [ "dm-ba" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "17-ans" }
-			]
+			"contentConfigs": []
 		},
 		"18": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "18-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

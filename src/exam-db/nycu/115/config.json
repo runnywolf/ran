@@ -84,16 +84,12 @@
 		"5": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6-1": {
 			"answerLatex": "",
 			"tags": [ "dm-l-pdl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6-2": {
 			"answerLatex": "2",
@@ -126,23 +122,17 @@
 		"7": {
 			"answerLatex": "",
 			"tags": [ "dm-c-r" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": "",
 			"tags": [ "dm-st-br", "dm-nt-ma" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"9": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-ehg" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

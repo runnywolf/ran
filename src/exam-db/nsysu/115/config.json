@@ -14,93 +14,67 @@
 		"A1": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A2": {
 			"answerLatex": "",
 			"tags": [ "dm-c-ic" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A3": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A4": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-gl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A5": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A6": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A7": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-ma" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A8": {
 			"answerLatex": "",
 			"tags": [ "dm-st-f", "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A9": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"A10": {
 			"answerLatex": "",
 			"tags": [ "dm-c-r" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "A10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"B1": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "B1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"B2": {
 			"answerLatex": "",
 			"tags": [ "dm-l-ppl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "B2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"B3": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pp" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "B3-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

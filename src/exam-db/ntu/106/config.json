@@ -12,51 +12,37 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "la-m-im" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "la-ev-d" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "la-ips-bip" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "la-ips-svd" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "dm-st-br" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "dm-l-ppl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": [
@@ -73,16 +59,12 @@
 		"9": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-pn" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"10": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-bg" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"11": {
 			"answerLatex": "2^{n-1}",
@@ -94,9 +76,7 @@
 		"12": {
 			"answerLatex": "",
 			"tags": [ "dm-st-br" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "12-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

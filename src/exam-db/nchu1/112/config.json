@@ -14,86 +14,62 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "la-m-t", "la-vs-b", "la-m-shm", "la-m-im", "la-m-d", "la-vs-rn", "la-ev-d", "la-m-mro" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "la-ev" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "la-vs-cb", "la-vs-rk" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "la-m-mro" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "la-ips-gsp" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "dm-c-rr", "dm-c-gf" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": "",
 			"tags": [ "ag-tc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"9": {
 			"answerLatex": "",
 			"tags": [ "dm-nt" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"10": {
 			"answerLatex": "",
 			"tags": [ "dm-nt" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"11": {
 			"answerLatex": "",
 			"tags": [ "dm-fsm" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "11-ans" }
-			]
+			"contentConfigs": []
 		},
 		"12": {
 			"answerLatex": "",
 			"tags": [ "dm-gt", "ag", "dm-l-ppl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "12-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }

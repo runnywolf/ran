@@ -15,107 +15,77 @@
 		"1": {
 			"answerLatex": "",
 			"tags": [ "dm-st-s" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "1-ans" }
-			]
+			"contentConfigs": []
 		},
 		"2": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "2-ans" }
-			]
+			"contentConfigs": []
 		},
 		"3": {
 			"answerLatex": "",
 			"tags": [ "dm-l-pdl" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "3-ans" }
-			]
+			"contentConfigs": []
 		},
 		"4": {
 			"answerLatex": "",
 			"tags": [ "dm-nt-ma", "dm-nt-d" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "4-ans" }
-			]
+			"contentConfigs": []
 		},
 		"5": {
 			"answerLatex": "",
 			"tags": [ "dm-c-r" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "5-ans" }
-			]
+			"contentConfigs": []
 		},
 		"6": {
 			"answerLatex": "",
 			"tags": [ "dm-c-r" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "6-ans" }
-			]
+			"contentConfigs": []
 		},
 		"7": {
 			"answerLatex": "",
 			"tags": [ "dm-c-pc" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "7-ans" }
-			]
+			"contentConfigs": []
 		},
 		"8": {
 			"answerLatex": "",
 			"tags": [ "dm-st-br" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "8-ans" }
-			]
+			"contentConfigs": []
 		},
 		"9": {
 			"answerLatex": "",
 			"tags": [ "dm-gt-gi" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "9-ans" }
-			]
+			"contentConfigs": []
 		},
 		"10": {
 			"answerLatex": "",
 			"tags": [ "la-m-mro" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "10-ans" }
-			]
+			"contentConfigs": []
 		},
 		"11": {
 			"answerLatex": "",
 			"tags": [ "la-m" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "11-ans" }
-			]
+			"contentConfigs": []
 		},
 		"12": {
 			"answerLatex": "",
 			"tags": [ "la-m-mro" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "12-ans" }
-			]
+			"contentConfigs": []
 		},
 		"13": {
 			"answerLatex": "",
 			"tags": [ "la-m-d" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "13-ans" }
-			]
+			"contentConfigs": []
 		},
 		"14": {
 			"answerLatex": "",
 			"tags": [ "la-vs-b", "la-vs-rk", "la-vs-rn" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "14-ans" }
-			]
+			"contentConfigs": []
 		},
 		"15": {
 			"answerLatex": "",
 			"tags": [ "la-ips-p", "la-ips-gsp", "la-ev" ],
-			"contentConfigs": [
-				{ "type": "answer", "fileBaseName": "15-ans" }
-			]
+			"contentConfigs": []
 		}
 	}
 }
