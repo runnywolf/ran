@@ -33,6 +33,8 @@
 1. 機率問題 (單純只是排列組合除以所有可能個數這種機率) 暫時放在 dm-c-pc
 2. euler function 暫時歸類在 dm-nt-gl
 3. linearly independent 判定問題歸類在 la-vs-b
+4. 不須使用生成函數的整數分解題目判定成 [ dm-c-ic ], 如果需要生成函數 (例如 x1+2x2=2 這種) 需要額外添加 dm-c-gf
+但如果容易用窮舉解題則不需要添加 dm-c-gf
 
 有些題目雖然關連到多個 tag, 但是題目核心為 tag A 衍伸出 tag B, C
 這種情況下仍然會只添加 tag A, 但還是需要提醒我一下
