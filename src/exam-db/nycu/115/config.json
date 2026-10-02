@@ -93,14 +93,14 @@
 		},
 		"6-2": {
 			"answerLatex": "2",
-			"tags": [ "dm-ba" ],
+			"tags": [ "o" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-2-ans" }
 			]
 		},
 		"6-3": {
 			"answerLatex": "26",
-			"tags": [ "dm-ba" ],
+			"tags": [ "o" ],
 			"contentConfigs": [
 				{ "type": "answer", "fileBaseName": "6-3-ans" }
 			]

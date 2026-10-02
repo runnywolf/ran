@@ -101,8 +101,7 @@
 				}
 			},
 			"aa": { "en": "Abstract algebra", "zhtw": "抽象代數" },
-			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" },
-			"ba": { "en": "Basic arithmetic", "zhtw": "基本算術" }
+			"fsm": { "en": "Finite-state machine", "zhtw": "有限狀態機" }
 		}
 	},
 	"ag": {
