@@ -1,0 +1,178 @@
+{
+	"subjectCode": "?",
+	"subjectName": "基礎數學 A",
+	"subjectShortName": "基礎數學 A",
+	"department": "資訊工程學系甲組",
+	"externalLink": "https://www.ptt.cc/bbs/Grad-ProbAsk/M.1750005090.A.822.html",
+	"externalLinkTip": "批踢踢實業坊 (new1100726)",
+	"timeMinutes": 100,
+	"isAnswerComplete": false,
+	"sectionFileBaseNames": [
+		"-part-1-1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+		"-part-1-2", "11", "12", "13", "14", "15", "16",
+		"-part-2-1", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
+		"-part-2-2", "27", "28", "29", "30", "31", "-part-3", "32"
+	],
+	"problemConfigs": {
+		"1": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pc" ],
+			"contentConfigs": []
+		},
+		"2": {
+			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
+			"contentConfigs": []
+		},
+		"3": {
+			"answerLatex": "",
+			"tags": [ "dm-l-ppl" ],
+			"contentConfigs": []
+		},
+		"4": {
+			"answerLatex": "",
+			"tags": [ "dm-nt-ma" ],
+			"contentConfigs": []
+		},
+		"5": {
+			"answerLatex": "",
+			"tags": [ "dm-nt-pn" ],
+			"contentConfigs": []
+		},
+		"6": {
+			"answerLatex": "",
+			"tags": [ "o" ],
+			"contentConfigs": []
+		},
+		"7": {
+			"answerLatex": "",
+			"tags": [ "dm-st-s" ],
+			"contentConfigs": []
+		},
+		"8": {
+			"answerLatex": "",
+			"tags": [ "dm-st-c" ],
+			"contentConfigs": []
+		},
+		"9": {
+			"answerLatex": "",
+			"tags": [ "dm-nt-ma" ],
+			"contentConfigs": []
+		},
+		"10": {
+			"answerLatex": "",
+			"tags": [ "dm-gt" ],
+			"contentConfigs": []
+		},
+		"11": {
+			"answerLatex": "",
+			"tags": [ "dm-c-r" ],
+			"contentConfigs": []
+		},
+		"12": {
+			"answerLatex": "",
+			"tags": [ "dm-c-r" ],
+			"contentConfigs": []
+		},
+		"13": {
+			"answerLatex": "",
+			"tags": [ "dm-c-pp" ],
+			"contentConfigs": []
+		},
+		"14": {
+			"answerLatex": "",
+			"tags": [ "dm-c-ic" ],
+			"contentConfigs": []
+		},
+		"15": {
+			"answerLatex": "",
+			"tags": [ "o" ],
+			"contentConfigs": []
+		},
+		"16": {
+			"answerLatex": "",
+			"tags": [ "dm-st-br" ],
+			"contentConfigs": []
+		},
+		"17": {
+			"answerLatex": "",
+			"tags": [ "la-m-d" ],
+			"contentConfigs": []
+		},
+		"18": {
+			"answerLatex": "",
+			"tags": [ "la-vs" ],
+			"contentConfigs": []
+		},
+		"19": {
+			"answerLatex": "",
+			"tags": [ "la-ev" ],
+			"contentConfigs": []
+		},
+		"20": {
+			"answerLatex": "",
+			"tags": [ "la-vs-rn" ],
+			"contentConfigs": []
+		},
+		"21": {
+			"answerLatex": "",
+			"tags": [ "la-vs-ss" ],
+			"contentConfigs": []
+		},
+		"22": {
+			"answerLatex": "",
+			"tags": [ "la-ev-d" ],
+			"contentConfigs": []
+		},
+		"23": {
+			"answerLatex": "",
+			"tags": [ "la-vs-rk" ],
+			"contentConfigs": []
+		},
+		"24": {
+			"answerLatex": "",
+			"tags": [ "la-m-shm" ],
+			"contentConfigs": []
+		},
+		"25": {
+			"answerLatex": "",
+			"tags": [ "la-m-lud" ],
+			"contentConfigs": []
+		},
+		"26": {
+			"answerLatex": "",
+			"tags": [ "la-ips-dm" ],
+			"contentConfigs": []
+		},
+		"27": {
+			"answerLatex": "",
+			"tags": [ "la-m-oum" ],
+			"contentConfigs": []
+		},
+		"28": {
+			"answerLatex": "",
+			"tags": [ "la-vs" ],
+			"contentConfigs": []
+		},
+		"29": {
+			"answerLatex": "",
+			"tags": [ "la-ev" ],
+			"contentConfigs": []
+		},
+		"30": {
+			"answerLatex": "",
+			"tags": [ "la-m-mro" ],
+			"contentConfigs": []
+		},
+		"31": {
+			"answerLatex": "",
+			"tags": [ "la-ips-bip" ],
+			"contentConfigs": []
+		},
+		"32": {
+			"answerLatex": "",
+			"tags": [ "la-ips-p" ],
+			"contentConfigs": []
+		}
+	}
+}
